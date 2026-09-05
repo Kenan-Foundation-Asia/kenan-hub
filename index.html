@@ -7,48 +7,70 @@
 <title>Kenan ONE</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Noto+Sans+Thai:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&family=Open+Sans:wght@400;600;700&family=Prompt:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
 /* ─────────────────────────────────────────────────────────────
    DESIGN TOKENS — ตรงกับ Kenan ONE Vision ใน Stitch
    ───────────────────────────────────────────────────────────── */
 :root{
-  --primary:#0033CC;
-  --primary-dark:#0011AD;
-  --secondary:#0044FF;
-  --neutral:#EBECEF;
+  /* ════ สีตาม Brand Guideline ของมูลนิธิ (หน้า COLORS) ════
+     สีหลักคือ Celadon Blue #0076A9 ไม่ใช่น้ำเงินสดที่ใช้อยู่เดิม
+     ของเดิมเป็นสีที่ผมหยิบมาเอง ไม่เคยตรงกับแบรนด์จริงเลยสักครั้ง */
+  --brand:#0076A9;            /* Celadon Blue — สีหลัก */
+  --brand-700:#005C85;        /* เข้มขึ้น สำหรับปุ่มตอนกด */
+  --brand-300:#A7D9E6;        /* Non Photo Blue — สีรอง */
+  --brand-50:#EAF4F9;         /* พื้นอ่อนของสีหลัก */
+  --grey:#4D4D4D;             /* Davys Grey — สีรอง */
 
-  --ink:#0F172A;
-  --ink-2:#475569;
-  --ink-3:#94A3B8;
-  --bg:#F6F7F9;
+  /* ชื่อเดิมที่โค้ดเรียกใช้อยู่หลายร้อยจุด ชี้มาที่สีแบรนด์จริง
+     ทำแบบนี้เพื่อไม่ต้องไล่แก้ทุกจุดในวันเดียว และไม่มีจุดไหนตกหล่น */
+  --primary:var(--brand);
+  --primary-dark:var(--brand-700);
+  --secondary:#0089C4;
+  --neutral:#E7EDF1;
+
+  /* ไล่ระดับเทาสร้างจาก Davys Grey ของแบรนด์ ไม่ใช่เทาสำเร็จรูปของ framework */
+  --ink:#22282B;
+  --ink-2:#4D4D4D;
+  --ink-3:#6F7A80;
+  --bg:#F4F7F9;
   --surface:#FFFFFF;
-  --line:#E2E6EC;
+  --line:#DCE5EA;
 
-  --ok:#059669;
-  --ok-bg:#ECFDF5;
-  --warn:#D97706;
-  --warn-bg:#FFFBEB;
-  --danger:#DC2626;
-  --danger-bg:#FEF2F2;
-  /* ชื่อย่อที่โค้ดเรียกใช้อยู่หลายที่ ถ้าไม่ประกาศไว้ สีแดงจะหายไปเงียบๆ
-     (หน้าฉุกเฉิน เส้นเวลาปัจจุบัน ปุ่มยกเลิก เรื่องด่วน) */
-  /* น้ำเงินเข้มของเมนูข้าง — ให้แอปมีสันหลัง ไม่ใช่การ์ดขาวลอยบนเทาทั้งหน้า */
-  --navy:#0B1B45;
-  --bad:#DC2626;
-  --bad-bg:#FEF2F2;
-  --bad-line:#FECACA;
+  /* สีสถานะแยกจากสีแบรนด์ชัดเจน เพราะมันสื่อความหมาย ไม่ใช่สื่อตัวตน */
+  --ok:#0F7A5A;      --ok-bg:#E6F4EF;
+  --warn:#B26A00;    --warn-bg:#FDF3E4;
+  --danger:#C0392B;  --danger-bg:#FBECEA;
+  --navy:#083A52;    /* น้ำเงินเข้มของเมนูข้าง — โทนเดียวกับ Celadon */
+  --bad:#C0392B;  --bad-bg:#FBECEA;  --bad-line:#F2CFCA;
 
   --r-sm:8px; --r:12px; --r-lg:16px; --r-xl:20px;
-  --shadow:0 1px 2px rgba(15,23,42,.06),0 4px 16px rgba(15,23,42,.06);
-  --shadow-lg:0 8px 32px rgba(15,23,42,.14);
+  --shadow:0 1px 2px rgba(8,58,82,.06),0 4px 16px rgba(8,58,82,.06);
+  --shadow-lg:0 8px 32px rgba(8,58,82,.16);
 
   --topbar-h:56px;
   --nav-h:64px;
   --safe-b:env(safe-area-inset-bottom,0px);
 
-  --font:'Plus Jakarta Sans','Noto Sans Thai',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  /* ════ ตัวอักษรตาม CI (แถว WEBFONT / ONLINE / DESIGN) ════
+     Montserrat หัวเรื่อง · Open Sans เนื้อความลาติน · Prompt ภาษาไทย
+     เรียง Open Sans ก่อน Prompt เพื่อให้ลาตินได้ Open Sans
+     ส่วนอักษรไทยที่ Open Sans ไม่มี เบราว์เซอร์จะหยิบ Prompt มาให้เอง */
+  --font:'Open Sans','Prompt',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  --font-head:'Montserrat','Prompt',-apple-system,'Segoe UI',sans-serif;
+
+  /* ════ ขนาดตัวอักษรขั้นต่ำ ════
+     ตั้งเป็นตัวแปรเพื่อให้ปรับทั้งระบบได้ที่เดียว และกันไม่ให้ใครใส่เลขเล็กกว่านี้
+     เหตุผล: บนจอคอมอาจพออ่านไหว แต่ใน LINE WebView บนมือถือกับภาษาไทย เล็กเกินไป */
+  --fs-h1:22px;      /* หัวหน้าจอ */
+  --fs-h2:17px;      /* หัวข้อส่วน */
+  --fs-body:15px;    /* เนื้อความหลัก */
+  --fs-cta:16px;     /* ปุ่มหลัก */
+  --fs-sec:13px;     /* ข้อความรอง */
+  --fs-meta:12px;    /* ข้อมูลประกอบที่ไม่สำคัญมาก — ต่ำกว่านี้ไม่มี */
+  --lh:1.6;          /* ระยะบรรทัดของภาษาไทย */
 }
+
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html,body{margin:0;padding:0}
 body{
@@ -83,16 +105,15 @@ button{cursor:pointer;border:none;background:none}
 }
 .brand{display:flex;align-items:center;gap:8px;flex:1;min-width:0;padding-left:8px}
 .brand .mark{
-  width:28px;height:28px;border-radius:8px;flex:0 0 auto;
-  background:var(--primary);color:#fff;
-  display:grid;place-items:center;font-weight:700;font-size:15px;
+  width:30px;height:30px;flex:0 0 auto;
+  background:none;border-radius:0;object-fit:contain;display:block;
 }
 .brand .txt{font-size:16px;font-weight:700;letter-spacing:-.01em}
 .bell{position:relative}
 .bell .dot{
   position:absolute;top:6px;right:6px;min-width:17px;height:17px;padding:0 4px;
   border-radius:9px;background:var(--danger);color:#fff;
-  font-size:10px;font-weight:700;line-height:17px;text-align:center;
+  font-size:var(--fs-meta);font-weight:700;line-height:17px;text-align:center;
   border:2px solid var(--surface);
 }
 
@@ -110,14 +131,14 @@ main{flex:1 1 auto;padding:16px 16px calc(var(--nav-h) + var(--safe-b) + 24px)}
 }
 .nav button{
   display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;
-  color:var(--ink-3);font-size:10.5px;font-weight:600;
+  color:var(--ink-3);font-size:var(--fs-meta);font-weight:600;
 }
 .nav button.on{color:var(--primary)}
 .nav svg{width:23px;height:23px}
 .nav button{position:relative}
 .nav .ndot{position:absolute;top:6px;left:50%;margin-left:5px;min-width:16px;height:16px;
   padding:0 4px;border-radius:9px;background:var(--bad);color:#fff;
-  font-size:9.5px;font-weight:800;line-height:16px;text-align:center}
+  font-size:var(--fs-meta);font-weight:800;line-height:16px;text-align:center}
 
 /* ── FAB: ปุ่มบันทึกพัสดุเข้า — เข้าถึงได้ 1 แตะจากทุกหน้า ──── */
 .fab{
@@ -137,7 +158,7 @@ main{flex:1 1 auto;padding:16px 16px calc(var(--nav-h) + var(--safe-b) + 24px)}
 .card + .card{margin-top:12px}
 .section-title{font-size:13px;font-weight:700;color:var(--ink-2);margin:22px 0 10px;letter-spacing:.01em}
 .section-title:first-child{margin-top:0}
-.section-title .en{font-weight:500;color:var(--ink-3);font-size:11px;margin-left:6px}
+.section-title .en{font-weight:500;color:var(--ink-3);font-size:var(--fs-meta);margin-left:6px}
 
 .greet{margin:0 0 18px}
 .greet h2{margin:0;font-size:21px;font-weight:700;letter-spacing:-.02em}
@@ -145,7 +166,7 @@ main{flex:1 1 auto;padding:16px 16px calc(var(--nav-h) + var(--safe-b) + 24px)}
 
 /* ── หน้าแรก: ทักทาย · สิ่งที่ค้าง · ตารางวันนี้ ─────────────── */
 .hgreet{margin-bottom:20px}
-.hdate{font-size:11.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;
+.hdate{font-size:var(--fs-meta);font-weight:700;letter-spacing:.06em;text-transform:uppercase;
   color:var(--primary);margin-bottom:6px}
 .hgreet h2{margin:0;font-size:26px;font-weight:800;letter-spacing:-.025em;line-height:1.2}
 .hgreet p{margin:5px 0 0;font-size:13.5px;color:var(--ink-3)}
@@ -183,12 +204,12 @@ main{flex:1 1 auto;padding:16px 16px calc(var(--nav-h) + var(--safe-b) + 24px)}
 }
 .tile .ic svg{width:21px;height:21px}
 .tile .nm{font-size:14px;font-weight:700;line-height:1.3}
-.tile .en{font-size:11px;color:var(--ink-3);font-weight:500;margin-top:1px}
+.tile .en{font-size:var(--fs-meta);color:var(--ink-3);font-weight:500;margin-top:1px}
 .tile .badge.soonb{background:var(--neutral);color:var(--ink-3)}
 .tile .badge{
   position:absolute;top:11px;right:11px;
   padding:3px 8px;border-radius:99px;
-  font-size:10.5px;font-weight:700;
+  font-size:var(--fs-meta);font-weight:700;
   background:var(--primary);color:#fff;
 }
 .tile .badge.warn{background:var(--warn)}
@@ -212,7 +233,7 @@ main{flex:1 1 auto;padding:16px 16px calc(var(--nav-h) + var(--safe-b) + 24px)}
 .row .go{color:var(--ink-3);flex:0 0 auto}
 .row .go svg{width:18px;height:18px;display:block}
 
-.pill{display:inline-block;padding:3px 9px;border-radius:99px;font-size:11px;font-weight:700}
+.pill{display:inline-block;padding:3px 9px;border-radius:99px;font-size:var(--fs-meta);font-weight:700}
 .pill.wait{background:var(--warn-bg);color:var(--warn)}
 .pill.done{background:var(--ok-bg);color:var(--ok)}
 .pill.new{background:#EEF3FF;color:var(--primary)}
@@ -220,7 +241,7 @@ main{flex:1 1 auto;padding:16px 16px calc(var(--nav-h) + var(--safe-b) + 24px)}
 /* ── Forms ─────────────────────────────────────────────────── */
 .field{margin-bottom:15px}
 .field label{display:block;font-size:13px;font-weight:600;margin-bottom:6px}
-.field label .en{font-weight:400;color:var(--ink-3);font-size:11px;margin-left:5px}
+.field label .en{font-weight:400;color:var(--ink-3);font-size:var(--fs-meta);margin-left:5px}
 .field label .req{color:var(--danger);margin-left:3px}
 .field input,.field select,.field textarea{
   width:100%;padding:13px 14px;
@@ -230,12 +251,13 @@ main{flex:1 1 auto;padding:16px 16px calc(var(--nav-h) + var(--safe-b) + 24px)}
 .field input:focus,.field select:focus,.field textarea:focus{
   outline:none;border-color:var(--primary);box-shadow:0 0 0 3px rgba(0,51,204,.1)
 }
-.field .hint{font-size:11.5px;color:var(--ink-3);margin-top:5px}
+.field .hint{font-size:var(--fs-meta);color:var(--ink-3);margin-top:5px}
 .field .err{font-size:12px;color:var(--danger);margin-top:5px;font-weight:600}
 
 .btn{
   width:100%;padding:15px;border-radius:var(--r);
-  font-size:15.5px;font-weight:700;text-align:center;
+  font-size:var(--fs-cta);font-weight:700;text-align:center;
+  min-height:48px;                       /* เป้าการกดขั้นต่ำสำหรับนิ้วโป้ง */
   display:flex;align-items:center;justify-content:center;gap:8px;
 }
 .btn:disabled{opacity:.45}
@@ -267,7 +289,7 @@ main{flex:1 1 auto;padding:16px 16px calc(var(--nav-h) + var(--safe-b) + 24px)}
   position:absolute;right:10px;bottom:10px;
   padding:8px 14px;border-radius:99px;
   background:rgba(15,23,42,.72);color:#fff;
-  font-size:12.5px;font-weight:700;backdrop-filter:blur(8px);
+  font-size:var(--fs-sec);font-weight:700;backdrop-filter:blur(8px);
 }
 
 /* ── Skeleton — ไม่เคยแสดงหน้าขาว ───────────────────────────── */
@@ -327,19 +349,19 @@ main{flex:1 1 auto;padding:16px 16px calc(var(--nav-h) + var(--safe-b) + 24px)}
 #lb .zb{min-width:56px;height:46px;padding:0 16px;border-radius:23px;background:rgba(255,255,255,.16);
   color:#fff;font-size:19px;font-weight:800;display:grid;place-items:center}
 #lb .zb.wide{font-size:13.5px;font-weight:700}
-#lb .hint{color:rgba(255,255,255,.55);font-size:11.5px;text-align:center;padding-bottom:4px}
+#lb .hint{color:rgba(255,255,255,.55);font-size:var(--fs-meta);text-align:center;padding-bottom:4px}
 
 /* รูปใหญ่ใน sheet ยืนยันรับของ */
 .sheet-photo{width:100%;border-radius:12px;background:var(--neutral);display:block;
   aspect-ratio:4/3;object-fit:cover;margin-bottom:6px}
-.sheet-photo-hint{font-size:11.5px;color:var(--primary);font-weight:700;text-align:center;margin:0 0 14px}
+.sheet-photo-hint{font-size:var(--fs-meta);color:var(--primary);font-weight:700;text-align:center;margin:0 0 14px}
 
 /* ── ตัวเลือกผู้รับแบบค้นหา (40+ คน เลื่อนหาไม่ไหว) ────────────── */
 .picker-btn{width:100%;padding:13px 14px;border:1.5px solid var(--line);border-radius:var(--r);
   background:var(--surface);text-align:left;display:flex;align-items:center;gap:10px}
 .picker-btn .nm{flex:1;min-width:0;font-size:15px}
 .picker-btn .nm.ph{color:var(--ink-3)}
-.picker-btn .nm small{display:block;font-size:11.5px;color:var(--ink-3);font-weight:500}
+.picker-btn .nm small{display:block;font-size:var(--fs-meta);color:var(--ink-3);font-weight:500}
 .picker-btn .ch{color:var(--ink-3);font-size:12px}
 #pkSearch{width:100%;padding:13px 14px;border:1.5px solid var(--primary);border-radius:var(--r);
   font-size:16px;margin-bottom:10px;background:var(--surface)}
@@ -351,7 +373,7 @@ main{flex:1 1 auto;padding:16px 16px calc(var(--nav-h) + var(--safe-b) + 24px)}
   font-size:13px;font-weight:800;display:grid;place-items:center;flex:0 0 auto}
 .pk-row .b{flex:1;min-width:0}
 .pk-row .t{font-size:14.5px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.pk-row .s{font-size:11.5px;color:var(--ink-3)}
+.pk-row .s{font-size:var(--fs-meta);color:var(--ink-3)}
 .pk-row.unknown .av{background:var(--warn-bg);color:var(--warn)}
 .row img.av{object-fit:cover}
 .pk-row.place{align-items:flex-start}
@@ -366,12 +388,12 @@ main{flex:1 1 auto;padding:16px 16px calc(var(--nav-h) + var(--safe-b) + 24px)}
 .gridscroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
 .ghead{display:flex;position:sticky;top:0;z-index:2;background:var(--surface);border-bottom:1px solid var(--line)}
 .ghead .hcell{flex:0 0 84px;padding:8px 5px;text-align:center;border-left:1px solid var(--line)}
-.ghead .hcell .n{font-size:11.5px;font-weight:800;line-height:1.25}
-.ghead .hcell .c{font-size:9.5px;color:var(--ink-3);font-weight:600}
+.ghead .hcell .n{font-size:var(--fs-meta);font-weight:800;line-height:1.25}
+.ghead .hcell .c{font-size:var(--fs-meta);color:var(--ink-3);font-weight:600}
 .ghead .corner{flex:0 0 34px}
 .gbody{display:flex;position:relative}
 .ghours{flex:0 0 34px}
-.ghours span{display:block;height:44px;font-size:9.5px;color:var(--ink-3);font-weight:700;
+.ghours span{display:block;height:44px;font-size:var(--fs-meta);color:var(--ink-3);font-weight:700;
   text-align:right;padding-right:4px;transform:translateY(-5px)}
 .gcol{flex:0 0 84px;position:relative;border-left:1px solid var(--line)}
 .gcol .hr{height:44px;border-bottom:1px dashed var(--line)}
@@ -389,13 +411,13 @@ main{flex:1 1 auto;padding:16px 16px calc(var(--nav-h) + var(--safe-b) + 24px)}
 .chip.on{background:var(--primary);border-color:var(--primary);color:#fff}
 .chip .d{display:block;font-size:14.5px;font-weight:800;line-height:1.15}
 .mini{padding:6px 10px;border-radius:9px;border:1px solid var(--line);background:var(--surface);
-  font-size:11.5px;font-weight:700;color:var(--ink-2)}
+  font-size:var(--fs-meta);font-weight:700;color:var(--ink-2)}
 .mini.call{border-color:var(--primary);color:var(--primary)}
 .times{display:flex;align-items:center;gap:8px;margin-top:4px}
 .tbox{flex:1;min-width:0;border:1.5px solid var(--line);border-radius:12px;padding:9px 6px;
   background:#fff;text-align:center}
 .tbox.hl{border-color:var(--primary);background:#F5F8FF}
-.tbox .k{font-size:10.5px;font-weight:700;color:var(--ink-3);margin-bottom:3px;
+.tbox .k{font-size:var(--fs-meta);font-weight:700;color:var(--ink-3);margin-bottom:3px;
   white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .arrow{flex:0 0 auto;color:var(--ink-3);font-size:15px;font-weight:800}
 /* การ์ดรถในหน้าจอง — อุตส่าห์ใส่รูปแล้ว ต้องเห็นว่ารถหน้าตายังไงจริงๆ
@@ -406,14 +428,14 @@ main{flex:1 1 auto;padding:16px 16px calc(var(--nav-h) + var(--safe-b) + 24px)}
   background:linear-gradient(100deg,#FFF7ED,#FEF2F2);border:1px solid #FED7AA;
   font-size:13px;color:var(--ink-2);line-height:1.5;margin-bottom:18px}
 .bday .cake{font-size:24px;flex:0 0 auto}
-.ntag{font-size:10px;font-weight:800;padding:2px 7px;border-radius:99px;
+.ntag{font-size:var(--fs-meta);font-weight:800;padding:2px 7px;border-radius:99px;
   background:var(--neutral);color:var(--ink-2);letter-spacing:.01em}
 .ntag.hot{background:var(--bad-bg);color:var(--bad)}
 .imggrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(78px,1fr));gap:7px}
 .imgcell{position:relative;aspect-ratio:4/3;border-radius:9px;overflow:hidden;background:var(--neutral)}
 .imgcell img{width:100%;height:100%;object-fit:cover}
 .imgcell button{position:absolute;top:3px;right:3px;width:20px;height:20px;border-radius:50%;
-  background:rgba(0,0,0,.6);color:#fff;font-size:11px;line-height:20px}
+  background:rgba(0,0,0,.6);color:#fff;font-size:var(--fs-meta);line-height:20px}
 .paxrow{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:2px}
 .paxchip{display:inline-flex;align-items:center;gap:6px;padding:5px 8px 5px 11px;
   border-radius:99px;background:#EEF3FF;border:1px solid #D6E1FF;
@@ -433,22 +455,22 @@ main{flex:1 1 auto;padding:16px 16px calc(var(--nav-h) + var(--safe-b) + 24px)}
 .vbody{flex:1;min-width:0;padding:12px 13px;display:flex;flex-direction:column}
 .vhead{display:flex;align-items:flex-start;justify-content:space-between;gap:8px}
 .vname{font-size:15.5px;font-weight:800;line-height:1.25}
-.vplate{display:inline-block;font-size:11.5px;font-weight:800;letter-spacing:.02em;
+.vplate{display:inline-block;font-size:var(--fs-meta);font-weight:800;letter-spacing:.02em;
   border:1.5px solid var(--ink-2);border-radius:5px;padding:1px 7px;margin-top:5px}
-.vspec{font-size:11.5px;color:var(--ink-3);margin-top:5px;line-height:1.45}
+.vspec{font-size:var(--fs-meta);color:var(--ink-3);margin-top:5px;line-height:1.45}
 .vdrv{display:flex;align-items:center;gap:9px;margin-top:auto;padding-top:10px;
   border-top:1px solid var(--line)}
 .dav{width:40px;height:40px;border-radius:50%;object-fit:cover;flex:0 0 auto;
   background:#EEF3FF;color:var(--primary);display:grid;place-items:center;
   font-size:15px;font-weight:800}
 .dnm{font-size:13px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.dco{font-size:10.5px;color:var(--ink-3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.dtel{font-size:11.5px;font-weight:800;color:var(--primary);white-space:nowrap;flex:0 0 auto;
+.dco{font-size:var(--fs-meta);color:var(--ink-3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.dtel{font-size:var(--fs-meta);font-weight:800;color:var(--primary);white-space:nowrap;flex:0 0 auto;
   border:1px solid #D6E1FF;background:#EEF3FF;border-radius:8px;padding:6px 9px}
-.vfree{font-size:11px;font-weight:800;margin-top:9px}
+.vfree{font-size:var(--fs-meta);font-weight:800;margin-top:9px}
 @media(max-width:520px){
   .vpic{flex:0 0 38%;min-height:118px}
-  .dtel{padding:5px 7px;font-size:11px}
+  .dtel{padding:5px 7px;font-size:var(--fs-meta)}
 }
 
 .tin{border:none;background:transparent;width:100%;text-align:center;font-weight:700;
@@ -457,28 +479,28 @@ main{flex:1 1 auto;padding:16px 16px calc(var(--nav-h) + var(--safe-b) + 24px)}
 .ptrow{display:flex;gap:10px}
 .ptline{flex:0 0 26px;display:flex;flex-direction:column;align-items:center;padding-top:20px}
 .ptdot{width:22px;height:22px;border-radius:50%;background:var(--primary);color:#fff;
-  font-size:11px;font-weight:800;display:flex;align-items:center;justify-content:center;flex:0 0 auto}
+  font-size:var(--fs-meta);font-weight:800;display:flex;align-items:center;justify-content:center;flex:0 0 auto}
 .ptdot.home{background:var(--ink-2)}
 .ptbar{flex:1;width:2px;background:var(--line);margin:3px 0}
 .ptbody{flex:1;min-width:0;padding-bottom:2px}
 .pthead{display:flex;justify-content:space-between;align-items:center;margin-bottom:4px}
-.ptTag{font-size:11px;font-weight:800;color:var(--ink-3)}
-.ptdel{font-size:11.5px;color:var(--bad);font-weight:700}
-.ptseg{font-size:11.5px;font-weight:800;color:var(--primary);padding:7px 2px 9px;text-align:center}
+.ptTag{font-size:var(--fs-meta);font-weight:800;color:var(--ink-3)}
+.ptdel{font-size:var(--fs-meta);color:var(--bad);font-weight:700}
+.ptseg{font-size:var(--fs-meta);font-weight:800;color:var(--primary);padding:7px 2px 9px;text-align:center}
 .placebtn{text-align:left;justify-content:flex-start;line-height:1.4;white-space:normal;
   display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
 .carleg{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-top:9px;
-  font-size:11px;color:var(--ink-2);font-weight:600}
+  font-size:var(--fs-meta);color:var(--ink-2);font-weight:600}
 .carleg i{display:inline-block;width:9px;height:9px;border-radius:3px;margin-right:5px;vertical-align:-1px}
 .gev.live{background:var(--warn)}
 .gev .p{font-size:8.5px;opacity:.85;line-height:1.2}
-.gev .t{font-size:9.5px;font-weight:800;line-height:1.2}
-.gev .w{font-size:9px;opacity:.9;line-height:1.25;margin-top:1px}
+.gev .t{font-size:var(--fs-meta);font-weight:800;line-height:1.2}
+.gev .w{font-size:var(--fs-meta);opacity:.9;line-height:1.25;margin-top:1px}
 .gnow{position:absolute;left:34px;right:0;height:2px;background:var(--bad);z-index:3}
 .gnow::before{content:'';position:absolute;left:-3px;top:-3px;width:8px;height:8px;
   border-radius:50%;background:var(--bad)}
 .seg2{display:flex;background:var(--neutral);border-radius:10px;padding:3px;margin-bottom:12px}
-.seg2 button{flex:1;padding:8px;border-radius:8px;font-size:12.5px;font-weight:700;color:var(--ink-3)}
+.seg2 button{flex:1;padding:8px;border-radius:8px;font-size:var(--fs-sec);font-weight:700;color:var(--ink-3)}
 .seg2 button.on{background:#fff;color:var(--primary);box-shadow:0 1px 3px rgba(0,0,0,.08)}
 .rcard{display:flex;gap:11px;align-items:center;padding:11px;border:1px solid var(--line);
   border-radius:13px;background:var(--surface);margin-bottom:9px;width:100%;text-align:left}
@@ -501,13 +523,13 @@ main{flex:1 1 auto;padding:16px 16px calc(var(--nav-h) + var(--safe-b) + 24px)}
 
 /* ── Lang toggle ───────────────────────────────────────────── */
 .langsw{display:inline-flex;background:var(--neutral);border-radius:9px;padding:2px}
-.langsw button{padding:6px 15px;border-radius:7px;font-size:12.5px;font-weight:700;color:var(--ink-3)}
+.langsw button{padding:6px 15px;border-radius:7px;font-size:var(--fs-sec);font-weight:700;color:var(--ink-3)}
 .langsw button.on{background:var(--surface);color:var(--primary);box-shadow:0 1px 3px rgba(0,0,0,.09)}
 
 .note{
   display:flex;gap:10px;padding:12px 14px;border-radius:var(--r);
   background:var(--warn-bg);border:1px solid #FDE68A;
-  font-size:12.5px;line-height:1.6;color:#92400E;
+  font-size:var(--fs-sec);line-height:1.6;color:#92400E;
 }
 .note.info{background:#EEF3FF;border-color:#C7D7FE;color:#1E40AF}
 .note svg{width:18px;height:18px;flex:0 0 auto;margin-top:1px}
@@ -570,9 +592,9 @@ main{flex:1 1 auto;padding:16px 16px calc(var(--nav-h) + var(--safe-b) + 24px)}
   /* บล็อกการจองบนจอกว้าง: อ่านเหมือนปฏิทินจริง ไม่ใช่แผ่นสีทึบเต็มช่อง */
   .gev{color:var(--ink);background:#EEF3FF;border-left:3px solid var(--primary);
     padding:6px 9px;border-radius:6px}
-  .gev .t{font-size:11.5px}
-  .gev .w{font-size:11px;opacity:.72}
-  .gev .p{font-size:10px;opacity:.7}
+  .gev .t{font-size:var(--fs-meta)}
+  .gev .w{font-size:var(--fs-meta);opacity:.72}
+  .gev .p{font-size:var(--fs-meta);opacity:.7}
   .gev.mine{background:var(--ok-bg);border-left-color:var(--ok)}
   .gev.live{background:var(--warn-bg);border-left-color:var(--warn)}
   .gev.unb{background:var(--bad-bg);border-left-color:var(--bad)}
@@ -629,17 +651,17 @@ main{flex:1 1 auto;padding:16px 16px calc(var(--nav-h) + var(--safe-b) + 24px)}
 /* สลับภาษาต้องอยู่ตรงที่เห็นทันที ไม่ใช่ซ่อนในหน้าโปรไฟล์
    ออฟฟิศมีทั้งเจ้าหน้าที่ต่างชาติ และคนไทยที่ไม่สะดวกภาษาอังกฤษ */
 .langtop{display:flex;gap:2px;background:var(--neutral);border-radius:9px;padding:3px;flex:0 0 auto}
-.langtop button{padding:5px 10px;border-radius:7px;font-size:11.5px;font-weight:800;color:var(--ink-3)}
+.langtop button{padding:5px 10px;border-radius:7px;font-size:var(--fs-meta);font-weight:800;color:var(--ink-3)}
 .langtop button.on{background:#fff;color:var(--primary);box-shadow:0 1px 2px rgba(0,0,0,.08)}
 @media(min-width:900px){ .langtop{margin-left:auto} }
 
 .sbrand{display:flex;align-items:center;gap:10px;padding:20px 18px 18px}
-.sbrand .mark{width:34px;height:34px;border-radius:9px;background:#fff;color:var(--navy);
-  display:grid;place-items:center;font-weight:800;font-size:17px;flex:0 0 auto}
+.sbrand .mark{width:36px;height:36px;flex:0 0 auto;
+  background:#fff;border-radius:9px;padding:3px;object-fit:contain;display:block}
 .sbrand .txt{font-size:16px;font-weight:800;letter-spacing:-.01em;line-height:1.15}
-.sbrand .sub{font-size:10.5px;font-weight:600;color:rgba(255,255,255,.5);letter-spacing:.04em;
+.sbrand .sub{font-size:var(--fs-meta);font-weight:600;color:rgba(255,255,255,.5);letter-spacing:.04em;
   text-transform:uppercase}
-.sgrp{font-size:10px;font-weight:800;letter-spacing:.09em;text-transform:uppercase;
+.sgrp{font-size:var(--fs-meta);font-weight:800;letter-spacing:.09em;text-transform:uppercase;
   color:rgba(255,255,255,.38);padding:16px 18px 7px}
 #side nav{display:flex;flex-direction:column;padding:0 8px;gap:1px}
 .slink{display:flex;align-items:center;gap:11px;padding:9px 11px;border-radius:9px;
@@ -649,14 +671,14 @@ main{flex:1 1 auto;padding:16px 16px calc(var(--nav-h) + var(--safe-b) + 24px)}
 .slink.on{background:var(--primary);color:#fff}
 .slink.on svg{opacity:1}
 .slink .sb{margin-left:auto;min-width:19px;height:19px;padding:0 5px;border-radius:10px;
-  background:var(--bad);color:#fff;font-size:10px;font-weight:800;line-height:19px;text-align:center}
+  background:var(--bad);color:#fff;font-size:var(--fs-meta);font-weight:800;line-height:19px;text-align:center}
 .sfoot{margin-top:auto;padding:14px 16px 18px;border-top:1px solid rgba(255,255,255,.1)}
 .sme{display:flex;align-items:center;gap:10px;width:100%;text-align:left}
 .sme .av{width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,.14);color:#fff;
   display:grid;place-items:center;font-size:13px;font-weight:800;flex:0 0 auto}
 .sme .n{font-size:13px;font-weight:700;line-height:1.25;
   white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.sme .d{font-size:10.5px;color:rgba(255,255,255,.5);
+.sme .d{font-size:var(--fs-meta);color:rgba(255,255,255,.5);
   white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 
 /* ══════════ เพิ่ม 2026-09-05: พอร์ทัลคนขับ · ป้าย QR · ฟอร์มเพิ่มรายการ ══════════ */
@@ -670,10 +692,10 @@ main{flex:1 1 auto;padding:16px 16px calc(var(--nav-h) + var(--safe-b) + 24px)}
 #sheet.wide .shot{max-width:380px}
 .fsec{margin:18px 0 4px;padding-top:14px;border-top:1px solid var(--line)}
 .fsec:first-of-type{border-top:0;padding-top:0;margin-top:6px}
-.fsec h4{margin:0 0 3px;font-size:12.5px;font-weight:800;letter-spacing:.03em;
+.fsec h4{margin:0 0 3px;font-size:var(--fs-sec);font-weight:800;letter-spacing:.03em;
   text-transform:uppercase;color:var(--ink-3)}
 .fsec .why{margin:0 0 12px;font-size:12px;line-height:1.55;color:var(--ink-2)}
-.fhint{font-size:11px;line-height:1.5;color:var(--ink-3);margin:-8px 0 12px}
+.fhint{font-size:var(--fs-meta);line-height:1.5;color:var(--ink-3);margin:-8px 0 12px}
 @media(min-width:760px){
   .fgrid{display:grid;grid-template-columns:1fr 1fr;gap:0 16px}
   .fgrid .full{grid-column:1/-1}
@@ -730,6 +752,156 @@ body.drvmode .nav{display:flex!important}
   flex:0 0 auto;margin-top:6px}
 .stopline.hit .dot{background:var(--ok)}
 
+
+/* ══════════ หน้าแรกแบบห้องนักบิน + บริการทั้งหมด ══════════
+   หลักที่ยึด: ไม่ใช่ทุกอย่างเป็นการ์ด
+   ขอบ พื้น มุมมน เงา แต่ละอย่างแปลว่า "นี่คือของคนละชิ้น"
+   ถ้าใส่ให้ทุกบล็อกเท่ากันหมด ลำดับความสำคัญจะหายไปทั้งหน้า
+   ที่นี่จึงเหลือแค่โซน "ต้องทำตอนนี้" ที่ได้พื้นและแถบสี ส่วนอื่นใช้เส้นบางพอ */
+
+.home{ padding-bottom:26px }
+
+/* ── หัวหน้าแรก ── */
+.hhead{ display:flex; align-items:center; gap:14px; padding:6px 0 20px }
+.hhead-tx{ min-width:0 }
+.hhead .hdate{ font-size:var(--fs-meta); font-weight:600; letter-spacing:.05em;
+  text-transform:uppercase; color:var(--ink-3) }
+.hhead h2{ margin:3px 0 0; font-size:var(--fs-h1); font-weight:700; color:var(--ink) }
+
+/* สัญลักษณ์สี่เส้นทะยานขึ้นจากโลโก้ — ใช้เป็นสำเนียง ไม่ใช่ของประดับ */
+.kmark{ display:inline-flex; flex:0 0 auto }
+.kmark svg{ width:30px; height:27px; display:block }
+.kmark svg circle, .kmark svg rect{ fill:var(--brand) }
+.kmark.hhead-mark svg{ width:34px; height:31px }
+.kmark.soft svg circle, .kmark.soft svg rect{ fill:var(--brand-300) }
+.kmark.big svg{ width:58px; height:53px }
+
+/* ── โซน ── */
+.hz{ margin:0 0 26px }
+.hz-h{ display:flex; align-items:center; gap:9px; margin:0 0 11px }
+.hz-h h3{ margin:0; font-size:var(--fs-h2); font-weight:700; color:var(--ink) }
+.hz-n{ min-width:21px; height:21px; padding:0 6px; border-radius:11px;
+  background:var(--brand); color:#fff; font-size:var(--fs-meta); font-weight:700;
+  display:grid; place-items:center; font-variant-numeric:tabular-nums }
+.hz-more{ font-size:var(--fs-sec); color:var(--ink-3); padding:9px 2px 0 }
+
+/* ── การ์ด "ต้องทำตอนนี้" — บล็อกเดียวในหน้าที่ได้พื้นและแถบสี ── */
+.attn{ display:flex; flex-direction:column; gap:9px }
+.atc{ display:flex; flex-direction:column; align-items:flex-start; gap:9px; width:100%; text-align:left;
+  padding:15px 15px 15px 17px; border-radius:var(--r);
+  background:var(--surface); border:1px solid var(--line);
+  border-left:4px solid var(--brand); cursor:pointer;
+  box-shadow:var(--shadow); transition:transform .12s ease, box-shadow .12s ease }
+.atc:hover{ transform:translateY(-1px); box-shadow:var(--shadow-lg) }
+.atc:active{ transform:none }
+.atc.warn{ border-left-color:var(--warn); background:var(--warn-bg) }
+.atc.bad { border-left-color:var(--danger); background:var(--danger-bg) }
+.atc.info{ border-left-color:var(--brand); background:var(--brand-50) }
+.atc-b{ flex:1; min-width:0 }
+.atc-b h4{ margin:0; font-size:var(--fs-cta); font-weight:700; color:var(--ink); line-height:1.42 }
+.atc-b p{ margin:4px 0 0; font-size:var(--fs-sec); color:var(--ink-2); line-height:1.5 }
+.atc-b{ width:100% }
+.atc-cta{ align-self:flex-end; display:inline-flex; align-items:center; gap:3px;
+  font-size:var(--fs-sec); font-weight:700; color:var(--brand); white-space:nowrap }
+.atc-cta svg{ width:15px; height:15px }
+.atc.warn .atc-cta{ color:var(--warn) }
+.atc.bad  .atc-cta{ color:var(--danger) }
+
+/* ไม่มีอะไรค้าง — ต้องพูดออกมา ไม่ใช่ปล่อยว่างให้เดาว่าโหลดไม่ขึ้น */
+.allclear{ display:flex; align-items:center; gap:13px; padding:16px 16px;
+  border:1px dashed var(--line); border-radius:var(--r); background:var(--surface) }
+.allclear .ac-ic{ width:34px; height:34px; border-radius:50%; flex:0 0 auto;
+  background:var(--ok-bg); color:var(--ok); display:grid; place-items:center;
+  font-size:17px; font-weight:800 }
+.allclear b{ font-size:var(--fs-body); color:var(--ink) }
+.allclear .ac-s{ font-size:var(--fs-sec); color:var(--ink-3); margin-top:2px }
+
+/* ── สัปดาห์นี้ — รายการ ไม่ใช่กองการ์ด ── */
+.wk-d{ margin-bottom:16px }
+.wk-dh{ font-size:var(--fs-meta); font-weight:700; letter-spacing:.05em;
+  text-transform:uppercase; color:var(--ink-3); padding:0 0 6px }
+.wk-i{ display:flex; align-items:center; gap:12px; width:100%; text-align:left;
+  padding:11px 4px; border-bottom:1px solid var(--line); background:none; cursor:pointer }
+.wk-d .wk-i:last-child{ border-bottom:0 }
+.wk-i:hover{ background:var(--brand-50) }
+.wk-t{ flex:0 0 auto; width:46px; font-size:var(--fs-sec); font-weight:700; color:var(--ink-2) }
+.wk-x{ flex:1; min-width:0 }
+.wk-n{ display:block; font-size:var(--fs-body); font-weight:600; color:var(--ink);
+  overflow:hidden; text-overflow:ellipsis; white-space:nowrap }
+.wk-s{ display:block; font-size:var(--fs-meta); color:var(--ink-3); margin-top:1px;
+  overflow:hidden; text-overflow:ellipsis; white-space:nowrap }
+.wk-k{ flex:0 0 auto; width:30px; height:30px; border-radius:8px; display:grid; place-items:center }
+.wk-k svg{ width:16px; height:16px }
+.wk-k.room{ background:var(--brand-50); color:var(--brand) }
+.wk-k.car { background:var(--warn-bg);  color:var(--warn) }
+
+/* ── ทางลัด ── */
+.qa{ display:grid; grid-template-columns:repeat(4,1fr); gap:8px }
+.qa-b{ display:flex; flex-direction:column; align-items:center; gap:7px;
+  padding:14px 5px; border:1px solid var(--line); border-radius:var(--r);
+  background:var(--surface); cursor:pointer; min-height:82px; justify-content:center }
+.qa-b:hover{ border-color:var(--brand); background:var(--brand-50) }
+.qa-i{ color:var(--brand); display:grid; place-items:center }
+.qa-i svg{ width:23px; height:23px }
+.qa-l{ font-size:var(--fs-meta); font-weight:600; color:var(--ink-2); text-align:center;
+  line-height:1.35 }
+@media(max-width:359px){ .qa{ grid-template-columns:repeat(2,1fr) } }
+
+.allsv{ display:flex; align-items:center; justify-content:space-between; width:100%;
+  margin-top:10px; padding:13px 15px; border:1px solid var(--line); border-radius:var(--r);
+  background:var(--surface); font-size:var(--fs-sec); font-weight:700; color:var(--brand);
+  cursor:pointer }
+.allsv:hover{ background:var(--brand-50) }
+.allsv svg{ width:17px; height:17px }
+
+/* ── หน้าบริการทั้งหมด ── */
+.svl{ display:flex; flex-direction:column; border:1px solid var(--line);
+  border-radius:var(--r); overflow:hidden; background:var(--surface) }
+.svi{ display:flex; align-items:center; gap:13px; width:100%; text-align:left;
+  padding:14px 15px; border-bottom:1px solid var(--line); background:none; cursor:pointer }
+.svl .svi:last-child{ border-bottom:0 }
+.svi:hover{ background:var(--brand-50) }
+.svi-i{ flex:0 0 auto; width:38px; height:38px; border-radius:10px;
+  background:var(--brand-50); color:var(--brand); display:grid; place-items:center }
+.svi-i svg{ width:20px; height:20px }
+.svi-x{ flex:1; min-width:0 }
+.svi-n{ display:block; font-size:var(--fs-body); font-weight:600; color:var(--ink) }
+.svi-s{ display:block; font-size:var(--fs-meta); color:var(--ink-3); margin-top:1px;
+  overflow:hidden; text-overflow:ellipsis; white-space:nowrap }
+.svi-b{ flex:0 0 auto; min-width:21px; height:21px; padding:0 6px; border-radius:11px;
+  background:var(--danger); color:#fff; font-size:var(--fs-meta); font-weight:700;
+  display:grid; place-items:center }
+.svi .go{ flex:0 0 auto; color:var(--ink-3) }
+.svi .go svg{ width:17px; height:17px }
+
+/* จอกว้าง: หน้าแรกอ่านสองคอลัมน์ได้ แต่ "ต้องทำตอนนี้" ต้องอยู่เต็มความกว้างเสมอ
+   เพราะมันคือเหตุผลที่คนเปิดหน้านี้ */
+@media(min-width:900px){
+  .home .hz.split{ display:grid; grid-template-columns:minmax(0,1fr) 320px; gap:26px }
+  .qa{ grid-template-columns:repeat(4,1fr) }
+  .svl{ max-width:none }
+}
+
+/* ══════════ การเข้าถึงและตัวอักษร ══════════
+   สามอย่างนี้ไม่ได้ทำให้แอปสวยขึ้นเลย แต่ทำให้มันเป็นผลิตภัณฑ์ที่โตแล้ว
+   1) ระยะบรรทัดของภาษาไทยต้องหลวมกว่าอังกฤษ เพราะมีสระบนสระล่าง
+   2) คนที่ใช้คีย์บอร์ดต้องเห็นว่าโฟกัสอยู่ที่ปุ่มไหน
+   3) คนที่ตั้งเครื่องว่าไม่เอาแอนิเมชัน ต้องได้ตามนั้นจริง            */
+body{ line-height:var(--lh); font-size:var(--fs-body) }
+h1,h2,h3,h4{ font-family:var(--font-head); line-height:1.32; text-wrap:balance }
+.num,.tnum{ font-variant-numeric:tabular-nums }
+a:focus-visible, button:focus-visible, input:focus-visible,
+select:focus-visible, textarea:focus-visible, [tabindex]:focus-visible{
+  outline:3px solid var(--brand); outline-offset:2px; border-radius:var(--r-sm);
+}
+:focus:not(:focus-visible){ outline:none }
+@media (prefers-reduced-motion: reduce){
+  *,*::before,*::after{
+    animation-duration:.01ms!important; animation-iteration-count:1!important;
+    transition-duration:.01ms!important; scroll-behavior:auto!important;
+  }
+}
+
 </style>
 </head>
 <body>
@@ -739,7 +911,7 @@ body.drvmode .nav{display:flex!important}
     <button class="icon-btn" id="backBtn" hidden aria-label="ย้อนกลับ">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
     </button>
-    <div class="brand" id="brand"><div class="mark">K</div><div class="txt">Kenan ONE</div></div>
+    <div class="brand" id="brand"><img class="mark" src="data:image/png;base64,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" alt="" width="34" height="34"><div class="txt">Kenan ONE</div></div>
     <h1 id="title" hidden></h1>
     <div class="langtop" id="langTop">
       <button data-l="th">TH</button><button data-l="en">EN</button>
@@ -748,7 +920,7 @@ body.drvmode .nav{display:flex!important}
 
   <aside id="side">
     <button class="sbrand" id="sHome">
-      <div class="mark">K</div>
+      <img class="mark" src="data:image/png;base64,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" alt="" width="34" height="34">
       <div style="min-width:0">
         <div class="txt">Kenan ONE</div>
         <div class="sub">Staff Hub</div>
@@ -773,9 +945,9 @@ body.drvmode .nav{display:flex!important}
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10l9-7 9 7v10a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><path d="M9 22V12h6v10"/></svg>
       <span data-nav="navHome">หน้าแรก</span>
     </button>
-    <button data-go="my-parcels">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/><path d="M3.3 7L12 12l8.7-5M12 22V12"/></svg>
-      <span data-nav="navParcel">พัสดุ</span>
+    <button data-go="services">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>
+      <span data-nav="navServices">บริการ</span>
     </button>
     <button data-go="notifications">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 01-3.4 0"/></svg>
@@ -826,7 +998,7 @@ const CFG = {
   GAS_URL : 'https://script.google.com/macros/s/AKfycbyOjh4BAAbzY5QfZNG_oGuxbmvZwHjEAKazRMuMxrDeoNknE_rqEoAFdkuJldOPP_q_eg/exec',
   LIFF_TIMEOUT_MS : 3500,
   CONSENT_VERSION : '2026-09-01',
-  BUILD : '2026-09-05b'      // ต้องตรงกับ BUILD ใน Code.gs ที่ Deploy ไว้
+  BUILD : '2026-09-06a'      // ต้องตรงกับ BUILD ใน Code.gs ที่ Deploy ไว้
 };
 
 /* เก็บ ?go=... ไว้ตั้งแต่ต้น เพราะเดี๋ยวจะล้าง query string ทิ้งหลัง LIFF ล็อกอิน
@@ -840,7 +1012,7 @@ const START_AT = (function(){
             'rooms','room-new','equipment','admin-res',
             'cars','car-new','driver','admin-proj','admin-drv','admin-staff','zoom',
             'item','labels','driver-portal','driver-me','driver-report','driver-pair',
-            'admin-drvrep','my-data','admin-dsr'].includes(g) ? g : null;
+            'admin-drvrep','my-data','admin-dsr','services'].includes(g) ? g : null;
   }catch(e){ return null; }
 })();
 /* ?rec=PCL-xxx → เปิดพัสดุชิ้นนั้นให้เลย (ลิงก์ที่ส่งไปในข้อความ LINE) */
@@ -1207,6 +1379,39 @@ const T = {
     dpIam:'ฉันเป็นคนขับรถ',
     dpOff:'บัญชีคนขับนี้ถูกปิดการใช้งาน', dpOffBody:'ติดต่อทีม GA เพื่อเปิดใช้งานอีกครั้ง',
     dpNavJobs:'งาน', dpNavRep:'แจ้งเรื่อง', dpNavMe:'ฉัน',
+
+    /* ── หน้าแรกแบบห้องนักบิน ── */
+    navServices:'บริการ',
+    hAttention:'ต้องทำตอนนี้',
+    hClear:'ไม่มีอะไรค้างอยู่', hClearBody:'ถ้ามีเรื่องที่ต้องทำ จะขึ้นตรงนี้ก่อนใคร',
+    hMore:n=>`และอีก ${n} เรื่อง`,
+    hWeek:'สัปดาห์นี้', hWeekNone:'สัปดาห์นี้ยังไม่มีนัดหมายหรือการจอง',
+    hDriving:'คุณเป็นคนขับ',
+    hQuick:'ทางลัด', hAllServices:'บริการทั้งหมด', hUpdates:'อัปเดต',
+    dayToday:'วันนี้', dayTomorrow:'พรุ่งนี้',
+    open:'เปิด',
+
+    /* ── หน้าบริการทั้งหมด ── */
+    svTitle:'บริการ',
+    svBook:'จองและยืม', svParcel:'พัสดุ', svReport:'แจ้งเรื่อง', svInfo:'ข้อมูลและติดต่อ',
+    svRoomS:'จองห้องประชุมตามช่วงเวลา',
+    svCarS:'จองรถพร้อมคนขับ ระบุจุดแวะและโครงการ',
+    svEqS:'ยืม-คืนอุปกรณ์ สแกน QR ที่ตัวของได้',
+    svZoomS:'จองบัญชี Zoom ของมูลนิธิ',
+    svParcelS:'พัสดุที่ถึงคุณและประวัติการรับ',
+    svLogS:'ถ่ายรูปฉลากแล้วบันทึกพัสดุเข้าระบบ',
+    svUnidS:'พัสดุที่ยังไม่รู้ว่าของใคร',
+    svIssueS:'แจ้งซ่อม แจ้งของหาย หรือเรื่องอื่น',
+    svQueueS:'เรื่องที่ส่งมาถึงแผนกของคุณ',
+    svDirS:'ค้นหาเพื่อนร่วมงานและเบอร์ติดต่อ',
+    svNewsS:'ประกาศและข่าวสารภายใน',
+    svActS:'สิ่งที่คุณทำไว้ในระบบทั้งหมด',
+    svDriveS:'งานขับรถที่ได้รับมอบหมาย',
+    svAdminS:'ภาพรวมและงานประจำวันของผู้ดูแล',
+    svResS:'เพิ่มและแก้ไขห้อง รถ อุปกรณ์',
+    svLabelS:'พิมพ์ป้าย QR แปะที่ตัวอุปกรณ์',
+    svDrvS:'ทะเบียนคนขับและรหัสเข้าใช้งาน',
+    svProjS:'รหัสโครงการและผู้รับผิดชอบ',
 
     /* ── ข้อมูลของฉัน / สิทธิตาม PDPA ── */
     mdTitle:'ข้อมูลของฉัน',
@@ -1728,6 +1933,39 @@ const T = {
     dpOff:'This driver account is switched off', dpOffBody:'Contact the GA team to switch it back on.',
     dpNavJobs:'Jobs', dpNavRep:'Report', dpNavMe:'Me',
 
+    /* ── Cockpit home ── */
+    navServices:'Services',
+    hAttention:'Needs you now',
+    hClear:'Nothing waiting on you', hClearBody:'Anything that needs doing will appear here first.',
+    hMore:n=>`and ${n} more`,
+    hWeek:'This week', hWeekNone:'No bookings or trips this week',
+    hDriving:'you are driving',
+    hQuick:'Quick actions', hAllServices:'All services', hUpdates:'Updates',
+    dayToday:'Today', dayTomorrow:'Tomorrow',
+    open:'Open',
+
+    /* ── All services ── */
+    svTitle:'Services',
+    svBook:'Book and borrow', svParcel:'Parcels', svReport:'Report something', svInfo:'Directory and info',
+    svRoomS:'Book a meeting room by time slot',
+    svCarS:'Book a vehicle with a driver, stops and project',
+    svEqS:'Borrow and return equipment, or scan its QR',
+    svZoomS:'Book one of the Foundation Zoom accounts',
+    svParcelS:'Parcels waiting for you, and past pickups',
+    svLogS:'Photograph a label to log a parcel',
+    svUnidS:'Parcels with no known recipient yet',
+    svIssueS:'Report a repair, a loss, or anything else',
+    svQueueS:'Reports sent to your department',
+    svDirS:'Find a colleague and their contact details',
+    svNewsS:'Internal announcements and news',
+    svActS:'Everything you have done in the system',
+    svDriveS:'Driving jobs assigned to you',
+    svAdminS:'Admin overview and daily tasks',
+    svResS:'Add and edit rooms, vehicles, equipment',
+    svLabelS:'Print QR labels to stick on equipment',
+    svDrvS:'Driver register and sign-in codes',
+    svProjS:'Project codes and who owns them',
+
     /* ── My data / PDPA rights ── */
     mdTitle:'My data',
     mdLead:'This page shows everything the system holds about you, under the rights given by Thailand’s Personal Data Protection Act B.E. 2562.',
@@ -1966,6 +2204,48 @@ const MOCK = {
              roles:'staff,admin,driver', birthday:'11-24', show_birthday:true,
              birth_year:'1988', show_birth_year:true, photo:'' },
       today:{ parcels:2, issues:1, loans:1, unidentified:2, driving:1,
+        attentionTotal:6,
+        attention:[
+          { kind:'loan', id:'BRW-1', urg:100, tone:'bad',
+            title:'เลยกำหนดคืน: กล้อง Canon R6',
+            sub:'ครบกำหนดเมื่อ 2 วันก่อน · อาจมีคนรอใช้อยู่',
+            cta:'คืนของ', go:'equipment', rec:'BRW-1' },
+          { kind:'driving', id:'CAR-2', urg:95, tone:'warn',
+            title:'ต้องออกรถ 13:00 · รับวิทยากรจากสนามบิน',
+            sub:'Toyota Commuter', cta:'เปิดงาน', go:'driver', rec:'CAR-2' },
+          { kind:'approval', id:'CAR-ALT-1', urg:90, tone:'warn',
+            title:'รออนุมัติ: ขอใช้รถรับจ้าง',
+            sub:'สมชาย กิตติวงศ์ · WING2026', cta:'พิจารณา', go:'cars', rec:'CAR-ALT-1' },
+          { kind:'parcel', id:'PCL-1', urg:86, tone:'warn',
+            title:'พัสดุถึงคุณ · กล่องจาก Shopee',
+            sub:'มาถึงเมื่อ 2 วันก่อน · รับที่เคาน์เตอร์หน้าออฟฟิศ',
+            cta:'ดูพัสดุ', go:'my-parcels', rec:'PCL-1' },
+          { kind:'booking', id:'RB-1', urg:70, tone:'info',
+            title:'ประชุม 15:30 · ทีม WING ประจำสัปดาห์',
+            sub:'ห้อง Inspiration', cta:'ดูรายละเอียด', go:'rooms', rec:'RB-1' }
+        ],
+        week:(function(){
+          var p=function(n){return String(n).padStart(2,'0')}, D=new Date();
+          var k=function(i){var x=new Date(D.getTime()+i*86400000);
+            return x.getFullYear()+'-'+p(x.getMonth()+1)+'-'+p(x.getDate())};
+          return [
+            { type:'car', record_id:'CAR-2', title:'รับวิทยากรจากสนามบิน', where:'Toyota Commuter',
+              start_at:k(0)+'T13:00:00+07:00', end_at:k(0)+'T15:30:00+07:00',
+              status:'assigned', driver:'สมพงษ์ ขับดี', mine:true, driving:true, day:k(0) },
+            { type:'room', record_id:'RB-1', title:'ทีม WING ประจำสัปดาห์', where:'ห้อง Inspiration',
+              start_at:k(0)+'T15:30:00+07:00', end_at:k(0)+'T16:30:00+07:00',
+              status:'booked', driver:'', mine:true, driving:false, day:k(0) },
+            { type:'car', record_id:'CAR-5', title:'ส่งทีมไปโรงเรียนวัดสุทธิ', where:'Toyota Commuter',
+              start_at:k(1)+'T08:30:00+07:00', end_at:k(1)+'T16:00:00+07:00',
+              status:'assigned', driver:'สมพงษ์ ขับดี', mine:true, driving:false, day:k(1) },
+            { type:'room', record_id:'RB-7', title:'สัมภาษณ์ผู้สมัคร', where:'ห้อง Frank Kenan',
+              start_at:k(2)+'T10:00:00+07:00', end_at:k(2)+'T11:00:00+07:00',
+              status:'booked', driver:'', mine:true, driving:false, day:k(2) },
+            { type:'room', record_id:'RB-9', title:'ประชุม Partnership รายเดือน', where:'ห้อง Partnership',
+              start_at:k(4)+'T14:00:00+07:00', end_at:k(4)+'T15:30:00+07:00',
+              status:'booked', driver:'', mine:true, driving:false, day:k(4) }
+          ];
+        })(),
         birthdays:[{ name:'วราภรณ์ ทองดี', nickname:'หนิง', age:'34',
           department:'Social Impact and Innovation' }],
         approvals:[{ record_id:'CAR-ALT-1', title:'ไปรับเอกสารด่วนที่กรมพัฒนาธุรกิจ',
@@ -2421,6 +2701,7 @@ function paintNav(){
 const SIDE_GROUPS = () => [
   { g:t('sgWork'), items:[
     { go:'home',        ic:IC.homeIc, label:t('navHome') },
+    { go:'services',    ic:IC.laptop, label:t('svTitle') },
     { go:'my-parcels',  ic:IC.box,    label:t('mParcel') },
     { go:'notifications', ic:IC.bellBig, label:t('navNotif'), badge:true },
     { go:'issues',      ic:IC.tool,   label:t('mIssue') },
@@ -2557,7 +2838,7 @@ function errorScreen(e, retryFn){
     <div style="height:9px"></div>
     <button class="btn ghost" id="dg">${esc(t('diag'))}</button>
     <pre id="dgOut" hidden style="margin-top:12px;padding:11px;background:var(--surface);
-      border:1px solid var(--line);border-radius:12px;font-size:11px;
+      border:1px solid var(--line);border-radius:12px;font-size:var(--fs-meta);
       white-space:pre-wrap;word-break:break-all;color:var(--ink-2)"></pre>
   </div>`;
   $('#rt').onclick = () => (retryFn ? retryFn() : location.reload());
@@ -2599,7 +2880,7 @@ function licWarn(exp){
   const days = Math.floor((Date.parse(exp) - Date.now()) / 86400000);
   if(isNaN(days) || days > 60) return '';
   const bad = days < 0;
-  return `<div style="font-size:10.5px;font-weight:800;margin-top:2px;color:${
+  return `<div style="font-size:var(--fs-meta);font-weight:800;margin-top:2px;color:${
     bad ? 'var(--bad)' : 'var(--warn)'}">${esc(bad ? t('licExpired') : t('licSoon')(days))}</div>`;
 }
 /* ชื่อการแจ้งเตือนต้องแปลฝั่งแอป ไม่ใช่ให้เซิร์ฟเวอร์ส่งข้อความไทยมาสำเร็จรูป
@@ -2635,137 +2916,162 @@ const mmddToDdmm = v => {
   return m ? `${m[2]}-${m[1]}` : '';
 };
 
+/* ══════════════════════════════════════════════════════════════════
+   หน้าแรกแบบห้องนักบิน — เขียนใหม่ 2026-09-06
+
+   ของเดิมคือ "เมนูรวมระบบ": ไทล์สิบกว่าอันขนาดเท่ากัน กับตัวเลขสรุปสี่ตัว
+   เปิดมาแล้วต้องคิดเองว่าควรทำอะไรก่อน แล้วกดเข้าไปหาต่อในรายการ
+
+   ของใหม่ตอบคำถามเดียว: ตอนนี้คนนี้ควรทำอะไร แล้ววางไว้ตรงหน้าให้กดจบเลย
+   ห้าโซนเรียงตามความเร่งด่วน ไม่ใช่เรียงตามโครงสร้างของระบบ
+   ══════════════════════════════════════════════════════════════════ */
+
+/* สัญลักษณ์ของแบรนด์ — สี่เส้นทะยานขึ้นพร้อมจุดด้านบน
+   มาจากโลโก้จริง: สี่จุดคือ ภาครัฐ · วิชาการ · ประชาสังคม · ภาคเอกชน
+   ส่วนสี่เส้นทำให้เหมือนคน เพราะคีนันเป็นองค์กรที่ทำงานกับคน
+   ใช้เป็นลายจางๆ และในหน้าที่ยังไม่มีข้อมูล ไม่เอามาขวางการทำงาน */
+const KMARK = (cls, style) => `<span class="kmark ${cls || ''}"${style ? ` style="${style}"` : ''}>
+  <svg viewBox="0 0 44 40" aria-hidden="true">
+    <circle cx="5"    cy="14"   r="2.9"/><rect x="3.6"  y="19"   width="2.9" height="21" rx="1.45"/>
+    <circle cx="16"   cy="6.6"  r="3.4"/><rect x="14.3" y="12.4" width="3.4" height="27.6" rx="1.7"/>
+    <circle cx="27"   cy="20"   r="2.8"/><rect x="25.6" y="25"   width="2.8" height="15" rx="1.4"/>
+    <circle cx="38.2" cy="11.6" r="3.1"/><rect x="36.6" y="17"   width="3.1" height="23" rx="1.55"/>
+  </svg></span>`;
+
+/* ทางลัดสี่อัน — ตอนนี้เลือกตามบทบาท
+   ตั้งใจยังไม่ทำเป็น "ที่ใช้บ่อยที่สุดของคนนั้นจริงๆ" เพราะยังไม่มีใครใช้ระบบเลย
+   ยังไม่มีข้อมูลว่าใครใช้อะไรบ่อย เดาไปตอนนี้ก็ได้ของที่เดาผิด
+   พอ pilot ผ่านสักเดือน ค่อยดึงจากตาราง records ว่าคนนี้กดอะไรบ่อยที่สุดสี่อัน */
+function quickActions(){
+  const q = [
+    { ic:IC.cal,    label:t('resvRoom'), go:'rooms' },
+    { ic:IC.car,    label:t('resvCar'),  go:'cars' },
+    { ic:IC.laptop, label:t('resvEq'),   go:'equipment' },
+    { ic:IC.tool,   label:t('mIssue'),   go:'issue-new' }
+  ];
+  if(isDriverNow()) q.unshift({ ic:IC.car, label:t('drvTitle'), go:'driver' });
+  if(S.isOfficer)   q.push({ ic:IC.cam, label:t('inTitle'), go:'parcel-in' });
+  return q.slice(0, 4);
+}
+
+/* หัวข้อของวัน — คนอ่าน "วันนี้/พรุ่งนี้" เร็วกว่าอ่านวันที่ */
+function dayLabel(key){
+  const today = dayKey(new Date());
+  const tmr   = dayKey(new Date(Date.now() + 86400000));
+  if(key === today) return t('dayToday');
+  if(key === tmr)   return t('dayTomorrow');
+  return new Date(key + 'T00:00:00+07:00').toLocaleDateString(
+    S.lang === 'th' ? 'th-TH' : 'en-GB', { weekday:'short', day:'numeric', month:'short' });
+}
+
 ROUTES.home = async () => {
   const name = S.me?.name_th || S.me?.nickname || S.profile?.displayName || '';
   const d = S.today || {};
+  const att = d.attention || [];
+  const week = d.week || [];
 
-  const mods = [
-    { ic:IC.box,   th:t('mParcel'), go:'my-parcels',
-      badge:d.parcels ? String(d.parcels) : '' },
-    { ic:IC.sos,   th:t('mCall'),   go:'calltree', sos:true },
-    { ic:IC.user,  th:t('mDir'),    go:'directory' },
-    { ic:IC.clock, th:t('mAct'),    go:'activity' },
-    { ic:IC.news,  th:t('news'),    go:'news' },
-    { ic:IC.cal,   th:t('mResv'),   go:'reservation' },
-    { ic:IC.tool,  th:t('mIssue'),  go:'issues' },
-    { ic:IC.chat,  th:t('mFaq'),    soon:true }
-  ];
-  if(isDriverNow()) mods.push({ ic:IC.car, th:t('drvTitle'), go:'driver' });
-  if(S.isOfficer)   mods.push({ ic:IC.user, th:t('adminTitle'), go:'admin' });
+  /* จัดตารางสัปดาห์เป็นกลุ่มตามวัน — ระบบส่งมาเรียงตามเวลาแล้ว */
+  const byDay = [];
+  week.forEach(x => {
+    const g = byDay[byDay.length - 1];
+    if(g && g.key === x.day) g.items.push(x);
+    else byDay.push({ key:x.day, items:[x] });
+  });
 
-  // สิ่งที่ค้างอยู่จริงๆ เท่านั้น ไม่มีก็ไม่ต้องขึ้นการ์ดเปล่า
-  const todo = [
-    { n:d.parcels,      lbl:t('dbParcels'),  go:'my-parcels',   tone:'warn' },
-    { n:d.driving,      lbl:t('dbDriving'),  go:'driver',       tone:'warn', only:isDriverNow() },
-    { n:d.loans,        lbl:t('dbLoans'),    go:'equipment',    tone:'' },
-    { n:d.issues,       lbl:t('dbIssues'),   go:'issues',       tone:'' },
-    { n:d.unidentified, lbl:t('dbUnid'),     go:'unidentified', tone:'bad', only:S.isOfficer }
-  ].filter(x => x.n > 0 && x.only !== false);
-
-  const bk = d.bookings || [];
   const dateLine = new Date().toLocaleDateString(S.lang === 'th' ? 'th-TH' : 'en-GB',
     { weekday:'long', day:'numeric', month:'long' });
 
-  $x('#main').innerHTML = `<div class="view">
-    <div class="hgreet">
-      <div class="hdate">${esc(dateLine)}</div>
-      <h2>${esc(t('greet')(firstName(name) || name))}</h2>
-      <p>${esc(todo.length ? t('dbHasTodo') : t('dbAllClear'))}</p>
-    </div>
+  $x('#main').innerHTML = `<div class="view home">
 
-    ${todo.length ? `<div class="todo">${todo.map(x => `
-      <button class="todoc ${x.tone}" data-go="${x.go}">
-        <span class="n">${x.n}</span>
-        <span class="l">${esc(x.lbl)}</span>
-      </button>`).join('')}</div>` : ''}
+    <header class="hhead">
+      ${KMARK('hhead-mark')}
+      <div class="hhead-tx">
+        <div class="hdate">${esc(dateLine)}</div>
+        <h2>${esc(t('greet')(firstName(name) || name))}</h2>
+      </div>
+    </header>
 
-    ${(d.birthdays || []).length ? `<div class="bday">
-      <span class="cake">🎂</span>
-      <div><b>${esc(t('dbBirthdays'))}</b><br>${(d.birthdays || []).map(x =>
-        esc((x.nickname ? `${x.name} (${x.nickname})` : x.name) +
-            (x.age ? ` · ${x.age} ${S.lang === 'th' ? 'ปี' : 'yrs'}` : ''))).join(' · ')}</div></div>` : ''}
+    <!-- ── โซน 1 · ต้องทำตอนนี้ ─────────────────────────────────
+         ถ้าไม่มีอะไรค้าง ต้องบอกให้ชัดว่าไม่มี ไม่ใช่ปล่อยว่าง
+         เพราะ "ว่างเปล่า" กับ "โหลดไม่ขึ้น" หน้าตาเหมือนกัน           -->
+    <section class="hz">
+      <div class="hz-h">
+        <h3>${esc(t('hAttention'))}</h3>
+        ${att.length ? `<span class="hz-n">${att.length}</span>` : ''}
+      </div>
+      ${att.length ? `<div class="attn">${att.map(a => `
+        <article class="atc ${esc(a.tone || 'info')}" data-att="${esc(a.go)}" data-rec="${esc(a.rec || '')}">
+          <div class="atc-b">
+            <h4>${esc(a.title)}</h4>
+            ${a.sub ? `<p>${esc(a.sub)}</p>` : ''}
+          </div>
+          <span class="atc-cta">${esc(a.cta || t('open'))} ${IC.chev}</span>
+        </article>`).join('')}
+        ${(d.attentionTotal || 0) > att.length
+          ? `<div class="hz-more">${esc(t('hMore')((d.attentionTotal || 0) - att.length))}</div>` : ''}
+      </div>` : `<div class="allclear">
+        <span class="ac-ic">✓</span>
+        <div><b>${esc(t('hClear'))}</b><div class="ac-s">${esc(t('hClearBody'))}</div></div>
+      </div>`}
+    </section>
 
-    ${(d.approvals || []).length ? `<div class="section-title">${esc(t('dbApprovals'))}</div>
-      <div class="rows" id="apv">${(d.approvals || []).map(a => `
-        <button class="row" data-a="${esc(a.record_id)}">
-          <div class="thumb" style="background:var(--warn-bg);color:var(--warn)">🚕</div>
-          <div class="body"><div class="t">${esc(a.title || '-')}</div>
-            <div class="s">${esc([a.who, a.project_code, a.wanted,
-              a.est_cost ? t('apvCost') + ' ' + a.est_cost : ''].filter(Boolean).join(' · '))}</div></div>
-          <span class="go">${IC.chev}</span></button>`).join('')}</div>` : ''}
+    <!-- ── โซน 2 · สัปดาห์นี้ ─────────────────────────────────── -->
+    <section class="hz">
+      <div class="hz-h"><h3>${esc(t('hWeek'))}</h3></div>
+      ${byDay.length ? `<div class="wk">${byDay.map(g => `
+        <div class="wk-d">
+          <div class="wk-dh">${esc(dayLabel(g.key))}</div>
+          ${g.items.map(x => `
+            <button class="wk-i" data-bgo="${x.type === 'car' ? 'cars' : 'rooms'}">
+              <span class="wk-t num">${esc(hhmm(x.start_at))}</span>
+              <span class="wk-x">
+                <span class="wk-n">${esc(x.title || '-')}</span>
+                <span class="wk-s">${esc([x.where,
+                  x.driving ? t('hDriving') : '',
+                  x.driver && !x.driving ? t('carDriver') + ' ' + firstName(x.driver) : ''
+                ].filter(Boolean).join(' · '))}</span>
+              </span>
+              <span class="wk-k ${x.type === 'car' ? 'car' : 'room'}">${
+                x.type === 'car' ? IC.car : IC.cal}</span>
+            </button>`).join('')}
+        </div>`).join('')}</div>`
+        : `<div class="quiet">${esc(t('hWeekNone'))}</div>`}
+    </section>
 
-    <div class="hsplit">
-      <section>
-        <div class="section-title">${esc(t('dbToday'))}</div>
-        ${bk.length ? `<div class="rows">${bk.map(x => `
-          <button class="row" data-bgo="${x.type === 'car' ? 'cars' : 'rooms'}">
-            <div class="thumb" style="background:#EEF3FF;color:var(--primary)">${
-              x.type === 'car' ? IC.car : IC.cal}</div>
-            <div class="body">
-              <div class="t">${esc(x.title || '-')}</div>
-              <div class="s">${esc([hhmm(x.start_at) + '–' + hhmm(x.end_at), x.where,
-                x.driver ? t('carDriver') + ' ' + firstName(x.driver) : ''].filter(Boolean).join(' · '))}</div>
-            </div><span class="go">${IC.chev}</span>
-          </button>`).join('')}</div>`
-          : `<div class="quiet">${esc(t('dbNoBookings'))}</div>`}
+    <!-- ── โซน 3 · ทางลัด ─────────────────────────────────────── -->
+    <section class="hz">
+      <div class="hz-h"><h3>${esc(t('hQuick'))}</h3></div>
+      <div class="qa">${quickActions().map(q => `
+        <button class="qa-b" data-go="${q.go}">
+          <span class="qa-i">${q.ic}</span>
+          <span class="qa-l">${esc(q.label)}</span>
+        </button>`).join('')}</div>
+      <button class="allsv" data-go="services">
+        <span>${esc(t('hAllServices'))}</span>${IC.chev}
+      </button>
+    </section>
 
-        <div class="section-title">${esc(t('dbQuick'))}</div>
-        <div class="tiles" id="tiles"></div>
-      </section>
-
-      <aside>
-        <div class="section-title">${esc(t('news'))}</div>
-        <div id="newsBox">${skeleton(1)}</div>
-        <button class="btn ghost" id="allNews" style="margin-top:10px">${esc(t('news'))} →</button>
-      </aside>
-    </div>
+    <!-- ── โซน 4 · อัปเดต ─────────────────────────────────────── -->
+    <section class="hz">
+      <div class="hz-h"><h3>${esc(t('hUpdates'))}</h3></div>
+      ${(d.birthdays || []).length ? `<div class="bday">
+        <span class="cake">🎂</span>
+        <div><b>${esc(t('dbBirthdays'))}</b><br>${(d.birthdays || []).map(x =>
+          esc((x.nickname ? `${x.name} (${x.nickname})` : x.name) +
+              (x.age ? ` · ${x.age} ${S.lang === 'th' ? 'ปี' : 'yrs'}` : ''))).join(' · ')}</div></div>` : ''}
+      <div id="newsBox">${skeleton(1)}</div>
+      <button class="allsv" id="allNews"><span>${esc(t('news'))}</span>${IC.chev}</button>
+    </section>
   </div>`;
 
-  // บนจอคอมโชว์ทางลัดที่เมนูข้างไม่มี (จองห้อง/ยืมของ/บันทึกพัสดุ) ไม่ใช่ซ้ำทั้งชุด
-  const tileSet = isWide()
-    ? mods.filter(m => ['reservation','issues','my-parcels','calltree'].includes(m.go))
-    : mods;
-  $x('#tiles').innerHTML = tileSet.map(m => `
-    <button class="tile ${m.soon ? 'soon' : ''} ${m.sos ? 'sos' : ''}" data-go="${m.go || ''}">
-      ${m.badge ? `<span class="badge">${esc(m.badge)}</span>` : ''}
-      ${m.soon ? `<span class="badge soonb">${esc(t('soon'))}</span>` : ''}
-      <div class="ic">${m.ic}</div>
-      <div class="nm">${esc(m.th)}</div>
-    </button>`).join('');
-
-  document.querySelectorAll('[data-go]').forEach(b => {
-    if(b.dataset.go) b.onclick = () => go(b.dataset.go);
+  /* การ์ด "ต้องทำตอนนี้" กดที่ไหนก็ได้ทั้งใบ — ไม่ใช่ต้องเล็งปุ่มเล็กๆ */
+  document.querySelectorAll('[data-att]').forEach(b => b.onclick = () => {
+    const rec = b.dataset.rec;
+    go(b.dataset.att, rec ? { rec } : {});
   });
   document.querySelectorAll('[data-bgo]').forEach(b => b.onclick = () => go(b.dataset.bgo));
-
-  // PM กดอนุมัติได้จากหน้าแรกเลย ไม่ต้องไล่หาในเมนู
-  document.querySelectorAll('#apv .row').forEach(b => b.onclick = () => {
-    const a = (d.approvals || []).find(x => x.record_id === b.dataset.a); if(!a) return;
-    sheet(`<h3>${esc(a.title || '-')}</h3>
-      <p class="sub">${esc([a.who, a.project_code].filter(Boolean).join(' · '))}</p>
-      <div class="rows" style="margin-bottom:12px">
-        ${a.wanted ? `<div class="row"><div class="body"><div class="s">${esc(t('carAltMode'))}</div>
-          <div class="t">${esc(a.wanted)}</div></div></div>` : ''}
-        ${a.est_cost ? `<div class="row"><div class="body"><div class="s">${esc(t('carAltCost'))}</div>
-          <div class="t">${esc(a.est_cost)}</div></div></div>` : ''}
-      </div>
-      <div class="field"><label>${esc(t('apvNote'))}</label><input id="apn"></div>
-      <button class="btn primary" id="apOk">${esc(t('apvApprove'))}</button>
-      <button class="btn" id="apNo" style="background:var(--bad);color:#fff">${esc(t('apvReject'))}</button>
-      <button class="btn ghost" id="apCx">${esc(t('close'))}</button>`);
-    $('#apCx').onclick = closeSheet;
-    const decide = v => async () => {
-      $('#apOk').disabled = true; $('#apNo').disabled = true;
-      try{
-        await apiRetry('decideAltTransport',
-          { record_id:a.record_id, decide:v, note:$('#apn').value.trim() }, 'POST');
-        closeSheet(); toast(t('apvDone'),'ok');
-        S.today.approvals = (S.today.approvals || []).filter(x => x.record_id !== a.record_id);
-        go('home', {}, true);
-      }catch(e){ toast(t('netErr'),'bad'); $('#apOk').disabled = false; $('#apNo').disabled = false; }
-    };
-    $('#apOk').onclick = decide('ok');
-    $('#apNo').onclick = decide('no');
+  document.querySelectorAll('[data-go]').forEach(b => {
+    if(b.dataset.go) b.onclick = () => go(b.dataset.go);
   });
   $('#allNews').onclick = () => go('news');
 
@@ -2774,13 +3080,73 @@ ROUTES.home = async () => {
     S.bootNews = null;
     const list = r?.items || [];
     $x('#newsBox').innerHTML = list.length
-      ? `<div class="rows">${list.slice(0,4).map(a => `
-          <div class="row"><div class="body">
+      ? `<div class="rows">${list.slice(0,3).map(a => `
+          <button class="row" data-news="1"><div class="body">
             <div class="t">${esc(a.title || a.title_th || a.title_en)}</div>
             <div class="s">${esc(fmtDate(a.at))}</div>
-          </div></div>`).join('')}</div>`
+          </div><span class="go">${IC.chev}</span></button>`).join('')}</div>`
       : `<div class="quiet">${esc(S.lang === 'th' ? 'ยังไม่มีประกาศ' : 'No announcements')}</div>`;
+    document.querySelectorAll('[data-news]').forEach(b => b.onclick = () => go('news'));
   }catch(e){ $x('#newsBox').innerHTML = ''; }
+};
+
+/* ══════════════════ บริการทั้งหมด ══════════════════
+   หน้าแรกไม่ใช่เมนูอีกต่อไป เมนูจึงต้องมีบ้านของตัวเอง
+   จัดกลุ่มตามสิ่งที่คนอยากทำ ไม่ใช่ตามโครงสร้างของระบบเบื้องหลัง */
+ROUTES.services = async () => {
+  setTitle(t('svTitle'));
+  const d = S.today || {};
+  const G = [
+    { g:t('svBook'), items:[
+      { ic:IC.cal,    label:t('resvRoom'), sub:t('svRoomS'),  go:'rooms' },
+      { ic:IC.car,    label:t('resvCar'),  sub:t('svCarS'),   go:'cars' },
+      { ic:IC.laptop, label:t('resvEq'),   sub:t('svEqS'),    go:'equipment' },
+      { ic:IC.chat,   label:t('resvZoom'), sub:t('svZoomS'),  go:'zoom' }
+    ]},
+    { g:t('svParcel'), items:[
+      { ic:IC.box, label:t('mParcel'), sub:t('svParcelS'), go:'my-parcels',
+        badge: d.parcels ? String(d.parcels) : '' },
+      ...(S.isOfficer ? [
+        { ic:IC.cam,  label:t('inTitle'), sub:t('svLogS'), go:'parcel-in' },
+        { ic:IC.box,  label:t('unTitle'), sub:t('svUnidS'), go:'unidentified',
+          badge: d.unidentified ? String(d.unidentified) : '' }] : [])
+    ]},
+    { g:t('svReport'), items:[
+      { ic:IC.tool,  label:t('mIssue'),  sub:t('svIssueS'), go:'issues' },
+      ...(S.isOfficer ? [{ ic:IC.tool, label:t('isuQueue'), sub:t('svQueueS'), go:'issue-queue' }] : [])
+    ]},
+    { g:t('svInfo'), items:[
+      { ic:IC.user,  label:t('mDir'),   sub:t('svDirS'),  go:'directory' },
+      { ic:IC.news,  label:t('news'),   sub:t('svNewsS'), go:'news' },
+      { ic:IC.clock, label:t('mAct'),   sub:t('svActS'),  go:'activity' }
+    ]}
+  ];
+  if(isDriverNow()) G.unshift({ g:t('drvTitle'), items:[
+    { ic:IC.car, label:t('drvTitle'), sub:t('svDriveS'), go:'driver' }]});
+  if(S.isOfficer || S.isAdmin) G.push({ g:t('sgAdmin'), items:[
+    { ic:IC.user,   label:t('adminTitle'), sub:t('svAdminS'), go:'admin' },
+    ...(S.isAdmin ? [
+      { ic:IC.laptop, label:t('admRes'),   sub:t('svResS'),   go:'admin-res' },
+      { ic:IC.box,    label:t('admLabels'),sub:t('svLabelS'), go:'labels' },
+      { ic:IC.user,   label:t('admDrv'),   sub:t('svDrvS'),   go:'admin-drv' },
+      { ic:IC.info,   label:t('admProj'),  sub:t('svProjS'),  go:'admin-proj' }] : [])
+  ]});
+
+  $x('#main').innerHTML = `<div class="view">
+    ${G.map(gr => `
+      <div class="hz-h" style="margin-top:20px"><h3>${esc(gr.g)}</h3></div>
+      <div class="svl">${gr.items.map(i => `
+        <button class="svi" data-go="${i.go}">
+          <span class="svi-i">${i.ic}</span>
+          <span class="svi-x">
+            <span class="svi-n">${esc(i.label)}</span>
+            <span class="svi-s">${esc(i.sub || '')}</span>
+          </span>
+          ${i.badge ? `<span class="svi-b">${esc(i.badge)}</span>` : ''}
+          <span class="go">${IC.chev}</span>
+        </button>`).join('')}</div>`).join('')}
+  </div>`;
+  document.querySelectorAll('#main [data-go]').forEach(b => b.onclick = () => go(b.dataset.go));
 };
 
 ROUTES['my-parcels'] = async (params = {}) => {
@@ -3039,7 +3405,7 @@ ROUTES.calltree = async () => {
     const done = !!A.myStatus;
     $x('#alertBox').innerHTML = `
       <div class="alertbox" style="background:var(--bad);color:#fff;border-radius:18px;padding:17px;margin-bottom:14px">
-        <div style="font-size:11px;font-weight:800;opacity:.9;letter-spacing:.06em">${esc(fmtDate(A.alert.at))}</div>
+        <div style="font-size:var(--fs-meta);font-weight:800;opacity:.9;letter-spacing:.06em">${esc(fmtDate(A.alert.at))}</div>
         <h3 style="margin:5px 0 6px;font-size:18px;font-weight:800;line-height:1.35">${esc(A.alert.title)}</h3>
         <p style="margin:0;font-size:13px;opacity:.93;white-space:pre-wrap">${esc(A.alert.body || '')}</p>
       </div>
@@ -3127,7 +3493,7 @@ ROUTES.profile = async () => {
       <div class="field"><label>${esc(t('prPosition'))}</label>
         <input id="pPos" value="${esc(m.position || '')}" placeholder="${esc(t('prPositionPh'))}"></div>
       ${photoField('pPh', t('prPhoto'), S.me?.photo || '', { optional:true, ratio:'1/1', max:'220px' })}
-      <div style="font-size:11px;color:var(--ink-3);margin:-6px 0 14px">${esc(t('prPhotoWhy'))}</div>
+      <div style="font-size:var(--fs-meta);color:var(--ink-3);margin:-6px 0 14px">${esc(t('prPhotoWhy'))}</div>
       <div class="times" style="margin-bottom:12px">
         <div class="tbox"><div class="k">${esc(t('prBirthday'))}</div>
           <input id="pBd" type="text" inputmode="numeric" maxlength="5" placeholder="15-08"
@@ -3140,7 +3506,7 @@ ROUTES.profile = async () => {
         <input type="checkbox" id="pShowBd" ${(S.me?.show_birthday === true ||
           String(S.me?.show_birthday).toUpperCase() === 'TRUE') ? 'checked' : ''}>
         <span><b>${esc(t('prShowBirthday'))}</b><br>
-          <span style="font-size:11.5px;color:var(--ink-3)">${esc(t('prShowBirthdaySub'))}</span></span>
+          <span style="font-size:var(--fs-meta);color:var(--ink-3)">${esc(t('prShowBirthdaySub'))}</span></span>
       </label>
       <label class="switch" style="margin-bottom:12px">
         <input type="checkbox" id="pShowYr" ${(S.me?.show_birth_year === true ||
@@ -3161,7 +3527,7 @@ ROUTES.profile = async () => {
       <button class="btn soft" id="toAdm">${esc(t('adminTitle'))}</button></div>` : ''}
     <div style="margin-top:12px"><button class="btn ghost" id="spd">${esc(t('spdTest'))}</button>
       <pre id="spdOut" hidden style="margin:8px 0 12px;padding:11px;background:var(--surface);
-        border:1px solid var(--line);border-radius:12px;font-size:11px;
+        border:1px solid var(--line);border-radius:12px;font-size:var(--fs-meta);
         white-space:pre-wrap;color:var(--ink-2)"></pre>
       <button class="btn ghost" id="mydata">${esc(t('mdTitle'))}</button>
       <div style="height:9px"></div>
@@ -3236,7 +3602,7 @@ ROUTES.news = async () => {
   const card = a => `
     <div class="card" style="${a.expired ? 'opacity:.62' : ''}">
       <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap">
-        <div style="font-size:11px;color:var(--ink-3);font-weight:700">${esc(fmtDate(a.at))}${
+        <div style="font-size:var(--fs-meta);color:var(--ink-3);font-weight:700">${esc(fmtDate(a.at))}${
           a.author ? ' · ' + esc(t('newsBy')(a.author)) : ''}</div>
         ${(a.tags || []).length ? `<div style="display:flex;gap:5px;flex-wrap:wrap">${
           a.tags.map(x => `<span class="ntag ${/สำคัญ|เร่งด่วน|Urgent|Important|ดำเนินการ|Action/.test(x)
@@ -3244,7 +3610,7 @@ ROUTES.news = async () => {
       </div>
       <h3 style="margin:6px 0 7px;font-size:16.5px;font-weight:800;line-height:1.35">
         ${esc(S.lang==='th' ? (a.title_th || a.title_en) : (a.title_en || a.title_th))}</h3>
-      ${a.due_at ? `<div style="font-size:11.5px;font-weight:800;margin-bottom:7px;color:${
+      ${a.due_at ? `<div style="font-size:var(--fs-meta);font-weight:800;margin-bottom:7px;color:${
         a.expired ? 'var(--ink-3)' : 'var(--warn)'}">${
         esc(a.expired ? t('newsExpired') : t('newsDue')(fmtDate(a.due_at)))}</div>` : ''}
       <div style="font-size:13.5px;color:var(--ink-2);white-space:pre-wrap;line-height:1.65">${
@@ -3423,7 +3789,7 @@ ROUTES['admin-news'] = async () => {
         <div id="imgGrid" class="imggrid"></div>
         <button class="btn ghost" id="imgAdd" style="margin-top:7px">＋ ${esc(t('admResPhoto'))}</button>
         <input type="file" id="imgFile" accept="image/*" hidden>
-        <div style="font-size:11px;color:var(--ink-3);margin-top:5px">${esc(t('admNewsImagesWhy'))}</div></div>
+        <div style="font-size:var(--fs-meta);color:var(--ink-3);margin-top:5px">${esc(t('admNewsImagesWhy'))}</div></div>
 
       <div class="field"><label>${esc(t('admNewsCta'))}</label>
         <input id="nCtaL" placeholder="${esc(t('admNewsCtaLabelPh'))}" style="margin-bottom:7px">
@@ -3431,7 +3797,7 @@ ROUTES['admin-news'] = async () => {
 
       <div class="field" style="margin-bottom:0"><label>${esc(t('admNewsDue'))}</label>
         <input id="nDue" type="date">
-        <div style="font-size:11px;color:var(--ink-3);margin-top:4px">${esc(t('admNewsDueWhy'))}</div></div>
+        <div style="font-size:var(--fs-meta);color:var(--ink-3);margin-top:4px">${esc(t('admNewsDueWhy'))}</div></div>
     </div>
     <div class="sticky-cta"><button class="btn primary" id="post">${esc(t('admPost'))}</button></div>
   </div>`;
@@ -3615,7 +3981,7 @@ ROUTES.directory = async () => {
             : `<span class="av">${esc(String(p.nickname || p.name_th || '?').trim().charAt(0))}</span>`}
           <div class="body">
             <div class="t">${esc(p.name_th || p.name_en)}${p.nickname ? ' · ' + esc(p.nickname) : ''}${
-              p.pending ? ` <span class="pill" style="background:var(--neutral);color:var(--ink-3);font-size:9.5px">${esc(t('dirPending'))}</span>` : ''}</div>
+              p.pending ? ` <span class="pill" style="background:var(--neutral);color:var(--ink-3);font-size:var(--fs-meta)">${esc(t('dirPending'))}</span>` : ''}</div>
             <div class="s">${esc(p.position || p.phone || p.email || t('dirNoPhone'))}</div>
           </div><span class="go">${IC.chev}</span>
         </button>`).join('')}</div></div>`).join('');
@@ -3709,7 +4075,7 @@ ROUTES.issues = async (params = {}) => {
           i===0?'var(--primary)':'var(--line)'};border-radius:12px;margin-bottom:7px;
           background:${i===0?'#EEF3FF':'#fff'};padding:9px 10px">
           <div class="body"><div class="t" style="font-size:13.5px">${esc(c.l)}</div>
-            <div class="s" style="font-size:10.5px">${esc(c.s)}</div></div>
+            <div class="s" style="font-size:var(--fs-meta)">${esc(c.s)}</div></div>
           <span class="ck" style="color:var(--primary);font-weight:800;${i===0?'':'visibility:hidden'}">✓</span>
         </button>`).join('')}</div>
 
@@ -3879,13 +4245,13 @@ ROUTES['issue-detail'] = async ({ id } = {}) => {
   $x('#dv').innerHTML = `
     <div class="card">
       <div style="display:flex;justify-content:space-between;gap:10px;align-items:flex-start">
-        <div><div style="font-size:11px;color:var(--ink-3);font-weight:700">${esc(i.category)}${
+        <div><div style="font-size:var(--fs-meta);color:var(--ink-3);font-weight:700">${esc(i.category)}${
           i.urgency === 'urgent' ? ' · ⚠️ ' + esc(t('isuUrgent')) : ''}</div>
           <div style="font-size:15px;font-weight:600;margin-top:4px;white-space:pre-wrap">${esc(i.detail)}</div>
         </div>${issuePill(i)}
       </div>
-      ${i.location ? `<div style="font-size:12.5px;color:var(--ink-2);margin-top:8px">📍 ${esc(i.location)}</div>` : ''}
-      <div style="font-size:11.5px;color:var(--ink-3);margin-top:8px">
+      ${i.location ? `<div style="font-size:var(--fs-sec);color:var(--ink-2);margin-top:8px">📍 ${esc(i.location)}</div>` : ''}
+      <div style="font-size:var(--fs-meta);color:var(--ink-3);margin-top:8px">
         ${esc(t('isuBy'))} ${esc(i.requester_name)} · ${esc(fmtDate(i.created_at))}<br>
         ${esc(t('isuAssignee'))}: ${esc(i.assignee_name || t('isuNoAssignee'))}</div>
       ${i.thumb_id ? `<img class="sheet-photo" id="ip" alt="" style="margin-top:11px">` : ''}
@@ -4075,7 +4441,7 @@ ROUTES.rooms = async (params = {}) => {
       ${nowTop!==null?`<div class="gnow" style="top:${nowTop}px"></div>`:''}
     </div>
   </div></div></div>
-  <div style="font-size:11.5px;color:var(--ink-3);margin-top:8px;text-align:center">${esc(t('rmTapSlot'))}</div>`;
+  <div style="font-size:var(--fs-meta);color:var(--ink-3);margin-top:8px;text-align:center">${esc(t('rmTapSlot'))}</div>`;
 
   // แตะช่องว่าง = จองเลย · แตะรายการที่มีอยู่ = ดูว่าใครจอง (ขอสลับได้)
   document.querySelectorAll('#rl .hr').forEach(cell => cell.onclick = () => {
@@ -4114,7 +4480,7 @@ ROUTES.rooms = async (params = {}) => {
       ${phImg(rm,'rphoto') || `<div class="rphoto">${IC.cal}</div>`}
       <div style="flex:1;min-width:0">
         <div style="font-size:14.5px;font-weight:700">${esc(rm.name_th)}</div>
-        <div style="font-size:11.5px;color:var(--ink-3)">${
+        <div style="font-size:var(--fs-meta);color:var(--ink-3)">${
           esc([rm.capacity ? t('rmSeats')(rm.capacity) : '', rm.category, rm.note].filter(Boolean).join(' · '))}</div>
       </div><span class="go">${IC.chev}</span>
     </button>`).join('');
@@ -4236,12 +4602,12 @@ function paintEquipment(items){
       ${phImg(i,'rphoto') || `<div class="rphoto">${IC.laptop}</div>`}
       <div style="flex:1;min-width:0">
         <div style="font-size:14.5px;font-weight:700">${esc(i.name_th)}</div>
-        <div style="font-size:11.5px;color:var(--ink-3)">${
+        <div style="font-size:var(--fs-meta);color:var(--ink-3)">${
           esc(i.available ? (i.storage_location || i.category || '')
                           : (i.holder ? t('eqBy')(i.holder) : t('eqOut')))}</div>
-        ${i.asset_tag ? `<div style="font-size:10px;color:var(--ink-3);letter-spacing:.05em;
+        ${i.asset_tag ? `<div style="font-size:var(--fs-meta);color:var(--ink-3);letter-spacing:.05em;
           font-family:ui-monospace,Menlo,monospace;margin-top:1px">${esc(i.asset_tag)}</div>` : ''}
-        ${i.reservations?.length ? `<div style="font-size:10.5px;color:var(--warn);font-weight:700;margin-top:2px">
+        ${i.reservations?.length ? `<div style="font-size:var(--fs-meta);color:var(--warn);font-weight:700;margin-top:2px">
           ${esc(t('eqUpcoming'))}: ${esc(fmtDate(i.reservations[0].start_at))}${
             i.reservations.length>1?` +${i.reservations.length-1}`:''}</div>` : ''}
       </div>
@@ -4424,7 +4790,7 @@ ROUTES['alert-board'] = async () => {
 
   $x('#bd').innerHTML = `
     <div class="card" style="border-color:var(--bad,#DC2626)">
-      <div style="font-size:11px;font-weight:800;color:var(--bad,#DC2626)">${esc(fmtDate(b.alert.at))}</div>
+      <div style="font-size:var(--fs-meta);font-weight:800;color:var(--bad,#DC2626)">${esc(fmtDate(b.alert.at))}</div>
       <h3 style="margin:5px 0 0;font-size:17px">${esc(b.alert.title)}</h3>
     </div>
     <div class="tiles" style="margin-top:12px">
@@ -4508,10 +4874,10 @@ ROUTES['admin-drv'] = async () => {
                 : `<div class="rphoto" style="width:56px;height:56px;border-radius:50%">${IC.user}</div>`}
       <div style="flex:1;min-width:0">
         <div style="font-size:14.5px;font-weight:700">${esc(d.name)}</div>
-        <div style="font-size:11.5px;color:var(--ink-3)">${esc([d.company, d.phone].filter(Boolean).join(' · '))}</div>
-        ${d.vehicles ? `<div style="font-size:10.5px;color:var(--ok);font-weight:700;margin-top:2px">
+        <div style="font-size:var(--fs-meta);color:var(--ink-3)">${esc([d.company, d.phone].filter(Boolean).join(' · '))}</div>
+        ${d.vehicles ? `<div style="font-size:var(--fs-meta);color:var(--ok);font-weight:700;margin-top:2px">
           ${esc(t('carDriver'))}: ${esc(d.vehicles)}</div>` : ''}
-        <div style="font-size:10.5px;font-weight:700;margin-top:2px;color:${
+        <div style="font-size:var(--fs-meta);font-weight:700;margin-top:2px;color:${
           d.paired ? 'var(--ok)' : 'var(--ink-3)'}">${
           d.paired ? '● ' + esc(t('admDrvPaired'))
                    : '○ ' + esc(t('admDrvUnpaired'))}</div>
@@ -4536,7 +4902,7 @@ ROUTES['admin-drv'] = async () => {
       <div class="field"><label>${esc(t('admDrvNote'))}</label>
         <input id="dnt" value="${esc(it?.note || '')}" placeholder="${esc(t('admDrvNotePh'))}"></div>
       ${photoField('dph', t('admDrvPhoto'), null, { max:'240px', prompt:t('admDrvPhoto') })}
-      <div style="font-size:11px;color:var(--ink-3);margin:-6px 0 12px">${esc(t('admDrvPhotoWhy'))}</div>
+      <div style="font-size:var(--fs-meta);color:var(--ink-3);margin:-6px 0 12px">${esc(t('admDrvPhotoWhy'))}</div>
       <div class="field"><label>${esc(t('admDrvLic'))}</label>
         <input id="dlic" value="${esc(it?.licence_no || '')}" placeholder="${esc(t('admDrvLicPh'))}"></div>
       <div class="field"><label>${esc(t('admDrvLicExp'))}</label>
@@ -4563,7 +4929,7 @@ ROUTES['admin-drv'] = async () => {
           sheet(`<h3>${esc(t('admDrvPairTitle'))}</h3>
             <p class="sub">${esc(r.name || '')}</p>
             <div class="qrbox"><div class="tg" style="font-size:34px;letter-spacing:.22em">${esc(r.code)}</div>
-              <div style="font-size:11.5px;color:var(--ink-3)">${esc(t('admDrvPairExp')(r.expires))}</div></div>
+              <div style="font-size:var(--fs-meta);color:var(--ink-3)">${esc(t('admDrvPairExp')(r.expires))}</div></div>
             <div class="note info">${IC.info}<div>${esc(t('admDrvPairHow'))}</div></div>
             <button class="btn soft" id="dcp">${esc(t('admDrvPairCopy'))}</button>
             <button class="btn ghost" id="dcc">${esc(t('close'))}</button>`);
@@ -4621,7 +4987,7 @@ ROUTES['admin-staff'] = async () => {
         <textarea id="sp" rows="10" spellcheck="false"
           placeholder="${esc(t('admStaffPh'))}"
           style="width:100%;resize:vertical;font-family:ui-monospace,monospace;font-size:12px"></textarea></div>
-      <div style="font-size:11.5px;color:var(--ink-3);line-height:1.6">${esc(t('admStaffCols'))}</div>
+      <div style="font-size:var(--fs-meta);color:var(--ink-3);line-height:1.6">${esc(t('admStaffCols'))}</div>
       <button class="btn soft" id="prev" style="margin-top:11px">${esc(t('admStaffPreview'))}</button>
     </div>
     <div id="pv"></div>
@@ -4700,11 +5066,11 @@ ROUTES['admin-proj'] = async () => {
       <div class="body">
         <div class="t">${esc(p.project_code)}</div>
         <div class="s">${esc([p.name_th || p.name_en, p.type].filter(Boolean).join(' · '))}</div>
-        <div style="font-size:10.5px;font-weight:700;margin-top:2px;color:${
+        <div style="font-size:var(--fs-meta);font-weight:700;margin-top:2px;color:${
           p.pm_name ? 'var(--ok)' : 'var(--warn)'}">${
           esc(p.pm_name ? 'PM: ' + p.pm_name + (p.member_names?.length ? ` · ${p.member_names.length} ${t('admProjMemN')}` : '')
                         : t('admProjNoPm'))}</div>
-        ${p.trips ? `<div style="font-size:10.5px;color:var(--ink-3);margin-top:2px">${
+        ${p.trips ? `<div style="font-size:var(--fs-meta);color:var(--ink-3);margin-top:2px">${
           esc(t('admProjTrips')(p.trips))}</div>` : ''}
       </div>
       ${p.is_active ? `<span class="go">${IC.chev}</span>`
@@ -4720,7 +5086,7 @@ ROUTES['admin-proj'] = async () => {
       <div class="field"><label>${esc(t('admProjCode'))}<span class="req">*</span></label>
         <input id="pc" value="${esc(it?.project_code || '')}" placeholder="${esc(t('admProjCodePh'))}"
           ${it ? 'readonly style="background:var(--neutral);color:var(--ink-3)"' : ''}></div>
-      ${it ? `<div style="font-size:11px;color:var(--ink-3);margin:-6px 0 12px">${esc(t('admProjLocked'))}</div>` : ''}
+      ${it ? `<div style="font-size:var(--fs-meta);color:var(--ink-3);margin:-6px 0 12px">${esc(t('admProjLocked'))}</div>` : ''}
       <div class="field"><label>${esc(t('admProjName'))}</label>
         <input id="pn" value="${esc(it?.name_th || '')}" placeholder="${esc(t('admProjNamePh'))}"></div>
       <div class="field"><label>${esc(t('admProjType'))}</label>
@@ -4728,7 +5094,7 @@ ROUTES['admin-proj'] = async () => {
       <div class="field"><label>${esc(t('admProjPm'))}<span class="req">*</span></label>
         <button class="btn ghost" id="pmBtn" style="text-align:left;justify-content:flex-start">${
           esc(it?.pm_name || t('admProjPmPick'))}</button>
-        <div style="font-size:11px;color:var(--ink-3);margin-top:4px">${esc(t('admProjPmWhy'))}</div></div>
+        <div style="font-size:var(--fs-meta);color:var(--ink-3);margin-top:4px">${esc(t('admProjPmWhy'))}</div></div>
       <div class="field"><label>${esc(t('admProjMembers'))}</label>
         <div id="memList"></div>
         <button class="btn ghost" id="memAdd" style="margin-top:6px">${esc(t('admProjMemAdd'))}</button></div>
@@ -4805,10 +5171,10 @@ ROUTES['admin-res'] = async () => {
           k==='room'?IC.cal:k==='vehicle'?IC.car:k==='zoom'?IC.chat:IC.laptop}</div>`}
         <div style="flex:1;min-width:0">
           <div style="font-size:14.5px;font-weight:700">${esc(i.name_th)}</div>
-          <div style="font-size:11.5px;color:var(--ink-3)">${esc([
+          <div style="font-size:var(--fs-meta);color:var(--ink-3)">${esc([
             i.capacity ? t('rmSeats')(i.capacity) : '', i.category, i.storage_location
           ].filter(Boolean).join(' · '))}</div>
-          ${k==='vehicle' ? `<div style="font-size:10.5px;font-weight:700;color:${
+          ${k==='vehicle' ? `<div style="font-size:var(--fs-meta);font-weight:700;color:${
             i.default_driver ? 'var(--ok)' : 'var(--warn)'};margin-top:2px">${
             esc(i.default_driver ? t('carDriver') + ' ' + i.driver_name : t('admResNoDriver'))}</div>` : ''}
         </div>
@@ -5108,7 +5474,7 @@ ROUTES.cars = async (params = {}) => {
     <span><i style="background:var(--warn)"></i>${esc(carStName('in_use'))}</span>
     <span><i style="background:var(--bad)"></i>${esc(t('carUnbooked'))}</span>
   </div>
-  <div style="font-size:11.5px;color:var(--ink-3);margin-top:6px;text-align:center">${esc(t('carTapSlot'))}</div>`;
+  <div style="font-size:var(--fs-meta);color:var(--ink-3);margin-top:6px;text-align:center">${esc(t('carTapSlot'))}</div>`;
 
   document.querySelectorAll('#gr .hr').forEach(cell => cell.onclick = () => {
     const key = cell.closest('.gcol').dataset.k, hr = cell.dataset.h;
@@ -5128,12 +5494,12 @@ ROUTES.cars = async (params = {}) => {
       ${phImg(v,'rphoto') || `<div class="rphoto">${IC.car}</div>`}
       <div style="flex:1;min-width:0">
         <div style="font-size:14.5px;font-weight:700">${esc(v.name_th)}</div>
-        <div style="font-size:11.5px;color:var(--ink-3)">${esc([
+        <div style="font-size:var(--fs-meta);color:var(--ink-3)">${esc([
           v.capacity ? t('rmSeats')(v.capacity) : '',
           v.driver_name ? t('carDriver') + ' ' + v.driver_name : t('carNoDriver'),
           v.note ].filter(Boolean).join(' · '))}</div>
-        ${live ? `<div style="font-size:10.5px;font-weight:800;color:var(--warn);margin-top:2px">● ${esc(carStName('in_use'))}</div>`
-               : (n ? `<div style="font-size:10.5px;color:var(--ink-3);margin-top:2px">${n} ${S.lang==='th'?'เที่ยว':'trips'}</div>` : '')}
+        ${live ? `<div style="font-size:var(--fs-meta);font-weight:800;color:var(--warn);margin-top:2px">● ${esc(carStName('in_use'))}</div>`
+               : (n ? `<div style="font-size:var(--fs-meta);color:var(--ink-3);margin-top:2px">${n} ${S.lang==='th'?'เที่ยว':'trips'}</div>` : '')}
       </div><span class="go">${IC.chev}</span></button>`;
   }).join('');
   paintPhotos($('#vl'));
@@ -5182,12 +5548,12 @@ function tripSheet(x, r, refresh){
     ${x.total_km ? `<div class="card" style="border-color:var(--primary);background:#F5F8FF;padding:12px">
       <div style="display:flex;gap:10px;text-align:center">
         <div style="flex:1"><div style="font-size:18px;font-weight:800;color:var(--primary)">${x.total_km}</div>
-          <div style="font-size:10px;color:var(--ink-3)">${esc(t('carKm'))}</div></div>
+          <div style="font-size:var(--fs-meta);color:var(--ink-3)">${esc(t('carKm'))}</div></div>
         <div style="flex:1"><div style="font-size:18px;font-weight:800;color:var(--primary)">${x.total_mins}</div>
-          <div style="font-size:10px;color:var(--ink-3)">${esc(t('carMin'))}</div></div>
+          <div style="font-size:var(--fs-meta);color:var(--ink-3)">${esc(t('carMin'))}</div></div>
         ${x.co2_kg != null ? `<div style="flex:1">
           <div style="font-size:18px;font-weight:800;color:var(--ok)">${x.co2_kg}</div>
-          <div style="font-size:10px;color:var(--ink-3)">${esc(t('carCo2Unit'))}</div></div>` : ''}
+          <div style="font-size:var(--fs-meta);color:var(--ink-3)">${esc(t('carCo2Unit'))}</div></div>` : ''}
       </div></div>` : ''}
     ${stops.length ? `<div class="section-title" style="margin-top:4px">${esc(t('carStops'))}</div>
       <div class="rows" style="margin-bottom:12px">${stops.map((sp,i) => `
@@ -5269,7 +5635,7 @@ async function pickPlace(initial){
   return new Promise(resolve => {
     sheet(`<h3>${esc(t('carPlace'))}</h3>
       <input id="ppq" value="${esc(initial || '')}" placeholder="${esc(t('carPlacePh'))}" autocomplete="off">
-      <div style="font-size:11px;color:var(--ink-3);margin-top:6px">${esc(t('carPlaceHint'))}</div>
+      <div style="font-size:var(--fs-meta);color:var(--ink-3);margin-top:6px">${esc(t('carPlaceHint'))}</div>
       <div id="ppr" style="margin-top:10px"></div>
       <button class="btn ghost" id="ppuse">${esc(t('carUseTyped'))}</button>
       <button class="btn ghost" id="ppx">${esc(t('cancel'))}</button>`);
@@ -5376,7 +5742,7 @@ ROUTES['car-new'] = async ({ date, veh:preVeh, hour } = {}) => {
       <label class="switch" style="margin-bottom:12px">
         <input type="checkbox" id="multi">
         <span><b>${esc(t('carMulti'))}</b><br>
-          <span style="font-size:11.5px;color:var(--ink-3)">${esc(t('carMultiWhy'))}</span></span>
+          <span style="font-size:var(--fs-meta);color:var(--ink-3)">${esc(t('carMultiWhy'))}</span></span>
       </label>
       <div class="times">
         <div class="tbox"><div class="k">${esc(t('carOut'))}</div>
@@ -5387,8 +5753,8 @@ ROUTES['car-new'] = async ({ date, veh:preVeh, hour } = {}) => {
           <input type="date" id="dd2" value="${day}" class="tin" hidden>
           <input type="time" id="t2" value="${h2}" class="tin big"></div>
       </div>
-      <div style="font-size:11px;color:var(--ink-3);margin-top:8px">${esc(t('carTimeHint'))}</div>
-      <div id="dayCount" style="font-size:11.5px;font-weight:800;color:var(--primary);margin-top:6px"></div>
+      <div style="font-size:var(--fs-meta);color:var(--ink-3);margin-top:8px">${esc(t('carTimeHint'))}</div>
+      <div id="dayCount" style="font-size:var(--fs-meta);font-weight:800;color:var(--primary);margin-top:6px"></div>
     </div>
 
     <div class="card">
@@ -5399,23 +5765,23 @@ ROUTES['car-new'] = async ({ date, veh:preVeh, hour } = {}) => {
         <input id="pp" placeholder="${esc(t('carPurposePh'))}"></div>
       <div class="field" style="margin:0"><label>${esc(t('carProject'))}<span class="req">*</span></label>
         <button class="btn ghost" id="pjBtn" style="text-align:left;justify-content:flex-start">${esc(t('carProjectPh'))}</button></div>
-      <div style="font-size:11px;color:var(--ink-3);margin-top:6px">${esc(t('carProjWhy'))}</div>
+      <div style="font-size:var(--fs-meta);color:var(--ink-3);margin-top:6px">${esc(t('carProjWhy'))}</div>
     </div>
 
     <div class="card">
       <div style="font-size:13px;font-weight:600;margin-bottom:4px">${esc(t('carRoute'))}</div>
-      <div style="font-size:11px;color:var(--ink-3);margin-bottom:9px">${esc(t('carRouteHint'))}</div>
+      <div style="font-size:var(--fs-meta);color:var(--ink-3);margin-bottom:9px">${esc(t('carRouteHint'))}</div>
       <div id="lg"></div>
       <button class="btn ghost" id="addLeg" style="margin-top:2px">${esc(t('carAddStop'))}</button>
       <button class="btn soft" id="calc" style="margin-top:8px">${esc(t('carCalc'))}</button>
-      <div id="split" style="font-size:11.5px;font-weight:700;color:var(--primary);margin-top:9px"></div>
+      <div id="split" style="font-size:var(--fs-meta);font-weight:700;color:var(--primary);margin-top:9px"></div>
     </div>
 
     <div class="card">
       <div class="field"><label>${esc(t('carPax'))}</label>
         <div id="paxList"></div>
         <button class="btn ghost" id="paxAdd" style="margin-top:6px">${esc(t('carPaxAdd'))}</button>
-        <div style="font-size:11px;color:var(--ink-3);margin-top:5px">${esc(t('carPaxWhy'))}</div></div>
+        <div style="font-size:var(--fs-meta);color:var(--ink-3);margin-top:5px">${esc(t('carPaxWhy'))}</div></div>
       <div class="field"><label>${esc(t('carPaxOther'))}</label>
         <input id="px" placeholder="${esc(t('carPaxPh'))}"></div>
       <div class="field"><label>${esc(t('carItems'))}</label>
@@ -5524,9 +5890,9 @@ ROUTES['car-new'] = async ({ date, veh:preVeh, hour } = {}) => {
       <div class="field"><label>${esc(t('carAltNote'))}</label>
         <input id="an" placeholder="${esc(t('carAltNotePh'))}"></div>
       <button class="btn primary" id="aNotify" ${project ? '' : 'disabled'}>${esc(t('carAltNotify'))}</button>
-      <div style="font-size:11px;color:var(--ink-3);margin:-4px 0 10px">${esc(t('carAltNotifyWhy'))}</div>
+      <div style="font-size:var(--fs-meta);color:var(--ink-3);margin:-4px 0 10px">${esc(t('carAltNotifyWhy'))}</div>
       <button class="btn soft" id="aReq" ${project ? '' : 'disabled'}>${esc(t('carAltRequest'))}</button>
-      <div style="font-size:11px;color:var(--ink-3);margin:-4px 0 10px">${esc(t('carAltRequestWhy'))}</div>
+      <div style="font-size:var(--fs-meta);color:var(--ink-3);margin:-4px 0 10px">${esc(t('carAltRequestWhy'))}</div>
       <button class="btn ghost" id="aCx">${esc(t('cancel'))}</button>`);
     $('#aCx').onclick = closeSheet;
     const send = mode => async () => {
@@ -5647,17 +6013,17 @@ ROUTES['car-new'] = async ({ date, veh:preVeh, hour } = {}) => {
       <div style="display:flex;gap:10px;text-align:center">
         <div style="flex:1">
           <div style="font-size:20px;font-weight:800;color:var(--primary)">${route.total_km}</div>
-          <div style="font-size:10.5px;color:var(--ink-3)">${esc(t('carKm'))}</div></div>
+          <div style="font-size:var(--fs-meta);color:var(--ink-3)">${esc(t('carKm'))}</div></div>
         <div style="flex:1">
           <div style="font-size:20px;font-weight:800;color:var(--primary)">${
             hrs ? hrs + ':' + String(mm).padStart(2,'0') : mm}</div>
-          <div style="font-size:10.5px;color:var(--ink-3)">${esc(hrs ? t('carDriveHr') : t('carMin'))}</div></div>
+          <div style="font-size:var(--fs-meta);color:var(--ink-3)">${esc(hrs ? t('carDriveHr') : t('carMin'))}</div></div>
         <div style="flex:1">
           <div style="font-size:20px;font-weight:800;color:${co2!=null?'var(--ok)':'var(--ink-3)'}">${
             co2 != null ? co2 : '—'}</div>
-          <div style="font-size:10.5px;color:var(--ink-3)">${esc(t('carCo2Unit'))}</div></div>
+          <div style="font-size:var(--fs-meta);color:var(--ink-3)">${esc(t('carCo2Unit'))}</div></div>
       </div>
-      <div style="font-size:11px;color:var(--ink-3);margin-top:10px;line-height:1.55">
+      <div style="font-size:var(--fs-meta);color:var(--ink-3);margin-top:10px;line-height:1.55">
         ${esc(t('carDriveOnly'))}<br>
         ${co2 != null ? esc(t('carCo2From')(f, v?.name_th || ''))
                       : `<b style="color:var(--warn)">${esc(t('carCo2NoFactor'))}</b>`}
@@ -5768,12 +6134,12 @@ ROUTES.driver = async () => {
             ${esc(veh?.name_th || '')} · ${esc(hhmm(x.start_at))} → ${esc(hhmm(x.end_at))}</div>
           <div style="font-size:12px;color:var(--ink-2);margin-top:3px">
             ${esc(x.who || '')}${x.passengers ? ' · ' + esc(x.passengers) : ''}</div>
-          ${x.project_code ? `<div style="font-size:11px;color:var(--ink-3);margin-top:2px">${esc(x.project_code)}</div>` : ''}
+          ${x.project_code ? `<div style="font-size:var(--fs-meta);color:var(--ink-3);margin-top:2px">${esc(x.project_code)}</div>` : ''}
         </div>
         <div style="flex:0 0 auto;text-align:right">
           <span class="pill ${live?'new':''}" style="${live?'':'background:var(--neutral);color:var(--ink-3)'}">
             ${esc(carStName(x.status))}</span>
-          ${x.unbooked ? `<div style="font-size:10px;font-weight:800;color:var(--bad);margin-top:4px">
+          ${x.unbooked ? `<div style="font-size:var(--fs-meta);font-weight:800;color:var(--bad);margin-top:4px">
             ${esc(t('carUnbooked'))}</div>` : ''}
         </div>
       </div>
@@ -5782,7 +6148,7 @@ ROUTES.driver = async () => {
           sp.km != null ? ` <span style="color:var(--ink-3)">· ${sp.km} ${esc(t('carKm'))}</span>` : ''}${
           sp.project_code ? ` <span style="color:var(--ink-3)">· ${esc(sp.project_code)}</span>` : ''}</div>`).join('')
       }</div>` : ''}
-      ${live && x.started_at ? `<div style="font-size:11.5px;color:var(--warn);font-weight:700;margin-top:8px">
+      ${live && x.started_at ? `<div style="font-size:var(--fs-meta);color:var(--warn);font-weight:700;margin-top:8px">
         ● ${esc(t('carActualTime'))} ${esc(hhmm(x.started_at))}</div>` : ''}
       <button class="btn primary" data-act="${live?'return':'depart'}" data-r="${esc(x.record_id)}"
         style="margin-top:11px;font-size:16px;padding:16px;${live?'background:var(--ok)':''}">
@@ -6129,7 +6495,7 @@ function drvJobCard(j){
     <div style="display:flex;justify-content:space-between;gap:10px;align-items:flex-start">
       <div style="min-width:0">
         <div style="font-size:16px;font-weight:800;line-height:1.3">${esc(j.title || '-')}</div>
-        <div style="font-size:12.5px;color:var(--ink-2);margin-top:3px">
+        <div style="font-size:var(--fs-sec);color:var(--ink-2);margin-top:3px">
           ${esc(j.vehicle || '')} · ${esc(hhmm(j.start_at))} → ${esc(hhmm(j.end_at))}</div>
         <div style="font-size:12px;color:var(--ink-3);margin-top:2px">
           ${esc(fmtDate(j.start_at))}${j.project_code ? ' · ' + esc(j.project_code) : ''}</div>
@@ -6137,7 +6503,7 @@ function drvJobCard(j){
       ${live ? `<span class="pill new" style="flex:0 0 auto">● ${esc(carStName('in_use'))}</span>` : ''}
     </div>
 
-    <div style="margin-top:10px;font-size:12.5px;color:var(--ink-2);line-height:1.7">
+    <div style="margin-top:10px;font-size:var(--fs-sec);color:var(--ink-2);line-height:1.7">
       <div><b>${esc(t('dpPax'))}:</b> ${esc(j.requester || '-')}${
         j.requester_dept ? ' · ' + esc(j.requester_dept) : ''}${
         j.passengers ? ' · ' + esc(j.passengers) : ''}</div>
@@ -6146,13 +6512,13 @@ function drvJobCard(j){
     </div>
 
     ${stops.length ? `<div style="margin-top:10px">
-      <div style="font-size:11px;font-weight:800;color:var(--ink-3);text-transform:uppercase;
+      <div style="font-size:var(--fs-meta);font-weight:800;color:var(--ink-3);text-transform:uppercase;
         letter-spacing:.05em">${esc(t('dpStops'))}</div>
       ${stops.map((sp,i) => `<div class="stopline ${hit.has(i) ? 'hit' : ''}">
         <span class="dot"></span>
         <div style="min-width:0;flex:1">
-          <div style="font-size:12.5px;font-weight:600">${i+1}. ${esc(sp.to || sp.place || '-')}</div>
-          ${sp.km != null ? `<div style="font-size:11px;color:var(--ink-3)">${esc(String(sp.km))} ${esc(t('carKm'))}</div>` : ''}
+          <div style="font-size:var(--fs-sec);font-weight:600">${i+1}. ${esc(sp.to || sp.place || '-')}</div>
+          ${sp.km != null ? `<div style="font-size:var(--fs-meta);color:var(--ink-3)">${esc(String(sp.km))} ${esc(t('carKm'))}</div>` : ''}
         </div>
         ${live && !hit.has(i) ? `<button class="mini" data-stop="${i}" data-sj="${esc(j.record_id)}"
           style="flex:0 0 auto">${esc(t('dpStopped'))}</button>` : ''}
@@ -6271,7 +6637,7 @@ ROUTES['driver-me'] = async () => {
                 : `<div class="rphoto" style="width:64px;height:64px;border-radius:50%">${IC.user}</div>`}
       <div style="min-width:0">
         <div style="font-size:18px;font-weight:800">${esc(d.name)}</div>
-        <div style="font-size:12.5px;color:var(--ink-3)">${esc(d.company || '')}</div>
+        <div style="font-size:var(--fs-sec);color:var(--ink-3)">${esc(d.company || '')}</div>
       </div>
     </div>
     <div class="field"><label>${esc(t('dpMePhone'))}</label>
@@ -6359,7 +6725,7 @@ ROUTES['admin-drvrep'] = async () => {
         <div style="min-width:0">
           <div style="font-size:14.5px;font-weight:800">${esc(KL[x.kind] || x.kind)} · ${esc(x.driver)}</div>
           <div style="font-size:12px;color:var(--ink-2);margin-top:4px;white-space:pre-wrap">${esc(x.body)}</div>
-          <div style="font-size:11px;color:var(--ink-3);margin-top:4px">${esc(fmtDate(x.at))}</div>
+          <div style="font-size:var(--fs-meta);color:var(--ink-3);margin-top:4px">${esc(fmtDate(x.at))}</div>
         </div>
         <span class="pill ${x.status === 'done' ? 'done' : 'wait'}" style="flex:0 0 auto">${
           esc(x.status === 'done' ? t('dpRepDone') : t('dpRepOpen'))}</span>
@@ -6500,7 +6866,7 @@ ROUTES.labels = async () => {
           <span class="bx">${sel.has(x.resource_id) ? '✓' : ''}</span>
           <span style="flex:1;min-width:0">
             <span style="display:block;font-size:14px;font-weight:700">${esc(x.name_th)}</span>
-            <span style="display:block;font-size:11.5px;color:var(--ink-3);
+            <span style="display:block;font-size:var(--fs-meta);color:var(--ink-3);
               font-family:ui-monospace,monospace">${esc(x.asset_tag || t('admLabelsNoTag'))}</span>
           </span></button>`).join('')}</div>`;
 
@@ -6659,11 +7025,11 @@ ROUTES['admin-dsr'] = async () => {
       <div style="display:flex;justify-content:space-between;gap:8px;align-items:flex-start">
         <div style="min-width:0">
           <div style="font-size:14.5px;font-weight:800">${esc(KL[x.kind] || x.kind)}</div>
-          <div style="font-size:12.5px;color:var(--ink-2);margin-top:3px">${esc(x.who)} · ${esc(x.email)}</div>
+          <div style="font-size:var(--fs-sec);color:var(--ink-2);margin-top:3px">${esc(x.who)} · ${esc(x.email)}</div>
           ${x.note ? `<div style="font-size:12px;color:var(--ink-2);margin-top:5px;white-space:pre-wrap">${esc(x.note)}</div>` : ''}
-          <div style="font-size:11px;color:var(--ink-3);margin-top:5px">
+          <div style="font-size:var(--fs-meta);color:var(--ink-3);margin-top:5px">
             ${esc(x.request_id)} · ${esc(fmtDate(x.at))}</div>
-          ${x.status !== 'done' ? `<div style="font-size:11.5px;font-weight:800;margin-top:3px;color:${
+          ${x.status !== 'done' ? `<div style="font-size:var(--fs-meta);font-weight:800;margin-top:3px;color:${
             x.overdue ? 'var(--bad)' : 'var(--warn)'}">${
             esc(x.overdue ? t('admDsrOverdue')(x.due_at) : t('admDsrDue')(x.due_at))}</div>` : ''}
           ${x.outcome ? `<div style="font-size:12px;color:var(--ok);margin-top:5px">✓ ${esc(x.outcome)}</div>` : ''}
@@ -7133,7 +7499,7 @@ async function boot(){
     S.today = a.today || null; S.bootNews = a.announcements || null;
     $x('#bellDot').textContent = S.notifCount; $x('#bellDot').hidden = false;
     const banner = el(`<div style="background:#FFFBEB;border-bottom:1px solid #FDE68A;color:#92400E;
-      font-size:11.5px;font-weight:600;text-align:center;padding:6px 12px">
+      font-size:var(--fs-meta);font-weight:600;text-align:center;padding:6px 12px">
       โหมดพรีวิว · ข้อมูลตัวอย่าง · ใส่ CFG.GAS_URL เพื่อใช้งานจริง</div>`);
     document.querySelector('.topbar').after(banner);
     go('home');

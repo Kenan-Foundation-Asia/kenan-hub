@@ -753,6 +753,196 @@ body.drvmode .nav{display:flex!important}
 .stopline.hit .dot{background:var(--ok)}
 
 
+/* ══════════ แถบบอกขั้นตอน ══════════
+   คนที่เพิ่งเปิดแอปครั้งแรกไม่รู้ว่าข้างหน้ายังเหลืออะไรอีก
+   ถ้าไม่บอก เขาจะเดาว่ายาว แล้วปิดทิ้งกลางทาง
+   แถบนี้จึงไม่ได้มีไว้สวย แต่มีไว้ตอบว่า "อีกนานไหม" */
+.stpb{ margin:0 0 22px }
+.stpl{ display:flex; align-items:flex-start; list-style:none; margin:0; padding:0 }
+.stp{ flex:1; min-width:0; position:relative; text-align:center; padding-top:2px }
+/* เส้นเชื่อมวาดจากจุดกึ่งกลางวงกลมของอันก่อนหน้า ไปกึ่งกลางของอันนี้ */
+.stp::before{ content:''; position:absolute; top:12px; right:50%; width:100%; height:2px;
+  background:var(--line) }
+.stp:first-child::before{ display:none }
+.stp.done::before, .stp.now::before{ background:var(--brand) }
+.stpn{ position:relative; z-index:1; display:grid; place-items:center;
+  width:26px; height:26px; margin:0 auto; border-radius:50%;
+  background:var(--bg); border:2px solid var(--line); color:var(--ink-3);
+  font-size:var(--fs-meta); font-weight:700; font-variant-numeric:tabular-nums }
+.stp.done .stpn{ background:var(--brand); border-color:var(--brand); color:#fff }
+.stp.now  .stpn{ background:var(--surface); border-color:var(--brand); color:var(--brand);
+  box-shadow:0 0 0 4px var(--brand-50) }
+.stpt{ display:block; margin-top:6px; padding:0 3px; font-size:var(--fs-meta);
+  line-height:1.32; color:var(--ink-3) }
+.stp.now .stpt{ color:var(--brand); font-weight:700 }
+.stp.done .stpt{ color:var(--ink-2) }
+.stpleft{ margin:13px 0 0; text-align:center; font-size:var(--fs-sec); color:var(--ink-2) }
+
+/* ══════════ ปฏิทินรายเดือน ══════════
+   มุมมองรายวันตอบได้แค่ "วันนี้ว่างไหม"
+   แต่คำถามที่คนถามจริงคือ "เดือนนี้วันไหนยังว่าง" ซึ่งต้องเห็นทั้งเดือนพร้อมกัน
+   บนจอแคบพื้นที่ต่อช่องเหลือ ~50px ใส่ตัวหนังสือไม่ได้ จึงเป็นจุด
+   พอจอกว้างขึ้นค่อยเปลี่ยนเป็นแถบที่มีชื่อเรื่อง */
+.mnav{ display:flex; align-items:center; justify-content:space-between; gap:10px;
+  margin:0 0 12px }
+.mnav h3{ margin:0; font-size:var(--fs-h2); font-weight:700; color:var(--ink) }
+.mnav .mbtn{ width:38px; height:38px; border-radius:10px; border:1px solid var(--line);
+  background:var(--surface); color:var(--ink-2); display:grid; place-items:center;
+  cursor:pointer; font-size:16px; flex:0 0 auto }
+.mnav .mbtn:hover{ border-color:var(--brand); color:var(--brand) }
+.mnav .mtoday{ width:auto; padding:0 13px; font-size:var(--fs-sec); font-weight:700;
+  color:var(--brand) }
+
+.mgrid{ border:1px solid var(--line); border-radius:var(--r); overflow:hidden;
+  background:var(--surface) }
+.mdow{ display:grid; grid-template-columns:repeat(7,1fr); background:var(--bg);
+  border-bottom:1px solid var(--line) }
+.mdow span{ padding:7px 2px; text-align:center; font-size:var(--fs-meta); font-weight:700;
+  color:var(--ink-3) }
+.mdow span.we{ color:var(--danger) }
+.mbody{ display:grid; grid-template-columns:repeat(7,1fr) }
+.mc{ min-height:56px; padding:5px 3px 6px; border-right:1px solid var(--line);
+  border-bottom:1px solid var(--line); background:var(--surface); cursor:pointer;
+  display:flex; flex-direction:column; align-items:center; gap:4px; text-align:center }
+.mc:nth-child(7n){ border-right:0 }
+.mbody .mc:nth-last-child(-n+7){ border-bottom:0 }
+.mc:hover{ background:var(--brand-50) }
+.mc.out{ background:var(--bg) }
+.mc.out .mcd{ color:var(--ink-3); opacity:.55 }
+.mcd{ font-size:var(--fs-sec); font-weight:600; color:var(--ink);
+  font-variant-numeric:tabular-nums; width:24px; height:24px; border-radius:50%;
+  display:grid; place-items:center; flex:0 0 auto }
+.mc.today .mcd{ background:var(--brand); color:#fff }
+.mc.on{ box-shadow:inset 0 0 0 2px var(--brand) }
+.mce{ display:flex; flex-wrap:wrap; justify-content:center; gap:3px; min-height:7px }
+.mdot{ width:6px; height:6px; border-radius:50%; background:var(--brand); display:block }
+.mdot.warn{ background:var(--warn) } .mdot.bad{ background:var(--danger) }
+.mdot.mine{ background:var(--ok) }
+.mmore{ font-size:9.5px; font-style:normal; color:var(--ink-3); font-weight:700;
+  line-height:1 }
+.mcl{ display:none }
+@media(min-width:640px){
+  .mc{ min-height:88px; align-items:stretch; padding:6px 5px 7px }
+  .mcd{ margin:0 auto 0 0 }
+  .mce{ display:none }
+  .mcl{ display:flex; flex-direction:column; gap:2px; width:100%; overflow:hidden }
+  .mbar{ font-style:normal; font-size:var(--fs-meta); line-height:1.35; text-align:left;
+    padding:1px 5px; border-radius:4px; background:var(--brand-50); color:var(--brand);
+    white-space:nowrap; overflow:hidden; text-overflow:ellipsis; font-weight:600 }
+  .mbar.warn{ background:var(--warn-bg); color:var(--warn) }
+  .mbar.bad { background:var(--danger-bg); color:var(--danger) }
+  .mbar.mine{ background:var(--ok-bg); color:var(--ok) }
+  .mbar.more{ background:none; color:var(--ink-3); font-weight:400 }
+}
+.mlgd{ display:flex; flex-wrap:wrap; gap:12px; margin-top:11px;
+  font-size:var(--fs-meta); color:var(--ink-3) }
+.mlgd span{ display:inline-flex; align-items:center; gap:5px }
+
+/* ══════════ หน้าอุปกรณ์แบบ "ของชิ้นนี้ทำอะไรได้" ══════════
+   ของเดิมเป็นหน้าคุณสมบัติ: ยี่ห้อ รุ่น ซีเรียล ปีที่ซื้อ แล้วปุ่มอยู่ล่างสุด
+   แต่คนที่สแกน QR คือคนที่ "ยืนอยู่หน้าเครื่อง" เขาเห็นยี่ห้อกับรุ่นอยู่แล้วด้วยตา
+   สิ่งที่เขาไม่รู้คือ "ตอนนี้ว่างไหม" กับ "จะเอาไปใช้ยังไง" — สองอย่างนี้จึงขึ้นก่อน */
+.obj{ padding-bottom:20px }
+.obj-ph{ width:100%; height:190px; object-fit:cover; border-radius:var(--r-lg);
+  background:var(--bg); display:block }
+.obj h2{ margin:14px 0 3px; font-size:var(--fs-h1); font-weight:700; color:var(--ink);
+  line-height:1.3 }
+.obj-sub{ font-size:var(--fs-sec); color:var(--ink-3) }
+.obj-sub code{ font-family:ui-monospace,monospace; letter-spacing:.05em }
+
+/* บรรทัดสถานะ — บล็อกเดียวในหน้าที่ได้พื้นสี เพราะเป็นคำตอบของคำถามหลัก */
+.obj-st{ display:flex; align-items:flex-start; gap:11px; margin:16px 0 0;
+  padding:14px 15px; border-radius:var(--r); border:1px solid transparent }
+.obj-st.free{ background:var(--ok-bg);     border-color:#BFE3D5 }
+.obj-st.busy{ background:var(--warn-bg);   border-color:#F0DCBB }
+.obj-st.late{ background:var(--danger-bg); border-color:#F2CFCA }
+.obj-ic{ width:26px; height:26px; border-radius:50%; flex:0 0 auto; display:grid;
+  place-items:center; color:#fff }
+.obj-ic svg{ width:15px; height:15px; display:block }
+.obj-st.free .obj-ic{ background:var(--ok) }
+.obj-st.busy .obj-ic{ background:var(--warn) }
+.obj-st.late .obj-ic{ background:var(--danger) }
+.obj-st b{ display:block; font-size:var(--fs-cta); line-height:1.42; color:var(--ink) }
+.obj-st span{ display:block; margin-top:2px; font-size:var(--fs-sec); color:var(--ink-2);
+  line-height:1.5 }
+
+.obj-act{ display:flex; flex-direction:column; gap:9px; margin:15px 0 0 }
+@media(min-width:520px){ .obj-act{ flex-direction:row } .obj-act .btn{ flex:1 } }
+
+/* ข้อมูลเครื่องยังอยู่ แค่ไม่ได้อยู่ข้างหน้า — คนที่ต้องใช้จริง (IT ตอนซ่อม) เปิดหาได้ */
+.obj-more{ margin-top:18px; border-top:1px solid var(--line); padding-top:6px }
+.obj-more summary{ cursor:pointer; padding:9px 2px; font-size:var(--fs-sec);
+  font-weight:600; color:var(--ink-2); width:fit-content }
+.obj-more summary:hover{ color:var(--brand) }
+.obj-more dl{ display:grid; grid-template-columns:auto 1fr; gap:7px 16px;
+  margin:8px 0 4px; font-size:var(--fs-sec) }
+.obj-more dt{ color:var(--ink-3) }
+.obj-more dd{ margin:0; color:var(--ink) }
+.obj-more dd.mono{ font-family:ui-monospace,monospace; letter-spacing:.04em }
+.obj-lnk{ display:flex; align-items:center; justify-content:space-between; gap:10px;
+  width:100%; margin-top:11px; padding:13px 15px; border:1px solid var(--line);
+  border-radius:var(--r); background:var(--surface); cursor:pointer;
+  font-size:var(--fs-sec); font-weight:700; color:var(--brand); text-align:left }
+.obj-lnk:hover{ background:var(--brand-50) }
+/* ไอคอนลูกศรใน .btn ถูกกำหนดขนาดไว้แล้ว แต่ปุ่มนี้ไม่ใช่ .btn
+   ถ้าไม่กำหนดเอง SVG จะยืดเต็มความกว้างที่เหลือ กลายเป็นลูกศรยักษ์กลางจอ */
+.obj-lnk svg{ width:18px; height:18px; flex:0 0 auto }
+.obj-lnk span{ min-width:0 }
+
+/* ══════════ ฟอร์มจองรถแบบถามทีละขั้น ══════════
+   ของเดิมกางทุกช่องออกมาพร้อมกัน 5 การ์ด — รถ เวลา เหตุผล เส้นทาง ผู้โดยสาร
+   ทั้งหมดนั้นคือสิ่งที่ "ระบบ" ต้องการ ไม่ใช่ลำดับที่ "คน" คิด
+   คนคิดว่า: จะไปเมื่อไร ไปไหน ไปทำอะไร ไปกี่คน — สี่ข้อนี้ก่อน ที่เหลือค่อยว่ากัน */
+.qz{ background:var(--surface); border:1px solid var(--line); border-radius:var(--r);
+  padding:16px 15px; margin-bottom:11px }
+.qz-q{ display:flex; align-items:baseline; gap:9px; margin:0 0 11px }
+.qz-n{ width:22px; height:22px; flex:0 0 auto; border-radius:50%; background:var(--brand-50);
+  color:var(--brand); display:grid; place-items:center; font-size:var(--fs-meta);
+  font-weight:700; align-self:center }
+.qz-q h4{ margin:0; font-size:var(--fs-cta); font-weight:700; color:var(--ink) }
+.qz-hint{ font-size:var(--fs-meta); color:var(--ink-3); margin-top:8px; line-height:1.5 }
+
+/* ตัวนับจำนวนคน — กดง่ายกว่าพิมพ์ตัวเลขบนมือถือ และไม่มีทางกรอกผิดรูปแบบ */
+.cnt{ display:flex; align-items:center; gap:14px }
+.cnt button{ width:46px; height:46px; flex:0 0 auto; border-radius:12px;
+  border:1px solid var(--line); background:var(--surface); color:var(--brand);
+  font-size:22px; font-weight:700; cursor:pointer; display:grid; place-items:center }
+.cnt button:hover:not(:disabled){ border-color:var(--brand); background:var(--brand-50) }
+.cnt button:disabled{ color:var(--ink-3); opacity:.45; cursor:default }
+.cnt .cntv{ font-size:26px; font-weight:700; color:var(--ink); min-width:56px;
+  text-align:center; font-variant-numeric:tabular-nums }
+.cnt .cntu{ font-size:var(--fs-sec); color:var(--ink-3) }
+
+/* สรุปคำตอบขั้นที่ 1 ที่หัวขั้นที่ 2 — กดกลับไปแก้ได้โดยไม่ต้องเริ่มใหม่ */
+.recap{ background:var(--brand-50); border:1px solid var(--brand-300); border-radius:var(--r);
+  padding:13px 15px; margin-bottom:14px; width:100%; text-align:left; cursor:pointer }
+.recap:hover{ background:#DDEEF6 }
+.recap-h{ display:flex; align-items:center; justify-content:space-between; gap:10px;
+  font-size:var(--fs-meta); font-weight:700; letter-spacing:.05em; text-transform:uppercase;
+  color:var(--brand); margin-bottom:6px }
+.recap dl{ display:grid; grid-template-columns:auto 1fr; gap:3px 14px; margin:0;
+  font-size:var(--fs-sec) }
+.recap dt{ color:var(--ink-2) }
+.recap dd{ margin:0; color:var(--ink); font-weight:600; min-width:0;
+  overflow:hidden; text-overflow:ellipsis }
+
+/* ส่วนที่ไม่ใช่ทุกเที่ยวต้องใช้ — พับไว้ ไม่ได้ตัดทิ้ง */
+.fold{ border:1px solid var(--line); border-radius:var(--r); background:var(--surface);
+  margin-bottom:11px; overflow:hidden }
+.fold > summary{ cursor:pointer; padding:15px; font-size:var(--fs-cta); font-weight:700;
+  color:var(--ink); display:flex; align-items:center; justify-content:space-between; gap:10px }
+.fold > summary::-webkit-details-marker{ display:none }
+.fold > summary::after{ content:'▾'; color:var(--ink-3); font-size:13px; flex:0 0 auto }
+.fold[open] > summary::after{ content:'▴' }
+.fold > summary:hover{ background:var(--brand-50) }
+.fold-b{ padding:0 15px 15px }
+.fold-s{ display:block; font-size:var(--fs-meta); font-weight:400; color:var(--ink-3);
+  margin-top:2px }
+.fold > summary > span{ min-width:0 }
+
+/* รถที่ที่นั่งไม่พอกับจำนวนคนที่กรอกไว้ ต้องเห็นตั้งแต่ก่อนเลือก ไม่ใช่ตอนกดจองแล้วเด้ง */
+.vsmall{ font-size:var(--fs-meta); font-weight:700; color:var(--danger); margin-top:3px }
+
 /* ══════════ หน้าแรกแบบห้องนักบิน + บริการทั้งหมด ══════════
    หลักที่ยึด: ไม่ใช่ทุกอย่างเป็นการ์ด
    ขอบ พื้น มุมมน เงา แต่ละอย่างแปลว่า "นี่คือของคนละชิ้น"
@@ -998,7 +1188,7 @@ const CFG = {
   GAS_URL : 'https://script.google.com/macros/s/AKfycbyOjh4BAAbzY5QfZNG_oGuxbmvZwHjEAKazRMuMxrDeoNknE_rqEoAFdkuJldOPP_q_eg/exec',
   LIFF_TIMEOUT_MS : 3500,
   CONSENT_VERSION : '2026-09-01',
-  BUILD : '2026-09-06a'      // ต้องตรงกับ BUILD ใน Code.gs ที่ Deploy ไว้
+  BUILD : '2026-09-06b'      // ต้องตรงกับ BUILD ใน Code.gs ที่ Deploy ไว้
 };
 
 /* เก็บ ?go=... ไว้ตั้งแต่ต้น เพราะเดี๋ยวจะล้าง query string ทิ้งหลัง LIFF ล็อกอิน
@@ -1318,6 +1508,45 @@ const T = {
     carFind:'ค้นหา', carUseTyped:'ใช้ข้อความที่พิมพ์',
     carPlaceShort:'พิมพ์อย่างน้อย 2 ตัวอักษร', carPlaceNone:'ไม่พบสถานที่นี้ — ลองพิมพ์สั้นลง หรือกดใช้ข้อความที่พิมพ์',
     carCalc:'คำนวณระยะทางและเวลา', carCalcing:'กำลังคำนวณ…',
+    /* ── แถบขั้นตอน · ปฏิทินรายเดือน · หน้าอุปกรณ์ · ฟอร์มจองรถแบบทีละขั้น ── */
+    stpAria:(n, all) => `ขั้นที่ ${n} จาก ${all}`,
+    stpLeft:n => n === 1 ? 'อีก 1 ขั้นตอนก็เสร็จแล้ว' : `เหลืออีก ${n} ขั้นตอน`,
+    stpLast:'ขั้นสุดท้ายแล้ว',
+    obLine:'บัญชี LINE', obConsent:'ข้อตกลง', obYou:'ข้อมูลของคุณ', obMail:'ยืนยันอีเมล',
+    obDone:'พร้อมใช้งาน',
+
+    mnPrev:'เดือนก่อนหน้า', mnNext:'เดือนถัดไป',
+    mnN:n => `${n} รายการ`,
+    rmMonth:'รายเดือน', mnTapDay:'แตะวันที่เพื่อดูรายละเอียดของวันนั้น',
+    mnMine:'ของฉัน', mnOther:'ของคนอื่น', mnOut:'ออกไปแล้ว',
+    eqCal:'ปฏิทินอุปกรณ์', eqList:'รายการ',
+
+    objFree:'ว่างอยู่ หยิบไปใช้ได้เลย', objNoPlace:'ไม่ได้ระบุที่เก็บ',
+    objMine:'คุณถืออยู่ตอนนี้', objMineLate:'คุณถืออยู่ และเลยกำหนดคืนแล้ว',
+    objHeldBy:w => `${w} ถืออยู่ตอนนี้`,
+    objSince:d => `รับไปเมื่อ ${d}`,
+    objDueOn:d => `กำหนดคืน ${d}`,
+    objNoDue:'ไม่ได้กำหนดวันคืน',
+    objReserveWhenFree:'จองคิวถัดไป',
+    objNextMine:d => `คุณจองคิวถัดไปไว้แล้ว เริ่ม ${d}`,
+    objNextBy:(w, d) => `${w} จองคิวถัดไปไว้ เริ่ม ${d}`,
+    objManual:'คู่มือการใช้งาน', objSpecs:'ข้อมูลเครื่อง',
+    objBrand:'ยี่ห้อ / รุ่น', objAll:'ดูอุปกรณ์ทั้งหมด', objReport:'แจ้งว่าของชิ้นนี้มีปัญหา',
+    isuAbout:x => `เกี่ยวกับ: ${x}`,
+
+    carS1:'เรื่องที่ต้องรู้', carS2:'รายละเอียด',
+    carQWhen:'จะไปเมื่อไร', carQWhere:'จะไปที่ไหน',
+    carQWhat:'ไปทำอะไร', carQWho:'ไปกี่คน',
+    carDestHint:'ใส่จุดหมายหลักก่อน จุดแวะระหว่างทางเพิ่มได้ในขั้นถัดไป',
+    carPeople:'คน', carNpeople:n => `${n} คน`,
+    carHcHint:'นับรวมตัวคุณเองด้วย ใช้ดูว่ารถคันไหนนั่งพอ',
+    carPlus:'เพิ่มจำนวนคน', carMinus:'ลดจำนวนคน',
+    carNext:'ถัดไป →', carRecap:'สรุปที่กรอกไว้', carEdit:'แก้ไข',
+    carNeedDest:'ยังไม่ได้ใส่ว่าจะไปที่ไหน',
+    carNeedPurpose:'ยังไม่ได้ใส่ว่าไปทำอะไร',
+    carRouteSub:'ใส่เฉพาะเที่ยวที่แวะหลายจุด หรือต้องการระยะทางจริง',
+    carExtras:'ของที่ขนไป · หมายเหตุ', carExtrasSub:'ไม่ใส่ก็จองได้',
+    carSeatsShort:(cap, n) => `นั่งได้ ${cap} ที่ · ไป ${n} คน อาจไม่พอ`,
     carNeedRoute:'ต้องมีอย่างน้อย 2 จุดที่ใส่ชื่อแล้ว',
     carRouteSome:'บางช่วงคำนวณไม่ได้ ลองแก้ชื่อสถานที่ให้ชัดขึ้น',
     carKm:'กม.', carMin:'นาที', carDriveHr:'ชม. ขับรถ',
@@ -1871,6 +2100,45 @@ const T = {
     carFind:'Search', carUseTyped:'Use what I typed',
     carPlaceShort:'Type at least 2 characters', carPlaceNone:'Not found — try something shorter, or use what you typed',
     carCalc:'Calculate distance and time', carCalcing:'Calculating…',
+    /* ── step bar · month view · item page · staged car form ── */
+    stpAria:(n, all) => `Step ${n} of ${all}`,
+    stpLeft:n => n === 1 ? 'One more step to go' : `${n} steps to go`,
+    stpLast:'Last step',
+    obLine:'LINE account', obConsent:'Agreement', obYou:'Your details', obMail:'Verify email',
+    obDone:'Ready to use',
+
+    mnPrev:'Previous month', mnNext:'Next month',
+    mnN:n => `${n} bookings`,
+    rmMonth:'Month', mnTapDay:'Tap a date to see that day in full',
+    mnMine:'Mine', mnOther:'Someone else', mnOut:'Out now',
+    eqCal:'Equipment calendar', eqList:'List',
+
+    objFree:'Available — take it now', objNoPlace:'No storage location set',
+    objMine:'You have this out', objMineLate:'You have this out, and it is overdue',
+    objHeldBy:w => `${w} has this out`,
+    objSince:d => `Taken ${d}`,
+    objDueOn:d => `Due back ${d}`,
+    objNoDue:'No return date set',
+    objReserveWhenFree:'Reserve the next slot',
+    objNextMine:d => `You have the next booking, from ${d}`,
+    objNextBy:(w, d) => `${w} has the next booking, from ${d}`,
+    objManual:'User manual', objSpecs:'Device details',
+    objBrand:'Brand / model', objAll:'All equipment', objReport:'Report a problem with this item',
+    isuAbout:x => `About: ${x}`,
+
+    carS1:'The essentials', carS2:'Details',
+    carQWhen:'When are you going?', carQWhere:'Where to?',
+    carQWhat:'What for?', carQWho:'How many people?',
+    carDestHint:'Main destination first — extra stops come in the next step',
+    carPeople:'people', carNpeople:n => `${n} ${n === 1 ? 'person' : 'people'}`,
+    carHcHint:'Include yourself. Used to check which vehicle has enough seats.',
+    carPlus:'Add a person', carMinus:'Remove a person',
+    carNext:'Next →', carRecap:'What you entered', carEdit:'Edit',
+    carNeedDest:'Destination is still empty',
+    carNeedPurpose:'Purpose is still empty',
+    carRouteSub:'Only for multi-stop trips, or when you need real distances',
+    carExtras:'Items carried · notes', carExtrasSub:'Optional',
+    carSeatsShort:(cap, n) => `${cap} seats · ${n} going — may not fit`,
     carNeedRoute:'At least 2 points need a place',
     carRouteSome:'Some legs could not be calculated — try clearer place names',
     carKm:'km', carMin:'min', carDriveHr:'hrs driving',
@@ -2364,7 +2632,28 @@ const MOCK = {
         { record_id:'RB-2', resource_id:'RM-2', title:'สัมภาษณ์ผู้สมัคร',
           start_at:k+'T13:30:00+07:00', end_at:k+'T15:00:00+07:00',
           requester_id:'K-4920', who:'พิพัฒน์ ส.', who_dept:'Social Impact and Innovation' }] };
-    return q => (q && q.kind === 'zoom') ? zoom : rooms;
+    /* มุมมองรายเดือนขอ 42 วัน — กระจายการจองให้ทั้งเดือน ไม่งั้นพรีวิวจะเห็นจุดวันเดียว */
+    const spread = (base, pre) => {
+      const out = Object.assign({}, base, { bookings: base.bookings.slice() });
+      const D = new Date();
+      [2,4,5,8,9,11,15,16,18,22,23,25,29].forEach((off, ix) => {
+        const dd = new Date(D); dd.setDate(D.getDate() + off - 8);
+        const kk = `${dd.getFullYear()}-${String(dd.getMonth()+1).padStart(2,'0')}-${String(dd.getDate()).padStart(2,'0')}`;
+        const h = 9 + (ix % 6);
+        out.bookings.push({ record_id: pre + ix,
+          resource_id: base.rooms[ix % base.rooms.length].resource_id,
+          title: ['ประชุมทีมประจำสัปดาห์','อบรม MSME','สัมภาษณ์ผู้สมัคร','เวิร์กช็อป M&E'][ix % 4],
+          start_at: `${kk}T${String(h).padStart(2,'0')}:00:00+07:00`,
+          end_at:   `${kk}T${String(h + 2).padStart(2,'0')}:00:00+07:00`,
+          requester_id: ix % 3 === 0 ? 'K-4920' : 'K-1180',
+          who: ix % 3 === 0 ? 'พิพัฒน์ ส.' : 'สมชาย ก.' });
+      });
+      return out;
+    };
+    return q => {
+      const base = (q && q.kind === 'zoom') ? zoom : rooms;
+      return (q && Number(q.days || 1) > 7) ? spread(base, 'RBX') : base;
+    };
   })(),
   createRoomBooking:{ ok:true }, cancelRoomBooking:{ ok:true },
   getEquipment:{ ok:true, items:[
@@ -2419,12 +2708,47 @@ const MOCK = {
     { report_id:'DRP-0', at:'2026-09-02T18:40:00+07:00', kind:'leave', driver:'ประยูร ทางไกล',
       body:'ขอลาวันที่ 10 ก.ย. ไปต่อใบขับขี่', photo_id:'', status:'done' }] },
   driverReportClose:{ ok:true },
-  getItemByTag:{ ok:true, item:{
-    resource_id:'EQ-1', asset_tag:'KEN-0001', kind:'equipment', name_th:'กล้อง Canon R6',
-    category:'กล้อง', brand:'Canon', model:'EOS R6', serial:'042021000123',
-    spec:'20MP · 4K60 · เมาท์ RF', purchase_year:'2566',
-    storage_location:'ตู้ AV ชั้น 2 ช่อง 1', note:'แบต 2 ก้อน · สายชาร์จ',
-    available:true, holder:'', since:'', loan_id:'', mine:false, my_reservation:'' } },
+  /* คืนสองสถานะให้เห็นทั้งคู่ในพรีวิว: KEN-0001 ว่าง · รหัสอื่นมีคนถืออยู่
+     หน้าอุปกรณ์เปลี่ยนหน้าตาไปเลยระหว่างสองกรณีนี้ ต้องดูได้ทั้งสองแบบ */
+  getItemByTag:(function(){
+    const soon = n => new Date(Date.now() + n * 86400000).toISOString();
+    const free = { resource_id:'EQ-1', asset_tag:'KEN-0001', kind:'equipment',
+      name_th:'กล้อง Canon R6', category:'กล้อง', brand:'Canon', model:'EOS R6',
+      serial:'042021000123', spec:'20MP · 4K60 · เมาท์ RF', purchase_year:'2566',
+      storage_location:'ตู้ AV ชั้น 2 ช่อง 1', note:'แบต 2 ก้อน · สายชาร์จ',
+      manual_url:'https://drive.google.com/file/d/example-canon-r6-manual/view',
+      available:true, holder:'', since:'', due:'', loan_id:'', mine:false, my_reservation:'',
+      next_resv:{ start_at: soon(3), end_at: soon(4), who:'ณัฐพร ส.', mine:false } };
+    const held = Object.assign({}, free, {
+      resource_id:'EQ-3', asset_tag:'KEN-0003', name_th:'โปรเจกเตอร์ Epson EB-992F',
+      category:'ภาพ', brand:'Epson', model:'EB-992F', serial:'X4KE2900891',
+      spec:'4000 ANSI · Full HD · WiFi', storage_location:'ห้องเก็บของ ชั้น 1',
+      manual_url:'', available:false, holder:'กัลยา ม.', since: soon(-2), due: soon(1),
+      loan_id:'BRW-260904-011', mine:false, next_resv:null });
+    return q => ({ ok:true,
+      item: String((q && q.tag) || '').toUpperCase() === 'KEN-0001' ? free : held });
+  })(),
+  getEquipMonth:(function(){
+    /* การยืมกินหลายวัน หน้าปฏิทินจะกางออกเป็นวันๆ ให้เอง ตรงนี้ส่งแค่ช่วงเริ่ม-จบ */
+    const key = n => { const d = new Date(); d.setDate(d.getDate() + n);
+      return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`; };
+    const iso = (n, h) => `${key(n)}T${String(h).padStart(2,'0')}:00:00+07:00`;
+    return { ok:true, from:key(-8), days:42,
+      resources:[{ resource_id:'EQ-1', name_th:'กล้อง Canon R6', asset_tag:'KEN-0001' },
+                 { resource_id:'EQ-2', name_th:'ไมค์ลอย Shure', asset_tag:'KEN-0002' },
+                 { resource_id:'EQ-3', name_th:'โปรเจกเตอร์ Epson', asset_tag:'KEN-0003' }],
+      items:[
+        { record_id:'BRW-1', resource_id:'EQ-3', name:'โปรเจกเตอร์ Epson', asset_tag:'KEN-0003',
+          status:'issued',   start_at:iso(-2, 9), end_at:iso(1, 17), who:'กัลยา มณีรัตน์', mine:false },
+        { record_id:'BRW-2', resource_id:'EQ-1', name:'กล้อง Canon R6', asset_tag:'KEN-0001',
+          status:'reserved', start_at:iso(3, 8),  end_at:iso(4, 18), who:'ณัฐพร สุขใจ',   mine:false },
+        { record_id:'BRW-3', resource_id:'EQ-2', name:'ไมค์ลอย Shure', asset_tag:'KEN-0002',
+          status:'reserved', start_at:iso(6, 9),  end_at:iso(6, 17), who:'พิพัฒน์ ส.',    mine:true },
+        { record_id:'BRW-4', resource_id:'EQ-1', name:'กล้อง Canon R6', asset_tag:'KEN-0001',
+          status:'reserved', start_at:iso(11, 8), end_at:iso(13, 18), who:'สมชาย กิตติวงศ์', mine:false },
+        { record_id:'BRW-5', resource_id:'EQ-3', name:'โปรเจกเตอร์ Epson', asset_tag:'KEN-0003',
+          status:'reserved', start_at:iso(17, 9), end_at:iso(17, 16), who:'พิพัฒน์ ส.',   mine:true }] };
+  })(),
   getLabels:{ ok:true, items:[
     { resource_id:'EQ-1', asset_tag:'KEN-0001', name_th:'กล้อง Canon R6', category:'กล้อง',
       brand:'Canon', model:'EOS R6', storage_location:'ตู้ AV ชั้น 2 ช่อง 1', is_active:true },
@@ -2462,7 +2786,7 @@ const MOCK = {
     category:'กล้อง', name_th:'กล้อง Canon R6', spec:'20MP · 4K60 · เมาท์ RF', confidence:0.88 } },
   getCarDay:(function(){
     const d = new Date(), k = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
-    return { ok:true, date:k, isDriver:true, isOfficer:true,
+    const day1 = { ok:true, date:k, isDriver:true, isOfficer:true,
       vehicles:[
         { resource_id:'VEH-1', name_th:'Toyota Commuter', capacity:12, plate:'ฮค-1234 กรุงเทพมหานคร',
           color:'ขาว', fuel_type:'ดีเซล', co2_per_km:'0.28',
@@ -2498,6 +2822,29 @@ const MOCK = {
           started_at:k+'T10:00:00+07:00', finished_at:'',
           requester_id:'', who:'', driver_id:'K-9002', driver:'ประยูร ทางไกล',
           project_code:'', title:'เที่ยวที่ไม่ได้จองล่วงหน้า', stops:[], passengers:'', unbooked:true }] };
+    /* มุมมองรายเดือนขอ 42 วัน — รถมีแค่สองคัน คิวเลยชนบ่อย ต้องเห็นทั้งเดือนถึงจะวางแผนได้ */
+    return q => {
+      if(!q || Number(q.days || 1) <= 7) return day1;
+      const out = Object.assign({}, day1, { trips: day1.trips.slice() });
+      [1,3,4,7,10,11,14,17,18,21,24,25,28].forEach((off, ix) => {
+        const dd = new Date(); dd.setDate(dd.getDate() + off - 7);
+        const kk = `${dd.getFullYear()}-${String(dd.getMonth()+1).padStart(2,'0')}-${String(dd.getDate()).padStart(2,'0')}`;
+        const h = 8 + (ix % 5);
+        out.trips.push({ record_id:'CARX' + ix,
+          resource_id: ix % 2 ? 'VEH-2' : 'VEH-1', status:'assigned',
+          start_at:`${kk}T${String(h).padStart(2,'0')}:00:00+07:00`,
+          end_at:  `${kk}T${String(h + 5).padStart(2,'0')}:00:00+07:00`,
+          started_at:'', finished_at:'',
+          requester_id: ix % 4 === 0 ? 'K-4920' : 'K-2260',
+          who: ix % 4 === 0 ? 'พิพัฒน์ ส.' : 'วราภรณ์ ท.',
+          driver_id: ix % 2 ? 'K-9002' : 'K-9001',
+          driver: ix % 2 ? 'ประยูร ทางไกล' : 'สมพงษ์ ขับดี',
+          project_code:['WING2026','AISKILL25','DEEPSOUTH','BACKOFFICE'][ix % 4],
+          title:['ลงพื้นที่โรงเรียน','ส่งเอกสารกระทรวง','รับวิทยากร','ตรวจสถานที่'][ix % 4],
+          stops:[], passengers:'', unbooked:false });
+      });
+      return out;
+    };
   })(),
   createCarBooking:{ ok:true, record_id:'CAR-9' }, cancelCarBooking:{ ok:true },
   driverAction:{ ok:true }, logUnbookedTrip:{ ok:true, record_id:'CAR-8' }, logNoCar:{ ok:true },
@@ -2626,7 +2973,8 @@ function fmtDate(v){
   if(!v) return '—';
   const d = new Date(v); if(isNaN(d)) return String(v);
   return d.toLocaleString(S.lang === 'th' ? 'th-TH' : 'en-GB',
-    { day:'numeric', month:'short', hour:'2-digit', minute:'2-digit' });
+    { timeZone:'Asia/Bangkok',
+      day:'numeric', month:'short', hour:'2-digit', minute:'2-digit' });
 }
 function skeleton(n = 3){ return Array.from({length:n}, () => '<div class="sk sk-row"></div>').join(''); }
 function emptyState(icon, title, body){
@@ -4140,7 +4488,7 @@ ROUTES.issues = async (params = {}) => {
   if(params.rec) go('issue-detail', { id:params.rec });
 };
 
-ROUTES['issue-new'] = async () => {
+ROUTES['issue-new'] = async ({ about } = {}) => {
   setTitle(t('isuNew'));
   $x('#main').innerHTML = `<div class="view">
     <div class="card">
@@ -4173,6 +4521,10 @@ ROUTES['issue-new'] = async () => {
     </div>
     <div class="sticky-cta"><button class="btn primary" id="go">${esc(t('isuSend'))}</button></div>
   </div>`;
+
+  /* มาจากการสแกน QR ของชิ้นที่พัง — เติมชื่อของให้เลย
+     ถ้าให้เขาพิมพ์ชื่อรุ่นเองอีกรอบ ส่วนใหญ่จะพิมพ์ว่า "เครื่องพัง" แล้วจบ */
+  if(about){ $('#dt').value = t('isuAbout')(about) + '\n'; $('#dt').focus(); }
 
   let cat = ISSUE_DEPTS()[0].v, img = null;
   document.querySelectorAll('#cats .row').forEach(b => b.onclick = () => {
@@ -4355,6 +4707,126 @@ const durLabel = (s, e) => {
 };
 const firstName = n => String(n || '').trim().split(/\s+/)[0] || '';
 
+
+/* ══════════════════════════════════════════════════════════════════
+ *  แถบขั้นตอน · ปฏิทินรายเดือน — เพิ่ม 2026-09-06b
+ * ══════════════════════════════════════════════════════════════════ */
+
+/**
+ * แถบบอกว่าตอนนี้อยู่ขั้นไหน และเหลืออีกกี่ขั้น
+ *
+ * ที่ต้องมี เพราะการเข้าใช้ครั้งแรกไม่ใช่หน้าเดียว มันมีสี่หน้าเรียงกัน
+ * คนที่ไม่รู้ว่ามีสี่หน้า พอเจอหน้าที่สองจะคิดว่า "ยังอีกเหรอ" แล้วปิดทิ้ง
+ * บอกไปตรงๆ ตั้งแต่หน้าแรกว่าเหลืออีกสามขั้น เขาจะรออีกสามขั้นได้
+ */
+function stepBar(steps, cur){
+  const left = steps.length - cur - 1;
+  return `<nav class="stpb" aria-label="${esc(t('stpAria')(cur + 1, steps.length))}">
+    <ol class="stpl">${steps.map((s, i) => `
+      <li class="stp ${i < cur ? 'done' : i === cur ? 'now' : ''}"
+          ${i === cur ? 'aria-current="step"' : ''}>
+        <span class="stpn" aria-hidden="true">${i < cur ? '✓' : i + 1}</span>
+        <span class="stpt">${esc(s)}</span>
+      </li>`).join('')}</ol>
+    <p class="stpleft">${esc(left > 0 ? t('stpLeft')(left) : t('stpLast'))}</p>
+  </nav>`;
+}
+/* ลำดับจริงของการเข้าใช้ครั้งแรก — เขียนไว้ที่เดียว ทุกหน้าจะได้นับตรงกัน
+   ถ้าวันหนึ่งเพิ่มหรือลดขั้น แก้ตรงนี้แล้วทุกหน้าขยับตาม */
+const ONBOARD = () => [t('obLine'), t('obConsent'), t('obYou'), t('obMail')];
+
+/**
+ * ปฏิทินรายเดือน
+ *
+ * มุมมองรายวันตอบได้แค่ "วันนี้ว่างไหม" แต่คำถามที่คนถามก่อนจองจริงๆ คือ
+ * "เดือนนี้วันไหนยังว่าง" ซึ่งต้องเห็นทั้งเดือนพร้อมกันถึงจะตอบได้
+ *
+ * จงใจไม่แสดงรายละเอียดทุกใบ หน้าที่ของมันคือชี้ให้เห็นว่าวันไหนแน่นวันไหนโล่ง
+ * แล้วให้กดเข้าไปดูของจริงในมุมมองรายวัน
+ *
+ * ev = [{ day:'YYYY-MM-DD', label, tone }]   tone: '' | warn | bad | mine
+ */
+function monthGrid({ ym, events, sel, onDay, onMonth, legend }){
+  const [Y, Mo] = String(ym).split('-').map(Number);
+  const first = new Date(Y, Mo - 1, 1);
+  const start = new Date(first);
+  start.setDate(1 - first.getDay());            // ตารางเริ่มวันอาทิตย์เสมอ
+  const byDay = {};
+  (events || []).forEach(e => { (byDay[e.day] = byDay[e.day] || []).push(e); });
+  const today = dayKey(new Date());
+  const loc = S.lang === 'th' ? 'th-TH' : 'en-GB';
+
+  const dows = Array.from({ length:7 }, (_, i) => {
+    const d = new Date(2024, 8, 1 + i);          // 1 ก.ย. 2024 = วันอาทิตย์
+    return { n:d.toLocaleDateString(loc, { weekday:'short' }), we:(i === 0 || i === 6) };
+  });
+
+  /* เดือนส่วนใหญ่ใช้ 5 แถวก็พอ บังคับ 6 แถวเสมอจะได้แถวว่างเปล่าทั้งแถว
+     ซึ่งกินพื้นที่จอมือถือไปฟรีๆ หนึ่งในเจ็ดของหน้า */
+  const inMonth = new Date(Y, Mo, 0).getDate();
+  const rows = Math.ceil((first.getDay() + inMonth) / 7);
+
+  const cells = Array.from({ length:rows * 7 }, (_, i) => {
+    const d = new Date(start); d.setDate(start.getDate() + i);
+    const k = dayKey(d), inM = d.getMonth() === Mo - 1, ev = byDay[k] || [];
+    return `<button class="mc ${inM ? '' : 'out'} ${k === today ? 'today' : ''} ${
+        k === sel ? 'on' : ''}" data-d="${k}"
+        aria-label="${esc(d.toLocaleDateString(loc, { day:'numeric', month:'long' }) +
+                          (ev.length ? ' · ' + t('mnN')(ev.length) : ''))}">
+      <span class="mcd">${d.getDate()}</span>
+      <span class="mce" aria-hidden="true">${ev.slice(0, 4).map(e =>
+        `<i class="mdot ${e.tone || ''}"></i>`).join('')}${
+        ev.length > 4 ? `<i class="mmore">+${ev.length - 4}</i>` : ''}</span>
+      <span class="mcl" aria-hidden="true">${ev.slice(0, 3).map(e =>
+        `<em class="mbar ${e.tone || ''}">${esc(e.label || '')}</em>`).join('')}${
+        ev.length > 3 ? `<em class="mbar more">+${ev.length - 3}</em>` : ''}</span>
+    </button>`;
+  }).join('');
+
+  const html = `
+    <div class="mnav">
+      <button class="mbtn" id="mPrev" aria-label="${esc(t('mnPrev'))}">‹</button>
+      <h3>${esc(first.toLocaleDateString(loc, { month:'long', year:'numeric' }))}</h3>
+      <div style="display:flex;gap:7px">
+        <button class="mbtn mtoday" id="mNow">${esc(t('rmToday'))}</button>
+        <button class="mbtn" id="mNext" aria-label="${esc(t('mnNext'))}">›</button>
+      </div>
+    </div>
+    <div class="mgrid">
+      <div class="mdow">${dows.map(x =>
+        `<span class="${x.we ? 'we' : ''}">${esc(x.n)}</span>`).join('')}</div>
+      <div class="mbody" data-rows="${rows}">${cells}</div>
+    </div>
+    ${legend ? `<div class="mlgd">${legend.map(l =>
+      `<span><i class="mdot ${l.tone || ''}"></i>${esc(l.label)}</span>`).join('')}</div>` : ''}`;
+
+  // ผูกปุ่มให้เอง เพื่อให้ที่เรียกใช้เขียนแค่บรรทัดเดียว
+  const wire = root => {
+    const shift = n => {
+      const d = new Date(Y, Mo - 1 + n, 1);
+      onMonth(`${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`);
+    };
+    root.querySelector('#mPrev').onclick = () => shift(-1);
+    root.querySelector('#mNext').onclick = () => shift(1);
+    root.querySelector('#mNow').onclick  = () => {
+      const n = new Date();
+      onMonth(`${n.getFullYear()}-${String(n.getMonth() + 1).padStart(2, '0')}`, dayKey(n));
+    };
+    root.querySelectorAll('.mc').forEach(b => { b.onclick = () => onDay(b.dataset.d); });
+  };
+  return { html, wire };
+}
+
+/** 'YYYY-MM' ของวันที่หนึ่ง และวันแรกที่ตารางต้องขอข้อมูล (ย้อนไปถึงอาทิตย์ก่อนหน้า) */
+const ymOf = d => { const p = bkkParts(d); return `${p.year}-${p.month}`; };
+function monthWindow(ym){
+  const [Y, Mo] = String(ym).split('-').map(Number);
+  const first = new Date(Y, Mo - 1, 1);
+  const start = new Date(first); start.setDate(1 - first.getDay());
+  return { from:`${start.getFullYear()}-${String(start.getMonth() + 1).padStart(2, '0')}-${
+                  String(start.getDate()).padStart(2, '0')}`, days:42 };
+}
+
 ROUTES.rooms = async (params = {}) => {
   const kind = params.kind === 'zoom' ? 'zoom' : 'room';
   setTitle(kind === 'zoom' ? t('zoomTitle') : t('rmTitle'));
@@ -4367,6 +4839,7 @@ ROUTES.rooms = async (params = {}) => {
     <div class="seg2" id="sg">
       <button class="${mode==='day'?'on':''}" data-m="day">${esc(t('rmDay'))}</button>
       <button class="${mode==='week'?'on':''}" data-m="week">${esc(t('rmWeek'))}</button>
+      <button class="${mode==='month'?'on':''}" data-m="month">${esc(t('rmMonth'))}</button>
     </div>
     <div id="ctl"></div>
     <div class="bkwrap">
@@ -4381,6 +4854,38 @@ ROUTES.rooms = async (params = {}) => {
   $('#bk').onclick = () => go('room-new', { date:sel, kind });
   document.querySelectorAll('#sg button').forEach(b =>
     b.onclick = () => go('rooms', { date:sel, mode:b.dataset.m, kind }, true));
+
+  /* ── มุมมองรายเดือน: ถามข้อมูล 42 วันในคำขอเดียว แล้ววาดเป็นตาราง
+        ไม่ได้พยายามแสดงทุกใบให้ครบ หน้าที่ของมันคือชี้ว่าวันไหนแน่นวันไหนโล่ง ── */
+  if(mode === 'month'){
+    const ym = params.ym || ymOf(sel);
+    const w  = monthWindow(ym);
+    $x('#ctl').innerHTML = '';
+    let mr = null;
+    try{ mr = await apiRetry('getRoomDay', { date:w.from, days:w.days, kind }, 'GET'); }catch(e){}
+    if(!mr?.ok){ $x('#rl').innerHTML = emptyState(IC.info, t('netErr'), ''); return; }
+    const nameOf = {};
+    mr.rooms.forEach(x => { nameOf[x.resource_id] = x.name_th.replace('ห้อง ',''); });
+    const me = S.me?.kenan_user_id;
+    const g = monthGrid({
+      ym, sel,
+      events: mr.bookings.map(b => ({
+        day: dayKey(b.start_at),
+        label: `${hhmm(b.start_at)} ${nameOf[b.resource_id] || ''}`.trim(),
+        tone: String(b.requester_id) === String(me) ? 'mine' : ''
+      })),
+      legend: [{ tone:'mine', label:t('mnMine') }, { tone:'', label:t('mnOther') }],
+      onDay: d => go('rooms', { date:d, mode:'day', kind }, true),
+      onMonth: (nym, nd) => go('rooms', { date:nd || sel, mode:'month', ym:nym, kind }, true)
+    });
+    $x('#rl').innerHTML = g.html +
+      `<p style="font-size:var(--fs-meta);color:var(--ink-3);margin:11px 0 0">${esc(t('mnTapDay'))}</p>`;
+    g.wire($('#rl'));
+    /* คอลัมน์ "เลือกห้อง" ไม่มีความหมายในโหมดรายเดือน — ซ่อนทั้งกล่อง
+       ถ้าล้างแค่รายการ หัวข้อจะค้างอยู่ลอยๆ โดยไม่มีอะไรอยู่ข้างล่าง */
+    document.querySelector('.bkside')?.remove();
+    return;
+  }
 
   let r = (kind === 'room' && mode === 'day' && sel === dayKey(base)) ? takePre('room') : null;
   if(!r){ try{ r = await apiRetry('getRoomDay',
@@ -4578,14 +5083,54 @@ ROUTES['room-new'] = async ({ date, room:preRoom, hour, kind:k0 } = {}) => {
 };
 
 /* ── ยืม-คืนอุปกรณ์ ─────────────────────────────────────────── */
-ROUTES.equipment = async () => {
+ROUTES.equipment = async (params = {}) => {
   setTitle(t('eqTitle'));
+  const view = params.view === 'cal' ? 'cal' : 'list';
   $x('#main').innerHTML = `<div class="view">
     <button class="btn soft" id="scan">▣ ${esc(t('eqScan'))}</button>
     <div class="fhint" style="margin:8px 0 12px">${esc(t('eqScanHint'))}</div>
-    <div class="note info">${IC.info}<div>${esc(t('eqWhy'))}</div></div>
-    <div id="el" style="margin-top:12px" class="eqcols">${S.cache.eq ? '' : skeleton(3)}</div></div>`;
+    <div class="seg2" id="esg">
+      <button class="${view==='list'?'on':''}" data-v="list">${esc(t('eqList'))}</button>
+      <button class="${view==='cal'?'on':''}" data-v="cal">${esc(t('eqCal'))}</button>
+    </div>
+    ${view === 'list' ? `<div class="note info">${IC.info}<div>${esc(t('eqWhy'))}</div></div>` : ''}
+    <div id="el" style="margin-top:12px" class="${view==='list'?'eqcols':''}">${
+      S.cache.eq && view === 'list' ? '' : skeleton(3)}</div></div>`;
   $('#scan').onclick = scanTag;
+  document.querySelectorAll('#esg button').forEach(b =>
+    b.onclick = () => go('equipment', { view:b.dataset.v }, true));
+
+  if(view === 'cal'){
+    const ym = params.ym || ymOf(new Date());
+    const w  = monthWindow(ym);
+    let mr = null;
+    try{ mr = await apiRetry('getEquipMonth', { date:w.from, days:w.days }, 'GET'); }catch(e){}
+    if(!mr?.ok){ $x('#el').innerHTML = emptyState(IC.info, t('netErr'), ''); return; }
+    /* การยืมกินหลายวัน จึงต้องกางออกเป็นวันๆ ไม่งั้นจะเห็นแค่วันที่หยิบไป
+       แล้วเข้าใจผิดว่าวันที่เหลือของยังว่างอยู่ */
+    const ev = [];
+    mr.items.forEach(x => {
+      const s0 = new Date(Date.parse(x.start_at));
+      const e0 = new Date(Date.parse(x.end_at || x.start_at));
+      if(isNaN(s0)) return;
+      for(let d = new Date(s0), n = 0; d <= e0 && n < 40; d.setDate(d.getDate() + 1), n++){
+        ev.push({ day: dayKey(d),
+                  label: `${x.name}${x.who ? ' · ' + firstName(x.who) : ''}`,
+                  tone: x.mine ? 'mine' : x.status === 'issued' ? 'warn' : '' });
+      }
+    });
+    const g = monthGrid({
+      ym, events:ev,
+      legend: [{ tone:'mine', label:t('mnMine') }, { tone:'warn', label:t('mnOut') },
+               { tone:'', label:t('eqReserved') }],
+      onDay: () => go('equipment', { view:'list' }, true),
+      onMonth: nym => go('equipment', { view:'cal', ym:nym }, true)
+    });
+    $x('#el').innerHTML = g.html;
+    g.wire($('#el'));
+    return;
+  }
+
   const pre = takePre('eq');
   if(pre) S.cache.eq = { at:Date.now(), v:pre };
   await swr('eq', () => apiRetry('getEquipment', {}, 'GET'),
@@ -5374,6 +5919,7 @@ ROUTES.cars = async (params = {}) => {
     <div class="seg2" id="sg">
       <button class="${mode==='day'?'on':''}" data-m="day">${esc(t('rmDay'))}</button>
       <button class="${mode==='week'?'on':''}" data-m="week">${esc(t('rmWeek'))}</button>
+      <button class="${mode==='month'?'on':''}" data-m="month">${esc(t('rmMonth'))}</button>
     </div>
     <div id="ctl"></div>
     <div class="bkwrap">
@@ -5388,6 +5934,36 @@ ROUTES.cars = async (params = {}) => {
   $('#bk').onclick = () => go('car-new', { date:sel });
   document.querySelectorAll('#sg button').forEach(b =>
     b.onclick = () => go('cars', { date:sel, mode:b.dataset.m }, true));
+
+  if(mode === 'month'){
+    const ym = params.ym || ymOf(sel);
+    const w  = monthWindow(ym);
+    $x('#ctl').innerHTML = ''; $x('#dbn').innerHTML = '';
+    let mr = null;
+    try{ mr = await apiRetry('getCarDay', { date:w.from, days:w.days }, 'GET'); }catch(e){}
+    if(!mr?.ok){ $x('#gr').innerHTML = emptyState(IC.info, t('netErr'), ''); return; }
+    const vname = {};
+    (mr.vehicles || []).forEach(v => { vname[v.resource_id] = v.name_th; });
+    const meId = String(S.me?.kenan_user_id || '');
+    const g = monthGrid({
+      ym, sel,
+      events: mr.trips.map(x => ({
+        day: dayKey(x.start_at),
+        label: `${hhmm(x.start_at)} ${vname[x.resource_id] || ''}`.trim(),
+        tone: x.status === 'in_use' ? 'warn'
+            : (String(x.requester_id) === meId || String(x.driver_id) === meId) ? 'mine' : ''
+      })),
+      legend: [{ tone:'mine', label:t('mnMine') }, { tone:'warn', label:t('mnOut') },
+               { tone:'', label:t('mnOther') }],
+      onDay: d => go('cars', { date:d, mode:'day' }, true),
+      onMonth: (nym, nd) => go('cars', { date:nd || sel, mode:'month', ym:nym }, true)
+    });
+    $x('#gr').innerHTML = g.html +
+      `<p style="font-size:var(--fs-meta);color:var(--ink-3);margin:11px 0 0">${esc(t('mnTapDay'))}</p>`;
+    g.wire($('#gr'));
+    document.querySelector('.bkside')?.remove();
+    return;
+  }
 
   // ถ้าเข้ามาจาก Rich Menu ข้อมูลวันนี้ถูกแนบมากับ bootstrap แล้ว ไม่ต้องถามซ้ำ
   let r = (mode === 'day' && sel === dayKey(today)) ? takePre('car') : null;
@@ -5726,75 +6302,178 @@ ROUTES['car-new'] = async ({ date, veh:preVeh, hour } = {}) => {
      จุดแรกและจุดสุดท้ายตั้งเป็นออฟฟิศไว้ให้ แต่แก้ได้ (บางเที่ยวออกจากบ้าน หรือไม่กลับออฟฟิศ)
      ระยะทางคิดจากทุกช่วงที่ต่อกัน รวมขากลับด้วย */
   let points  = [{ name:OFFICE }, { name:'' }, { name:OFFICE, home:true }];
+  /* จำนวนคน ถามตั้งแต่จอแรก เพราะมันเปลี่ยน "รถคันไหนเลือกได้" ซึ่งเป็นคำถามถัดไปทันที
+     ประกาศไว้ตรงนี้เพราะ paintVeh() เรียกใช้ และมันถูกเรียกก่อนบล็อกด้านล่าง */
+  let headcount = 1;
   let route   = null;                 // ผลจาก Google Maps
   const segs = () => points.slice(0, -1)
     .map((p, i) => ({ from:p.name, to:points[i+1].name }))
     .filter(x => x.from && x.to);
 
+  /* ══════════════════════════════════════════════════════════════
+     ของเดิมกางออกมาพร้อมกันห้าการ์ด — รถ เวลา เหตุผล เส้นทาง ผู้โดยสาร
+     ทั้งหมดนั้นคือลำดับที่ "ระบบ" ต้องการข้อมูล ไม่ใช่ลำดับที่ "คน" คิด
+     คนคิดเรียงแบบนี้: จะไปเมื่อไร → ไปไหน → ไปทำอะไร → ไปกี่คน
+     สี่ข้อนี้จึงอยู่จอแรก ที่เหลือ (รถ รหัสโครงการ จุดแวะ ชื่อผู้โดยสาร ของที่ขน)
+     ยกไปจอสอง โดยมีค่าตั้งต้นให้แล้วทุกอัน — ไม่ได้ตัดออก แค่ไม่ต้องตอบพร้อมกันหมด
+     ══════════════════════════════════════════════════════════════ */
   $x('#main').innerHTML = `<div class="view">
-    <div class="card">
-      <div style="font-size:13px;font-weight:600;margin-bottom:9px">${esc(t('carPickVeh'))}</div>
-      <div id="vp"></div>
-      <div id="noFree"></div>
-    </div>
+    <div id="cwStep">${stepBar([t('carS1'), t('carS2')], 0)}</div>
 
-    <div class="card">
-      <label class="switch" style="margin-bottom:12px">
-        <input type="checkbox" id="multi">
-        <span><b>${esc(t('carMulti'))}</b><br>
-          <span style="font-size:var(--fs-meta);color:var(--ink-3)">${esc(t('carMultiWhy'))}</span></span>
-      </label>
-      <div class="times">
-        <div class="tbox"><div class="k">${esc(t('carOut'))}</div>
-          <input type="date" id="dd" value="${day}" class="tin">
-          <input type="time" id="t1" value="${h1}" class="tin big"></div>
-        <div class="arrow">→</div>
-        <div class="tbox hl"><div class="k">${esc(t('carBack'))}</div>
-          <input type="date" id="dd2" value="${day}" class="tin" hidden>
-          <input type="time" id="t2" value="${h2}" class="tin big"></div>
+    <div id="cs1">
+      <div class="qz">
+        <div class="qz-q"><span class="qz-n">1</span><h4>${esc(t('carQWhen'))}</h4></div>
+        <div class="times">
+          <div class="tbox"><div class="k">${esc(t('carOut'))}</div>
+            <input type="date" id="dd" value="${day}" class="tin">
+            <input type="time" id="t1" value="${h1}" class="tin big"></div>
+          <div class="arrow">→</div>
+          <div class="tbox hl"><div class="k">${esc(t('carBack'))}</div>
+            <input type="date" id="dd2" value="${day}" class="tin" hidden>
+            <input type="time" id="t2" value="${h2}" class="tin big"></div>
+        </div>
+        <label class="switch" style="margin-top:12px">
+          <input type="checkbox" id="multi">
+          <span><b>${esc(t('carMulti'))}</b><br>
+            <span style="font-size:var(--fs-meta);color:var(--ink-3)">${esc(t('carMultiWhy'))}</span></span>
+        </label>
+        <div id="dayCount" style="font-size:var(--fs-meta);font-weight:700;color:var(--primary);margin-top:6px"></div>
+        <div class="qz-hint">${esc(t('carTimeHint'))}</div>
       </div>
-      <div style="font-size:var(--fs-meta);color:var(--ink-3);margin-top:8px">${esc(t('carTimeHint'))}</div>
-      <div id="dayCount" style="font-size:var(--fs-meta);font-weight:800;color:var(--primary);margin-top:6px"></div>
-    </div>
 
-    <div class="card">
-      <div class="field"><label>${esc(t('carTripType'))}<span class="req">*</span></label>
-        <select id="tt">${TRIP_TYPES().map(x =>
+      <div class="qz">
+        <div class="qz-q"><span class="qz-n">2</span><h4>${esc(t('carQWhere'))}</h4></div>
+        <button class="btn ghost" id="destBtn"
+          style="text-align:left;justify-content:flex-start">${esc(t('carPlacePh'))}</button>
+        <div class="qz-hint">${esc(t('carDestHint'))}</div>
+      </div>
+
+      <div class="qz">
+        <div class="qz-q"><span class="qz-n">3</span><h4>${esc(t('carQWhat'))}</h4></div>
+        <div class="field"><select id="tt">${TRIP_TYPES().map(x =>
           `<option value="${x.v}" ${x.v===tripType?'selected':''}>${esc(S.lang==='th'?x.th:x.en)}</option>`).join('')}</select></div>
-      <div class="field"><label>${esc(t('carPurpose'))}<span class="req">*</span></label>
-        <input id="pp" placeholder="${esc(t('carPurposePh'))}"></div>
-      <div class="field" style="margin:0"><label>${esc(t('carProject'))}<span class="req">*</span></label>
-        <button class="btn ghost" id="pjBtn" style="text-align:left;justify-content:flex-start">${esc(t('carProjectPh'))}</button></div>
-      <div style="font-size:var(--fs-meta);color:var(--ink-3);margin-top:6px">${esc(t('carProjWhy'))}</div>
+        <div class="field" style="margin:0">
+          <input id="pp" placeholder="${esc(t('carPurposePh'))}"></div>
+      </div>
+
+      <div class="qz">
+        <div class="qz-q"><span class="qz-n">4</span><h4>${esc(t('carQWho'))}</h4></div>
+        <div class="cnt">
+          <button id="hcM" type="button" aria-label="${esc(t('carMinus'))}">−</button>
+          <div class="cntv" id="hcV" aria-live="polite">1</div>
+          <div class="cntu">${esc(t('carPeople'))}</div>
+          <button id="hcP" type="button" aria-label="${esc(t('carPlus'))}">＋</button>
+        </div>
+        <div class="qz-hint">${esc(t('carHcHint'))}</div>
+      </div>
+
+      <div class="sticky-cta"><button class="btn primary" id="cwNext">${esc(t('carNext'))}</button></div>
     </div>
 
-    <div class="card">
-      <div style="font-size:13px;font-weight:600;margin-bottom:4px">${esc(t('carRoute'))}</div>
-      <div style="font-size:var(--fs-meta);color:var(--ink-3);margin-bottom:9px">${esc(t('carRouteHint'))}</div>
-      <div id="lg"></div>
-      <button class="btn ghost" id="addLeg" style="margin-top:2px">${esc(t('carAddStop'))}</button>
-      <button class="btn soft" id="calc" style="margin-top:8px">${esc(t('carCalc'))}</button>
-      <div id="split" style="font-size:var(--fs-meta);font-weight:700;color:var(--primary);margin-top:9px"></div>
+    <div id="cs2" hidden>
+      <button class="recap" id="cwBack"></button>
+
+      <div class="card">
+        <div style="font-size:var(--fs-sec);font-weight:700;margin-bottom:9px">${esc(t('carPickVeh'))}</div>
+        <div id="vp"></div>
+        <div id="noFree"></div>
+      </div>
+
+      <div class="card">
+        <div class="field" style="margin:0"><label>${esc(t('carProject'))}<span class="req">*</span></label>
+          <button class="btn ghost" id="pjBtn"
+            style="text-align:left;justify-content:flex-start">${esc(t('carProjectPh'))}</button></div>
+        <div class="qz-hint">${esc(t('carProjWhy'))}</div>
+      </div>
+
+      <details class="fold">
+        <summary><span>${esc(t('carRoute'))}<span class="fold-s">${esc(t('carRouteSub'))}</span></span></summary>
+        <div class="fold-b">
+          <div style="font-size:var(--fs-meta);color:var(--ink-3);margin-bottom:9px">${esc(t('carRouteHint'))}</div>
+          <div id="lg"></div>
+          <button class="btn ghost" id="addLeg" style="margin-top:2px">${esc(t('carAddStop'))}</button>
+          <button class="btn soft" id="calc" style="margin-top:8px">${esc(t('carCalc'))}</button>
+          <div id="split" style="font-size:var(--fs-meta);font-weight:700;color:var(--primary);margin-top:9px"></div>
+        </div>
+      </details>
+
+      <div class="card">
+        <div class="field" style="margin:0"><label>${esc(t('carPax'))}</label>
+          <div id="paxList"></div>
+          <button class="btn ghost" id="paxAdd" style="margin-top:6px">${esc(t('carPaxAdd'))}</button>
+          <div class="qz-hint">${esc(t('carPaxWhy'))}</div></div>
+      </div>
+
+      <details class="fold">
+        <summary><span>${esc(t('carExtras'))}<span class="fold-s">${esc(t('carExtrasSub'))}</span></span></summary>
+        <div class="fold-b">
+          <div class="field"><label>${esc(t('carPaxOther'))}</label>
+            <input id="px" placeholder="${esc(t('carPaxPh'))}"></div>
+          <div class="field"><label>${esc(t('carItems'))}</label>
+            <input id="it" placeholder="${esc(t('carItemsPh'))}"></div>
+          <div class="field" style="margin:0"><label>${esc(t('carNote'))}</label>
+            <textarea id="nt" rows="3" placeholder="${esc(t('carNotePh'))}"
+              style="width:100%;resize:vertical"></textarea></div>
+        </div>
+      </details>
+
+      <div id="sum"></div>
+      <div class="sticky-cta"><button class="btn primary" id="goBk">${esc(t('carGo'))}</button></div>
     </div>
-
-    <div class="card">
-      <div class="field"><label>${esc(t('carPax'))}</label>
-        <div id="paxList"></div>
-        <button class="btn ghost" id="paxAdd" style="margin-top:6px">${esc(t('carPaxAdd'))}</button>
-        <div style="font-size:var(--fs-meta);color:var(--ink-3);margin-top:5px">${esc(t('carPaxWhy'))}</div></div>
-      <div class="field"><label>${esc(t('carPaxOther'))}</label>
-        <input id="px" placeholder="${esc(t('carPaxPh'))}"></div>
-      <div class="field"><label>${esc(t('carItems'))}</label>
-        <input id="it" placeholder="${esc(t('carItemsPh'))}"></div>
-      <div class="field" style="margin:0"><label>${esc(t('carNote'))}</label>
-        <textarea id="nt" rows="3" placeholder="${esc(t('carNotePh'))}"
-          style="width:100%;resize:vertical"></textarea></div>
-    </div>
-
-    <div id="sum"></div>
-
-    <div class="sticky-cta"><button class="btn primary" id="goBk">${esc(t('carGo'))}</button></div>
   </div>`;
+
+  /* ── สลับขั้น ── */
+  function showStep(n){
+    $('#cs1').hidden = n !== 1;
+    $('#cs2').hidden = n !== 2;
+    $x('#cwStep').innerHTML = stepBar([t('carS1'), t('carS2')], n - 1);
+    const soft = !matchMedia('(prefers-reduced-motion: reduce)').matches;
+    window.scrollTo({ top:0, behavior: soft ? 'smooth' : 'auto' });
+  }
+  /* สรุปคำตอบขั้นแรกไว้หัวขั้นสอง แตะแล้วกลับไปแก้ได้
+     ถ้าไม่มีอันนี้ พอมาถึงขั้นสองแล้วนึกได้ว่าใส่เวลาผิด เขาจะไม่รู้ว่ากลับยังไง */
+  function paintRecap(){
+    const [s0, e0] = win();
+    $x('#cwBack').innerHTML = `
+      <div class="recap-h"><span>${esc(t('carRecap'))}</span><span>${esc(t('carEdit'))} ›</span></div>
+      <dl>
+        <dt>${esc(t('carQWhen'))}</dt><dd>${esc(fmtDate(s0))} – ${esc(hhmm(e0))}</dd>
+        <dt>${esc(t('carQWhere'))}</dt><dd>${esc(points[1]?.name || '—')}</dd>
+        <dt>${esc(t('carQWhat'))}</dt><dd>${esc($('#pp').value.trim() || '—')}</dd>
+        <dt>${esc(t('carQWho'))}</dt><dd>${esc(t('carNpeople')(headcount))}</dd>
+      </dl>`;
+  }
+  $('#cwBack').onclick = () => showStep(1);
+  $('#cwNext').onclick = () => {
+    const [sIso, eIso] = win();
+    if(Date.parse(eIso) <= Date.parse(sIso)){ toast(t('rmBadTime'), 'bad'); return; }
+    if(!points[1]?.name){ toast(t('carNeedDest'), 'bad'); $('#destBtn').focus(); return; }
+    if(!$('#pp').value.trim()){ toast(t('carNeedPurpose'), 'bad'); $('#pp').focus(); return; }
+    paintRecap(); showStep(2);
+  };
+
+  /* ── จำนวนคน: ปุ่มบวกลบ กดง่ายกว่าพิมพ์ตัวเลขบนมือถือ และกรอกผิดรูปแบบไม่ได้ ── */
+  function paintHc(){
+    $x('#hcV').textContent = headcount;
+    $('#hcM').disabled = headcount <= 1;
+    paintVeh();                       // ที่นั่งพอไม่พอ ขึ้นกับตัวเลขนี้
+  }
+  $('#hcP').onclick = () => { headcount = Math.min(headcount + 1, 30); paintHc(); };
+  $('#hcM').onclick = () => { headcount = Math.max(headcount - 1, 1);  paintHc(); };
+
+  /* ── จุดหมาย: จอแรกมีช่องเดียว แต่ผูกกับจุดที่ 1 ของเส้นทางจริง
+        แก้ที่ไหนก็ตรงกันทั้งสองที่ ไม่ต้องกรอกซ้ำ ── */
+  function paintDest(){
+    const b = $('#destBtn'); if(!b) return;
+    const nm = points[1]?.name || '';
+    b.textContent = nm || t('carPlacePh');
+    b.style.fontWeight = nm ? '600' : '400';
+    b.style.color = nm ? 'var(--ink)' : 'var(--ink-3)';
+  }
+  $('#destBtn').onclick = async () => {
+    const pk = await pickPlace(points[1]?.name || '');
+    if(pk){ points[1].name = pk.name; route = null; paintDest(); paintRoute(); paintSummary(); }
+  };
 
   /* ── รถ: รูป · ที่นั่ง · ทะเบียน · สี · คนขับ + เบอร์ ── */
   const overlap = (a1,a2,b1,b2) => Date.parse(a1) < Date.parse(b2) && Date.parse(b1) < Date.parse(a2);
@@ -5844,6 +6523,8 @@ ROUTES['car-new'] = async ({ date, veh:preVeh, hour } = {}) => {
           </div>
           <div class="vfree" style="color:${busy?'var(--bad)':'var(--ok)'}">
             ${busy ? '●' : '○'} ${esc(busy ? t('carVehBusy') : t('carVehFree'))}</div>
+          ${(v.capacity && Number(v.capacity) < headcount)
+            ? `<div class="vsmall">${esc(t('carSeatsShort')(v.capacity, headcount))}</div>` : ''}
         </div>
       </button>`;
     }).join('');
@@ -5971,7 +6652,7 @@ ROUTES['car-new'] = async ({ date, veh:preVeh, hour } = {}) => {
       const i = Number(b.dataset.j);
       const pj = await chooseProject(points[i].project_code);
       if(pj){ points[i].project_code = pj.code; paintRoute(); paintSplit(); } });
-    paintSplit();
+    paintSplit(); paintDest();
   }
 
   // จุดใหม่แทรกก่อนจุดสุดท้ายเสมอ เพราะจุดสุดท้ายคือขากลับ
@@ -6074,7 +6755,8 @@ ROUTES['car-new'] = async ({ date, veh:preVeh, hour } = {}) => {
     try{
       const res = await apiRetry('createCarBooking', {
         resource_id:vehId, purpose, project_code:project, trip_type:tripType,
-        passengers:$('#px').value.trim(), items:$('#it').value.trim(), note:$('#nt').value.trim(),
+        passengers: $('#px').value.trim() || (headcount > 1 ? String(headcount - 1) : ''),
+        items:$('#it').value.trim(), note:$('#nt').value.trim(),
         passenger_ids: pax.map(x => x.kenan_user_id).join(','),
         stops: JSON.stringify(segs().map((sg, i) => ({
           from:sg.from, to:sg.to,
@@ -6747,6 +7429,18 @@ ROUTES['admin-drvrep'] = async () => {
    ปัญหาเดิม: อุปกรณ์ชื่อซ้ำกัน ("กล้อง Canon" มีสามตัว) พอคืนแล้วไม่รู้ว่าตัวไหน
    ทางแก้: ทุกชิ้นมีรหัสของตัวเอง แปะ QR ไว้ที่ตัวของ สแกนแล้วมาที่ชิ้นนั้นตรงๆ  */
 
+/* ══════════════════════════════════════════════════════════════════
+ *  หน้าอุปกรณ์หนึ่งชิ้น — ปลายทางของ QR ที่แปะอยู่บนเครื่อง
+ *
+ *  ของเดิมเป็น "หน้าคุณสมบัติ": ยี่ห้อ รุ่น ซีเรียล ปีที่ซื้อ สถานที่เก็บ
+ *  แล้วปุ่มยืมอยู่ล่างสุด ต้องเลื่อนลงไปหา
+ *
+ *  แต่คนที่สแกน QR คือคนที่ยืนอยู่หน้าเครื่องนั้นแล้ว
+ *  ยี่ห้อกับรุ่นเขาเห็นด้วยตาอยู่แล้ว สิ่งที่เขาไม่รู้มีสองอย่าง
+ *  "ตอนนี้ว่างไหม" และ "จะเอาไปใช้ยังไง"
+ *  สองอย่างนี้จึงขึ้นก่อน ส่วนสเปคย้ายไปอยู่หลังหัวข้อที่กดเปิดได้
+ *  (ยังต้องมี เพราะ IT ใช้ตอนซ่อมและตอนตรวจนับ แค่ไม่ใช่สิ่งที่คนทั่วไปต้องการ)
+ * ══════════════════════════════════════════════════════════════════ */
 ROUTES.item = async ({ tag } = {}) => {
   const code = String(tag || START_TAG || '').trim();
   setTitle(t('eqTitle'));
@@ -6757,45 +7451,103 @@ ROUTES.item = async ({ tag } = {}) => {
   if(!r?.ok){
     $x('#main').innerHTML = `<div class="view">
       ${emptyState(IC.laptop, t('itemNotFound'), t('itemNotFoundBody'))}
-      <div style="text-align:center;font-family:ui-monospace,monospace;font-size:13px;
+      <div style="text-align:center;font-family:ui-monospace,monospace;font-size:var(--fs-sec);
         color:var(--ink-3);margin-bottom:14px">${esc(code)}</div>
       <button class="btn ghost" id="bk2">${esc(t('eqTitle'))}</button></div>`;
     $('#bk2').onclick = () => go('equipment', {}, true);
     return;
   }
+
   const i = r.item;
   const spec = [i.brand, i.model].filter(Boolean).join(' ');
-  $x('#main').innerHTML = `<div class="view">
-    ${i.photo_id || i.thumb_id || i.thumb ? `<img class="sheet-photo" id="itp" alt=""
-      ${i.thumb ? `src="${i.thumb}"` : ''}>` : ''}
-    <h2 style="margin:10px 0 3px;font-size:20px;font-weight:800">${esc(i.name_th)}</h2>
-    <div style="font-size:13px;color:var(--ink-3)">${esc([spec, i.category].filter(Boolean).join(' · '))}</div>
-    <div class="rows" style="margin-top:16px">
-      <div class="row"><div class="body"><div class="s">${esc(t('eqTag'))}</div>
-        <div class="t" style="font-family:ui-monospace,monospace;letter-spacing:.06em">${esc(i.asset_tag || '—')}</div></div></div>
-      ${i.serial ? `<div class="row"><div class="body"><div class="s">${esc(t('itemSerial'))}</div>
-        <div class="t" style="font-family:ui-monospace,monospace">${esc(i.serial)}</div></div></div>` : ''}
-      ${i.spec ? `<div class="row"><div class="body"><div class="s">${esc(t('itemSpec'))}</div>
-        <div class="t">${esc(i.spec)}</div></div></div>` : ''}
-      ${i.purchase_year ? `<div class="row"><div class="body"><div class="s">${esc(t('itemYear'))}</div>
-        <div class="t">${esc(i.purchase_year)}</div></div></div>` : ''}
-      ${i.storage_location ? `<div class="row"><div class="body"><div class="s">${esc(t('admResLoc'))}</div>
-        <div class="t">${esc(i.storage_location)}</div></div></div>` : ''}
+  const overdue = i.due && Date.parse(i.due) < Date.now();
+
+  /* บรรทัดสถานะ — ประโยคเดียวที่ต้องอ่านให้จบใน 2 วินาที
+     สามสถานะที่ต่างกันจริงในการใช้งาน: ว่าง · เราถืออยู่ · คนอื่นถืออยู่ */
+  const SV = p => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+    stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">${p}</svg>`;
+  const IC_OK   = SV('<path d="M4 12.5l5.2 5.2L20 7"/>');
+  const IC_HELD = SV('<circle cx="12" cy="12" r="8.5"/><path d="M12 7.6v4.7l3 1.8"/>');
+  const IC_LATE = SV('<path d="M12 4v10M12 18.6h.01"/>');
+
+  const st = i.available
+    ? { cls:'free', ic:IC_OK, head:t('objFree'),
+        sub: i.storage_location || t('objNoPlace') }
+    : i.mine
+      ? { cls: overdue ? 'late' : 'busy', ic: overdue ? IC_LATE : IC_HELD,
+          head: overdue ? t('objMineLate') : t('objMine'),
+          sub: i.due ? t('objDueOn')(fmtDate(i.due)) : t('objNoDue') }
+      : { cls: overdue ? 'late' : 'busy', ic: overdue ? IC_LATE : IC_HELD,
+          head: t('objHeldBy')(i.holder || '—'),
+          sub: [ i.since ? t('objSince')(fmtDate(i.since)) : '',
+                 i.due   ? t('objDueOn')(fmtDate(i.due))   : t('objNoDue') ]
+                 .filter(Boolean).join(' · ') };
+
+  /* คิวจองถัดไป ต้องเห็นตั้งแต่ตอนนี้ ไม่ใช่ตอนกดจองแล้วโดนปฏิเสธ
+     คนที่กำลังจะหยิบไปใช้ยาวๆ จะได้รู้ก่อนว่ามีคนรออยู่ */
+  const nx = i.next_resv;
+
+  $x('#main').innerHTML = `<div class="view obj">
+    ${(i.photo_id || i.thumb_id || i.thumb)
+      ? `<img class="obj-ph" id="itp" alt="" ${i.thumb ? `src="${i.thumb}"` : ''}>` : ''}
+    <h2>${esc(i.name_th)}</h2>
+    <div class="obj-sub">${i.asset_tag ? `<code>${esc(i.asset_tag)}</code>` : ''}${
+      i.asset_tag && (spec || i.category) ? ' · ' : ''
+    }${esc([spec, i.category].filter(Boolean).join(' · '))}</div>
+
+    <div class="obj-st ${st.cls}">
+      <span class="obj-ic" aria-hidden="true">${st.ic}</span>
+      <div style="min-width:0"><b>${esc(st.head)}</b><span>${esc(st.sub)}</span></div>
     </div>
-    ${i.available ? '' : `<div class="note warn" style="margin-top:14px">📷<div><b>${
-      esc(t('eqBy')(i.holder))}</b><br>${esc(t('eqSince')(fmtDate(i.since)))}</div></div>`}
-    <div style="height:14px"></div>
-    ${i.mine ? `<button class="btn g" id="ir" style="background:var(--ok);color:#fff">${esc(t('eqReturn'))}</button>`
-      : (i.available ? `<button class="btn primary" id="ib">${esc(t('eqBorrowNow'))}</button>` : '')}
-    <button class="btn ghost" id="ie">${esc(t('eqTitle'))}</button>
+
+    <div class="obj-act">
+      ${i.mine
+        ? `<button class="btn g" id="ir" style="background:var(--ok);color:#fff">${esc(t('eqReturn'))}</button>`
+        : (i.available
+            ? `<button class="btn primary" id="ib">${esc(t('eqBorrowNow'))}</button>
+               <button class="btn soft" id="iv">${esc(t('eqReserve'))}</button>`
+            : `<button class="btn soft" id="iv">${esc(t('objReserveWhenFree'))}</button>`)}
+    </div>
+
+    ${nx ? `<div class="note ${nx.mine ? 'info' : ''}" style="margin-top:13px">${IC.cal}
+      <div>${esc(nx.mine ? t('objNextMine')(fmtDate(nx.start_at))
+                         : t('objNextBy')(nx.who || '—', fmtDate(nx.start_at)))}</div></div>` : ''}
+
+    ${i.manual_url ? `<button class="obj-lnk" id="iman">
+      <span>${esc(t('objManual'))}</span>${IC.chev}</button>` : ''}
+
+    <details class="obj-more">
+      <summary>${esc(t('objSpecs'))}</summary>
+      <dl>
+        ${i.asset_tag ? `<dt>${esc(t('eqTag'))}</dt><dd class="mono">${esc(i.asset_tag)}</dd>` : ''}
+        ${i.brand || i.model ? `<dt>${esc(t('objBrand'))}</dt><dd>${esc(spec)}</dd>` : ''}
+        ${i.serial ? `<dt>${esc(t('itemSerial'))}</dt><dd class="mono">${esc(i.serial)}</dd>` : ''}
+        ${i.spec ? `<dt>${esc(t('itemSpec'))}</dt><dd>${esc(i.spec)}</dd>` : ''}
+        ${i.purchase_year ? `<dt>${esc(t('itemYear'))}</dt><dd>${esc(i.purchase_year)}</dd>` : ''}
+        ${i.storage_location ? `<dt>${esc(t('admResLoc'))}</dt><dd>${esc(i.storage_location)}</dd>` : ''}
+        ${i.note ? `<dt>${esc(t('carNote'))}</dt><dd>${esc(i.note)}</dd>` : ''}
+      </dl>
+    </details>
+
+    <div style="height:10px"></div>
+    <button class="btn ghost" id="ie">${esc(t('objAll'))}</button>
+    <button class="btn ghost" id="irep">${esc(t('objReport'))}</button>
   </div>`;
+
   if($('#itp') && !i.thumb) loadPhoto(i.photo_id || i.thumb_id, $('#itp'));
-  $('#ie').onclick = () => { clearCache('eq'); go('equipment', {}, true); };
+
   const asItem = { resource_id:i.resource_id, name_th:i.name_th, category:i.category,
                    storage_location:i.storage_location, note:i.note,
                    since:i.since, loan_id:i.loan_id };
-  if($('#ib')) $('#ib').onclick = () => borrowSheet(asItem);
-  if($('#ir')) $('#ir').onclick = () => returnSheet(asItem);
+  if($('#ib'))  $('#ib').onclick  = () => borrowSheet(asItem);
+  if($('#ir'))  $('#ir').onclick  = () => returnSheet(asItem);
+  if($('#iv'))  $('#iv').onclick  = () => reserveSheet(asItem);
+  if($('#iman')) $('#iman').onclick = () => window.open(i.manual_url, '_blank', 'noopener');
+  $('#ie').onclick = () => { clearCache('eq'); go('equipment', {}, true); };
+  /* ของพังตอนหยิบมาใช้เป็นเรื่องปกติ ถ้าตรงนี้ไม่มีทางแจ้ง เขาจะวางกลับที่เดิมเงียบๆ
+     แล้วคนถัดไปก็เจอของพังอีกคน */
+  $('#irep').onclick = () => go('issue-new', { about:`${i.name_th}${
+    i.asset_tag ? ' (' + i.asset_tag + ')' : ''}` });
 };
 
 /** เปิดกล้องสแกนของ LINE ถ้าเครื่องนี้เปิดได้ ถ้าไม่ได้ก็ให้พิมพ์รหัสแทน
@@ -7110,6 +7862,7 @@ ROUTES.register = async () => {
   /* คนขับ outsource ไม่มีอีเมล @kenan-asia.org จะกรอกฟอร์มนี้ยังไงก็ไม่ผ่าน
      ถ้าไม่มีทางออกตรงนี้ เขาจะติดตายอยู่หน้านี้แล้วเลิกใช้ไปเลย */
   $x('#main').innerHTML = `<div class="view">
+    ${stepBar(ONBOARD(), 2)}
     <div class="greet"><h2>${esc(t('regTitle'))}</h2><p>${esc(t('regLead'))}</p></div>
     <button class="btn ghost" id="regDrv" style="margin-bottom:14px">🚗 ${esc(t('dpIam'))}</button>
     <div class="card">
@@ -7171,6 +7924,7 @@ ROUTES.register = async () => {
 ROUTES.otp = async () => {
   const d = S.regDraft || {};
   $x('#main').innerHTML = `<div class="view">
+    ${stepBar(ONBOARD(), 3)}
     <div class="greet"><h2>${esc(t('otpTitle'))}</h2><p>${esc(t('otpLead')(d.email || ''))}</p></div>
     <div class="card">
       <div class="field" style="margin-bottom:0">
@@ -7268,6 +8022,7 @@ ROUTES.consent = async ({ readonly } = {}) => {
     <p>You may request access, correction or deletion of your data at any time, and unlink your LINE account, by contacting the system administrator.</p>`;
 
   $x('#main').innerHTML = `<div class="view">
+    ${readonly ? '' : stepBar(ONBOARD(), 1)}
     <div class="greet"><h2>${esc(t('consentTitle'))}</h2><p>${esc(t('consentTitleEn'))}</p></div>
     <div class="legal">${body}</div>
     ${readonly ? '' : `
@@ -7287,7 +8042,8 @@ ROUTES.consent = async ({ readonly } = {}) => {
 
 /* ── Gate: ยังไม่ได้ล็อกอิน ───────────────────────────────────── */
 ROUTES.gate = async () => {
-  $x('#main').innerHTML = `<div class="view" style="padding-top:48px">
+  $x('#main').innerHTML = `<div class="view" style="padding-top:26px">
+    ${stepBar(ONBOARD(), 0)}
     ${emptyState(IC.info, t('needLogin'), t('needLoginBody'))}
     <button class="btn primary" id="lg">${esc(t('loginLine'))}</button>
     <div style="height:10px"></div>

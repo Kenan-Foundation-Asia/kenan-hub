@@ -1801,7 +1801,7 @@ const CFG = {
   GAS_URL : 'https://script.google.com/macros/s/AKfycbyOjh4BAAbzY5QfZNG_oGuxbmvZwHjEAKazRMuMxrDeoNknE_rqEoAFdkuJldOPP_q_eg/exec',
   LIFF_TIMEOUT_MS : 3500,
   CONSENT_VERSION : '2026-09-01',
-  BUILD : '2026-09-06j'      // ต้องตรงกับ BUILD ใน Code.gs ที่ Deploy ไว้
+  BUILD : '2026-09-06k'      // ต้องตรงกับ BUILD ใน Code.gs ที่ Deploy ไว้
 };
 
 /* เก็บ ?go=... ไว้ตั้งแต่ต้น เพราะเดี๋ยวจะล้าง query string ทิ้งหลัง LIFF ล็อกอิน
@@ -3716,6 +3716,8 @@ const t = k => T[S.lang][k];
        ใช้ดู UI ทุกหน้าในเบราว์เซอร์ปกติได้เลย ไม่ต้องมี LINE
        พอใส่ GAS_URL จริงแล้ว โหมดนี้ปิดเอง                     ── */
 const DEMO = !CFG.GAS_URL || CFG.GAS_URL.startsWith('PASTE_') || location.search.includes('demo');
+/* ?demo=driver = พรีวิวมุมคนขับ · ?demo เฉยๆ = มุมพนักงาน/ผู้ดูแลเหมือนเดิม */
+const DEMO_DRIVER = DEMO && /[?&]demo=driver/.test(location.search);
 const MOCK = {
   bootstrap:(function(){
     const d=new Date(), k=`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
@@ -3935,6 +3937,8 @@ const MOCK = {
   driverPortal:(function(){
     const d = new Date(), pad = n => String(n).padStart(2,'0');
     const k = `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`;
+    const yd = new Date(d.getTime() - 86400000);
+    const y = `${yd.getFullYear()}-${pad(yd.getMonth()+1)}-${pad(yd.getDate())}`;
     return { ok:true, isDriver:true,
       driver:{ driver_id:'DRV-A1', name:'สมพงษ์ ขับดี', phone:'081-234-5678',
                company:'Kenan', thumb:'', licence_no:'12••••789',
@@ -3942,25 +3946,50 @@ const MOCK = {
       vehicles:[{ resource_id:'V1-A', name:'Toyota Commuter', plate:'1กก-1234', color:'ขาว' }],
       jobs:[
         { record_id:'CAR-1', status:'assigned', title:'ส่งทีมไปโรงเรียนวัดสุทธิ',
-          vehicle:'Toyota Commuter', start_at:`${k}T08:30:00+07:00`, end_at:`${k}T16:00:00+07:00`,
+          vehicle:'Toyota Commuter', plate:'1กก-1234',
+          start_at:`${k}T08:30:00+07:00`, end_at:`${k}T16:00:00+07:00`,
           project_code:'WING-2026', requester:'วราภรณ์ ทองดี', requester_phone:'0891112222',
           requester_dept:'Education', passengers:'อีก 3 คน', items:'กล่องสื่อการสอน 2 กล่อง',
           note:'', stops:[{ to:'โรงเรียนวัดสุทธิวราราม', km:12.4 },
                           { to:'มูลนิธิคีนันแห่งเอเซีย', km:11.8 }],
           total_km:24.2, total_mins:78, stop_log:[] },
-        { record_id:'CAR-2', status:'in_use', title:'รับวิทยากรจากสนามบิน',
-          vehicle:'Toyota Commuter', start_at:`${k}T13:00:00+07:00`, end_at:`${k}T15:30:00+07:00`,
-          project_code:'AI-SKILLS', requester:'ธนพล ศรีสุข', requester_phone:'',
-          requester_dept:'Business and Economy', passengers:'', items:'',
-          started_at:`${k}T13:05:00+07:00`,
+        { record_id:'CAR-2', status:'assigned', title:'รับวิทยากรจากสนามบิน',
+          vehicle:'Toyota Commuter', plate:'1กก-1234',
+          start_at:`${k}T13:00:00+07:00`, end_at:`${k}T15:30:00+07:00`,
+          project_code:'AI-SKILLS', requester:'ธนพล ศรีสุข', requester_phone:'0812223333',
+          requester_dept:'Business and Economy', passengers:'อีก 1 คน', items:'',
           stops:[{ to:'ท่าอากาศยานสุวรรณภูมิ', km:31.2 }, { to:'โรงแรมอนันตรา สยาม', km:28.9 }],
-          total_km:60.1, total_mins:120, stop_log:[{ i:0, at:`${k}T13:55:00+07:00` }] }],
+          total_km:60.1, total_mins:120, stop_log:[] },
+        { record_id:'CAR-0', status:'returned', title:'ส่งเอกสารกระทรวงศึกษาธิการ',
+          vehicle:'Toyota Commuter', plate:'1กก-1234',
+          start_at:`${y}T13:00:00+07:00`, end_at:`${y}T15:30:00+07:00`,
+          project_code:'BACKOFFICE', requester:'มณฑา ใจดี', requester_phone:'',
+          requester_dept:'General Administration', passengers:'', items:'',
+          stops:[{ to:'กระทรวงศึกษาธิการ', km:9.4 }],
+          odo_out:'128412', odo_in:'128454', stop_log:[{ i:0 }] }],
       office:'มูลนิธิคีนันแห่งเอเซีย ถนนวิทยุ กรุงเทพมหานคร',
       reports:[{ report_id:'DRP-1', at:`${k}T07:10:00+07:00`, kind:'vehicle',
                  body:'ยางหน้าซ้ายลมอ่อน เติมแล้วแต่ควรให้ช่างดู', status:'open' }] };
   })(),
   driverPair:{ ok:true, driver_id:'DRV-A1', name:'สมพงษ์ ขับดี' },
-  driverJobAct:{ ok:true },
+  driverJobAct:(q => {
+    /* ในโหมดพรีวิว กดปุ่มแล้วต้องเห็นสถานะเปลี่ยนจริง ไม่งั้นเวลาพรีเซน
+       จะกลายเป็นกดแล้วหน้าเด้งกลับมาเหมือนเดิม ซึ่งดูเหมือนระบบพัง */
+    const J = MOCK.driverPortal.jobs;
+    const j = J.find(x => x.record_id === q.record_id);
+    if(!j) return { ok:false, error:'NOT_FOUND' };
+    const now = new Date().toISOString();
+    if(q.act === 'depart'){ j.status = 'in_use'; j.started_at = now; j.odo_out = q.odo || ''; }
+    else if(q.act === 'return'){ j.status = 'returned'; j.finished_at = now; j.odo_in = q.odo || ''; }
+    else if(q.act === 'stop'){
+      j.stop_log = (j.stop_log || []).concat([{ i:Number(q.stop_index) || 0, at:now }]);
+    }else if(q.act === 'cancel'){
+      const kill = q.reason === 'pax_cancel';
+      if(kill) j.status = 'cancelled'; else { j.status = 'requested'; j.driver_id = ''; }
+      return { ok:true, killed:kill };
+    }
+    return { ok:true };
+  }),
   driverSelf:{ ok:true },
   driverReport:{ ok:true, report_id:'DRP-2' },
   driverPairCode:{ ok:true, code:'481027', expires:'6 ก.ย. 14:30', name:'สมพงษ์ ขับดี' },
@@ -11754,9 +11783,23 @@ async function boot(){
     S.today = a.today || null; S.bootNews = a.announcements || null;
     $x('#bellDot').textContent = S.notifCount; $x('#bellDot').hidden = false;
     const banner = el(`<div style="background:#FFFBEB;border-bottom:1px solid #FDE68A;color:#92400E;
-      font-size:var(--fs-meta);font-weight:600;text-align:center;padding:6px 12px">
-      โหมดพรีวิว · ข้อมูลตัวอย่าง · ใส่ CFG.GAS_URL เพื่อใช้งานจริง</div>`);
+      font-size:var(--fs-meta);font-weight:600;text-align:center;padding:6px 12px;
+      display:flex;gap:10px;justify-content:center;align-items:center;flex-wrap:wrap">
+      <span>โหมดพรีวิว · ข้อมูลตัวอย่าง${DEMO_DRIVER ? ' · มุมคนขับ' : ''}</span>
+      <a href="?demo" style="color:#92400E;font-weight:800;${DEMO_DRIVER ? '' : 'display:none'}">← มุมพนักงาน</a>
+      <a href="?demo=driver" style="color:#92400E;font-weight:800;${DEMO_DRIVER ? 'display:none' : ''}">มุมคนขับ →</a>
+    </div>`);
     document.querySelector('.topbar').after(banner);
+
+    /* มุมคนขับ: ไม่ต้องผ่านหน้าจับคู่รหัส เพราะในพรีวิวไม่มีเซิร์ฟเวอร์ให้จับคู่
+       เข้าโหมดคนขับตรงๆ แล้วโหลดข้อมูลจำลองชุดคนขับแทน */
+    if(DEMO_DRIVER){
+      S.driverMode = true; document.body.classList.add('drvmode');
+      S.lang = 'th';
+      S.stack = [];
+      go('driver-portal', {}, true);
+      return;
+    }
     go('home');
     return;
   }

@@ -753,6 +753,281 @@ body.drvmode .nav{display:flex!important}
 .stopline.hit .dot{background:var(--ok)}
 
 
+/* ══════════ ช่องค้นหา ══════════ */
+/* ในหน้าบริการเป็นแค่ "ปุ่มที่หน้าตาเหมือนช่องค้นหา" — กดแล้วไปหน้าค้นหาจริง
+   ทำแบบนี้เพราะหน้าบริการวาดเสร็จทันที ไม่ต้องรอคีย์บอร์ดเด้งขึ้นมาบังครึ่งจอ
+   ตั้งแต่วินาทีแรกที่เปิด ทั้งที่ส่วนใหญ่คนเปิดมาเพื่อกดเมนู ไม่ได้มาพิมพ์ */
+.srchbar{ display:flex; align-items:center; gap:10px; width:100%; text-align:left;
+  padding:13px 15px; border:1px solid var(--line); border-radius:var(--r);
+  background:var(--surface); color:var(--ink-3); font-size:var(--fs-body); cursor:pointer }
+.srchbar:hover{ border-color:var(--brand); color:var(--brand) }
+.srchbar svg{ width:19px; height:19px; flex:0 0 auto }
+
+.schhint{ margin:12px 2px 0; font-size:var(--fs-sec); color:var(--ink-3); line-height:1.6 }
+.schwait{ padding:16px 2px; font-size:var(--fs-sec); color:var(--ink-3) }
+
+/* ผลค้นหาที่เป็นคน — เบอร์กับอีเมลต้องกดโทร/กดส่งได้ทันทีจากตรงนี้
+   ถ้าต้องจำแล้วไปกดที่อื่น เท่ากับยังไม่ได้ช่วยอะไร */
+.row.schp{ align-items:flex-start; cursor:default }
+.av2{ width:38px; height:38px; flex:0 0 auto; border-radius:50%; background:var(--brand-50);
+  color:var(--brand); display:grid; place-items:center; font-weight:700; font-size:16px }
+.nick{ font-weight:400; color:var(--ink-3); font-size:var(--fs-sec) }
+.schc{ display:flex; flex-wrap:wrap; gap:8px 14px; margin-top:7px }
+.schc a{ display:inline-flex; align-items:center; gap:5px; font-size:var(--fs-sec);
+  color:var(--brand); text-decoration:none; font-weight:600 }
+.schc a:hover{ text-decoration:underline }
+.schc svg{ width:14px; height:14px }
+
+/* ══════════ หน้าฉัน ══════════ */
+.mehead{ text-align:center; padding:10px 0 6px }
+.meav{ width:76px; height:76px; border-radius:50%; object-fit:cover; display:block; margin:0 auto }
+.meav-t{ background:var(--brand-50); color:var(--brand); display:grid; place-items:center;
+  font-size:30px; font-weight:700 }
+.mehead h2{ margin:12px 0 3px; font-size:var(--fs-h1); font-weight:700; color:var(--ink) }
+.mehead p{ margin:0; font-size:var(--fs-sec); color:var(--ink-2) }
+.mehead p.medept{ color:var(--ink-3); margin-top:1px }
+
+.mel{ border:1px solid var(--line); border-radius:var(--r); overflow:hidden;
+  background:var(--surface) }
+.meli{ display:flex; align-items:center; gap:12px; width:100%; text-align:left;
+  padding:14px 15px; border-bottom:1px solid var(--line); background:none; cursor:pointer }
+.mel .meli:last-child{ border-bottom:0 }
+.meli:hover{ background:var(--brand-50) }
+.meli-n{ flex:1; min-width:0; font-size:var(--fs-body); color:var(--ink) }
+.meli-v{ flex:0 0 auto; font-size:var(--fs-sec); font-weight:700; color:var(--ink-3) }
+.meli .go{ flex:0 0 auto; color:var(--ink-3) }
+.meli .go svg{ width:17px; height:17px }
+.mever{ margin:16px 0 0; text-align:center; font-size:var(--fs-meta); color:var(--ink-3) }
+
+/* ══════════ ศูนย์แจ้งเตือน ══════════
+   ไม่ใช่ทุกการแจ้งเตือนมีน้ำหนักเท่ากัน
+   กลุ่ม "ต้องดำเนินการ" จึงเป็นกลุ่มเดียวที่ได้พื้นสีและปุ่ม
+   ส่วนที่เหลือเป็นรายการเรียบๆ เพราะอ่านแล้วจบ */
+.nsec{ margin-bottom:26px }
+.nsec:last-child{ margin-bottom:0 }
+.nsec-h{ display:flex; align-items:center; gap:9px; margin:0 0 4px }
+.nsec-h h3{ margin:0; font-size:var(--fs-h2); font-weight:700; color:var(--ink) }
+.nsec-s{ margin:0 0 10px; font-size:var(--fs-meta); color:var(--ink-3) }
+.nlist{ display:flex; flex-direction:column; gap:8px }
+
+.nrow{ display:flex; align-items:flex-start; gap:11px; width:100%; text-align:left;
+  padding:13px 14px; border-radius:var(--r); border:1px solid var(--line);
+  background:var(--surface); cursor:pointer }
+.nrow:hover{ border-color:var(--brand) }
+.ndotm{ width:8px; height:8px; border-radius:50%; flex:0 0 auto; margin-top:6px;
+  background:var(--line2, var(--line)) }
+.nbody{ flex:1; min-width:0 }
+.nt{ display:block; font-size:var(--fs-body); font-weight:600; color:var(--ink);
+  line-height:1.45 }
+.ns{ display:block; margin-top:2px; font-size:var(--fs-meta); color:var(--ink-3) }
+.ncta{ flex:0 0 auto; display:inline-flex; align-items:center; gap:3px; align-self:center;
+  font-size:var(--fs-sec); font-weight:700; color:var(--brand); white-space:nowrap }
+.ncta svg{ width:15px; height:15px }
+
+/* ต้องดำเนินการ = ยังมีคนหรือของรออยู่ปลายทาง */
+.nrow.action{ background:var(--warn-bg); border-color:#F0DCBB }
+.nrow.action .ndotm{ background:var(--warn) }
+.nrow.action .ncta{ color:var(--warn) }
+/* อัปเดต = เรื่องของเราขยับแล้ว อ่านแล้วจบ */
+.nrow.update .ndotm{ background:var(--brand) }
+/* ข้อมูล = เรื่องทั่วไปขององค์กร ไม่ได้เจาะจงถึงเรา */
+.nrow.info{ background:none; border-color:transparent; border-bottom:1px solid var(--line);
+  border-radius:0; padding:12px 2px }
+.nrow.info .ndotm{ background:var(--ink-3); opacity:.4 }
+.nrow.info .nt{ font-weight:500; color:var(--ink-2) }
+.nlist .nrow.info:last-child{ border-bottom:0 }
+
+/* ══════════ หน้าแรกบนจอคอม ══════════
+   จอคอมไม่ใช่จอมือถือที่กว้างขึ้น มีพื้นที่แนวนอนที่มือถือไม่มี
+   ของเดิมวางทุกโซนต่อกันลงมาเป็นแถวเดียว บนจอ 1440px จึงเหลือที่ว่างข้างขวา
+   ครึ่งจอ แล้วเรื่องที่ต้องทำกับตารางวันนี้ก็ยังต้องเลื่อนหากันอยู่ดี
+
+   จัดใหม่เป็นสองคอลัมน์: ซ้ายคือสิ่งที่ต้องลงมือทำและข่าวสาร
+   ขวาเป็นรางข้อมูลที่ต้องเหลือบดู — ตารางวันนี้กับทางลัด
+   "ต้องทำตอนนี้" อยู่ซ้ายบนเสมอ เพราะเป็นเหตุผลที่คนเปิดหน้านี้ */
+@media(min-width:1000px){
+  .home{
+    display:grid;
+    grid-template-columns:minmax(0,1.6fr) minmax(300px,1fr);
+    grid-template-areas:
+      'head head'
+      'att  week'
+      'news quick';
+    column-gap:30px; align-items:start;
+  }
+  .home > .hhead   { grid-area:head }
+  .home > .hz-att  { grid-area:att }
+  .home > .hz-week { grid-area:week }
+  .home > .hz-quick{ grid-area:quick }
+  .home > .hz-news { grid-area:news }
+  /* รางขวาเป็นข้อมูลประกอบ ไม่ใช่เนื้อหาหลัก จึงใส่พื้นให้ต่างจากคอลัมน์ซ้าย */
+  .home > .hz-week, .home > .hz-quick{
+    background:var(--surface); border:1px solid var(--line); border-radius:var(--r);
+    padding:16px 17px; margin-bottom:16px }
+  .home > .hz-week .hz-h, .home > .hz-quick .hz-h{ margin-top:0 }
+  .home .qa{ grid-template-columns:repeat(2,1fr) }
+  .home .atc{ flex-direction:row; align-items:center }
+  .home .atc-b{ flex:1 }
+  .home .atc-cta{ align-self:center }
+}
+
+/* ══════════ พัสดุทั้งหมด ══════════ */
+.srch{ display:flex; gap:8px }
+.srch input{ flex:1; min-width:0; padding:11px 13px; border:1px solid var(--line);
+  border-radius:var(--r); background:var(--surface); color:var(--ink);
+  font-size:var(--fs-body); font-family:inherit }
+.srch button{ flex:0 0 auto; width:46px; border:1px solid var(--line); border-radius:var(--r);
+  background:var(--surface); color:var(--ink-2); display:grid; place-items:center; cursor:pointer }
+.srch button:hover{ border-color:var(--brand); color:var(--brand) }
+.srch button svg{ width:19px; height:19px }
+
+/* เวลาที่รอ — ตัวเลขที่บอกอะไรได้มากที่สุดในแถว จึงให้มันอยู่คู่กับป้ายสถานะ */
+.pwait{ margin-top:3px; font-size:var(--fs-meta); color:var(--ink-3);
+  font-variant-numeric:tabular-nums; white-space:nowrap }
+.pwait.late{ color:var(--danger); font-weight:700 }
+
+.statbox{ margin:12px 0 0; padding:15px 16px; border:1px solid var(--line);
+  border-radius:var(--r); background:var(--surface) }
+.statbox h4{ margin:0 0 12px; font-size:var(--fs-sec); font-weight:700; color:var(--ink) }
+.statnote{ margin:10px 0 0; font-size:var(--fs-meta); color:var(--ink-3); line-height:1.55 }
+
+/* แท่งรายเดือน — หกแท่งเทียบกัน ไม่คุ้มที่จะโหลดไลบรารีกราฟมาวาด
+   ตัวเลขอยู่บนหัวแท่งเสมอ เพราะแท่งบอกได้แค่ "มากกว่า/น้อยกว่า" ไม่ได้บอกว่าเท่าไร */
+.bars{ display:flex; align-items:flex-end; gap:8px; height:104px }
+.bar1{ flex:1; min-width:0; display:flex; flex-direction:column; align-items:center;
+  justify-content:flex-end; height:100% }
+.bv{ font-size:var(--fs-meta); font-weight:700; color:var(--ink-2);
+  font-variant-numeric:tabular-nums; margin-bottom:3px }
+.bb{ width:100%; max-width:38px; min-height:3px; border-radius:4px 4px 0 0;
+  background:var(--brand); display:block }
+.bl{ margin-top:6px; font-size:var(--fs-meta); color:var(--ink-3); white-space:nowrap }
+
+.kv{ display:grid; grid-template-columns:auto 1fr; gap:6px 18px; margin:0; font-size:var(--fs-sec) }
+.kv dt{ color:var(--ink-2) }
+.kv dd{ margin:0; font-weight:700; color:var(--ink); text-align:right;
+  font-variant-numeric:tabular-nums }
+
+/* ของที่ค้างนานแค่ไหน — สีบอกความหนักเบา ตัวเลขบอกจำนวน */
+.agrow{ display:flex; flex-wrap:wrap; gap:8px }
+.ag{ flex:1 1 88px; padding:11px 10px; border-radius:var(--r-sm); text-align:center;
+  background:var(--brand-50); border:1px solid transparent }
+.ag.warn{ background:var(--warn-bg); border-color:#F0DCBB }
+.ag.bad { background:var(--danger-bg); border-color:#F2CFCA }
+.ag b{ display:block; font-size:19px; font-weight:700; color:var(--ink);
+  font-variant-numeric:tabular-nums }
+.ag span{ display:block; margin-top:2px; font-size:var(--fs-meta); color:var(--ink-2);
+  line-height:1.3 }
+
+.toplist{ margin:0; padding:0; list-style:none; counter-reset:tl }
+.toplist li{ counter-increment:tl; display:flex; align-items:center; gap:10px;
+  padding:8px 0; border-bottom:1px solid var(--line); font-size:var(--fs-sec) }
+.toplist li:last-child{ border-bottom:0 }
+.toplist li::before{ content:counter(tl); flex:0 0 auto; width:20px; height:20px;
+  border-radius:50%; background:var(--bg); color:var(--ink-3); font-size:var(--fs-meta);
+  font-weight:700; display:grid; place-items:center }
+.toplist span{ flex:1; min-width:0; overflow:hidden; text-overflow:ellipsis;
+  white-space:nowrap; color:var(--ink) }
+.toplist b{ flex:0 0 auto; font-variant-numeric:tabular-nums; color:var(--ink-2) }
+
+.pager{ display:flex; align-items:center; justify-content:space-between; gap:10px;
+  margin-top:14px }
+.pager .btn{ flex:0 0 auto; width:auto; padding:10px 14px; font-size:var(--fs-sec) }
+.pager .btn:disabled{ opacity:.4; cursor:default }
+.pager span{ font-size:var(--fs-meta); color:var(--ink-3); text-align:center;
+  font-variant-numeric:tabular-nums }
+.pager-n{ margin:12px 0 0; text-align:center; font-size:var(--fs-meta); color:var(--ink-3) }
+
+/* ══════════ ทางเข้าระบบอื่นของคีนัน ══════════ */
+.lk-foot{ margin:14px 0 0; font-size:var(--fs-meta); color:var(--ink-3); line-height:1.55 }
+/* ตัวเลือกไอคอนตอนเพิ่มลิงก์ — ชุดปิด ไม่ให้อัปโหลดโลโก้เอง
+   โลโก้ 12 อันคนละสไตล์ในหน้าเดียว รกกว่าช่วยให้หาเจอ */
+.ikp{ display:flex; flex-wrap:wrap; gap:8px }
+.ik{ width:46px; height:46px; border-radius:11px; border:1px solid var(--line);
+  background:var(--surface); color:var(--ink-3); display:grid; place-items:center; cursor:pointer }
+.ik svg{ width:21px; height:21px }
+.ik:hover{ border-color:var(--brand); color:var(--brand) }
+.ik.on{ border-color:var(--brand); background:var(--brand-50); color:var(--brand);
+  box-shadow:inset 0 0 0 1px var(--brand) }
+
+/* ══════════ เกี่ยวกับ Kenan ONE ══════════ */
+.ab{ padding-bottom:26px }
+.ab-hero{ text-align:center; padding:14px 0 22px }
+.ab-hero h2{ margin:12px 0 5px; font-size:var(--fs-h1); font-weight:700; color:var(--ink) }
+.ab-hero p{ margin:0 auto; max-width:34ch; font-size:var(--fs-sec); color:var(--ink-2);
+  line-height:1.55 }
+.ab-body p{ margin:0 0 11px; font-size:var(--fs-body); color:var(--ink-2); line-height:1.68 }
+.ab-body p:last-child{ margin-bottom:0 }
+
+.ab-facts{ display:grid; grid-template-columns:repeat(3,1fr); gap:1px; margin:20px 0 0;
+  background:var(--line); border:1px solid var(--line); border-radius:var(--r); overflow:hidden }
+.ab-facts > div{ background:var(--surface); padding:13px 8px; text-align:center; min-width:0 }
+/* ยอมให้ขึ้นบรรทัดที่สอง ดีกว่าตัดเป็น "AI Taskforc…" ซึ่งอ่านไม่ออกว่าคืออะไร */
+.ab-facts b{ display:block; font-size:var(--fs-cta); font-weight:700; color:var(--ink);
+  font-variant-numeric:tabular-nums; line-height:1.3; word-break:break-word }
+.ab-facts span{ display:block; margin-top:2px; font-size:var(--fs-meta); color:var(--ink-3) }
+
+/* ปุ่มขอบคุณ — บล็อกเดียวในหน้าที่ได้พื้นสี เพราะเป็นเหตุผลที่หน้านี้มีอยู่ */
+.cheer{ margin-top:22px; padding:20px 16px; border-radius:var(--r-lg);
+  background:var(--brand-50); border:1px solid var(--brand-300) }
+.cheer h3{ margin:0; font-size:var(--fs-h2); font-weight:700; color:var(--ink); text-align:center }
+.cheer-sub{ margin:6px auto 16px; max-width:36ch; text-align:center;
+  font-size:var(--fs-sec); color:var(--ink-2); line-height:1.55 }
+.cheer-row{ display:grid; grid-template-columns:repeat(5,1fr); gap:7px }
+.ch{ position:relative; display:flex; flex-direction:column; align-items:center; gap:3px;
+  padding:11px 3px 9px; border-radius:var(--r); border:1px solid transparent;
+  background:var(--surface); cursor:pointer; min-height:82px; justify-content:center;
+  transition:transform .12s ease, border-color .12s ease }
+.ch:hover{ transform:translateY(-2px); border-color:var(--brand-300) }
+.ch:active{ transform:scale(.95) }
+.ch.given{ border-color:var(--brand); background:#fff;
+  box-shadow:inset 0 0 0 1px var(--brand) }
+.ch-e{ font-size:21px; line-height:1 }
+.ch-n{ font-size:var(--fs-sec); font-weight:700; color:var(--brand);
+  font-variant-numeric:tabular-nums; line-height:1.2 }
+.ch-l{ font-size:10.5px; color:var(--ink-3); text-align:center; line-height:1.25 }
+.cheer-note{ margin:12px 0 0; text-align:center; font-size:var(--fs-meta); color:var(--ink-3) }
+@media(max-width:340px){ .cheer-row{ grid-template-columns:repeat(3,1fr) } }
+
+.ch-burst{ position:absolute; top:2px; right:8px; font-size:15px; color:var(--brand);
+  pointer-events:none; animation:chb .7s ease-out forwards }
+@keyframes chb{
+  0%   { opacity:0; transform:translateY(4px) scale(.6) }
+  30%  { opacity:1; transform:translateY(-4px) scale(1.1) }
+  100% { opacity:0; transform:translateY(-18px) scale(.9) }
+}
+
+/* ข้อความที่คนส่งเข้ามา — อ่านง่ายกว่าตารางเพราะเป็นเนื้อความ ไม่ใช่ข้อมูล */
+.fbc{ padding:15px 16px; border:1px solid var(--line); border-radius:var(--r);
+  background:var(--surface); margin-bottom:9px }
+.fbc-h{ display:flex; align-items:center; justify-content:space-between; gap:10px;
+  margin-bottom:8px }
+.fbc-k{ font-size:var(--fs-meta); font-weight:700; padding:2px 9px; border-radius:20px;
+  background:var(--brand-50); color:var(--brand) }
+.fbc-k.bug{ background:var(--danger-bg); color:var(--danger) }
+.fbc-k.praise{ background:var(--ok-bg); color:var(--ok) }
+.fbc-k.idea{ background:var(--warn-bg); color:var(--warn) }
+.fbc-t{ font-size:var(--fs-meta); color:var(--ink-3); white-space:nowrap }
+.fbc p{ margin:0; font-size:var(--fs-body); color:var(--ink); line-height:1.62;
+  white-space:pre-wrap; word-break:break-word }
+.fbc-w{ margin-top:9px; font-size:var(--fs-meta); color:var(--ink-3) }
+
+/* ══════════ ผู้ดูแลแก้ข้อความแจ้งเตือน ══════════
+   พรีวิวต้องเป็นฟองแชตจริงๆ ไม่ใช่กล่องข้อความธรรมดา
+   เพราะสิ่งที่คนแก้ต้องตัดสินคือ "อ่านในไลน์แล้วเป็นยังไง" ไม่ใช่ "ในช่องนี้เป็นยังไง" */
+.lchat{ background:#93A9BA; border-radius:12px; padding:14px 12px 18px }
+.lbub{ background:#fff; color:#141B21; border-radius:4px 16px 16px 16px; padding:10px 13px;
+  font-size:var(--fs-sec); line-height:1.58; word-break:break-word;
+  box-shadow:0 1px 2px rgba(0,0,0,.13) }
+.lbub b{ font-weight:700 }
+.llink{ color:#1461B5; text-decoration:underline; word-break:break-all;
+  font-size:var(--fs-meta) }
+
+.vchips{ display:flex; flex-wrap:wrap; gap:6px }
+.vchip{ font-family:ui-monospace,Menlo,monospace; font-size:var(--fs-meta); font-weight:500;
+  padding:4px 9px; border-radius:7px; border:1px solid var(--line);
+  background:var(--surface); color:var(--brand); cursor:pointer }
+.vchip:hover{ border-color:var(--brand); background:var(--brand-50) }
+
 /* ══════════ แถบบอกขั้นตอน ══════════
    คนที่เพิ่งเปิดแอปครั้งแรกไม่รู้ว่าข้างหน้ายังเหลืออะไรอีก
    ถ้าไม่บอก เขาจะเดาว่ายาว แล้วปิดทิ้งกลางทาง
@@ -1101,8 +1376,12 @@ select:focus-visible, textarea:focus-visible, [tabindex]:focus-visible{
     <button class="icon-btn" id="backBtn" hidden aria-label="ย้อนกลับ">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
     </button>
-    <div class="brand" id="brand"><img class="mark" src="data:image/png;base64,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" alt="" width="34" height="34"><div class="txt">Kenan ONE</div></div>
+    <div class="brand" id="brand"><img class="mark" src="data:image/png;base64,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" alt="" width="34" height="34"><div class="txt" id="brandTx"></div></div>
     <h1 id="title" hidden></h1>
+    <button class="icon-btn" id="topSearch" aria-label="ค้นหา" style="margin-left:auto">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4.2-4.2"/></svg>
+    </button>
     <div class="langtop" id="langTop">
       <button data-l="th">TH</button><button data-l="en">EN</button>
     </div>
@@ -1112,7 +1391,7 @@ select:focus-visible, textarea:focus-visible, [tabindex]:focus-visible{
     <button class="sbrand" id="sHome">
       <img class="mark" src="data:image/png;base64,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" alt="" width="34" height="34">
       <div style="min-width:0">
-        <div class="txt">Kenan ONE</div>
+        <div class="txt" id="sbrandTx"></div>
         <div class="sub">Staff Hub</div>
       </div>
     </button>
@@ -1188,7 +1467,7 @@ const CFG = {
   GAS_URL : 'https://script.google.com/macros/s/AKfycbyOjh4BAAbzY5QfZNG_oGuxbmvZwHjEAKazRMuMxrDeoNknE_rqEoAFdkuJldOPP_q_eg/exec',
   LIFF_TIMEOUT_MS : 3500,
   CONSENT_VERSION : '2026-09-01',
-  BUILD : '2026-09-06b'      // ต้องตรงกับ BUILD ใน Code.gs ที่ Deploy ไว้
+  BUILD : '2026-09-06e'      // ต้องตรงกับ BUILD ใน Code.gs ที่ Deploy ไว้
 };
 
 /* เก็บ ?go=... ไว้ตั้งแต่ต้น เพราะเดี๋ยวจะล้าง query string ทิ้งหลัง LIFF ล็อกอิน
@@ -1267,9 +1546,17 @@ async function swr(key, fetchFn, paint, maxAge = 0){
 }
 
 /* ── 3. COPY DECK — ข้อความจริงทุกบรรทัด ไทย/อังกฤษ ───────────── */
+/* ชื่อระบบ — เปลี่ยนที่นี่ที่เดียว แล้วทุกที่ในหน้าจอเปลี่ยนตาม
+   แถบบน · แถบข้าง · แท็บเบราว์เซอร์ · หน้าเกี่ยวกับ · ข้อความในแอปทุกจุด
+   (อีกที่คือ APP_NAME ใน Code.gs ซึ่งคุมหัวเรื่องอีเมลและชื่อไฟล์สำรอง)
+
+   ปลอดภัยที่จะเปลี่ยน ไม่กระทบ LIFF ID · URL ของ Web App · ชื่อไฟล์ index.html
+   (ชื่อไฟล์ต้องเป็น index.html ต่อไป เพราะ GitHub Pages หาไฟล์นี้เป็นหน้าแรก) */
+const APP_NAME = 'Kenan ONE';
+
 const T = {
   th:{
-    appName:'Kenan ONE',
+    appName:APP_NAME,
     navHome:'หน้าแรก', navParcel:'พัสดุ', navSos:'ฉุกเฉิน', navMe:'ฉัน', navLog:'บันทึกพัสดุ',
     navNotif:'แจ้งเตือน',
     sgWork:'งานของฉัน', sgBook:'จอง ยืม คืน', sgInfo:'ข้อมูลองค์กร', sgAdmin:'สำหรับผู้ดูแล',
@@ -1547,6 +1834,153 @@ const T = {
     carRouteSub:'ใส่เฉพาะเที่ยวที่แวะหลายจุด หรือต้องการระยะทางจริง',
     carExtras:'ของที่ขนไป · หมายเหตุ', carExtrasSub:'ไม่ใส่ก็จองได้',
     carSeatsShort:(cap, n) => `นั่งได้ ${cap} ที่ · ไป ${n} คน อาจไม่พอ`,
+    /* ── ระบบอื่นๆ ของคีนัน · เกี่ยวกับ ONE · แก้ข้อความแจ้งเตือน ── */
+    svOne:'บริการใน ' + APP_NAME + '', svOther:'ระบบอื่นๆ ของคีนัน',
+    svLinkS:'เพิ่มหรือแก้ทางเข้าระบบอื่น', svMsgS:'แก้ข้อความที่ส่งเข้าไลน์',
+    lkOther:'อื่นๆ',
+    lkEmpty:'ยังไม่มีทางเข้าระบบอื่น',
+    lkEmptyBody:'เมื่อผู้ดูแลเพิ่มลิงก์เข้ามา จะมาขึ้นตรงนี้',
+    lkEmptyAdmin:'เพิ่มลิงก์ระบบที่ทีมใช้อยู่ เช่น ระบบงานบุคคล Monday.com หรือระบบจองเรียนออนไลน์',
+    lkFoot:'ลิงก์เหล่านี้พาออกไปนอก ' + APP_NAME + ' บางระบบอาจต้องเข้าสู่ระบบแยกอีกครั้ง',
+    lkManage:'จัดการทางเข้าระบบอื่น', lkAdd:'เพิ่มลิงก์', lkEdit:'แก้ไขลิงก์',
+    lkWhy:'รวมประตูเข้าระบบอื่นของคีนันไว้ที่เดียว คนเข้าใหม่จะได้รู้ว่ามีระบบอะไรให้ใช้บ้าง โดยไม่ต้องไปไล่หาในอีเมลเก่า',
+    lkTitle:'ชื่อระบบ', lkTitlePh:'เช่น ระบบงานบุคคล · AI Champion Hub',
+    lkTitleEn:'ชื่อภาษาอังกฤษ',
+    lkUrl:'ลิงก์', lkUrlHint:'ต้องขึ้นต้นด้วย https:// เท่านั้น',
+    lkBadUrl:'ลิงก์ต้องขึ้นต้นด้วย https://',
+    lkNote:'คำอธิบายสั้นๆ', lkNotePh:'เช่น ขอลา ดูสลิป ยื่นเบิก',
+    lkCat:'หมวด', lkCatPh:'เช่น งานบุคคล · เรียนรู้และพัฒนา',
+    lkIcon:'ไอคอน', lkOrder:'ลำดับ', lkOrderHint:'เลขน้อยขึ้นก่อน',
+    lkWho:'ใครเห็นได้', lkWhoAll:'ทุกคน', lkWhoOfficer:'เจ้าหน้าที่ขึ้นไป', lkWhoAdmin:'ผู้ดูแลเท่านั้น',
+    lkRolesN:r => 'เฉพาะ ' + r,
+    lkHide:'ซ่อนลิงก์นี้', lkHidden:'ซ่อนแล้ว เปิดกลับได้ทุกเมื่อ',
+
+    abTitle:'เกี่ยวกับ ' + APP_NAME,
+    abTag:'ที่เดียวสำหรับเรื่องประจำวันในออฟฟิศ — พัสดุ ห้องประชุม รถ อุปกรณ์ และเรื่องแจ้งซ่อม',
+    abP1:APP_NAME + ' เกิดจากคำถามง่ายๆ ว่าทำไมเรื่องเล็กๆ ในออฟฟิศถึงต้องใช้หลายช่องทาง พัสดุถามในไลน์กลุ่ม จองห้องเขียนในกระดาษ จองรถโทรหา GA แล้วไม่มีใครรู้ว่าตอนนี้อะไรว่างอยู่บ้าง',
+    abP2:'ระบบนี้ไม่ได้ตั้งใจจะแทนทุกอย่าง แค่รวบเรื่องที่ทุกคนต้องทำทุกสัปดาห์มาไว้ที่เดียว แล้วให้จบได้ในไม่กี่ครั้งกด ส่วนที่เหลือยังอยู่ที่เดิม และมีทางเข้าอยู่ในแท็บระบบอื่นๆ',
+    abBuild:'รุ่นที่ใช้อยู่', abCheers:'กำลังใจที่ได้รับ',
+    abMadeBy:'ผู้พัฒนา', abMadeByVal:'AI Taskforce × IT',
+
+    chTitle:'ชอบตรงไหนบอกหน่อย',
+    chSub:'ระบบภายในไม่มีใครเขียนรีวิวให้ ถ้ามันช่วยงานคุณได้จริง กดสักปุ่มให้คนทำรู้หน่อยก็ยังดี',
+    chHeart:'ชอบมาก', chClap:'ทำได้ดี', chRocket:'ประหยัดเวลา',
+    chThanks:'ขอบคุณ', chCoffee:'เลี้ยงกาแฟ',
+    chOnce:'กดได้วันละครั้งต่อหนึ่งแบบ',
+    chAlready:'วันนี้กดปุ่มนี้ไปแล้ว ไว้พรุ่งนี้มากดใหม่ได้',
+
+    fbTitle:'อยากบอกอะไรคนทำ',
+    fbSub:'อ่านทุกข้อความจริงๆ ไม่ต้องเกรงใจ เรื่องที่ใช้แล้วขัดใจมีประโยชน์กว่าคำชม',
+    fbKind:'เรื่องอะไร',
+    fbIdea:'อยากให้เพิ่ม', fbBug:'ใช้แล้วมีปัญหา', fbPraise:'ชอบตรงนี้', fbOther:'อื่นๆ',
+    fbBody:'ข้อความ', fbPh:'เล่ามาได้เลย ยาวสั้นไม่เกี่ยง',
+    fbNamed:'ใส่ชื่อไปด้วย',
+    fbNamedSub:'ไม่ติ๊กก็ส่งได้ ระบบจะไม่บันทึกว่าใครเป็นคนส่ง',
+    fbSend:'ส่งถึงคนทำ', fbNeed:'ยังไม่ได้พิมพ์อะไรเลย',
+    fbSent:'ส่งแล้ว ขอบคุณที่สละเวลาครับ',
+    fbRead:'อ่านข้อความที่ส่งเข้ามา', fbAnon:'ไม่ระบุชื่อ',
+    fbNone:'ยังไม่มีใครส่งข้อความเข้ามา', fbNoneBody:'ข้อความจากหน้าเกี่ยวกับ ' + APP_NAME + ' จะมาโผล่ที่นี่',
+
+    msgTitle:'ข้อความแจ้งเตือน',
+    msgWhy:'แก้ข้อความที่ระบบส่งเข้าไลน์ได้จากตรงนี้ ไม่ต้องแก้โค้ด ค่าเริ่มต้นยังอยู่ครบ กดกลับได้ทุกเมื่อ',
+    msgEdit:'แก้ข้อความ', msgHead:'หัวเรื่อง', msgBody:'เนื้อความ',
+    msgVars:'ตัวแปรที่ใช้ได้', msgVarsHint:'แตะเพื่อแทรก · ระบบเติมค่าจริงให้ตอนส่ง · บรรทัดที่ตัวแปรไม่มีค่าจะหายไปทั้งบรรทัด',
+    msgUrg:'ความสำคัญ',
+    msgUrgN:'ปกติ — ส่งไลน์อย่างเดียว',
+    msgUrgH:'สำคัญ — ส่งไลน์และอีเมล',
+    msgUrgE:'ฉุกเฉิน — ส่งแม้โควตาใกล้หมด',
+    msgTurnOff:'ปิดข้อความนี้',
+    msgTurnOffSub:'ระบบจะข้ามไปเงียบๆ ไม่ส่งทั้งไลน์และอีเมล ใช้ตอนอยากประหยัดโควตา',
+    msgPreview:'เห็นในไลน์แบบนี้',
+    msgPreviewHint:'ค่าในวงเล็บคือตัวอย่าง ของจริงจะเป็นชื่อคน เวลา และลิงก์',
+    msgTest:'ทดสอบส่งหาตัวเอง',
+    msgTestSent:'ส่งแล้ว เปิดไลน์ดูได้เลย',
+    msgTestNoLine:'ยังไม่ได้ตั้งค่า LINE_TOKEN หรือบัญชีนี้ไม่ได้ผูกไลน์ไว้',
+    msgReset:'กลับเป็นข้อความเริ่มต้น', msgResetOk:'กลับเป็นค่าเริ่มต้นแล้ว',
+    msgEdited:'แก้แล้ว', msgOff:'ปิดอยู่',
+    msgBadVars:v => 'มีตัวแปรที่ระบบไม่รู้จัก: ' + v + '\n\nตัวแปรพวกนี้จะกลายเป็นช่องว่างตอนส่งจริง และบรรทัดที่มีมันจะหายไปทั้งบรรทัด\n\nยืนยันจะบันทึกแบบนี้ไหม',
+    /* ── พัสดุทั้งหมด + สถิติ ── */
+    prcTitle:'พัสดุทั้งหมด', prcList:'รายการ',
+    prcSearch:'ค้นหาชื่อผู้รับ เลขพัสดุ หรือชื่อของ',
+    prcF_wait:'รอรับ', prcF_done:'รับแล้ว', prcF_unid:'ไม่ทราบผู้รับ', prcF_all:'ทั้งหมด',
+    prcS_wait:'รอรับ', prcS_done:'รับแล้ว', prcS_unid:'ไม่ทราบผู้รับ',
+    prcNone:'ไม่พบพัสดุ',
+    prcNoneBody:'ยังไม่มีพัสดุในกลุ่มนี้',
+    prcNoneKw:k => 'ไม่พบพัสดุที่ตรงกับ "' + k + '"',
+    prcUntitled:'พัสดุ', prcNoWho:'ยังไม่ระบุผู้รับ',
+    prcInOn:d => 'เข้าระบบ ' + d,
+    prcGotOn:d => 'รับแล้ว ' + d,
+    prcHrs:n => n + ' ชม.',
+    prcDays:n => n + ' วัน',
+    prcPrev:'ก่อนหน้า', prcNext:'ถัดไป',
+    prcPageN:(a, b, n) => 'หน้า ' + a + ' จาก ' + b + ' · ทั้งหมด ' + n + ' ชิ้น',
+    prcShowing:n => 'ทั้งหมด ' + n + ' ชิ้น',
+
+    prcAll:'พัสดุทั้งหมด', prcWaiting:'ยังไม่มารับ', prcUnid:'ไม่ทราบผู้รับ',
+    prcSameDay:'รับภายใน 1 วัน',
+    prcPerMonth:'พัสดุเข้าต่อเดือน',
+    prcHowLong:'กว่าจะมารับใช้เวลาเท่าไร',
+    prcMedian:'ค่ากลาง', prcMean:'ค่าเฉลี่ย',
+    prcMedianWhy:'ดูค่ากลางเป็นหลัก ค่าเฉลี่ยถูกดึงให้สูงด้วยของไม่กี่ชิ้นที่ค้างเป็นเดือน',
+    prcAging:'ของที่ยังไม่มารับ ค้างมานานแค่ไหน',
+    prcAg1:'ไม่เกิน 3 วัน', prcAg3:'3–7 วัน', prcAg7:'7–30 วัน', prcAg30:'เกิน 30 วัน',
+    prcTopWho:'ได้รับพัสดุบ่อยที่สุด',
+    prcTopWhy:'ใช้ดูว่าใครควรได้รับการแจ้งเตือนเป็นพิเศษ ไม่ได้ใช้ประเมินผลงานใคร',
+    prcWho:'ผู้รับ', prcTracking:'เลขพัสดุ', prcLogged:'บันทึกเข้าระบบ',
+    prcClaimed:'กดรับเมื่อ', prcTook:'ใช้เวลากว่าจะมารับ', prcWaitedSoFar:'รอมาแล้ว',
+    prcId:'รหัสรายการ',
+    svPrcS:'ดูพัสดุทุกชิ้นและสถิติ',
+    /* ── หน้าบริการ · ค้นหา · หน้าฉัน · ศูนย์แจ้งเตือน ── */
+    sgUse:'จอง · ยืม · ใช้', sgOffice:'งานสำนักงาน', sgOrg:'ข้อมูลองค์กร',
+    sv2Car:'จองรถ · ดูตารางรถ', sv2Room:'เช็กว่าง · จองห้อง',
+    sv2Eq:'ยืม · คืน · จอง', sv2Zoom:'จองบัญชี Zoom',
+    sv2Parcel:'ดูพัสดุที่ถึงคุณ · กดรับของ',
+    sv2IssueT:'แจ้งเรื่อง / สอบถาม', sv2Issue:'ของเสีย · ขอความช่วยเหลือ · ถามหน่วยงาน',
+    sv2Dir:'ค้นเบอร์และอีเมลเพื่อนร่วมงาน', sv2News:'ประกาศและข่าวจากองค์กร',
+    sv2Act:'ทุกอย่างที่คุณเคยทำในระบบ',
+
+    schTitle:'ค้นหา',
+    schPh:'ค้นหาบริการ คน หรือรายการของคุณ',
+    schPh2:'ลองพิมพ์ "รถ" "ห้อง" "พัสดุ" หรือชื่อคน',
+    schHint:'พิมพ์อย่างน้อย 2 ตัวอักษร\nค้นได้ทั้งเมนูบริการ · รายการที่คุณจองหรือแจ้งไว้ · และรายชื่อเพื่อนร่วมงาน',
+    schClear:'ล้างคำค้น',
+    schLooking:'กำลังค้นรายการของคุณและรายชื่อ…',
+    schSvc:'บริการ', schMine:'รายการของฉัน', schPeople:'บุคลากร',
+    schNone:'ไม่พบอะไรที่ตรงกับคำนี้',
+    schNoneBody:k => 'ลองใช้คำสั้นลง หรือคำอื่นที่ใกล้เคียงกับ "' + k + '"',
+
+    meAccount:'บัญชี', meProfile:'ข้อมูลส่วนตัว', meLang:'ภาษา',
+    meWork:'งานของฉัน', meHistory:'ประวัติของฉัน', meBookings:'การจองของฉัน',
+    meLoans:'ของที่ยืมอยู่',
+    mePrivacy:'ข้อมูลและความเป็นส่วนตัว',
+    meWhatWeKeep:'ข้อมูลที่ระบบเก็บเกี่ยวกับฉัน',
+    meDownload:'ดาวน์โหลดข้อมูลของฉัน',
+    meFix:'ขอแก้ไขข้อมูล', meRights:'ขอใช้สิทธิข้อมูลส่วนบุคคล',
+    meHelp:'ความช่วยเหลือ', meReport:'แจ้งปัญหาการใช้งาน', meHow:'วิธีใช้งาน',
+    meLogout:'ออกจากระบบ',
+    meLogoutAsk:'ออกจากระบบแล้วต้องเข้าสู่ระบบด้วย LINE ใหม่อีกครั้ง ยืนยันไหม',
+    meFixedWhy:'สามอย่างนี้แก้เองไม่ได้ ถ้าไม่ถูกต้อง กดขอแก้ไขข้อมูลในหน้าฉัน',
+    helpLead:'รวมคำถามที่คนถามบ่อยตอนเริ่มใช้',
+    helpList:[
+      { q:'พัสดุถึงแล้วรู้ได้ยังไง',
+        a:'ระบบส่งข้อความเข้า LINE ให้ทันทีที่เจ้าหน้าที่บันทึกพัสดุพร้อมระบุชื่อคุณ\nกดจากในข้อความได้เลย หรือเปิดแอปแล้วดูที่หน้าแรกในหัวข้อ "ต้องทำตอนนี้"' },
+      { q:'จองรถแล้วต้องทำอะไรต่อ',
+        a:'ไม่ต้องทำอะไร คนขับจะได้รับแจ้งอัตโนมัติพร้อมเวลาและจุดหมาย\nถึงวันเดินทาง คนขับเป็นคนกดออกเดินทางและกดกลับถึงออฟฟิศเอง' },
+      { q:'ยืมอุปกรณ์ต้องคืนเมื่อไร',
+        a:'ดูได้ที่หน้าฉัน → ของที่ยืมอยู่ หรือสแกน QR ที่ติดอยู่บนตัวอุปกรณ์\nถ้าเลยกำหนด ระบบจะเตือนทุกวันจนกว่าจะกดคืน' },
+      { q:'สแกน QR บนอุปกรณ์แล้วได้อะไร',
+        a:'เห็นทันทีว่าชิ้นนั้นว่างหรือไม่ ใครถืออยู่ และกดยืมหรือคืนได้จากตรงนั้นเลย\nไม่ต้องเข้าไปหาในรายการอุปกรณ์อีกรอบ' },
+      { q:'จองห้องแล้วจะรู้ได้ยังไงว่าใครจองชนกับเรา',
+        a:'ระบบไม่ยอมให้จองทับกันอยู่แล้ว ถ้าช่วงเวลานั้นมีคนจองไว้ จะกดจองไม่ผ่าน\nดูภาพรวมทั้งเดือนได้ที่หน้าจองห้อง แล้วเลือกมุมมองรายเดือน' },
+      { q:'เปลี่ยนเบอร์หรือรูปตัวเองได้ที่ไหน',
+        a:'หน้าฉัน → ข้อมูลส่วนตัว\nส่วนชื่อ แผนก และอีเมล แก้เองไม่ได้ ต้องกดขอแก้ไขข้อมูล' },
+      { q:'ไม่อยากให้คนอื่นเห็นเบอร์หรือวันเกิด',
+        a:'หน้าฉัน → ข้อมูลส่วนตัว มีสวิตช์เปิด-ปิดแยกทั้งเบอร์ วันเกิด และปีเกิด\nปิดไว้ก็ยังใช้ระบบได้ครบทุกอย่าง' }
+    ],
+
+    nfAction:'ต้องดำเนินการ',
+    nfActionSub:'ยังมีคนหรือของรออยู่ปลายทาง',
+    nfUpdate:'อัปเดต', nfInfo:'ข้อมูล', nfOpen:'เปิดดู',
     carNeedRoute:'ต้องมีอย่างน้อย 2 จุดที่ใส่ชื่อแล้ว',
     carRouteSome:'บางช่วงคำนวณไม่ได้ ลองแก้ชื่อสถานที่ให้ชัดขึ้น',
     carKm:'กม.', carMin:'นาที', carDriveHr:'ชม. ขับรถ',
@@ -1691,7 +2125,7 @@ const T = {
     admDrvPaired:'เชื่อมต่อ LINE แล้ว', admDrvUnpaired:'ยังไม่ได้เชื่อมต่อ LINE',
     admDrvPair:'สร้างรหัสเข้าใช้งาน', admDrvUnpair:'ถอดการเชื่อมต่อ',
     admDrvPairTitle:'รหัสเข้าใช้งานสำหรับคนขับ',
-    admDrvPairHow:'ให้คนขับแอด LINE OA ของ Kenan → เปิด Kenan ONE → กด "ฉันเป็นคนขับรถ" → กรอกรหัสนี้',
+    admDrvPairHow:'ให้คนขับแอด LINE OA ของ Kenan → เปิด ' + APP_NAME + ' → กด "ฉันเป็นคนขับรถ" → กรอกรหัสนี้',
     admDrvPairExp:d=>`รหัสหมดอายุ ${d} · ใช้ได้ครั้งเดียว`,
     admDrvPairCopy:'คัดลอกรหัส', admDrvPairCopied:'คัดลอกแล้ว',
     admDrvUnpairAsk:'ถอดการเชื่อมต่อ LINE ของคนขับคนนี้?',
@@ -1768,7 +2202,7 @@ const T = {
     admPostNews:'ลงประกาศ / ข่าวสาร',
     admRoles:'ตั้งสิทธิ์ผู้ใช้',
     admImport:'ดึงประกาศจากอีเมล',
-    admImportHint:'HR ส่งประกาศทางอีเมลอยู่แล้ว — แค่ forward มาที่บัญชีระบบแล้วติด label "kc-news" จากนั้นกดปุ่มนี้ ระบบจะเก็บเข้า Kenan ONE ให้เอง (ทำอัตโนมัติทุกเช้าด้วย)',
+    admImportHint:'HR ส่งประกาศทางอีเมลอยู่แล้ว — แค่ forward มาที่บัญชีระบบแล้วติด label "kc-news" จากนั้นกดปุ่มนี้ ระบบจะเก็บเข้า ' + APP_NAME + ' ให้เอง (ทำอัตโนมัติทุกเช้าด้วย)',
     admImported:n=>`นำเข้าประกาศ ${n} รายการแล้ว`,
     admWriteOwn:'หรือพิมพ์เอง',
     admTitleTh:'หัวข้อ (ไทย)', admTitleEn:'หัวข้อ (อังกฤษ)', admBodyTh:'รายละเอียด',
@@ -1863,7 +2297,7 @@ const T = {
     noConfigBody:'ใส่ URL ของ Apps Script (ลงท้าย /exec) ในตัวแปร CFG.GAS_URL ที่ต้นไฟล์ก่อนใช้งาน'
   },
   en:{
-    appName:'Kenan ONE',
+    appName:APP_NAME,
     navHome:'Home', navParcel:'Parcels', navSos:'Emergency', navMe:'Me', navLog:'Log parcel',
     navNotif:'Alerts',
     sgWork:'My work', sgBook:'Book & borrow', sgInfo:'Directory & info', sgAdmin:'Admin',
@@ -2139,6 +2573,153 @@ const T = {
     carRouteSub:'Only for multi-stop trips, or when you need real distances',
     carExtras:'Items carried · notes', carExtrasSub:'Optional',
     carSeatsShort:(cap, n) => `${cap} seats · ${n} going — may not fit`,
+    /* ── other Kenan systems · about ONE · edit push messages ── */
+    svOne:'Services in ' + APP_NAME + '', svOther:'Other Kenan systems',
+    svLinkS:'Add or edit doors to other systems', svMsgS:'Edit what LINE says',
+    lkOther:'Other',
+    lkEmpty:'No links yet',
+    lkEmptyBody:'Links added by an administrator will appear here',
+    lkEmptyAdmin:'Add the systems your team already uses — HR, Monday.com, the online course booking site',
+    lkFoot:'These links lead outside ' + APP_NAME + '. Some systems may ask you to sign in again.',
+    lkManage:'Manage links', lkAdd:'Add a link', lkEdit:'Edit link',
+    lkWhy:'One place for the doors into Kenan\'s other systems, so new joiners can see what exists without digging through old email.',
+    lkTitle:'System name', lkTitlePh:'e.g. HR system · AI Champion Hub',
+    lkTitleEn:'English name',
+    lkUrl:'Link', lkUrlHint:'Must start with https://',
+    lkBadUrl:'The link must start with https://',
+    lkNote:'Short description', lkNotePh:'e.g. leave requests, payslips, claims',
+    lkCat:'Category', lkCatPh:'e.g. People · Learning',
+    lkIcon:'Icon', lkOrder:'Order', lkOrderHint:'Lower numbers come first',
+    lkWho:'Who can see it', lkWhoAll:'Everyone', lkWhoOfficer:'Officers and above', lkWhoAdmin:'Administrators only',
+    lkRolesN:r => 'Only ' + r,
+    lkHide:'Hide this link', lkHidden:'Hidden — you can turn it back on any time',
+
+    abTitle:'About ' + APP_NAME,
+    abTag:'One place for the everyday things — parcels, meeting rooms, vehicles, equipment and maintenance requests',
+    abP1:APP_NAME + ' started from a simple question: why do small office matters need so many separate channels? Parcels get asked about in a LINE group, rooms are booked on paper, vehicles by calling GA — and nobody can see what is free right now.',
+    abP2:'It does not try to replace everything. It gathers the things everyone does every week into one place and lets you finish them in a few taps. The rest stays where it is, with a door to it under Other Kenan systems.',
+    abBuild:'Current build', abCheers:'Cheers received',
+    abMadeBy:'Built by', abMadeByVal:'AI Taskforce × IT',
+
+    chTitle:'Tell us what works',
+    chSub:'Nobody writes reviews for internal tools. If this saved you time, one tap lets the people who built it know.',
+    chHeart:'Love it', chClap:'Well made', chRocket:'Saves time',
+    chThanks:'Thank you', chCoffee:'Coffee on me',
+    chOnce:'One tap per reaction per day',
+    chAlready:'You already tapped this one today — come back tomorrow',
+
+    fbTitle:'Anything to tell the team?',
+    fbSub:'Every message gets read. Be blunt — what annoyed you is more useful than what pleased you.',
+    fbKind:'What is this about',
+    fbIdea:'Feature request', fbBug:'Something broke', fbPraise:'This works well', fbOther:'Other',
+    fbBody:'Message', fbPh:'Say as much or as little as you like',
+    fbNamed:'Send my name too',
+    fbNamedSub:'Leave it off and the system will not record who sent it',
+    fbSend:'Send to the team', fbNeed:'Nothing typed yet',
+    fbSent:'Sent — thank you for taking the time',
+    fbRead:'Read incoming messages', fbAnon:'Anonymous',
+    fbNone:'No messages yet', fbNoneBody:'Messages sent from the About page will appear here',
+
+    msgTitle:'Notification messages',
+    msgWhy:'Edit what the system sends to LINE, without touching code. The original wording is kept, so you can always go back.',
+    msgEdit:'Edit message', msgHead:'Heading', msgBody:'Body',
+    msgVars:'Available placeholders', msgVarsHint:'Tap to insert · filled in when sent · a line whose placeholder has no value is dropped entirely',
+    msgUrg:'Importance',
+    msgUrgN:'Normal — LINE only',
+    msgUrgH:'Important — LINE and email',
+    msgUrgE:'Emergency — sent even when the quota is nearly gone',
+    msgTurnOff:'Turn this message off',
+    msgTurnOffSub:'The system skips it silently — no LINE, no email. Useful for saving quota.',
+    msgPreview:'How it looks in LINE',
+    msgPreviewHint:'Values in brackets are samples — the real ones are names, times and links',
+    msgTest:'Send a test to myself',
+    msgTestSent:'Sent — check your LINE',
+    msgTestNoLine:'LINE_TOKEN is not set, or this account is not linked to LINE',
+    msgReset:'Restore the original wording', msgResetOk:'Restored to the original',
+    msgEdited:'Edited', msgOff:'Off',
+    msgBadVars:v => 'Unknown placeholders: ' + v + '\n\nThese will come out blank when sent, and any line containing them will be dropped entirely.\n\nSave anyway?',
+    /* ── all parcels + statistics ── */
+    prcTitle:'All parcels', prcList:'List',
+    prcSearch:'Search by recipient, tracking number or item',
+    prcF_wait:'Waiting', prcF_done:'Collected', prcF_unid:'Unidentified', prcF_all:'All',
+    prcS_wait:'Waiting', prcS_done:'Collected', prcS_unid:'Unidentified',
+    prcNone:'No parcels found',
+    prcNoneBody:'Nothing in this group yet',
+    prcNoneKw:k => 'Nothing matches "' + k + '"',
+    prcUntitled:'Parcel', prcNoWho:'No recipient set',
+    prcInOn:d => 'Logged ' + d,
+    prcGotOn:d => 'Collected ' + d,
+    prcHrs:n => n + ' hr',
+    prcDays:n => n + ' days',
+    prcPrev:'Previous', prcNext:'Next',
+    prcPageN:(a, b, n) => 'Page ' + a + ' of ' + b + ' · ' + n + ' in total',
+    prcShowing:n => n + ' in total',
+
+    prcAll:'Parcels logged', prcWaiting:'Not collected', prcUnid:'Unidentified',
+    prcSameDay:'Collected within a day',
+    prcPerMonth:'Parcels per month',
+    prcHowLong:'How long until collection',
+    prcMedian:'Median', prcMean:'Mean',
+    prcMedianWhy:'Read the median. The mean is pulled up by a handful of parcels that sat for months.',
+    prcAging:'How long uncollected parcels have waited',
+    prcAg1:'Under 3 days', prcAg3:'3–7 days', prcAg7:'7–30 days', prcAg30:'Over 30 days',
+    prcTopWho:'Most frequent recipients',
+    prcTopWhy:'Useful for knowing who to remind. Not for evaluating anyone.',
+    prcWho:'Recipient', prcTracking:'Tracking number', prcLogged:'Logged',
+    prcClaimed:'Collected at', prcTook:'Time to collection', prcWaitedSoFar:'Waiting so far',
+    prcId:'Record ID',
+    svPrcS:'Every parcel, with statistics',
+    /* ── services · search · me · notification centre ── */
+    sgUse:'Book · borrow · use', sgOffice:'Office matters', sgOrg:'About the organisation',
+    sv2Car:'Book a vehicle · see the schedule', sv2Room:'Check availability · book',
+    sv2Eq:'Borrow · return · reserve', sv2Zoom:'Book a Zoom account',
+    sv2Parcel:'See what arrived for you · collect it',
+    sv2IssueT:'Report or ask', sv2Issue:'Something broken · need help · ask a department',
+    sv2Dir:'Find a colleague\'s number and email', sv2News:'Announcements from the organisation',
+    sv2Act:'Everything you have done in the system',
+
+    schTitle:'Search',
+    schPh:'Search services, people or your records',
+    schPh2:'Try "car", "room", "parcel" or a name',
+    schHint:'Type at least 2 characters.\nSearches services, things you booked or reported, and the staff directory.',
+    schClear:'Clear',
+    schLooking:'Looking through your records and the directory…',
+    schSvc:'Services', schMine:'My records', schPeople:'People',
+    schNone:'Nothing matches that',
+    schNoneBody:k => 'Try a shorter word, or something close to "' + k + '"',
+
+    meAccount:'Account', meProfile:'Personal details', meLang:'Language',
+    meWork:'My work', meHistory:'My history', meBookings:'My bookings',
+    meLoans:'On loan to me',
+    mePrivacy:'Data and privacy',
+    meWhatWeKeep:'What this system holds about me',
+    meDownload:'Download my data',
+    meFix:'Request a correction', meRights:'Exercise my data rights',
+    meHelp:'Help', meReport:'Report a problem', meHow:'How to use it',
+    meLogout:'Sign out',
+    meLogoutAsk:'Signing out means signing in with LINE again next time. Continue?',
+    meFixedWhy:'These three cannot be edited here. If any is wrong, use Request a correction.',
+    helpLead:'The questions people actually ask when they start',
+    helpList:[
+      { q:'How do I know a parcel arrived?',
+        a:'The system sends you a LINE message as soon as it is logged against your name.\nTap through from there, or open the app and look under "Needs your attention" on the home screen.' },
+      { q:'What do I do after booking a vehicle?',
+        a:'Nothing. The driver is notified automatically with the time and destination.\nOn the day, the driver taps departure and arrival back at the office.' },
+      { q:'When is borrowed equipment due back?',
+        a:'Me → On loan to me, or scan the QR sticker on the item itself.\nIf it is overdue the system reminds you every day until you return it.' },
+      { q:'What does scanning the QR on an item do?',
+        a:'It shows immediately whether that item is free, who has it, and lets you borrow or return it right there.\nNo need to find it in the equipment list first.' },
+      { q:'How do I know if someone booked the same room?',
+        a:'Double bookings are refused — if the slot is taken you simply cannot book it.\nFor the whole month at once, open the room page and switch to the month view.' },
+      { q:'Where do I change my phone number or photo?',
+        a:'Me → Personal details.\nName, department and email cannot be changed there — use Request a correction.' },
+      { q:'I would rather not show my number or birthday',
+        a:'Me → Personal details has separate switches for phone, birthday and birth year.\nEverything else in the system still works with them off.' }
+    ],
+
+    nfAction:'Needs action',
+    nfActionSub:'Someone or something is still waiting at the other end',
+    nfUpdate:'Updates', nfInfo:'For information', nfOpen:'Open',
     carNeedRoute:'At least 2 points need a place',
     carRouteSome:'Some legs could not be calculated — try clearer place names',
     carKm:'km', carMin:'min', carDriveHr:'hrs driving',
@@ -2283,7 +2864,7 @@ const T = {
     admDrvPaired:'Linked to LINE', admDrvUnpaired:'Not linked to LINE',
     admDrvPair:'Create a sign-in code', admDrvUnpair:'Unlink from LINE',
     admDrvPairTitle:'Driver sign-in code',
-    admDrvPairHow:'Ask the driver to add the Kenan LINE OA → open Kenan ONE → tap "I am a driver" → enter this code.',
+    admDrvPairHow:'Ask the driver to add the Kenan LINE OA → open ' + APP_NAME + ' → tap "I am a driver" → enter this code.',
     admDrvPairExp:d=>`Expires ${d} · single use`,
     admDrvPairCopy:'Copy code', admDrvPairCopied:'Copied',
     admDrvUnpairAsk:'Unlink this driver from LINE?',
@@ -2871,13 +3452,163 @@ const MOCK = {
       at:'2026-08-18T03:00:00Z', tags:['อาคาร/สถานที่'], image_ids:[],
       due_at:'2026-08-22T23:59:00+07:00', expired:true, author:'มณฑา ใจดี' }]},
   getNotifications:{ items:[
-    { event:'parcel.arrived', at:'2026-08-30T02:15:00Z', record_id:'PCL-260830-001', go:'my-parcels' },
-    { event:'issue.new',      at:'2026-08-30T01:10:00Z', record_id:'ISU-260830-002', go:'issues' },
-    { event:'car.passenger',  at:'2026-08-29T09:00:00Z', record_id:'CAR-260829-003', go:'cars' },
-    { event:'welcome',        at:'2026-08-28T07:40:00Z', record_id:'', go:'' }]},
+    { event:'parcel.arrived', bucket:'action', at:'2026-08-30T02:15:00Z',
+      record_id:'PCL-260830-001', go:'my-parcels' },
+    { event:'car.nocar.req',  bucket:'action', at:'2026-08-30T01:40:00Z',
+      record_id:'CAR-260830-005', go:'cars' },
+    { event:'issue.new',      bucket:'action', at:'2026-08-30T01:10:00Z',
+      record_id:'ISU-260830-002', go:'issues' },
+    { event:'car.booked',     bucket:'update', at:'2026-08-29T09:20:00Z',
+      record_id:'CAR-260829-003', go:'cars' },
+    { event:'issue.update',   bucket:'update', at:'2026-08-29T09:00:00Z',
+      record_id:'ISU-260828-001', go:'issues' },
+    { event:'alert',          bucket:'info',   at:'2026-08-28T08:00:00Z', record_id:'', go:'' },
+    { event:'welcome',        bucket:'info',   at:'2026-08-28T07:40:00Z', record_id:'', go:'' }]},
   scanParcelPhoto:{ recipientName:'วราภรณ์', trackingNo:'TH99887766554' },
   logParcel:{ ok:true }, claimParcel:{ ok:true }, notMyParcel:{ ok:true },
-  acceptConsent:{ ok:true }, submitRegistration:{ ok:true }
+  acceptConsent:{ ok:true }, submitRegistration:{ ok:true },
+
+  /* ตัวอย่างทางเข้าระบบอื่น — ของจริงผู้ดูแลใส่เองในหน้าจัดการ
+     ที่ใส่ไว้ตรงนี้เป็นชื่อระบบที่คีนันใช้อยู่จริง แต่ลิงก์เป็นของสมมติ */
+  getLinks:{ ok:true, items:[
+    { link_id:'LNK-1', title_th:'ระบบงานบุคคล', title_en:'HR system',
+      url:'https://example.org/hr', note_th:'ขอลา ดูสลิป ยื่นเบิกสวัสดิการ',
+      icon:'people', category:'งานบุคคล' },
+    { link_id:'LNK-2', title_th:'Monday.com', title_en:'Monday.com',
+      url:'https://example.org/monday', note_th:'แผนงานและสถานะงานของแต่ละโครงการ',
+      icon:'board', category:'งานโครงการ' },
+    { link_id:'LNK-3', title_th:'ระบบจองเรียนออนไลน์', title_en:'Online course booking',
+      url:'https://example.org/learn', note_th:'ลงชื่อเรียนคอร์สที่มูลนิธิเปิดให้พนักงาน',
+      icon:'learn', category:'เรียนรู้และพัฒนา' },
+    { link_id:'LNK-4', title_th:'AI Champion Hub', title_en:'AI Champion Hub',
+      url:'https://example.org/aihub', note_th:'คลัง prompt และเคสการใช้ AI ของทีม Champion',
+      icon:'ai', category:'เรียนรู้และพัฒนา' },
+    { link_id:'LNK-5', title_th:'ระบบจัดซื้อ', title_en:'Procurement',
+      url:'https://example.org/proc', note_th:'ขออนุมัติซื้อและติดตามใบสั่งซื้อ',
+      icon:'money', category:'การเงินและจัดซื้อ' }] },
+  getLinksAdmin:{ ok:true, items:[
+    { link_id:'LNK-1', title_th:'ระบบงานบุคคล', url:'https://example.org/hr',
+      icon:'people', category:'งานบุคคล', roles:'', sort_order:10, is_active:true },
+    { link_id:'LNK-2', title_th:'Monday.com', url:'https://example.org/monday',
+      icon:'board', category:'งานโครงการ', roles:'', sort_order:20, is_active:true },
+    { link_id:'LNK-6', title_th:'รายงานผู้บริหาร', url:'https://example.org/exec',
+      icon:'chart', category:'งานโครงการ', roles:'admin', sort_order:90, is_active:false }] },
+  saveLink:{ ok:true }, deleteLink:{ ok:true },
+
+  getAbout:{ ok:true, build:'2026-09-06c', total:0,
+    tally:{ heart:0, clap:0, rocket:0, thanks:0, coffee:0 }, mine:{}, unread:1 },
+  sendCheer:{ ok:true }, sendFeedback:{ ok:true },
+  listFeedback:{ ok:true, items:[
+    { at:'2026-09-05T14:22:00+07:00', name:'', kind:'idea', page:'rooms',
+      body:'อยากให้จองห้องแล้วเลือกได้เลยว่าจะให้ส่งนัดใน Outlook ให้ใครบ้าง จะได้ไม่ต้องไปสร้างนัดซ้ำอีกรอบ' },
+    { at:'2026-09-04T09:10:00+07:00', name:'ณัฐพร สุขใจ', kind:'praise', page:'my-parcels',
+      body:'ตั้งแต่มีแจ้งเตือนพัสดุ ไม่ต้องเดินลงไปดูที่เคาน์เตอร์ทุกวันแล้วค่ะ ขอบคุณมาก' }] },
+
+  listMessages:(function(){
+    const M = [
+      { key:'parcel.arrived', urgency:'high', vars:['title','tracking_no','by','link'],
+        title:'มีพัสดุถึงคุณ',
+        body:'{title}\nเลขพัสดุ {tracking_no}\nวางไว้ที่เคาน์เตอร์หน้าออฟฟิศ · บันทึกโดย {by}\n\nดูรูปจ่าหน้าและกดรับของ\n{link}' },
+      { key:'room.booked', urgency:'normal', vars:['room','when','title'],
+        title:'จองห้องเรียบร้อย',
+        body:'{room}\n{when}\nเรื่อง {title}\n\nส่งไฟล์ปฏิทินไปที่อีเมลคุณแล้ว เปิดแล้วเพิ่มลง Outlook ได้เลย' },
+      { key:'car.assigned', urgency:'high', vars:['vehicle','when','who','purpose','stops'],
+        title:'มีงานขับรถใหม่',
+        body:'{vehicle}\n{when}\nผู้โดยสาร {who}\nไปทำอะไร {purpose}\nมีจุดแวะ {stops} จุด\n\nเปิดแอปเพื่อดูเส้นทางและกดออกเดินทาง' },
+      { key:'loan.reminder', urgency:'normal', vars:['title','overdue','borrowed'],
+        title:'ของที่คุณยืมยังไม่ได้คืน',
+        body:'{title}\nเลยกำหนดคืนมา {overdue} วัน\nยืมไปแล้ว {borrowed} วัน\nถ้าใช้เสร็จแล้ว กดคืนในแอปพร้อมถ่ายรูปได้เลย อาจมีคนกำลังรอใช้อยู่' },
+      { key:'birthday', urgency:'normal', vars:['nickname','wish'],
+        title:'สุขสันต์วันเกิด {nickname}', body:'{wish}' }
+    ];
+    return { ok:true, items: M.map(m => Object.assign({
+      def_title:m.title, def_body:m.body, def_urgency:m.urgency,
+      off:false, edited:(m.key === 'birthday') }, m)) };
+  })(),
+  saveMessage:{ ok:true, warned:[] }, resetMessage:{ ok:true }, testMessage:{ ok:true },
+
+  oneSearch:(function(){
+    const d = n => { const x = new Date(); x.setDate(x.getDate() + n); return x.toISOString(); };
+    const P = [
+      { id:'K-1042', name:'ชุนหลี ตั้งมั่น', nickname:"ชุน", dept:'IT',
+        position:'IT Officer', email:'chun@kenan-asia.org', phone:'02-229-3131 ต่อ 118' },
+      { id:'K-1180', name:'สมชาย กิตติวงศ์', nickname:'ชาย', dept:'Education Program',
+        position:'Program Manager', email:'somchai@kenan-asia.org', phone:'' },
+      { id:'K-2260', name:'วราภรณ์ ทองดี', nickname:'นก', dept:'General Administration',
+        position:'Admin Officer', email:'waraporn@kenan-asia.org', phone:'081-234-5678' }
+    ];
+    const R = [
+      { record_id:'CAR-260908-001', type:'car', status:'approved',
+        title:'ลงพื้นที่โรงเรียนบ้านหนองแวง', where:'Toyota Commuter',
+        at:d(2), open:true, go:'cars' },
+      { record_id:'ROOM-260906-004', type:'room', status:'approved',
+        title:'ประชุมทีม WING ประจำสัปดาห์', where:'ห้อง Inspiration',
+        at:d(0), open:true, go:'rooms' },
+      { record_id:'BRW-260901-007', type:'borrow', status:'issued',
+        title:'กล้อง Canon R6', where:'ตู้ AV ชั้น 2', at:d(-5), open:true, go:'equipment' },
+      { record_id:'CAR-260812-009', type:'car', status:'closed',
+        title:'ไปกระทรวงศึกษาธิการ', where:'Toyota Altis', at:d(-25), open:false, go:'cars' }
+    ];
+    const TYPE_KW = { parcel:'พัสดุ ของ กล่อง parcel', issue:'แจ้ง ซ่อม เรื่อง issue',
+      room:'ห้อง ประชุม room meeting', car:'รถ เดินทาง ลงพื้นที่ car vehicle',
+      borrow:'อุปกรณ์ ยืม กล้อง equipment borrow' };
+    return q => {
+      const kw = String((q && q.kw) || '').toLowerCase();
+      const hit = s2 => String(s2 || '').toLowerCase().includes(kw);
+      if(kw.length < 2) return { ok:true, kw, people:[], records:[], links:[] };
+      return { ok:true, kw,
+        people: P.filter(p => hit(p.name) || hit(p.nickname) || hit(p.dept) ||
+                              hit(p.position) || hit(p.email)),
+        records: R.filter(r => hit(r.title) || hit(r.where) || hit(r.record_id) ||
+                               hit(TYPE_KW[r.type]))
+                  .sort((a, b) => (a.open === b.open ? 0 : a.open ? -1 : 1)),
+        links: [] };
+    };
+  })(),
+  parcelReport:(function(){
+    const d = n => { const x = new Date(); x.setDate(x.getDate() + n); return x.toISOString(); };
+    const ym = n => { const x = new Date(); x.setMonth(x.getMonth() + n);
+      return `${x.getFullYear()}-${String(x.getMonth()+1).padStart(2,'0')}`; };
+    const P = [
+      { record_id:'PCL-260906-A1', status:'notified', title:'พัสดุถึง ณัฐพร สุขใจ',
+        tracking_no:'TH011234567890', who:'ณัฐพร สุขใจ', by:'สมชาย กิตติวงศ์',
+        created_at:d(-1), closed_at:'', thumb_id:'', wait_h:26.5 },
+      { record_id:'PCL-260904-B2', status:'arrived', title:'กล่องเอกสารจากกระทรวง',
+        tracking_no:'', who:'พิพัฒน์ ส.', by:'สมชาย กิตติวงศ์',
+        created_at:d(-4), closed_at:'', thumb_id:'', wait_h:97.2 },
+      { record_id:'PCL-260828-C3', status:'notified', title:'พัสดุถึง กัลยา มณีรัตน์',
+        tracking_no:'EF223344556TH', who:'กัลยา มณีรัตน์', by:'วราภรณ์ ท.',
+        created_at:d(-11), closed_at:'', thumb_id:'', wait_h:264 },
+      { record_id:'PCL-260905-D4', status:'claimed', title:'ของที่ระลึกงานอบรม',
+        tracking_no:'TH550099887766', who:'ธนกร วัฒนา', by:'สมชาย กิตติวงศ์',
+        created_at:d(-2), closed_at:d(-2), thumb_id:'', wait_h:5.5 },
+      { record_id:'PCL-260903-E5', status:'unidentified', title:'พัสดุ ไม่ทราบผู้รับ',
+        tracking_no:'TH119900112233', who:'', by:'วราภรณ์ ท.',
+        created_at:d(-3), closed_at:'', thumb_id:'', wait_h:71 }
+    ];
+    return q => {
+      const f = (q && q.filter) || 'wait';
+      const kw = String((q && q.kw) || '').toLowerCase();
+      const W = ['arrived','notified'];
+      const rows = P.filter(p => {
+        if(f === 'wait' && !W.includes(p.status)) return false;
+        if(f === 'done' && p.status !== 'claimed') return false;
+        if(f === 'unid' && p.status !== 'unidentified') return false;
+        if(!kw) return true;
+        return [p.title, p.tracking_no, p.who, p.by].join(' ').toLowerCase().includes(kw);
+      });
+      return { ok:true, total:rows.length, page:0, per:40, allCount:P.length, items:rows,
+        stats:{ total:148, claimed:139, waiting:8, unidentified:1,
+          months:[{ym:ym(-5),n:19},{ym:ym(-4),n:26},{ym:ym(-3),n:22},
+                  {ym:ym(-2),n:31},{ym:ym(-1),n:28},{ym:ym(0),n:12}],
+          avg_h:41.8, median_h:19.5, same_day_pct:58,
+          aging:{ d1:4, d3:2, d7:1, d30:1 },
+          top_recipients:[{name:'ณัฐพร สุขใจ',n:17},{name:'พิพัฒน์ ส.',n:14},
+                          {name:'กัลยา มณีรัตน์',n:11},{name:'ธนกร วัฒนา',n:9},
+                          {name:'สมชาย กิตติวงศ์',n:7}],
+          top_loggers:[{name:'สมชาย กิตติวงศ์',n:96},{name:'วราภรณ์ ท.',n:52}] } };
+    };
+  })()
 };
 
 /* ── 4. API — คุยกับ Apps Script เดิม (ไม่ต้องรื้อ backend) ───── */
@@ -2996,7 +3727,9 @@ const IC = {
   user:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>',
   clock:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>',
   cal:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 11h18"/><path d="M9 16l2 2 4-4"/></svg>',
-  info:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>'
+  info:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>',
+  search:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4.2-4.2"/></svg>',
+  ext:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M13 5h6v6"/><path d="M19 5l-8.5 8.5"/><path d="M18.5 14.5V18a2 2 0 01-2 2H6a2 2 0 01-2-2V7.5a2 2 0 012-2h3.5"/></svg>'
 };
 
 /* ── 6. ROUTER — เปลี่ยนหน้าทันที ไม่โหลดใหม่ ─────────────────── */
@@ -3036,6 +3769,7 @@ document.querySelectorAll('#langTop button').forEach(b => b.onclick = () => {
   render(cur?.name || 'home', cur?.params || {});
 });
 if($('#sHome')) $('#sHome').onclick = () => { S.stack = []; go('home'); };
+if($('#topSearch')) $('#topSearch').onclick = () => go('search');
 if($('#sMe'))   $('#sMe').onclick   = () => go('profile');
 
 function paintNav(){
@@ -3257,7 +3991,7 @@ const EV = {
        'car.nocar.no':'❌ Not approved', 'birthday':'🎂 Happy birthday',
        'car.returned':'✅ Vehicle is back at the office', 'car.cancelled':'❌ Driving job cancelled' }
 };
-const evLabel = n => (EV[S.lang] || {})[n?.event] || n?.title || n?.message || '';
+const evLabel = n => n?.title || (EV[S.lang] || {})[n?.event] || n?.message || '';
 
 const mmddToDdmm = v => {
   const m = String(v || '').match(/^(\d{2})-(\d{2})$/);
@@ -3342,7 +4076,7 @@ ROUTES.home = async () => {
     <!-- ── โซน 1 · ต้องทำตอนนี้ ─────────────────────────────────
          ถ้าไม่มีอะไรค้าง ต้องบอกให้ชัดว่าไม่มี ไม่ใช่ปล่อยว่าง
          เพราะ "ว่างเปล่า" กับ "โหลดไม่ขึ้น" หน้าตาเหมือนกัน           -->
-    <section class="hz">
+    <section class="hz hz-att">
       <div class="hz-h">
         <h3>${esc(t('hAttention'))}</h3>
         ${att.length ? `<span class="hz-n">${att.length}</span>` : ''}
@@ -3364,7 +4098,7 @@ ROUTES.home = async () => {
     </section>
 
     <!-- ── โซน 2 · สัปดาห์นี้ ─────────────────────────────────── -->
-    <section class="hz">
+    <section class="hz hz-week">
       <div class="hz-h"><h3>${esc(t('hWeek'))}</h3></div>
       ${byDay.length ? `<div class="wk">${byDay.map(g => `
         <div class="wk-d">
@@ -3387,7 +4121,7 @@ ROUTES.home = async () => {
     </section>
 
     <!-- ── โซน 3 · ทางลัด ─────────────────────────────────────── -->
-    <section class="hz">
+    <section class="hz hz-quick">
       <div class="hz-h"><h3>${esc(t('hQuick'))}</h3></div>
       <div class="qa">${quickActions().map(q => `
         <button class="qa-b" data-go="${q.go}">
@@ -3400,7 +4134,7 @@ ROUTES.home = async () => {
     </section>
 
     <!-- ── โซน 4 · อัปเดต ─────────────────────────────────────── -->
-    <section class="hz">
+    <section class="hz hz-news">
       <div class="hz-h"><h3>${esc(t('hUpdates'))}</h3></div>
       ${(d.birthdays || []).length ? `<div class="bday">
         <span class="cake">🎂</span>
@@ -3441,61 +4175,864 @@ ROUTES.home = async () => {
 /* ══════════════════ บริการทั้งหมด ══════════════════
    หน้าแรกไม่ใช่เมนูอีกต่อไป เมนูจึงต้องมีบ้านของตัวเอง
    จัดกลุ่มตามสิ่งที่คนอยากทำ ไม่ใช่ตามโครงสร้างของระบบเบื้องหลัง */
-ROUTES.services = async () => {
-  setTitle(t('svTitle'));
+
+/* ══════════════════════════════════════════════════════════════════
+ *  หน้าบริการ · ค้นหาทั้งระบบ · หน้าฉัน · ศูนย์แจ้งเตือน
+ *  ปรับ 2026-09-06 (build e)
+ * ══════════════════════════════════════════════════════════════════ */
+
+/**
+ * รายการบริการทั้งหมด — แหล่งความจริงแหล่งเดียว
+ *
+ * ใช้ทั้งหน้าบริการและช่องค้นหา ถ้าแยกกันเขียนสองชุด
+ * วันหนึ่งจะมีบริการที่อยู่ในเมนูแต่ค้นไม่เจอ หรือค้นเจอแต่กดแล้วไม่มีหน้า
+ *
+ * kw คือคำที่คนน่าจะพิมพ์หา แต่ไม่ได้อยู่ในชื่อเมนู
+ * เช่นคนพิมพ์ "แท็กซี่" เพราะอยากรู้ว่าเบิกได้ไหม ควรเจอหน้าจองรถ
+ */
+function SERVICE_GROUPS(){
   const d = S.today || {};
+  const off = S.isOfficer || S.isAdmin;
   const G = [
-    { g:t('svBook'), items:[
-      { ic:IC.cal,    label:t('resvRoom'), sub:t('svRoomS'),  go:'rooms' },
-      { ic:IC.car,    label:t('resvCar'),  sub:t('svCarS'),   go:'cars' },
-      { ic:IC.laptop, label:t('resvEq'),   sub:t('svEqS'),    go:'equipment' },
-      { ic:IC.chat,   label:t('resvZoom'), sub:t('svZoomS'),  go:'zoom' }
+    { g:t('sgUse'), items:[
+      { ic:IC.car,    label:t('resvCar'),  sub:t('sv2Car'),  go:'cars',
+        kw:'car vehicle รถตู้ รถยนต์ แท็กซี่ grab เดินทาง ลงพื้นที่ คนขับ' },
+      { ic:IC.cal,    label:t('resvRoom'), sub:t('sv2Room'), go:'rooms',
+        kw:'room meeting ห้อง ประชุม จองห้อง ว่าง' },
+      { ic:IC.laptop, label:t('resvEq'),   sub:t('sv2Eq'),   go:'equipment',
+        kw:'equipment กล้อง ไมค์ โปรเจกเตอร์ โน้ตบุ๊ก ยืม คืน อุปกรณ์' },
+      { ic:IC.chat,   label:t('resvZoom'), sub:t('sv2Zoom'), go:'zoom',
+        kw:'zoom online meeting ออนไลน์ อบรม webinar' }
     ]},
-    { g:t('svParcel'), items:[
-      { ic:IC.box, label:t('mParcel'), sub:t('svParcelS'), go:'my-parcels',
+    { g:t('sgOffice'), items:[
+      { ic:IC.box,  label:t('mParcel'), sub:t('sv2Parcel'), go:'my-parcels',
+        kw:'parcel พัสดุ ของ กล่อง ไปรษณีย์ flash kerry ems',
         badge: d.parcels ? String(d.parcels) : '' },
-      ...(S.isOfficer ? [
-        { ic:IC.cam,  label:t('inTitle'), sub:t('svLogS'), go:'parcel-in' },
-        { ic:IC.box,  label:t('unTitle'), sub:t('svUnidS'), go:'unidentified',
-          badge: d.unidentified ? String(d.unidentified) : '' }] : [])
+      { ic:IC.tool, label:t('sv2IssueT'), sub:t('sv2Issue'), go:'issue-new',
+        kw:'issue ซ่อม เสีย แจ้ง ปัญหา it ga hr สอบถาม' }
     ]},
-    { g:t('svReport'), items:[
-      { ic:IC.tool,  label:t('mIssue'),  sub:t('svIssueS'), go:'issues' },
-      ...(S.isOfficer ? [{ ic:IC.tool, label:t('isuQueue'), sub:t('svQueueS'), go:'issue-queue' }] : [])
-    ]},
-    { g:t('svInfo'), items:[
-      { ic:IC.user,  label:t('mDir'),   sub:t('svDirS'),  go:'directory' },
-      { ic:IC.news,  label:t('news'),   sub:t('svNewsS'), go:'news' },
-      { ic:IC.clock, label:t('mAct'),   sub:t('svActS'),  go:'activity' }
+    { g:t('sgOrg'), items:[
+      { ic:IC.user,  label:t('mDir'), sub:t('sv2Dir'), go:'directory',
+        kw:'directory ทำเนียบ เบอร์ อีเมล ติดต่อ พนักงาน ใคร' },
+      { ic:IC.news,  label:t('news'), sub:t('sv2News'), go:'news',
+        kw:'news ข่าว ประกาศ hr วันหยุด' },
+      { ic:IC.clock, label:t('mAct'), sub:t('sv2Act'), go:'activity',
+        kw:'history ประวัติ รายการของฉัน การจองของฉัน' }
     ]}
   ];
   if(isDriverNow()) G.unshift({ g:t('drvTitle'), items:[
-    { ic:IC.car, label:t('drvTitle'), sub:t('svDriveS'), go:'driver' }]});
-  if(S.isOfficer || S.isAdmin) G.push({ g:t('sgAdmin'), items:[
-    { ic:IC.user,   label:t('adminTitle'), sub:t('svAdminS'), go:'admin' },
+    { ic:IC.car, label:t('drvTitle'), sub:t('svDriveS'), go:'driver', kw:'driver ขับรถ งานขับ' }]});
+  if(off) G.push({ g:t('sgAdmin'), items:[
+    { ic:IC.user,   label:t('adminTitle'), sub:t('svAdminS'), go:'admin', kw:'admin ผู้ดูแล' },
+    { ic:IC.cam,    label:t('inTitle'),    sub:t('svLogS'),   go:'parcel-in', kw:'บันทึกพัสดุ ถ่ายรูป' },
+    { ic:IC.chart,  label:t('prcTitle'),   sub:t('svPrcS'),   go:'admin-parcels', kw:'พัสดุทั้งหมด' },
+    { ic:IC.tool,   label:t('isuQueue'),   sub:t('svQueueS'), go:'issue-queue', kw:'คิวงาน เรื่องแจ้ง' },
     ...(S.isAdmin ? [
-      { ic:IC.laptop, label:t('admRes'),   sub:t('svResS'),   go:'admin-res' },
-      { ic:IC.box,    label:t('admLabels'),sub:t('svLabelS'), go:'labels' },
-      { ic:IC.user,   label:t('admDrv'),   sub:t('svDrvS'),   go:'admin-drv' },
-      { ic:IC.info,   label:t('admProj'),  sub:t('svProjS'),  go:'admin-proj' }] : [])
+      { ic:IC.laptop, label:t('admRes'),   sub:t('svResS'),   go:'admin-res',  kw:'ทรัพยากร รถ ห้อง อุปกรณ์' },
+      { ic:IC.box,    label:t('admLabels'),sub:t('svLabelS'), go:'labels',     kw:'ป้าย qr พิมพ์' },
+      { ic:IC.user,   label:t('admDrv'),   sub:t('svDrvS'),   go:'admin-drv',  kw:'คนขับ' },
+      { ic:IC.info,   label:t('admProj'),  sub:t('svProjS'),  go:'admin-proj', kw:'โครงการ project' },
+      { ic:IC.link,   label:t('lkManage'), sub:t('svLinkS'),  go:'admin-links',kw:'ลิงก์ ระบบอื่น' },
+      { ic:IC.chat,   label:t('msgTitle'), sub:t('svMsgS'),   go:'admin-msgs', kw:'ข้อความ แจ้งเตือน line' }] : [])
   ]});
+  return G;
+}
+
+/** แถวบริการหนึ่งบรรทัด — ใช้ทั้งหน้าบริการและผลค้นหา หน้าตาจะได้ตรงกัน */
+const svRow = i => `
+  <button class="svi" data-go="${esc(i.go)}">
+    <span class="svi-i">${i.ic}</span>
+    <span class="svi-x">
+      <span class="svi-n">${esc(i.label)}</span>
+      ${i.sub ? `<span class="svi-s">${esc(i.sub)}</span>` : ''}
+    </span>
+    ${i.badge ? `<span class="svi-b">${esc(i.badge)}</span>` : ''}
+    <span class="go">${IC.chev}</span>
+  </button>`;
+
+ROUTES.services = async () => {
+  setTitle(t('svTitle'));
+  const G = SERVICE_GROUPS();
 
   $x('#main').innerHTML = `<div class="view">
+    <button class="srchbar" id="svSearch">
+      ${IC.search}<span>${esc(t('schPh'))}</span>
+    </button>
+
     ${G.map(gr => `
       <div class="hz-h" style="margin-top:20px"><h3>${esc(gr.g)}</h3></div>
-      <div class="svl">${gr.items.map(i => `
-        <button class="svi" data-go="${i.go}">
-          <span class="svi-i">${i.ic}</span>
-          <span class="svi-x">
-            <span class="svi-n">${esc(i.label)}</span>
-            <span class="svi-s">${esc(i.sub || '')}</span>
-          </span>
-          ${i.badge ? `<span class="svi-b">${esc(i.badge)}</span>` : ''}
-          <span class="go">${IC.chev}</span>
-        </button>`).join('')}</div>`).join('')}
+      <div class="svl">${gr.items.map(svRow).join('')}</div>`).join('')}
+
+    <div class="hz-h" style="margin-top:20px"><h3>${esc(t('svOther'))}</h3></div>
+    <div id="svOther">${skeleton(2)}</div>
+
+    <div style="height:18px"></div>
+    <button class="btn ghost" id="svAb">${esc(t('abTitle'))}</button>
   </div>`;
-  document.querySelectorAll('#main [data-go]').forEach(b => b.onclick = () => go(b.dataset.go));
+
+  $('#svSearch').onclick = () => go('search');
+  $('#svAb').onclick = () => go('about');
+  document.querySelectorAll('#main .svl [data-go]').forEach(b =>
+    b.onclick = () => go(b.dataset.go));
+
+  /* ทางเข้าระบบอื่นโหลดทีหลัง — หน้านี้ต้องขึ้นทันทีโดยไม่รอเน็ต
+     ส่วนที่รอได้คือส่วนที่คนเลื่อนลงไปถึงทีหลังอยู่แล้ว */
+  await paintOtherSystems();
 };
+
+
+/* ══════════════════════════════════════════════════════════════════
+ *  ค้นหาทั้งระบบ
+ *
+ *  คนไม่ได้จำว่าเรื่องที่อยากได้อยู่ในเมนูไหน เขาจำแค่คำ
+ *  พิมพ์ "รถ" ควรได้ทั้งปุ่มจองรถ และใบจองรถของตัวเองที่ยังไม่จบ
+ *  พิมพ์ชื่อคน ควรได้เบอร์กับอีเมลเลย ไม่ต้องเข้าทำเนียบแล้วค่อยหาอีกที
+ *
+ *  เมนูค้นได้ทันทีเพราะรายการอยู่ในแอปอยู่แล้ว
+ *  ส่วนของฉันกับรายชื่อคนต้องถามเซิร์ฟเวอร์ จึงขึ้นตามมาทีหลัง
+ *  ทำแบบนี้ช่องค้นหาจึงไม่เคย "ค้างรอ" — มีอะไรตอบได้ก่อนก็ตอบไปก่อน
+ * ══════════════════════════════════════════════════════════════════ */
+ROUTES.search = async ({ kw } = {}) => {
+  setTitle(t('schTitle'));
+  const q0 = String(kw || '');
+  $x('#main').innerHTML = `<div class="view">
+    <div class="srch">
+      <input id="sq" value="${esc(q0)}" placeholder="${esc(t('schPh2'))}"
+        inputmode="search" enterkeyhint="search" autocomplete="off">
+      <button id="sqx" aria-label="${esc(t('schClear'))}">✕</button>
+    </div>
+    <p class="schhint" id="sqHint">${esc(t('schHint'))}</p>
+    <div id="sqOut"></div>
+  </div>`;
+
+  const inp = $('#sq');
+  setTimeout(() => inp.focus(), 120);
+  $('#sqx').onclick = () => { inp.value = ''; inp.focus(); paint(''); };
+
+  let seq = 0;
+  const paint = async v => {
+    const kwl = v.trim().toLowerCase();
+    const mine = ++seq;
+    $x('#sqHint').hidden = !!kwl;
+
+    if(kwl.length < 2){ $x('#sqOut').innerHTML = ''; return; }
+
+    /* ── 1. เมนู: ค้นในเครื่อง ขึ้นทันทีไม่ต้องรอเน็ต ── */
+    const svc = [];
+    SERVICE_GROUPS().forEach(gr => gr.items.forEach(i => {
+      if((i.label + ' ' + (i.sub || '') + ' ' + (i.kw || '')).toLowerCase().includes(kwl))
+        svc.push(i);
+    }));
+
+    const sec = (title, body) => body
+      ? `<div class="hz-h" style="margin-top:18px"><h3>${esc(title)}</h3></div>${body}` : '';
+
+    $x('#sqOut').innerHTML =
+      sec(t('schSvc'), svc.length ? `<div class="svl">${svc.slice(0, 6).map(svRow).join('')}</div>` : '') +
+      `<div id="sqSrv" class="schwait">${esc(t('schLooking'))}</div>`;
+    document.querySelectorAll('#sqOut .svl [data-go]').forEach(b =>
+      b.onclick = () => go(b.dataset.go));
+
+    /* ── 2. ของฉัน + คน + ระบบอื่น: ถามเซิร์ฟเวอร์ครั้งเดียว ── */
+    let r = null;
+    try{ r = await apiRetry('oneSearch', { kw:kwl }, 'GET'); }catch(e){}
+    if(mine !== seq) return;                 // พิมพ์ต่อไปแล้ว ผลชุดนี้ตกรุ่น ทิ้งไป
+    if(!r?.ok){ $x('#sqSrv').textContent = t('netErr'); return; }
+
+    const ST = { arrived:t('prcS_wait'), notified:t('prcS_wait'), claimed:t('prcS_done'),
+                 closed:t('prcS_done'), reserved:t('eqReserved'), issued:t('eqOut'),
+                 approved:t('assigned'), assigned:t('assigned'), in_use:t('mnOut') };
+
+    const recs = r.records.length ? `<div class="rows">${r.records.map(x => `
+      <button class="row" data-rgo="${esc(x.go)}" data-rec="${esc(x.record_id)}">
+        <div class="thumb">${x.type === 'car' ? IC.car : x.type === 'room' ? IC.cal
+          : x.type === 'borrow' ? IC.laptop : x.type === 'issue' ? IC.tool : IC.box}</div>
+        <div class="body">
+          <div class="t">${esc(x.title || '—')}</div>
+          <div class="s">${esc([x.where, x.at ? fmtDate(x.at) : ''].filter(Boolean).join(' · '))}</div>
+        </div>
+        <span class="pill ${x.open ? 'wait' : 'done'}">${esc(ST[x.status] || x.status)}</span>
+      </button>`).join('')}</div>` : '';
+
+    const ppl = r.people.length ? `<div class="rows">${r.people.map(p => `
+      <div class="row schp">
+        <span class="av2">${esc((p.name || '?').trim().charAt(0))}</span>
+        <div class="body">
+          <div class="t">${esc(p.name)}${p.nickname ? ` <span class="nick">(${esc(p.nickname)})</span>` : ''}</div>
+          <div class="s">${esc([p.position, p.dept].filter(Boolean).join(' · '))}</div>
+          <div class="schc">
+            ${p.phone ? `<a href="tel:${esc(p.phone)}">${IC.phone}${esc(p.phone)}</a>` : ''}
+            ${p.email ? `<a href="mailto:${esc(p.email)}">${esc(p.email)}</a>` : ''}
+          </div>
+        </div>
+      </div>`).join('')}</div>` : '';
+
+    const lks = r.links.length ? `<div class="svl">${r.links.map(l => `
+      <button class="svi" data-url="${esc(l.url)}">
+        <span class="svi-i">${LKIC[l.icon] || LKIC.link}</span>
+        <span class="svi-x"><span class="svi-n">${esc(
+          S.lang === 'th' ? l.title_th : (l.title_en || l.title_th))}</span>
+          <span class="svi-s">${esc(S.lang === 'th' ? l.note_th : (l.note_en || l.note_th))}</span></span>
+        <span class="go">${IC.ext}</span>
+      </button>`).join('')}</div>` : '';
+
+    const body = sec(t('schMine'), recs) + sec(t('schPeople'), ppl) + sec(t('svOther'), lks);
+    $x('#sqSrv').outerHTML = body || (svc.length ? '' :
+      `<div style="padding:26px 0">${emptyState(IC.search, t('schNone'), t('schNoneBody')(v.trim()))}</div>`);
+
+    document.querySelectorAll('#sqOut [data-rgo]').forEach(b => b.onclick = () => {
+      const dest = b.dataset.rgo || '';
+      if(dest) go(dest, ['my-parcels', 'issues'].includes(dest) ? { rec:b.dataset.rec } : {});
+    });
+    document.querySelectorAll('#sqOut [data-url]').forEach(b =>
+      b.onclick = () => openExternal(b.dataset.url));
+  };
+
+  /* หน่วง 300 มิลลิวินาทีก่อนถามเซิร์ฟเวอร์
+     ถ้ายิงทุกตัวอักษร พิมพ์ "ประชุม" = ยิงหกครั้ง แล้วผลชุดแรกจะมาทับชุดหลัง */
+  let timer;
+  inp.oninput = () => { clearTimeout(timer); timer = setTimeout(() => paint(inp.value), 300); };
+  inp.onkeydown = e => { if(e.key === 'Enter'){ clearTimeout(timer); paint(inp.value); } };
+  if(q0) paint(q0);
+};
+
+
+/* ══════════════════════════════════════════════════════════════════
+ *  ศูนย์แจ้งเตือน
+ *
+ *  ของเดิมเรียงตามเวลาอย่างเดียว ทุกอันหน้าตาเท่ากันหมด
+ *  "พัสดุมาถึงแล้ว" (ต้องลุกไปทำ) กับ "การจองได้รับอนุมัติ" (รู้ไว้เฉยๆ)
+ *  จึงอยู่ปนกัน แล้วเรื่องที่ต้องทำก็จมอยู่กลางกองเรื่องที่ไม่ต้องทำ
+ * ══════════════════════════════════════════════════════════════════ */
+ROUTES.notifications = async () => {
+  setTitle(t('notifTitle'));
+  $x('#main').innerHTML = `<div class="view"><div id="list">${skeleton(3)}</div></div>`;
+  let items = [];
+  try{ const r = await apiRetry('getNotifications', {}, 'GET'); items = r?.items || []; }catch(e){}
+
+  if(!items.length){
+    $x('#list').innerHTML = emptyState(IC.bellBig, t('notifEmpty'), '');
+    S.notifCount = 0; $x('#bellDot').hidden = true;
+    return;
+  }
+
+  const B = [
+    { k:'action', l:t('nfAction'), s:t('nfActionSub') },
+    { k:'update', l:t('nfUpdate'), s:'' },
+    { k:'info',   l:t('nfInfo'),   s:'' }
+  ];
+  const row = n => `
+    <button class="nrow ${esc(n.bucket || 'update')}" ${n.record_id && n.go
+      ? `data-rec="${esc(n.record_id)}" data-go="${esc(n.go)}"` : ''}>
+      <span class="ndotm" aria-hidden="true"></span>
+      <span class="nbody">
+        <span class="nt">${esc(evLabel(n))}</span>
+        <span class="ns">${esc(fmtDate(n.at))}</span>
+      </span>
+      ${n.record_id && n.go
+        ? `<span class="ncta">${esc(t('nfOpen'))} ${IC.chev}</span>` : ''}
+    </button>`;
+
+  $x('#list').innerHTML = B.map(b => {
+    const rows = items.filter(n => (n.bucket || 'update') === b.k);
+    if(!rows.length) return '';
+    return `<div class="nsec">
+      <div class="nsec-h"><h3>${esc(b.l)}</h3>
+        ${b.k === 'action' ? `<span class="hz-n">${rows.length}</span>` : ''}</div>
+      ${b.s ? `<p class="nsec-s">${esc(b.s)}</p>` : ''}
+      <div class="nlist">${rows.map(row).join('')}</div>
+    </div>`;
+  }).join('');
+
+  document.querySelectorAll('#list .nrow[data-rec]').forEach(b => b.onclick = () => {
+    const dest = b.dataset.go || 'my-parcels';
+    go(dest, ['my-parcels', 'issues'].includes(dest) ? { rec:b.dataset.rec } : {});
+  });
+  S.notifCount = 0; $x('#bellDot').hidden = true;
+};
+
+/* ══════════════════════════════════════════════════════════════════
+ *  ระบบอื่นๆ ของคีนัน · เกี่ยวกับ Kenan ONE · ผู้ดูแลแก้ข้อความ push
+ *  เพิ่ม 2026-09-06 (build c)
+ * ══════════════════════════════════════════════════════════════════ */
+
+/* ไอคอนของทางเข้าระบบอื่น — ชุดเล็กๆ ให้ผู้ดูแลเลือกตอนเพิ่มลิงก์
+   ไม่เปิดให้อัปโหลดโลโก้เอง เพราะโลโก้ 12 อันคนละสไตล์ในหน้าเดียวจะรกกว่าช่วย */
+const LKIC = {
+  link : '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 007.5.5l3-3a5 5 0 00-7-7l-1.7 1.7"/><path d="M14 11a5 5 0 00-7.5-.5l-3 3a5 5 0 007 7l1.7-1.7"/></svg>',
+  people:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2"/><circle cx="9.5" cy="7" r="4"/><path d="M22 21v-2a4 4 0 00-3-3.9"/><path d="M16.5 3.1a4 4 0 010 7.8"/></svg>',
+  board :'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M8 4v16M14 4v16"/></svg>',
+  learn :'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4L2.5 9 12 14l9.5-5z"/><path d="M6.5 11.2V16c0 1.4 2.5 2.6 5.5 2.6s5.5-1.2 5.5-2.6v-4.8"/><path d="M21.5 9v5.5"/></svg>',
+  ai    :'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="7" width="14" height="12" rx="3"/><path d="M12 3v4M9 12.5h.01M15 12.5h.01M9.5 16h5"/><path d="M2.5 12v2M21.5 12v2"/></svg>',
+  chart :'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18"/><rect x="5" y="11" width="3.4" height="7" rx="1"/><rect x="10.3" y="6" width="3.4" height="12" rx="1"/><rect x="15.6" y="14" width="3.4" height="4" rx="1"/></svg>',
+  doc   :'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H7a2 2 0 00-2 2v14a2 2 0 002 2h10a2 2 0 002-2V8z"/><path d="M14 3v5h5M9 13h6M9 17h4"/></svg>',
+  money :'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="6" width="19" height="12" rx="2"/><circle cx="12" cy="12" r="2.6"/><path d="M6 12h.01M18 12h.01"/></svg>'
+};
+const LKIC_LIST = ['link','people','board','learn','ai','chart','doc','money'];
+IC.link = LKIC.link; IC.chart = LKIC.chart;
+
+/** เปิดลิงก์นอกระบบ — ใน LIFF ต้องบอกให้เปิดเบราว์เซอร์จริง
+    ไม่งั้นมันจะเปิดในหน้าต่างของ LINE แล้วผู้ใช้กลับเข้า Kenan ONE ไม่ได้ */
+function openExternal(url){
+  if(!/^https:\/\//i.test(String(url || ''))) return;
+  try{
+    if(S.liffReady && typeof liff?.openWindow === 'function'){
+      liff.openWindow({ url, external:true }); return;
+    }
+  }catch(e){}
+  window.open(url, '_blank', 'noopener');
+}
+
+/* ── หน้าบริการ: แท็บ "ระบบอื่นๆ ของคีนัน" ─────────────────────────
+   Kenan ONE ไม่ใช่ระบบเดียวที่พนักงานต้องใช้ ยังมี HR, Monday.com,
+   ระบบจองเรียนออนไลน์, AI Champion Hub และอื่นๆ ที่มีอยู่ก่อนแล้ว
+   ทุกวันนี้ลิงก์พวกนั้นอยู่ในอีเมลเก่ากับบุ๊กมาร์กของแต่ละคน คนเข้าใหม่จึงไม่รู้ว่ามีอะไร
+   แท็บนี้ไม่ได้พยายามรวมระบบ แค่รวม "ประตู" ไว้ที่เดียว                */
+async function paintOtherSystems(){
+  let r = null;
+  try{ r = await apiRetry('getLinks', {}, 'GET'); }catch(e){}
+  const items = r?.items || [];
+  if(!items.length){
+    $x('#svOther').innerHTML = emptyState(LKIC.link, t('lkEmpty'),
+      S.isAdmin ? t('lkEmptyAdmin') : t('lkEmptyBody')) +
+      (S.isAdmin ? `<button class="btn soft" id="lkAdd">${esc(t('lkManage'))}</button>` : '');
+    if($('#lkAdd')) $('#lkAdd').onclick = () => go('admin-links');
+    return;
+  }
+  // จัดกลุ่มตามหมวดที่ผู้ดูแลใส่ไว้ ของที่ไม่ใส่หมวดไปรวมกันท้ายสุด
+  const cats = [];
+  items.forEach(i => { const c = i.category || ''; if(!cats.includes(c)) cats.push(c); });
+  cats.sort((a, b) => (a === '' ? 1 : b === '' ? -1 : 0));
+
+  $x('#svOther').innerHTML = cats.map(c => `
+    <div class="hz-h" style="margin-top:18px"><h3>${esc(c || t('lkOther'))}</h3></div>
+    <div class="svl">${items.filter(i => (i.category || '') === c).map(i => `
+      <button class="svi" data-url="${esc(i.url)}">
+        <span class="svi-i">${LKIC[i.icon] || LKIC.link}</span>
+        <span class="svi-x">
+          <span class="svi-n">${esc(S.lang === 'th' ? i.title_th : (i.title_en || i.title_th))}</span>
+          <span class="svi-s">${esc(S.lang === 'th' ? i.note_th : (i.note_en || i.note_th))}</span>
+        </span>
+        <span class="go">${IC.ext}</span>
+      </button>`).join('')}</div>`).join('') +
+    `<p class="lk-foot">${esc(t('lkFoot'))}</p>` +
+    (S.isAdmin ? `<button class="btn ghost" id="lkAdd" style="margin-top:10px">${esc(t('lkManage'))}</button>` : '');
+
+  document.querySelectorAll('#svOther [data-url]').forEach(b =>
+    b.onclick = () => openExternal(b.dataset.url));
+  if($('#lkAdd')) $('#lkAdd').onclick = () => go('admin-links');
+}
+
+/* ── ผู้ดูแล: จัดการทางเข้าระบบอื่น ───────────────────────────── */
+ROUTES['admin-links'] = async () => {
+  setTitle(t('lkManage'));
+  if(!S.isAdmin){ $x('#main').innerHTML = `<div class="view" style="padding-top:36px">
+    ${emptyState(IC.info, t('adminNo'), t('adminNoBody'))}</div>`; return; }
+  $x('#main').innerHTML = `<div class="view">
+    <div class="note info">${IC.info}<div>${esc(t('lkWhy'))}</div></div>
+    <button class="btn primary" id="add" style="margin-top:12px">＋ ${esc(t('lkAdd'))}</button>
+    <div id="lst" style="margin-top:14px">${skeleton(3)}</div></div>`;
+
+  const load = async () => {
+    let r = null;
+    try{ r = await apiRetry('getLinksAdmin', {}, 'GET'); }catch(e){}
+    const items = r?.items || [];
+    if(!items.length){ $x('#lst').innerHTML = emptyState(LKIC.link, t('lkEmpty'), t('lkEmptyAdmin')); return; }
+    $x('#lst').innerHTML = `<div class="rows">${items.map(i => {
+      const on = !(i.is_active === false || String(i.is_active).toUpperCase() === 'FALSE');
+      return `<button class="row" data-id="${esc(i.link_id)}" style="${on ? '' : 'opacity:.5'}">
+        <div class="thumb" style="background:var(--brand-50);color:var(--brand)">${LKIC[i.icon] || LKIC.link}</div>
+        <div class="body">
+          <div class="t">${esc(i.title_th)}</div>
+          <div class="s">${esc([i.category, i.roles ? t('lkRolesN')(i.roles) : ''].filter(Boolean).join(' · ') || i.url)}</div>
+        </div>
+        <span class="pill ${on ? 'done' : 'wait'}">${esc(on ? t('admResOn') : t('admResInactive'))}</span>
+      </button>`;
+    }).join('')}</div>`;
+    const byId = {}; items.forEach(i => byId[i.link_id] = i);
+    document.querySelectorAll('#lst .row').forEach(b =>
+      b.onclick = () => linkSheet(byId[b.dataset.id], load));
+  };
+  $('#add').onclick = () => linkSheet(null, load);
+  await load();
+};
+
+function linkSheet(x, refresh){
+  const v = x || { icon:'link', sort_order:50, is_active:true };
+  const on = !(v.is_active === false || String(v.is_active).toUpperCase() === 'FALSE');
+  sheet(`<h3>${esc(x ? t('lkEdit') : t('lkAdd'))}</h3>
+    <div class="field"><label>${esc(t('lkTitle'))}<span class="req">*</span></label>
+      <input id="kT" value="${esc(v.title_th || '')}" placeholder="${esc(t('lkTitlePh'))}"></div>
+    <div class="field"><label>${esc(t('lkTitleEn'))}</label>
+      <input id="kTe" value="${esc(v.title_en || '')}"></div>
+    <div class="field"><label>${esc(t('lkUrl'))}<span class="req">*</span></label>
+      <input id="kU" value="${esc(v.url || '')}" inputmode="url" placeholder="https://">
+      <div class="hint">${esc(t('lkUrlHint'))}</div></div>
+    <div class="field"><label>${esc(t('lkNote'))}</label>
+      <input id="kN" value="${esc(v.note_th || '')}" placeholder="${esc(t('lkNotePh'))}"></div>
+    <div class="field"><label>${esc(t('lkCat'))}</label>
+      <input id="kC" value="${esc(v.category || '')}" list="lkcats" placeholder="${esc(t('lkCatPh'))}">
+      <datalist id="lkcats">${['งานบุคคล','งานโครงการ','เรียนรู้และพัฒนา','การเงินและจัดซื้อ','เครื่องมือ']
+        .map(c => `<option value="${c}">`).join('')}</datalist></div>
+    <div class="field"><label>${esc(t('lkIcon'))}</label>
+      <div class="ikp" id="kI">${LKIC_LIST.map(k => `
+        <button type="button" class="ik ${v.icon === k ? 'on' : ''}" data-i="${k}"
+          aria-label="${k}">${LKIC[k]}</button>`).join('')}</div></div>
+    <div class="field"><label>${esc(t('lkWho'))}</label>
+      <select id="kR">
+        <option value="" ${!v.roles ? 'selected' : ''}>${esc(t('lkWhoAll'))}</option>
+        <option value="officer" ${v.roles === 'officer' ? 'selected' : ''}>${esc(t('lkWhoOfficer'))}</option>
+        <option value="admin" ${v.roles === 'admin' ? 'selected' : ''}>${esc(t('lkWhoAdmin'))}</option>
+      </select></div>
+    <div class="field"><label>${esc(t('lkOrder'))}</label>
+      <input id="kO" inputmode="numeric" value="${esc(v.sort_order || 50)}">
+      <div class="hint">${esc(t('lkOrderHint'))}</div></div>
+    <label class="switch" style="margin-bottom:14px">
+      <input type="checkbox" id="kA" ${on ? 'checked' : ''}>
+      <span><b>${esc(t('admResOn'))}</b></span></label>
+    <button class="btn primary" id="kS">${esc(t('admResSave'))}</button>
+    ${x ? `<button class="btn ghost" id="kD" style="color:var(--danger)">${esc(t('lkHide'))}</button>` : ''}
+    <button class="btn ghost" id="kX">${esc(t('cancel'))}</button>`, { wide:true });
+
+  let icon = v.icon || 'link';
+  document.querySelectorAll('#kI .ik').forEach(b => b.onclick = () => {
+    icon = b.dataset.i;
+    document.querySelectorAll('#kI .ik').forEach(x2 => x2.classList.toggle('on', x2 === b));
+  });
+  $('#kX').onclick = closeSheet;
+  if($('#kD')) $('#kD').onclick = async () => {
+    try{ await apiRetry('deleteLink', { link_id:v.link_id }, 'POST'); closeSheet();
+         toast(t('lkHidden'), 'ok'); refresh(); }catch(e){ toast(t('netErr'), 'bad'); }
+  };
+  $('#kS').onclick = async () => {
+    const url = $('#kU').value.trim();
+    if(!$('#kT').value.trim()){ toast(t('admNeedTitle'), 'bad'); return; }
+    if(!/^https:\/\/\S+$/i.test(url)){ toast(t('lkBadUrl'), 'bad'); return; }
+    const b = $('#kS'); b.disabled = true;
+    try{
+      const r = await apiRetry('saveLink', {
+        link_id: v.link_id || '', title_th:$('#kT').value.trim(), title_en:$('#kTe').value.trim(),
+        url, note_th:$('#kN').value.trim(), category:$('#kC').value.trim(),
+        icon, roles:$('#kR').value, sort_order:$('#kO').value.trim(),
+        is_active: $('#kA').checked
+      }, 'POST');
+      if(r?.error === 'BAD_URL'){ toast(t('lkBadUrl'), 'bad'); b.disabled = false; return; }
+      if(r?.ok === false) throw 0;
+      closeSheet(); toast(t('admResSaved'), 'ok'); refresh();
+    }catch(e){ toast(t('netErr'), 'bad'); b.disabled = false; }
+  };
+}
+
+
+/* ══════════════════════════════════════════════════════════════════
+ *  เกี่ยวกับ Kenan ONE
+ *
+ *  ระบบภายในไม่มีใครเขียนรีวิวให้ คนใช้แล้วชอบก็เงียบ ติดขัดก็เงียบ
+ *  แล้วคนทำก็ไม่รู้ว่าที่ทำอยู่ช่วยใครได้จริงไหม จนกว่าจะมีคนบ่น
+ *  หน้านี้ทำให้การบอกว่า "ดีนะ" ใช้เวลาแค่แตะครั้งเดียว
+ * ══════════════════════════════════════════════════════════════════ */
+const CHEER = [
+  { k:'heart',  e:'❤️', l:() => t('chHeart')  },
+  { k:'clap',   e:'👏', l:() => t('chClap')   },
+  { k:'rocket', e:'🚀', l:() => t('chRocket') },
+  { k:'thanks', e:'🙏', l:() => t('chThanks') },
+  { k:'coffee', e:'☕', l:() => t('chCoffee') }
+];
+
+ROUTES.about = async () => {
+  setTitle(t('abTitle'));
+  $x('#main').innerHTML = `<div class="view ab">
+    <div class="ab-hero">
+      ${KMARK('big')}
+      <h2>${esc(APP_NAME)}</h2>
+      <p>${esc(t('abTag'))}</p>
+    </div>
+
+    <div class="ab-body">
+      <p>${esc(t('abP1'))}</p>
+      <p>${esc(t('abP2'))}</p>
+    </div>
+
+    <div class="ab-facts">
+      <div><b id="abBuild">—</b><span>${esc(t('abBuild'))}</span></div>
+      <div><b>${esc(t('abMadeByVal'))}</b><span>${esc(t('abMadeBy'))}</span></div>
+      <div><b id="abTotal">—</b><span>${esc(t('abCheers'))}</span></div>
+    </div>
+
+    <div class="cheer">
+      <h3>${esc(t('chTitle'))}</h3>
+      <p class="cheer-sub">${esc(t('chSub'))}</p>
+      <div class="cheer-row" id="chRow">${CHEER.map(c => `
+        <button class="ch" data-k="${c.k}" aria-label="${esc(c.l())}">
+          <span class="ch-e" aria-hidden="true">${c.e}</span>
+          <span class="ch-n" data-n="${c.k}">–</span>
+          <span class="ch-l">${esc(c.l())}</span>
+        </button>`).join('')}</div>
+      <p class="cheer-note">${esc(t('chOnce'))}</p>
+    </div>
+
+    <div class="card" style="margin-top:16px">
+      <div style="font-size:var(--fs-cta);font-weight:700;margin-bottom:4px">${esc(t('fbTitle'))}</div>
+      <p style="font-size:var(--fs-sec);color:var(--ink-2);margin:0 0 12px;line-height:1.55">${esc(t('fbSub'))}</p>
+      <div class="field"><label>${esc(t('fbKind'))}</label>
+        <select id="fbK">
+          <option value="idea">${esc(t('fbIdea'))}</option>
+          <option value="bug">${esc(t('fbBug'))}</option>
+          <option value="praise">${esc(t('fbPraise'))}</option>
+          <option value="other">${esc(t('fbOther'))}</option>
+        </select></div>
+      <div class="field"><label>${esc(t('fbBody'))}</label>
+        <textarea id="fbB" rows="4" placeholder="${esc(t('fbPh'))}"
+          style="width:100%;resize:vertical"></textarea></div>
+      <label class="switch" style="margin-bottom:12px">
+        <input type="checkbox" id="fbN">
+        <span><b>${esc(t('fbNamed'))}</b><br>
+          <span style="font-size:var(--fs-meta);color:var(--ink-3)">${esc(t('fbNamedSub'))}</span></span>
+      </label>
+      <button class="btn primary" id="fbGo">${esc(t('fbSend'))}</button>
+    </div>
+
+    <div id="abAdm"></div>
+    <div style="height:12px"></div>
+    <button class="btn ghost" id="abPol">${esc(t('prPrivacy'))}</button>
+  </div>`;
+
+  $('#abPol').onclick = () => go('privacy');
+
+  /* ── ส่งข้อความถึงคนทำ ── */
+  $('#fbGo').onclick = async () => {
+    const body = $('#fbB').value.trim();
+    if(body.length < 2){ toast(t('fbNeed'), 'bad'); return; }
+    const b = $('#fbGo'); b.disabled = true;
+    try{
+      await apiRetry('sendFeedback', { body, kind:$('#fbK').value, named:$('#fbN').checked,
+                                       page:S.stack?.[S.stack.length - 2]?.name || '' }, 'POST');
+      $('#fbB').value = '';
+      toast(t('fbSent'), 'ok');
+    }catch(e){ toast(t('netErr'), 'bad'); }
+    b.disabled = false;
+  };
+
+  /* ── ตัวเลขและปุ่มให้กำลังใจ ── */
+  let a = null;
+  try{ a = await apiRetry('getAbout', {}, 'GET'); }catch(e){}
+  if(!a?.ok){ document.querySelectorAll('.ch-n').forEach(n => n.textContent = '–'); return; }
+
+  $x('#abBuild').textContent = a.build || '—';
+  $x('#abTotal').textContent = a.total || 0;
+  const paint = () => {
+    CHEER.forEach(c => {
+      const n = document.querySelector(`[data-n="${c.k}"]`);
+      if(n) n.textContent = a.tally?.[c.k] ?? 0;
+      const b = document.querySelector(`.ch[data-k="${c.k}"]`);
+      if(b) b.classList.toggle('given', !!a.mine?.[c.k]);
+    });
+  };
+  paint();
+
+  document.querySelectorAll('#chRow .ch').forEach(b => b.onclick = async () => {
+    const k = b.dataset.k;
+    if(a.mine?.[k]) { toast(t('chAlready'), ''); return; }
+    /* นับขึ้นให้เห็นทันที แล้วค่อยยิงไปเซิร์ฟเวอร์
+       ปุ่มขอบคุณที่ต้องรอ 1.7 วินาทีถึงจะขยับ ไม่มีใครอยากกดครั้งที่สอง */
+    a.mine = a.mine || {}; a.mine[k] = 1;
+    a.tally[k] = (a.tally[k] || 0) + 1; a.total = (a.total || 0) + 1;
+    $x('#abTotal').textContent = a.total;
+    paint(); burst(b);
+    try{ await apiRetry('sendCheer', { kind:k }, 'POST'); }catch(e){}
+  });
+
+  if(S.isAdmin){
+    $x('#abAdm').innerHTML = `<div style="margin-top:14px">
+      <button class="btn soft" id="fbList">${esc(t('fbRead'))}${
+        a.unread ? ` · ${a.unread}` : ''}</button></div>`;
+    $('#fbList').onclick = () => go('admin-feedback');
+  }
+};
+
+/** ประกายเล็กๆ ตอนกดขอบคุณ — เคารพการตั้งค่าปิดแอนิเมชันของเครื่อง */
+function burst(el){
+  if(matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  const s = document.createElement('span');
+  s.className = 'ch-burst'; s.textContent = '✦';
+  el.appendChild(s);
+  setTimeout(() => s.remove(), 700);
+}
+
+ROUTES['admin-feedback'] = async () => {
+  setTitle(t('fbRead'));
+  if(!S.isAdmin){ $x('#main').innerHTML = `<div class="view" style="padding-top:36px">
+    ${emptyState(IC.info, t('adminNo'), t('adminNoBody'))}</div>`; return; }
+  $x('#main').innerHTML = `<div class="view"><div id="fl">${skeleton(3)}</div></div>`;
+  let r = null;
+  try{ r = await apiRetry('listFeedback', {}, 'GET'); }catch(e){}
+  const items = r?.items || [];
+  if(!items.length){ $x('#fl').innerHTML = emptyState(IC.chat, t('fbNone'), t('fbNoneBody')); return; }
+  const KIND = { idea:t('fbIdea'), bug:t('fbBug'), praise:t('fbPraise'), other:t('fbOther') };
+  $x('#fl').innerHTML = items.map(f => `
+    <article class="fbc">
+      <div class="fbc-h">
+        <span class="fbc-k ${esc(f.kind)}">${esc(KIND[f.kind] || f.kind)}</span>
+        <span class="fbc-t">${esc(fmtDate(f.at))}</span>
+      </div>
+      <p>${esc(f.body)}</p>
+      <div class="fbc-w">${esc(f.name || t('fbAnon'))}${f.page ? ' · ' + esc(f.page) : ''}</div>
+    </article>`).join('');
+};
+
+
+/* ══════════════════════════════════════════════════════════════════
+ *  ผู้ดูแลแก้ข้อความแจ้งเตือนได้จากในระบบ
+ *
+ *  ค่าเริ่มต้นทุกอันยังอยู่ในโค้ด หน้านี้เก็บเฉพาะ "อันที่ถูกแก้"
+ *  จึงกดกลับเป็นค่าเริ่มต้นได้จริงเสมอ และถ้าชีทพังก็ยังส่งข้อความได้ตามปกติ
+ * ══════════════════════════════════════════════════════════════════ */
+ROUTES['admin-msgs'] = async () => {
+  setTitle(t('msgTitle'));
+  if(!S.isAdmin){ $x('#main').innerHTML = `<div class="view" style="padding-top:36px">
+    ${emptyState(IC.info, t('adminNo'), t('adminNoBody'))}</div>`; return; }
+  $x('#main').innerHTML = `<div class="view">
+    <div class="note info">${IC.info}<div>${esc(t('msgWhy'))}</div></div>
+    <div id="ml" style="margin-top:14px">${skeleton(4)}</div></div>`;
+
+  const load = async () => {
+    let r = null;
+    try{ r = await apiRetry('listMessages', {}, 'GET'); }catch(e){}
+    const items = r?.items || [];
+    if(!items.length){ $x('#ml').innerHTML = emptyState(IC.chat, t('netErr'), ''); return; }
+    $x('#ml').innerHTML = `<div class="rows">${items.map(m => `
+      <button class="row" data-k="${esc(m.key)}">
+        <div class="body">
+          <div class="t">${esc(m.title.replace(/\{\w+\}/g, '').replace(/\s+/g, ' ').trim())}</div>
+          <div class="s" style="font-family:ui-monospace,monospace">${esc(m.key)}</div>
+        </div>
+        ${m.off ? `<span class="pill wait">${esc(t('msgOff'))}</span>`
+                : m.edited ? `<span class="pill done">${esc(t('msgEdited'))}</span>` : ''}
+        <span class="go">${IC.chev}</span>
+      </button>`).join('')}</div>`;
+    const byK = {}; items.forEach(m => byK[m.key] = m);
+    document.querySelectorAll('#ml .row').forEach(b =>
+      b.onclick = () => msgSheet(byK[b.dataset.k], load));
+  };
+  await load();
+};
+
+function msgSheet(m, refresh){
+  sheet(`<h3>${esc(t('msgEdit'))}</h3>
+    <p class="sub" style="font-family:ui-monospace,monospace">${esc(m.key)}</p>
+
+    <div class="field"><label>${esc(t('msgHead'))}</label>
+      <input id="mT" value="${esc(m.title)}"></div>
+    <div class="field"><label>${esc(t('msgBody'))}</label>
+      <textarea id="mB" rows="7" style="width:100%;resize:vertical;line-height:1.6">${esc(m.body)}</textarea></div>
+
+    ${m.vars.length ? `<div class="field"><label>${esc(t('msgVars'))}</label>
+      <div class="vchips">${m.vars.map(v => `
+        <button type="button" class="vchip" data-v="${esc(v)}">{${esc(v)}}</button>`).join('')}</div>
+      <div class="hint">${esc(t('msgVarsHint'))}</div></div>` : ''}
+
+    <div class="field"><label>${esc(t('msgUrg'))}</label>
+      <select id="mU">
+        <option value="normal" ${m.urgency==='normal'?'selected':''}>${esc(t('msgUrgN'))}</option>
+        <option value="high" ${m.urgency==='high'?'selected':''}>${esc(t('msgUrgH'))}</option>
+        <option value="emergency" ${m.urgency==='emergency'?'selected':''}>${esc(t('msgUrgE'))}</option>
+      </select></div>
+    <label class="switch" style="margin-bottom:14px">
+      <input type="checkbox" id="mO" ${m.off ? 'checked' : ''}>
+      <span><b>${esc(t('msgTurnOff'))}</b><br>
+        <span style="font-size:var(--fs-meta);color:var(--ink-3)">${esc(t('msgTurnOffSub'))}</span></span>
+    </label>
+
+    <div class="field"><label>${esc(t('msgPreview'))}</label>
+      <div class="lchat"><div class="lbub" id="mP"></div></div>
+      <div class="hint">${esc(t('msgPreviewHint'))}</div></div>
+
+    <button class="btn primary" id="mS">${esc(t('admResSave'))}</button>
+    <button class="btn soft" id="mTest">${esc(t('msgTest'))}</button>
+    ${m.edited ? `<button class="btn ghost" id="mR">${esc(t('msgReset'))}</button>` : ''}
+    <button class="btn ghost" id="mX">${esc(t('cancel'))}</button>`, { wide:true });
+
+  /* ── พรีวิวแบบเดียวกับที่เซิร์ฟเวอร์เรนเดอร์: บรรทัดที่มีตัวแปรว่างจะหายทั้งบรรทัด
+        ตรงนี้เติมค่าตัวอย่างให้ทุกตัว จึงเห็นครบทุกบรรทัด ── */
+  const render = () => {
+    const fill = s2 => String(s2).replace(/\{(\w+)\}/g, (_, k) => `(${k})`);
+    const head = fill($('#mT').value).trim();
+    const body = fill($('#mB').value);
+    $x('#mP').innerHTML = `<b>${esc(head)}</b>` +
+      (body ? '<br>' + body.split('\n').map(l =>
+        /^https?:\/\//.test(l.trim())
+          ? `<span class="llink">${esc(l)}</span>` : esc(l)).join('<br>') : '');
+  };
+  $('#mT').oninput = render; $('#mB').oninput = render; render();
+
+  // แตะชิปตัวแปรแล้วแทรกลงตำแหน่งเคอร์เซอร์ — พิมพ์ชื่อตัวแปรเองมีโอกาสสะกดผิด
+  document.querySelectorAll('.vchip').forEach(c => c.onclick = () => {
+    const ta = $('#mB'), p = ta.selectionStart ?? ta.value.length, tag = `{${c.dataset.v}}`;
+    ta.value = ta.value.slice(0, p) + tag + ta.value.slice(ta.selectionEnd ?? p);
+    ta.focus(); ta.selectionStart = ta.selectionEnd = p + tag.length;
+    render();
+  });
+
+  $('#mX').onclick = closeSheet;
+  if($('#mR')) $('#mR').onclick = async () => {
+    try{ await apiRetry('resetMessage', { key:m.key }, 'POST'); closeSheet();
+         toast(t('msgResetOk'), 'ok'); refresh(); }catch(e){ toast(t('netErr'), 'bad'); }
+  };
+  $('#mTest').onclick = async () => {
+    const b = $('#mTest'); b.disabled = true;
+    try{
+      const r = await apiRetry('testMessage', { key:m.key }, 'POST');
+      toast(r?.ok ? t('msgTestSent')
+                  : (r?.error === 'NO_LINE' ? t('msgTestNoLine') : t('netErr')),
+            r?.ok ? 'ok' : 'bad');
+    }catch(e){ toast(t('netErr'), 'bad'); }
+    b.disabled = false;
+  };
+  const save = async (confirm) => {
+    const b = $('#mS'); b.disabled = true;
+    try{
+      const r = await apiRetry('saveMessage', {
+        key:m.key, title:$('#mT').value, body:$('#mB').value,
+        urgency:$('#mU').value, off:$('#mO').checked, confirm: !!confirm
+      }, 'POST');
+      /* ตัวแปรที่โค้ดไม่ได้ส่งให้ จะกลายเป็นช่องว่างตอนส่งจริงทุกฉบับ
+         ถามก่อนดีกว่าปล่อยให้ข้อความขาดชื่อไปเงียบๆ เป็นเดือน */
+      if(r?.error === 'UNKNOWN_VARS'){
+        b.disabled = false;
+        if(confirm2(t('msgBadVars')(r.vars.join(', ')))) return save(true);
+        return;
+      }
+      if(r?.ok === false) throw 0;
+      closeSheet(); toast(t('admResSaved'), 'ok'); refresh();
+    }catch(e){ toast(t('netErr'), 'bad'); b.disabled = false; }
+  };
+  $('#mS').onclick = () => save(false);
+}
+const confirm2 = msg => window.confirm(msg);
+
+
+/* ══════════════════════════════════════════════════════════════════
+ *  พัสดุทั้งหมด + สถิติ — เพิ่ม 2026-09-06 (build d)
+ *
+ *  ก่อนหน้านี้ดูพัสดุได้แค่สองมุม: "ของฉัน" กับ "กองไม่ทราบผู้รับ"
+ *  ไม่มีที่ไหนตอบได้ว่าเดือนนี้เข้ามากี่ชิ้น ใครยังไม่มารับ หรือคนรอเฉลี่ยกี่วัน
+ *  ซึ่งเป็นคำถามที่ GA ต้องตอบทุกเดือนอยู่แล้ว แค่ตอบด้วยการนั่งนับในชีท
+ * ══════════════════════════════════════════════════════════════════ */
+
+ROUTES['admin-parcels'] = async (params = {}) => {
+  setTitle(t('prcTitle'));
+  if(!S.isOfficer && !S.isAdmin){
+    $x('#main').innerHTML = `<div class="view" style="padding-top:36px">
+      ${emptyState(IC.info, t('adminNo'), t('adminNoBody'))}</div>`; return;
+  }
+  const F = ['wait', 'done', 'unid', 'all'];
+  let filter = F.includes(params.filter) ? params.filter : 'wait';
+  let kw = params.kw || '', page = Number(params.page) || 0;
+
+  $x('#main').innerHTML = `<div class="view">
+    <div class="srch">
+      <input id="pKw" value="${esc(kw)}" placeholder="${esc(t('prcSearch'))}"
+        inputmode="search" enterkeyhint="search">
+      <button id="pKwGo" aria-label="${esc(t('prcSearch'))}">${IC.search}</button>
+    </div>
+    <div class="chips" id="pF" style="margin:11px 0">${F.map(f => `
+      <button class="chip ${f === filter ? 'on' : ''}" data-f="${f}">${esc(t('prcF_' + f))}</button>`).join('')}</div>
+    <div id="pList">${skeleton(4)}</div>
+    <div id="pPage"></div>
+  </div>`;
+
+  const nav = o => go('admin-parcels', Object.assign({ filter, kw, page }, o), true);
+  document.querySelectorAll('#pF .chip').forEach(b =>
+    b.onclick = () => nav({ filter:b.dataset.f, page:0 }));
+  const search = () => nav({ kw:$('#pKw').value.trim(), page:0 });
+  $('#pKwGo').onclick = search;
+  $('#pKw').onkeydown = e => { if(e.key === 'Enter') search(); };
+
+  let r = null;
+  try{ r = await apiRetry('parcelReport', { filter, kw, page }, 'GET'); }catch(e){}
+  if(!r?.ok){ $x('#pList').innerHTML = emptyState(IC.info, t('netErr'), ''); return; }
+
+  /* ── รายการ ── */
+  if(!r.items.length){
+    $x('#pList').innerHTML = emptyState(IC.box, t('prcNone'),
+      kw ? t('prcNoneKw')(kw) : t('prcNoneBody'));
+    $x('#pPage').innerHTML = '';
+    return;
+  }
+  const PILL = { arrived:'wait', notified:'wait', unidentified:'wait',
+                 claimed:'done', closed:'done' };
+  const LBL  = { arrived:t('prcS_wait'), notified:t('prcS_wait'),
+                 unidentified:t('prcS_unid'), claimed:t('prcS_done'), closed:t('prcS_done') };
+
+  $x('#pList').innerHTML = `<div class="rows">${r.items.map(p => {
+    const done = PILL[p.status] === 'done';
+    /* เวลาที่รอ คือตัวเลขที่บอกอะไรได้จริงที่สุดในหน้านี้
+       ของที่รับแล้ว = รอไปกี่วันกว่าจะมารับ · ของที่ยังค้าง = ค้างมาแล้วกี่วัน */
+    const h = p.wait_h;
+    const wait = h === null ? '' :
+      (h < 24 ? t('prcHrs')(Math.round(h)) : t('prcDays')(Math.round(h / 24)));
+    const late = !done && h !== null && h >= 72;
+    return `<button class="row" data-id="${esc(p.record_id)}">
+      ${p.thumb_id ? `<img class="thumb" data-ph="${esc(p.thumb_id)}" alt="">`
+                   : `<div class="thumb">${IC.box}</div>`}
+      <div class="body">
+        <div class="t">${esc(p.title || p.tracking_no || t('prcUntitled'))}</div>
+        <div class="s">${esc([
+            p.who || t('prcNoWho'),
+            done ? t('prcGotOn')(fmtDate(p.closed_at)) : t('prcInOn')(fmtDate(p.created_at))
+          ].join(' · '))}</div>
+        ${p.tracking_no ? `<div class="s" style="font-family:ui-monospace,monospace">${
+          esc(p.tracking_no)}</div>` : ''}
+      </div>
+      <div style="text-align:right;flex:0 0 auto">
+        <span class="pill ${PILL[p.status] || 'wait'}">${esc(LBL[p.status] || p.status)}</span>
+        ${wait ? `<div class="pwait ${late ? 'late' : ''}">${esc(wait)}</div>` : ''}
+      </div>
+    </button>`;
+  }).join('')}</div>`;
+  paintPhotos($('#pList'));
+
+  const byId = {}; r.items.forEach(p => byId[p.record_id] = p);
+  document.querySelectorAll('#pList .row').forEach(b =>
+    b.onclick = () => parcelSheet(byId[b.dataset.id]));
+
+  /* ── หน้าถัดไป ── */
+  const last = Math.max(0, Math.ceil(r.total / r.per) - 1);
+  $x('#pPage').innerHTML = last > 0 ? `<div class="pager">
+    <button class="btn ghost" id="pPrev" ${page <= 0 ? 'disabled' : ''}>← ${esc(t('prcPrev'))}</button>
+    <span>${esc(t('prcPageN')(page + 1, last + 1, r.total))}</span>
+    <button class="btn ghost" id="pNext" ${page >= last ? 'disabled' : ''}>${esc(t('prcNext'))} →</button>
+  </div>` : `<p class="pager-n">${esc(t('prcShowing')(r.total))}</p>`;
+  if($('#pPrev')) $('#pPrev').onclick = () => nav({ page:page - 1 });
+  if($('#pNext')) $('#pNext').onclick = () => nav({ page:page + 1 });
+};
+
+/** รายละเอียดพัสดุหนึ่งชิ้น — เจ้าหน้าที่เปิดดูตอนมีคนมาถามที่เคาน์เตอร์ */
+function parcelSheet(p){
+  const done = p.status === 'claimed' || p.status === 'closed';
+  sheet(`<h3>${esc(p.title || p.tracking_no || t('prcUntitled'))}</h3>
+    ${p.thumb_id ? `<img class="sheet-photo" data-ph="${esc(p.thumb_id)}" alt="">` : ''}
+    <div class="rows" style="margin-top:12px">
+      <div class="row"><div class="body"><div class="s">${esc(t('prcWho'))}</div>
+        <div class="t">${esc(p.who || t('prcNoWho'))}</div></div></div>
+      ${p.tracking_no ? `<div class="row"><div class="body"><div class="s">${esc(t('prcTracking'))}</div>
+        <div class="t" style="font-family:ui-monospace,monospace">${esc(p.tracking_no)}</div></div></div>` : ''}
+      <div class="row"><div class="body"><div class="s">${esc(t('prcLogged'))}</div>
+        <div class="t">${esc(fmtDate(p.created_at))}${p.by ? ' · ' + esc(p.by) : ''}</div></div></div>
+      ${done ? `<div class="row"><div class="body"><div class="s">${esc(t('prcClaimed'))}</div>
+        <div class="t">${esc(fmtDate(p.closed_at))}</div></div></div>` : ''}
+      <div class="row"><div class="body"><div class="s">${esc(done ? t('prcTook') : t('prcWaitedSoFar'))}</div>
+        <div class="t">${esc(p.wait_h === null ? '—'
+          : (p.wait_h < 24 ? t('prcHrs')(Math.round(p.wait_h))
+                           : t('prcDays')(Math.round(p.wait_h / 24 * 10) / 10)))}</div></div></div>
+      <div class="row"><div class="body"><div class="s">${esc(t('prcId'))}</div>
+        <div class="t" style="font-family:ui-monospace,monospace">${esc(p.record_id)}</div></div></div>
+    </div>
+    <div style="height:12px"></div>
+    <button class="btn ghost" id="pcx">${esc(t('close'))}</button>`);
+  paintPhotos($('#sheetBody'));
+  $('#pcx').onclick = closeSheet;
+}
 
 ROUTES['my-parcels'] = async (params = {}) => {
   setTitle(t('pcTitle'));
@@ -3822,22 +5359,123 @@ ROUTES.calltree = async () => {
   }).join('');
 };
 
+
+/* ══════════════════════════════════════════════════════════════════
+ *  หน้า "ฉัน" — ปรับ 2026-09-06 (build e)
+ *
+ *  ของเดิมเป็นฟอร์มแก้โปรไฟล์ยาวหนึ่งหน้า แล้วมีปุ่มอื่นๆ ห้อยท้าย
+ *  ปัญหาคือเรื่อง PDPA ที่ลงทุนทำไปทั้งชุด (ดูข้อมูลที่เก็บ · ขอสำเนา ·
+ *  ขอแก้ · ขอใช้สิทธิ) ไปกองรวมกับปุ่มทดสอบความเร็วอยู่ล่างสุด
+ *  สิทธิของเจ้าของข้อมูลไม่ควรอยู่ในฐานะ footer ของหน้าตั้งค่า
+ *  มันคือส่วนหนึ่งของตัวผลิตภัณฑ์ ไม่ใช่ข้อความทางกฎหมายที่ต้องมีให้ครบ
+ *
+ *  ของใหม่: หน้านี้เป็นสารบัญ แบ่งเป็นสี่กลุ่มตามสิ่งที่คนมาหา
+ *  ส่วนฟอร์มแก้ข้อมูลย้ายไปเป็นหน้าของตัวเอง
+ * ══════════════════════════════════════════════════════════════════ */
+
+/** แถวเมนูในหน้าฉัน — มีค่าท้ายแถวได้ (เช่นภาษาที่ใช้อยู่) */
+const meRow = i => `
+  <button class="meli" data-mgo="${esc(i.go || '')}" data-act="${esc(i.act || '')}">
+    <span class="meli-n">${esc(i.label)}</span>
+    ${i.val ? `<span class="meli-v">${esc(i.val)}</span>` : ''}
+    <span class="go">${IC.chev}</span>
+  </button>`;
+
 ROUTES.profile = async () => {
   setTitle(t('prTitle'));
   const m = S.me || {};
+  const nm = m.name_th || m.name_en || S.profile?.displayName || '';
+
+  const G = [
+    { g:t('meAccount'), items:[
+      { label:t('meProfile'), go:'profile-edit' },
+      { label:t('meLang'),    act:'lang', val:S.lang === 'th' ? 'TH' : 'EN' }
+    ]},
+    { g:t('meWork'), items:[
+      { label:t('meHistory'),  go:'activity' },
+      { label:t('meBookings'), go:'reservation' },
+      { label:t('meLoans'),    go:'equipment' }
+    ]},
+    /* กลุ่มนี้คือเหตุผลที่ต้องรื้อหน้านี้ — ทุกอย่างในนี้มีอยู่แล้ว
+       แต่ก่อนหน้านี้ไม่มีใครหาเจอ เพราะซ่อนอยู่หลังปุ่มเดียวชื่อ "ข้อมูลของฉัน" */
+    { g:t('mePrivacy'), items:[
+      { label:t('meWhatWeKeep'), go:'my-data' },
+      { label:t('meDownload'),   act:'dl' },
+      { label:t('meFix'),        act:'fix' },
+      { label:t('meRights'),     act:'dsr' }
+    ]},
+    { g:t('meHelp'), items:[
+      { label:t('meReport'), act:'fb' },
+      { label:t('meHow'),    act:'how' },
+      { label:t('abTitle'),  go:'about' }
+    ]}
+  ];
+  if(S.isOfficer || S.isAdmin)
+    G.splice(2, 0, { g:t('sgAdmin'), items:[{ label:t('adminTitle'), go:'admin' }] });
+
+  $x('#main').innerHTML = `<div class="view me">
+    <header class="mehead">
+      ${m.photo ? `<img class="meav" src="${m.photo}" alt="">`
+        : S.profile?.pictureUrl ? `<img class="meav" src="${esc(S.profile.pictureUrl)}" alt="">`
+        : `<span class="meav meav-t">${esc((nm.trim().charAt(0) || '·'))}</span>`}
+      <h2>${esc(nm || '—')}</h2>
+      ${m.position ? `<p>${esc(m.position)}</p>` : ''}
+      ${m.department ? `<p class="medept">${esc(m.department)}</p>` : ''}
+    </header>
+
+    ${G.map(gr => `
+      <div class="hz-h" style="margin-top:20px"><h3>${esc(gr.g)}</h3></div>
+      <div class="mel">${gr.items.map(meRow).join('')}</div>`).join('')}
+
+    <div style="height:20px"></div>
+    <button class="btn ghost" id="meSpd">${esc(t('spdTest'))}</button>
+    <pre id="spdOut" hidden style="margin:8px 0 12px;padding:11px;background:var(--surface);
+      border:1px solid var(--line);border-radius:12px;font-size:var(--fs-meta);
+      white-space:pre-wrap;color:var(--ink-2)"></pre>
+    ${S.liffReady ? `<div style="height:9px"></div>
+      <button class="btn ghost" id="meOut" style="color:var(--danger)">${esc(t('meLogout'))}</button>` : ''}
+    <p class="mever">${esc(APP_NAME)} · ${esc(CFG.BUILD)}</p>
+  </div>`;
+
+  document.querySelectorAll('#main .meli').forEach(b => b.onclick = () => {
+    if(b.dataset.mgo){ go(b.dataset.mgo); return; }
+    ACT[b.dataset.act]?.();
+  });
+
+  const ACT = {
+    /* สลับภาษาแล้ววาดหน้าเดิมใหม่ทันที ไม่ต้องพากลับหน้าแรก */
+    lang: () => { S.lang = S.lang === 'th' ? 'en' : 'th'; paintNav(); go('profile', {}, true); },
+    dl:   () => go('my-data', { act:'download' }),
+    fix:  () => go('my-data', { act:'rectify' }),
+    dsr:  () => go('my-data', { act:'rights' }),
+    fb:   () => go('about',   { act:'feedback' }),
+    how:  () => go('help')
+  };
+
+  $('#meSpd').onclick = speedTest;
+  if($('#meOut')) $('#meOut').onclick = () => {
+    if(!window.confirm(t('meLogoutAsk'))) return;
+    try{ liff.logout(); }catch(e){}
+    location.reload();
+  };
+};
+
+/* ── ฟอร์มแก้ข้อมูลส่วนตัว — แยกออกมาเป็นหน้าของตัวเอง ── */
+ROUTES['profile-edit'] = async () => {
+  setTitle(t('meProfile'));
+  const m = S.me || {};
   $x('#main').innerHTML = `<div class="view">
-    <div class="card" style="text-align:center">
-      ${S.profile?.pictureUrl ? `<img src="${esc(S.profile.pictureUrl)}" style="width:76px;height:76px;border-radius:50%;object-fit:cover">` : ''}
-      <h2 style="margin:10px 0 2px;font-size:18px">${esc(m.name_th || S.profile?.displayName || '')}</h2>
-      <p style="margin:0;color:var(--ink-3);font-size:13px">${esc(m.department || '')}</p>
-    </div>
-    <div class="section-title">${esc(t('prInfo'))}</div>
     <div class="rows">
-      <div class="row"><div class="body"><div class="s">${esc(t('prEmpId'))}</div><div class="t">${esc(m.kenan_user_id || '—')}</div></div></div>
-      <div class="row"><div class="body"><div class="s">${esc(t('prDept'))}</div><div class="t">${esc(m.department || '—')}</div></div></div>
-      <div class="row"><div class="body"><div class="s">${esc(t('prEmail'))}</div><div class="t">${esc(m.email || '—')}</div></div></div>
+      <div class="row"><div class="body"><div class="s">${esc(t('prEmpId'))}</div>
+        <div class="t">${esc(m.kenan_user_id || '—')}</div></div></div>
+      <div class="row"><div class="body"><div class="s">${esc(t('prDept'))}</div>
+        <div class="t">${esc(m.department || '—')}</div></div></div>
+      <div class="row"><div class="body"><div class="s">${esc(t('prEmail'))}</div>
+        <div class="t">${esc(m.email || '—')}</div></div></div>
     </div>
-    <div class="card">
+    <p class="statnote" style="margin:8px 2px 0">${esc(t('meFixedWhy'))}</p>
+
+    <div class="card" style="margin-top:14px">
       <div class="field"><label>${esc(t('prPosition'))}</label>
         <input id="pPos" value="${esc(m.position || '')}" placeholder="${esc(t('prPositionPh'))}"></div>
       ${photoField('pPh', t('prPhoto'), S.me?.photo || '', { optional:true, ratio:'1/1', max:'220px' })}
@@ -3866,22 +5504,12 @@ ROUTES.profile = async () => {
       <label class="check" style="margin:0">
         <input type="checkbox" id="pShow" ${m.show_phone === true || String(m.show_phone) === 'TRUE' ? 'checked' : ''}>
         <span><b>${esc(t('prShowPhone'))}</b><br>
-          <span style="color:var(--ink-3);font-size:12px">${esc(t('prShowPhoneSub'))}</span></span>
+          <span style="color:var(--ink-3);font-size:var(--fs-meta)">${esc(t('prShowPhoneSub'))}</span></span>
       </label>
-      <div style="height:12px"></div>
-      <button class="btn soft" id="pSave">${esc(t('prSave'))}</button>
     </div>
-    ${S.isOfficer ? `<div style="margin-top:12px">
-      <button class="btn soft" id="toAdm">${esc(t('adminTitle'))}</button></div>` : ''}
-    <div style="margin-top:12px"><button class="btn ghost" id="spd">${esc(t('spdTest'))}</button>
-      <pre id="spdOut" hidden style="margin:8px 0 12px;padding:11px;background:var(--surface);
-        border:1px solid var(--line);border-radius:12px;font-size:var(--fs-meta);
-        white-space:pre-wrap;color:var(--ink-2)"></pre>
-      <button class="btn ghost" id="mydata">${esc(t('mdTitle'))}</button>
-      <div style="height:9px"></div>
-      <button class="btn ghost" id="pol">${esc(t('prPrivacy'))}</button></div>
+    <div class="sticky-cta"><button class="btn primary" id="pSave">${esc(t('prSave'))}</button></div>
   </div>`;
-  if($('#toAdm')) $('#toAdm').onclick = () => go('admin');
+
   const pimg = { v:null }; wirePhoto('pPh', pimg);
   $('#pSave').onclick = async () => {
     const b = $('#pSave'); b.disabled = true;
@@ -3900,33 +5528,46 @@ ROUTES.profile = async () => {
       if(pimg.v?.card) S.me.photo = pimg.v.card;
       clearCache('dir'); clearCache('emp');
       toast(t('prSaved'), 'ok');
+      go('profile', {}, true);
     }catch(e){ toast(t('netErr'), 'bad'); }
     b.disabled = false;
   };
-  $('#pol').onclick = () => go('privacy');
-  $('#mydata').onclick = () => go('my-data');
-
-  /* ปุ่มวัดความเร็ว — เอาไว้ส่งตัวเลขจริงให้คนแก้ดู
-     net = รอทั้งหมด · srv = Apps Script ใช้จริง · db = อ่าน Google Sheet
-     net สูงแต่ srv ต่ำ แปลว่าเสียเวลาไปกับการปลุกเครื่อง ไม่ใช่โค้ดช้า */
-  $('#spd').onclick = async () => {
-    const box = $('#spdOut'); box.hidden = false; box.textContent = t('loading');
-    const t1 = performance.now(); const p1 = await apiRetry('ping', {}, 'GET');
-    const cold = Math.round(performance.now() - t1);
-    const t2 = performance.now(); await apiRetry('ping', {}, 'GET');
-    const warm = Math.round(performance.now() - t2);
-    // ถ้ารุ่นไม่ตรง ตัวเลขที่วัดได้จะเป็นของโค้ดเก่า ต้องบอกก่อนเป็นอย่างแรก
-    const okBuild = p1?.build === CFG.BUILD;
-    box.textContent =
-      (okBuild ? '✅ ' + t('spdBuildOk') + ' (' + CFG.BUILD + ')'
-               : '⚠️ ' + t('spdBuildBad') + '\n   ' + t('spdBuildApp') + ': ' + CFG.BUILD +
-                 '\n   ' + t('spdBuildSrv') + ': ' + (p1?.build || t('spdBuildOld'))) + '\n\n' +
-      t('spdFirst') + ': ' + cold + ' ms\n' +
-      t('spdSecond') + ': ' + warm + ' ms\n\n' +
-      'action  net / srv / db (ms)\n' +
-      S.timings.map(x => x.a + '  ' + x.net + ' / ' + (x.srv ?? '-') + ' / ' + (x.db ?? '-')).join('\n');
-  };
 };
+
+/* ── วิธีใช้งาน — เขียนจากคำถามที่คนถามจริงตอนเริ่มใช้ ไม่ใช่คู่มือเรียงตามเมนู ── */
+ROUTES.help = async () => {
+  setTitle(t('meHow'));
+  const Q = t('helpList');
+  $x('#main').innerHTML = `<div class="view">
+    <p class="ab-body" style="margin-bottom:6px">${esc(t('helpLead'))}</p>
+    ${Q.map(x => `<details class="fold"><summary><span>${esc(x.q)}</span></summary>
+      <div class="fold-b"><p style="margin:0;font-size:var(--fs-body);color:var(--ink-2);
+        line-height:1.68;white-space:pre-line">${esc(x.a)}</p></div></details>`).join('')}
+    <div style="height:12px"></div>
+    <button class="btn soft" id="hFb">${esc(t('meReport'))}</button>
+  </div>`;
+  $('#hFb').onclick = () => go('about', { act:'feedback' });
+};
+
+/** ปุ่มวัดความเร็ว — ย้ายออกมาเป็นฟังก์ชัน เพราะหน้าฉันถูกรื้อใหม่
+    net = รอทั้งหมด · srv = Apps Script ใช้จริง · db = อ่าน Google Sheet
+    net สูงแต่ srv ต่ำ แปลว่าเสียเวลาไปกับการปลุกเครื่อง ไม่ใช่โค้ดช้า */
+async function speedTest(){
+  const box = $('#spdOut'); box.hidden = false; box.textContent = t('loading');
+  const t1 = performance.now(); const p1 = await apiRetry('ping', {}, 'GET');
+  const cold = Math.round(performance.now() - t1);
+  const t2 = performance.now(); await apiRetry('ping', {}, 'GET');
+  const warm = Math.round(performance.now() - t2);
+  const okBuild = p1?.build === CFG.BUILD;
+  box.textContent =
+    (okBuild ? '✅ ' + t('spdBuildOk') + ' (' + CFG.BUILD + ')'
+             : '⚠️ ' + t('spdBuildBad') + '\n   ' + t('spdBuildApp') + ': ' + CFG.BUILD +
+               '\n   ' + t('spdBuildSrv') + ': ' + (p1?.build || t('spdBuildOld'))) + '\n\n' +
+    t('spdFirst') + ': ' + cold + ' ms\n' +
+    t('spdSecond') + ': ' + warm + ' ms\n\n' +
+    'action  net / srv / db (ms)\n' +
+    S.timings.map(x => x.a + '  ' + x.net + ' / ' + (x.srv ?? '-') + ' / ' + (x.db ?? '-')).join('\n');
+}
 
 /* ── ข่าวสาร · ระบบจอง · เมนูผู้ดูแล (ปุ่มบน Rich Menu) ────────── */
 
@@ -4023,6 +5664,8 @@ ROUTES.admin = async () => {
       ${IC.cam}<span>${esc(t('inTitle'))}</span></button>
     <div style="height:9px"></div>
     <button class="btn ghost" id="toUn">${esc(t('unTitle'))}</button>
+    <div style="height:9px"></div>
+    <button class="btn ghost" id="toPrc">${esc(t('prcTitle'))}</button>
     ${S.isOfficer ? `<div style="height:9px"></div>
       <button class="btn ghost" id="toQ">${esc(t('isuQueue'))}</button>` : ''}
 
@@ -4044,11 +5687,18 @@ ROUTES.admin = async () => {
         <button class="btn ghost" id="toRoles">${esc(t('admRoles'))}</button>` : ''}
       <div style="height:9px"></div>
       <button class="btn ghost" id="toDsr">${esc(t('admDsr'))}</button>
+      <div style="height:9px"></div>
+      <button class="btn ghost" id="toLinks">${esc(t('lkManage'))}</button>
+      <div style="height:9px"></div>
+      <button class="btn ghost" id="toMsgs">${esc(t('msgTitle'))}</button>
+      <div style="height:9px"></div>
+      <button class="btn ghost" id="toFb">${esc(t('fbRead'))}</button>
       <div class="section-title">${esc(t('admBackup'))}</div>
       <div id="bk">${skeleton(1)}</div>` : ''}
   </div>`;
   $('#toCam').onclick = () => go('parcel-in');
   $('#toUn').onclick  = () => go('unidentified');
+  $('#toPrc').onclick = () => go('admin-parcels');
   if($('#toQ'))     $('#toQ').onclick     = () => go('issue-queue');
   if($('#toNews'))  $('#toNews').onclick  = () => go('admin-news');
   if($('#toRes'))   $('#toRes').onclick   = () => go('admin-res');
@@ -4057,6 +5707,9 @@ ROUTES.admin = async () => {
   if($('#toStaff')) $('#toStaff').onclick = () => go('admin-staff');
   if($('#toRoles')) $('#toRoles').onclick = () => go('admin-roles');
   if($('#toDsr'))   $('#toDsr').onclick   = () => go('admin-dsr');
+  if($('#toLinks')) $('#toLinks').onclick = () => go('admin-links');
+  if($('#toMsgs'))  $('#toMsgs').onclick  = () => go('admin-msgs');
+  if($('#toFb'))    $('#toFb').onclick    = () => go('admin-feedback');
 
   /* สถานะการสำรองข้อมูล — ระบบสำรองที่พังเงียบๆ แย่กว่าไม่มีระบบสำรองเลย
      เพราะทุกคนเชื่อว่ามีอยู่จนถึงวันที่ต้องใช้จริง จึงต้องเห็นได้ทุกครั้งที่เข้าหน้านี้ */
@@ -4074,6 +5727,9 @@ ROUTES.admin = async () => {
   let s = null;
   try{ s = await apiRetry('getAdminSummary', {}, 'GET'); }catch(e){}
   if(!s?.ok){ $x('#sum').innerHTML = ''; return; }
+  /* ตัวเลขที่กดไม่ได้ คือตัวเลขที่ทำให้คนต้องไปหาต่อเอง
+     "ยังไม่มารับ 7 ชิ้น" ควรพาไปดูได้เลยว่าเจ็ดชิ้นนั้นของใคร */
+  setTimeout(() => { const b = $('#tUncl'); if(b) b.onclick = () => go('admin-parcels', { filter:'wait' }); }, 0);
   // ตัวนับโควตาอาจยังไม่มี (ต้นเดือน) — ไม่ไปไล่นับให้ทุกคนรอ แต่ให้กดนับเองได้
   const known = s.lineKnown !== false && s.lineUsed !== null && s.lineUsed !== undefined;
   const used = Number(s.lineUsed) || 0, quota = Number(s.lineQuota) || 300;
@@ -4083,8 +5739,9 @@ ROUTES.admin = async () => {
     <div class="tiles">
       <div class="tile" style="min-height:82px"><div class="nm" style="font-size:23px">${Number(s.parcelsToday) || 0}</div>
         <div class="en">${esc(t('admParcelsToday'))}</div></div>
-      <div class="tile" style="min-height:82px"><div class="nm" style="font-size:23px">${Number(s.unclaimed) || 0}</div>
-        <div class="en">${esc(t('admUnclaimed'))}</div></div>
+      <button class="tile" id="tUncl" style="min-height:82px;cursor:pointer">
+        <div class="nm" style="font-size:23px">${Number(s.unclaimed) || 0}</div>
+        <div class="en">${esc(t('admUnclaimed'))}</div></button>
       <div class="tile" style="min-height:82px"><div class="nm" style="font-size:23px">${Number(s.unidentified) || 0}</div>
         <div class="en">${esc(t('admUnidentified'))}</div></div>
       <div class="tile" style="min-height:82px"><div class="nm" style="font-size:23px">${Number(s.users) || 0}</div>
@@ -7826,31 +9483,6 @@ ROUTES.offline = async () => {
   $('#rt').onclick = () => boot();
 };
 
-ROUTES.notifications = async () => {
-  setTitle(t('notifTitle'));
-  $x('#main').innerHTML = `<div class="view"><div id="list">${skeleton(3)}</div></div>`;
-  let items = [];
-  try{ const r = await apiRetry('getNotifications', {}, 'GET'); items = r?.items || []; }catch(e){}
-  $x('#list').innerHTML = items.length
-    ? `<div class="rows">${items.map(n => `
-        <button class="row" ${n.record_id && n.go
-          ? `data-rec="${esc(n.record_id)}" data-go="${esc(n.go)}"` : ''}>
-          <div class="body">
-            <div class="t">${esc(evLabel(n))}</div>
-            <div class="s">${esc(fmtDate(n.at))}</div>
-          </div>
-          ${n.record_id && n.go ? `<span class="go">${IC.chev}</span>` : ''}
-        </button>`).join('')}</div>`
-    : emptyState(IC.bellBig, t('notifEmpty'), '');
-  // กดแล้วต้องเด้งไปที่พัสดุชิ้นนั้นจริงๆ ไม่ใช่แค่รายการเฉยๆ
-  // เดิมส่งไปหน้าพัสดุทุกอัน เรื่องแจ้งซ่อมหรือจองรถจึงกดแล้วขึ้น "ไม่พบพัสดุชิ้นนี้"
-  document.querySelectorAll('#list .row[data-rec]').forEach(b => b.onclick = () => {
-    const dest = b.dataset.go || 'my-parcels';
-    go(dest, dest === 'my-parcels' || dest === 'issues' ? { rec:b.dataset.rec } : {});
-  });
-  S.notifCount = 0; $x('#bellDot').hidden = true;
-};
-
 /* ── Registration ─────────────────────────────────────────────── */
 ROUTES.register = async () => {
   const wireDriverEscape = () => { const b = $('#regDrv'); if(b) b.onclick = () => go('driver-pair'); };
@@ -8244,6 +9876,12 @@ window.addEventListener('error', ev => softFail(ev.error || ev));
 window.addEventListener('unhandledrejection', ev => softFail(ev.reason));
 
 async function boot(){
+  /* ชื่อระบบเขียนลงหน้าจอตอนบูต แทนที่จะฝังใน HTML สามที่
+     เปลี่ยน APP_NAME ที่เดียวแล้วครบทุกจุดรวมถึงแท็บเบราว์เซอร์ */
+  document.title = APP_NAME;
+  $x('#brandTx').textContent = APP_NAME;
+  $x('#sbrandTx').textContent = APP_NAME;
+
   try{ if(navigator.language?.startsWith('en')) S.lang = 'en'; }catch(e){}
 
   if(DEMO){

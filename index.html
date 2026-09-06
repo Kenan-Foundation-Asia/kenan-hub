@@ -871,6 +871,132 @@ body.drvmode .nav{display:flex!important}
   .home .atc-cta{ align-self:center }
 }
 
+/* ══════════ สวิตช์เปิด-ปิด ══════════
+   class="switch" ถูกใช้อยู่เจ็ดจุด (ความเป็นส่วนตัวในหน้าฉัน · ฟีดแบ็ก · หน้าแก้ข้อความ)
+   แต่ไม่เคยมี CSS ของตัวเองเลย label เป็น inline โดยธรรมชาติ
+   สองสวิตช์ที่วางติดกันจึงไหลไปต่อกันเป็นย่อหน้าเดียว อ่านไม่ออกว่าอันไหนคุมอะไร
+   ที่ผ่านมามองไม่เห็นเพราะมันถูกวางคั่นด้วยบล็อกอื่นเสมอ */
+.switch{display:flex;gap:11px;align-items:flex-start;cursor:pointer;
+  font-size:var(--fs-sec);line-height:1.55}
+.switch input{width:21px;height:21px;flex:0 0 auto;margin-top:1px;accent-color:var(--primary)}
+.switch > span{flex:1;min-width:0}
+
+/* เส้นขอบของไทล์สถานะ — ถูกเรียกใช้อยู่แล้วแต่ยังไม่เคยถูกประกาศ
+   ผลคือไทล์ "ยังไม่ตอบ" กับ "ปลอดภัย" ได้ขอบสีเทาเหมือนกันหมด */
+:root{ --warn-line:#F5D9A8; --ok-line:#B9E0D0 }
+
+/* ══════════ แผงอ่านด้านข้าง ══════════
+   บนจอคอมเลื่อนเข้ามาจากขวาและอยู่ข้างๆ รายการเดิม จึงยังเห็นว่าอ่านฉบับไหนอยู่
+   บนมือถือเปิดเต็มจอ เพราะจอกว้าง 390px ไม่มีที่ให้วางสองอย่างข้างกัน */
+#pnScrim{position:fixed;inset:0;background:rgba(8,58,82,.42);opacity:0;pointer-events:none;
+  transition:opacity .2s ease;z-index:78}
+#pnScrim.on{opacity:1;pointer-events:auto}
+#panel{position:fixed;z-index:79;background:var(--surface);display:flex;flex-direction:column;
+  inset:0;transform:translateY(100%);transition:transform .24s cubic-bezier(.32,.72,0,1);
+  visibility:hidden}
+#panel.on{transform:none;visibility:visible}
+.pn-h{display:flex;align-items:center;gap:10px;padding:12px 14px;border-bottom:1px solid var(--line);
+  flex:0 0 auto;background:var(--surface)}
+.pn-h h3{margin:0;font-size:var(--fs-h2);font-weight:800;line-height:1.35;flex:1;min-width:0;
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#pnClose{width:36px;height:36px;flex:0 0 auto;border-radius:50%;border:1px solid var(--line);
+  background:var(--surface);color:var(--ink-2);font-size:18px;line-height:1;cursor:pointer}
+#pnClose:hover{border-color:var(--brand);color:var(--brand)}
+#pnBody{flex:1;min-height:0;overflow-y:auto;padding:16px 16px 40px;
+  padding-bottom:calc(40px + var(--safe-b))}
+body.pn-open{overflow:hidden}
+@media(min-width:1000px){
+  #panel{inset:0 0 0 auto;width:min(560px,46vw);transform:translateX(100%);
+    box-shadow:-8px 0 40px rgba(8,58,82,.18)}
+  #panel.on{transform:none}
+}
+
+/* ══════════ ดูรูปเต็ม ══════════
+   ประกาศจาก HR ส่วนใหญ่คือภาพที่มีตัวหนังสือ ถ้าซูมไม่ได้ก็เท่ากับไม่ได้ประกาศ */
+#zoom{position:fixed;inset:0;z-index:90;background:rgba(10,14,18,.94);display:none;
+  align-items:center;justify-content:center;padding:16px;cursor:zoom-out}
+#zoom.on{display:flex}
+#zoom img{max-width:100%;max-height:100%;object-fit:contain;border-radius:8px}
+
+/* ══════════ รายการประกาศแบบสองบรรทัด ══════════ */
+.nwlist{display:flex;flex-direction:column;gap:8px}
+.nwrow{display:flex;align-items:flex-start;gap:12px;width:100%;text-align:left;cursor:pointer;
+  padding:13px 14px;border-radius:var(--r);border:1px solid var(--line);background:var(--surface)}
+.nwrow:hover{border-color:var(--brand);box-shadow:var(--shadow)}
+.nwrow.off{opacity:.6}
+.nwx{flex:1;min-width:0;display:block}
+.nwt{display:block;font-size:var(--fs-body);font-weight:700;color:var(--ink);line-height:1.42}
+.nws{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;
+  margin-top:3px;font-size:var(--fs-sec);color:var(--ink-2);line-height:1.5}
+.nwm{display:block;margin-top:5px;font-size:var(--fs-meta);color:var(--ink-3)}
+.nwr{flex:0 0 auto;display:flex;align-items:center;gap:7px;align-self:center}
+.nwdue{font-size:var(--fs-meta);font-weight:800;color:var(--warn);white-space:nowrap}
+.nwr .go{width:18px;height:18px;color:var(--ink-3)}
+.nwr .go svg{width:18px;height:18px}
+
+.nwhead{padding-bottom:14px;border-bottom:1px solid var(--line)}
+.nwmeta{font-size:var(--fs-meta);color:var(--ink-3);font-weight:700}
+.nwtags{display:flex;gap:5px;flex-wrap:wrap;margin-top:7px}
+.nwhead h2{margin:8px 0 0;font-size:20px;font-weight:800;line-height:1.35}
+.nwdue2{margin-top:8px;font-size:var(--fs-sec);font-weight:800;color:var(--warn)}
+.nwdue2.off{color:var(--ink-3)}
+.nwbody{margin-top:14px;font-size:var(--fs-body);color:var(--ink-2);line-height:1.75;
+  white-space:pre-wrap}
+/* รูปในแผงกว้างกว่าในรายการ เพราะที่นี่คือที่ที่คนตั้งใจมาดู */
+.nwpics{margin-top:16px}
+.nwpics .imgcell{aspect-ratio:auto;max-height:none}
+.nwpics .imgcell img{height:auto;object-fit:contain;background:var(--neutral)}
+@media(min-width:1000px){ .nwpics{grid-template-columns:1fr} }
+
+/* ══════════ ปุ่มเลือกสามทาง (แหล่งรูปโปรไฟล์) ══════════ */
+.segp{display:flex;gap:0;border:1px solid var(--line);border-radius:var(--r);overflow:hidden}
+.segp button{flex:1;padding:10px 6px;border:0;background:var(--surface);color:var(--ink-2);
+  font-size:var(--fs-sec);font-weight:600;cursor:pointer;min-width:0}
+.segp button + button{border-left:1px solid var(--line)}
+.segp button.on{background:var(--brand);color:#fff}
+.segp button:disabled{opacity:.4;cursor:not-allowed}
+.prev{margin-top:12px;display:flex;justify-content:center}
+.prev-im{width:76px;height:76px;border-radius:50%;object-fit:cover;display:block;
+  border:1px solid var(--line)}
+.prev-tx{display:grid;place-items:center;background:var(--brand-50);color:var(--brand);
+  font-size:28px;font-weight:800}
+
+/* ══════════ กระดานเหตุฉุกเฉิน ══════════ */
+.emgrow{align-items:flex-start}
+/* ตำแหน่งกับสิ่งที่เกิดขึ้นต้องอ่านได้ครบ ไม่ใช่ตัดด้วยจุดสามจุด
+   "ชั้น 4 ห้องเก็บ…" ไม่ช่วยใครเลยตอนต้องไปหาคนให้เจอ */
+.emgrow .body .s{white-space:normal;overflow:visible;text-overflow:clip;line-height:1.55}
+.emgacts{flex:0 0 auto;display:flex;flex-direction:column;gap:6px;align-items:stretch}
+.emgacts .mini{white-space:nowrap}
+.mini.go{background:var(--warn);color:#fff;border-color:var(--warn)}
+.mini.ok{background:var(--ok);color:#fff;border-color:var(--ok)}
+.emgby{margin-top:4px;font-size:var(--fs-meta);font-weight:700;color:var(--ok)}
+.emgrow.helping .emgby{color:var(--warn)}
+.emgc{margin-top:6px;padding:4px 9px;border-radius:999px;border:1px dashed var(--line);
+  background:none;color:var(--ink-3);font-size:var(--fs-meta);cursor:pointer}
+.emgc:hover{border-color:var(--bad);color:var(--bad)}
+.emgkin{margin-top:6px;padding:8px 10px;border-radius:var(--r-sm);background:var(--bad-bg);
+  font-size:var(--fs-meta);color:var(--ink-2);line-height:1.6}
+.emgkin a{font-weight:800;color:var(--bad)}
+
+/* ══════════ ประโยคของผู้พัฒนา — หน้าจอแก้ไข ══════════ */
+.dlrow{display:flex;align-items:flex-start;gap:10px;padding:11px 0;border-bottom:1px solid var(--line)}
+.dlno{flex:0 0 auto;width:24px;height:24px;border-radius:50%;background:var(--brand-50);
+  color:var(--brand);font-size:var(--fs-meta);font-weight:800;display:grid;place-items:center}
+.dlf{flex:1;min-width:0;display:flex;flex-direction:column;gap:6px}
+.dlf textarea{width:100%;resize:vertical;font-size:var(--fs-sec);padding:9px 10px;
+  border:1px solid var(--line);border-radius:var(--r-sm);font-family:inherit;line-height:1.55}
+.dlx{flex:0 0 auto;width:28px;height:28px;border-radius:50%;border:1px solid var(--line);
+  background:var(--surface);color:var(--ink-3);cursor:pointer;font-size:13px}
+.dlx:hover{border-color:var(--danger);color:var(--danger)}
+
+/* ══════════ ปุ่มลงมือทำในศูนย์แจ้งเตือน ══════════
+   "ต้องดำเนินการ" ที่กดแล้วได้แค่หน้ารายการ ก็ยังไม่ได้ทำให้ใครดำเนินการ
+   ปุ่มจึงบอกกริยาที่ต้องทำจริง แทนคำว่า "เปิด" ที่ใช้ได้กับทุกอย่าง */
+.nrow.action .ncta{background:var(--brand);color:#fff;border-radius:999px;padding:6px 11px;
+  font-weight:800}
+.nrow.action .ncta svg{width:14px;height:14px}
+
 /* ══════════ มุมช่วยเหลือบนหน้าแรก ══════════
    เล็ก เป็นมิตร และไม่แย่งความสนใจจาก "ต้องทำตอนนี้"
    จึงไม่มีเงา ไม่มีสีเข้ม ใช้พื้นอ่อนกับเส้นประจางๆ พอให้รู้ว่าเป็นอีกก้อนหนึ่ง */
@@ -1486,6 +1612,13 @@ select:focus-visible, textarea:focus-visible, [tabindex]:focus-visible{
 
 <div id="scrim"></div>
 <div id="sheet"><div class="grip"></div><div id="sheetBody"></div></div>
+<div id="pnScrim"></div>
+<aside id="panel" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="pnTitle">
+  <div class="pn-h"><h3 id="pnTitle"></h3>
+    <button id="pnClose" type="button" aria-label="close">✕</button></div>
+  <div id="pnBody"></div>
+</aside>
+<div id="zoom"><img id="zoomImg" alt=""></div>
 <div id="toast"></div>
 
 <div id="lb">
@@ -1512,7 +1645,7 @@ const CFG = {
   GAS_URL : 'https://script.google.com/macros/s/AKfycbyOjh4BAAbzY5QfZNG_oGuxbmvZwHjEAKazRMuMxrDeoNknE_rqEoAFdkuJldOPP_q_eg/exec',
   LIFF_TIMEOUT_MS : 3500,
   CONSENT_VERSION : '2026-09-01',
-  BUILD : '2026-09-06f'      // ต้องตรงกับ BUILD ใน Code.gs ที่ Deploy ไว้
+  BUILD : '2026-09-06g'      // ต้องตรงกับ BUILD ใน Code.gs ที่ Deploy ไว้
 };
 
 /* เก็บ ?go=... ไว้ตั้งแต่ต้น เพราะเดี๋ยวจะล้าง query string ทิ้งหลัง LIFF ล็อกอิน
@@ -1526,7 +1659,8 @@ const START_AT = (function(){
             'rooms','room-new','equipment','admin-res',
             'cars','car-new','driver','admin-proj','admin-drv','admin-staff','zoom',
             'item','labels','driver-portal','driver-me','driver-report','driver-pair',
-            'admin-drvrep','my-data','admin-dsr','services'].includes(g) ? g : null;
+            'admin-drvrep','my-data','admin-dsr','services',
+            'admin-people','admin-contacts','admin-devline'].includes(g) ? g : null;
   }catch(e){ return null; }
 })();
 /* ?rec=PCL-xxx → เปิดพัสดุชิ้นนั้นให้เลย (ลิงก์ที่ส่งไปในข้อความ LINE) */
@@ -1752,15 +1886,19 @@ const T = {
     newsDue:d=>`หมดเขต ${d}`, newsExpired:'หมดเขตแล้ว', newsBy:w=>`โดย ${w}`,
     newsAll:'ทั้งหมด',
     admProj:'จัดการรหัสโครงการ', admProjAdd:'เพิ่มโครงการ', admProjCode:'รหัสโครงการ',
-    admProjCodePh:'เช่น WING2026', admProjName:'ชื่อโครงการ',
-    admProjNamePh:'เช่น WING — Women in Green Growth',
+    admProjTypes:['Billable','Non-Billable','Cost Share','Back office'],
+    admProjDept:'หน่วยงาน', admProjDeptPick:'เลือกหน่วยงาน',
+    admProjDepts:['IT','F&A','Procurement','HR','GA'],
+    admProjTypeWhy:'เลือก Back office แล้วให้เลือกหน่วยงานต่อ จะได้แยกได้ว่าเป็นงานของฝ่ายไหน',
+    admProjCodePh:'50166', admProjName:'ชื่อโครงการ',
+    admProjNamePh:'ESCAP - WE INSPIRE NEXT GENs',
     admProjType:'ประเภท', admProjTypePh:'เช่น Donor-funded / Core',
     admProjTrips:n=>`ใช้รถไปแล้ว ${n} เที่ยว`, admProjSaved:'บันทึกแล้ว',
     admProjNeedCode:'ต้องใส่รหัสโครงการ',
     admProjLocked:'แก้รหัสของโครงการเดิมไม่ได้ เพราะเที่ยวรถที่บันทึกไว้อ้างรหัสนี้อยู่ — ถ้าเลิกใช้ให้กดปิดใช้งานแทน',
     admProjEmpty:'ยังไม่มีรหัสโครงการ',
     admProjEmptyBody:'ต้องมีอย่างน้อยหนึ่งโครงการ คนถึงจะจองรถได้ เพราะช่องโครงการเป็นช่องบังคับ',
-    admProjWhy:'รหัสนี้คือตัวที่ทำให้ค่าน้ำมันลงโครงการได้ถูกตัว แทนที่จะหารเฉลี่ยลงทุกโครงการเหมือนเดิม',
+    admProjWhy:'รหัสโครงการทำให้ค่าใช้จ่ายที่เกิดจากการทำงานถูกบันทึกเข้าโครงการที่เป็นเจ้าของงานจริง ทั้งค่าเดินทาง ค่าใช้รถ และการใช้ทรัพยากรส่วนกลาง ช่วยให้รายงานต่อผู้ให้ทุนตรงกับงานที่เกิดขึ้นจริง และวางแผนงบของแต่ละโครงการได้แม่นขึ้น',
 
     rmTitle:'จองห้องประชุม', rmBook:'จองห้อง', rmFree:'ว่าง', rmToday:'วันนี้',
     rmNoBook:'ยังไม่มีใครจองห้องนี้', rmPick:'เลือกห้อง', rmWhen:'วันและเวลา',
@@ -1828,8 +1966,8 @@ const T = {
     dbApprovals:'คำขอที่รอคุณอนุมัติ', dbBirthdays:'วันเกิดวันนี้',
     apvApprove:'อนุมัติ', apvReject:'ไม่อนุมัติ', apvNote:'หมายเหตุ (ถ้ามี)',
     apvDone:'บันทึกแล้ว', apvCost:'ประมาณการ',
-    prBirthday:'วันเกิด (วัน-เดือน)', prShowBirthday:'ให้เพื่อนร่วมงานเห็นวันเกิด',
-    prShowBirthdaySub:'ถ้าเปิด ชื่อคุณจะขึ้นหน้าแรกในวันเกิด และคุณจะได้รับคำอวยพรใน LINE · ไม่เก็บปีเกิด',
+    prBirthday:'วันเกิด', prShowBirthday:'ให้เพื่อนร่วมงานเห็นวันเกิด',
+    prShowBirthdaySub:'ถ้าเปิด ชื่อคุณจะขึ้นหน้าแรกในวันเกิด และคุณจะได้รับคำอวยพรใน LINE · แสดงแค่วันกับเดือน',
     bdayWish:n=>`สุขสันต์วันเกิด ${n} 🎂`,
 
     carStart:'จุดออก', carEnd:'กลับถึง', carStopN:n=>`จุดที่ ${n}`,
@@ -1910,7 +2048,7 @@ const T = {
     abP1:APP_NAME + ' เกิดจากคำถามง่ายๆ ว่าทำไมเรื่องเล็กๆ ในออฟฟิศถึงต้องใช้หลายช่องทาง พัสดุถามในไลน์กลุ่ม จองห้องเขียนในกระดาษ จองรถโทรหา GA แล้วไม่มีใครรู้ว่าตอนนี้อะไรว่างอยู่บ้าง',
     abP2:'ระบบนี้ไม่ได้ตั้งใจจะแทนทุกอย่าง แค่รวบเรื่องที่ทุกคนต้องทำทุกสัปดาห์มาไว้ที่เดียว แล้วให้จบได้ในไม่กี่ครั้งกด ส่วนที่เหลือยังอยู่ที่เดิม และมีทางเข้าอยู่ในแท็บระบบอื่นๆ',
     abBuild:'รุ่นที่ใช้อยู่', abCheers:'กำลังใจที่ได้รับ',
-    abMadeBy:'ผู้พัฒนา', abMadeByVal:'AI Taskforce × IT',
+    abMadeBy:'ดูแลโดย', abMadeByVal:'AI Taskforce × Kenan Academy × IT',
 
     chTitle:'ชอบตรงไหนบอกหน่อย',
     chSub:'ระบบภายในไม่มีใครเขียนรีวิวให้ ถ้ามันช่วยงานคุณได้จริง กดสักปุ่มให้คนทำรู้หน่อยก็ยังดี',
@@ -2032,6 +2170,71 @@ const T = {
     nfActionSub:'ยังมีคนหรือของรออยู่ปลายทาง',
     nfUpdate:'อัปเดต', nfInfo:'ข้อมูล', nfOpen:'เปิดดู',
     /* ── มุมช่วยเหลือบนหน้าแรก · หน้าระบบอื่นๆ ── */
+    /* ── รอบ g: โปรไฟล์ · ประกาศ · บุคลากร · เบอร์ฉุกเฉิน · ประโยคผู้พัฒนา ── */
+    prSysId:'รหัสในระบบ ' + APP_NAME,
+    prEmpCode:'รหัสพนักงาน (ถ้ามี)', prEmpCodePh:'เช่น 10245',
+    prEmpCodeWhy:'รหัสจากฝ่ายบุคคล คนละตัวกับรหัสในระบบด้านบน ยังไม่มีก็ข้ามไปก่อนได้ ใส่ทีหลังได้ตลอด',
+    prPhotoSrc:'รูปในทำเนียบบุคลากร',
+    prPhotoLine:'รูปจาก LINE', prPhotoOwn:'อัปโหลดเอง', prPhotoNone:'ไม่แสดงรูป',
+    prBirthdayHint:'เลือกจากปฏิทิน · ระบบใช้แค่วันกับเดือน ปีเก็บต่อเมื่อคุณเปิดสวิตช์ด้านล่าง',
+    prKeepYear:'เก็บปีเกิดไว้ด้วย', prKeepYearSub:'ปิดไว้ = ระบบลืมปีเกิดทันทีที่บันทึก เหลือแค่วันกับเดือน',
+    prEmgTitle:'ผู้ติดต่อกรณีฉุกเฉิน',
+    prEmgWhy:'ถ้าเกิดเหตุแล้วคุณบอกอะไรไม่ได้ เพื่อนร่วมงานจะได้รู้ว่าต้องโทรหาใคร ข้อมูลนี้ไม่ขึ้นในทำเนียบ จะเห็นได้เฉพาะตอนมีเหตุฉุกเฉินจริงเท่านั้น',
+    prEmgName:'ชื่อผู้ติดต่อ', prEmgNamePh:'ชื่อ-นามสกุล',
+    prEmgRel:'ความสัมพันธ์', prEmgPhone:'เบอร์โทร',
+    prEmgNeed:'กรุณาใส่ชื่อผู้ติดต่อกรณีฉุกเฉิน', prEmgNeedPhone:'กรุณาใส่เบอร์ที่โทรติด',
+    prEmgTell:'ช่วยบอกเจ้าตัวด้วยว่าคุณใส่ชื่อและเบอร์เขาไว้ที่นี่',
+    emgRels:['คู่สมรส','พ่อ / แม่','พี่ / น้อง','ญาติ','เพื่อน','อื่นๆ'],
+
+    newsNPic:n=>`${n} รูป`,
+
+    admPeople:'จัดการบุคลากร',
+    admPeopleWhy:'ทุกเรื่องที่เกี่ยวกับ "คน" อยู่ที่นี่ที่เดียว — รายชื่อ สิทธิ์ คนขับ และเบอร์ฉุกเฉิน',
+    admStaffSub:'นำเข้ารายชื่อจากอีเมลองค์กร แล้วรอให้แต่ละคนผูก LINE เอง',
+    admRolesSub:'ใครเป็นผู้ดูแล ใครเป็นเจ้าหน้าที่ ใครเห็นอะไรได้บ้าง',
+    admDrvSub:'คนขับ outsource รหัสจับคู่ และใบขับขี่',
+    admContacts:'เบอร์ฉุกเฉิน', admContactsSub:'เบอร์ที่ขึ้นในหน้าสายด่วน เพิ่ม แก้ หรือปิดได้ที่นี่',
+
+    ctAdd:'เพิ่มเบอร์', ctGroup:'อยู่กลุ่มไหน',
+    ctGroupWhy:'หน่วยงานภายนอกจะขึ้นเป็นปุ่มสีแดงบนสุด เพราะเป็นเบอร์ที่ต้องหาให้เจอเร็วที่สุด',
+    ctName:'ชื่อที่จะให้ขึ้น', ctNamePh:'เช่น การแพทย์ฉุกเฉิน', ctNameEn:'ชื่อภาษาอังกฤษ',
+    ctPhone:'เบอร์โทร', ctOrder:'ลำดับ',
+    ctOrderWhy:'เลขน้อยขึ้นก่อน · เบอร์ที่ใช้บ่อยที่สุดควรได้เลขน้อยที่สุด',
+    ctOff:'ปิดเบอร์นี้', ctOn:'เปิดใช้อีกครั้ง',
+    ctNeedName:'ใส่ชื่อก่อน', ctNeedPhone:'เบอร์นี้กดแล้วโทรออกไม่ได้',
+    ctEmpty:'ยังไม่มีเบอร์ในระบบ', ctEmptyBody:'กดเพิ่มเบอร์ด้านบน หรือระบบจะใช้เบอร์ฉุกเฉินสาธารณะให้ก่อน',
+
+    dlTitle:'ประโยคของผู้พัฒนา',
+    dlWhy:'ประโยคพวกนี้ขึ้นที่มุมช่วยเหลือบนหน้าแรก เปลี่ยนไปตามวัน ทั้งออฟฟิศเห็นประโยคเดียวกันในวันเดียวกัน · แก้ได้เฉพาะผู้ดูแลสูงสุด',
+    dlPreview:'ตัวอย่างของวันนี้', dlLines:'ประโยคทั้งหมด', dlAdd:'เพิ่มประโยค',
+    dlPhTh:'ภาษาไทย', dlPhEn:'English (ไม่ใส่ก็ได้ จะใช้ภาษาไทยแทน)',
+    dlNeedOne:'ต้องเหลืออย่างน้อยหนึ่งประโยค', dlMax:'ใส่ได้มากสุด 30 ประโยค',
+    dlDel:'ลบประโยคนี้',
+
+    emgChange:'เปลี่ยนคำตอบของฉัน',
+    emgWaiting:'ผู้ดูแลได้รับแจ้งแล้ว กำลังประสานให้',
+    emgWasHelped:'บันทึกแล้วว่าได้รับการช่วยเหลือ',
+    emgWasHelpedSub:'ถ้ายังไม่เรียบร้อย กดเปลี่ยนคำตอบเพื่อขอความช่วยเหลืออีกครั้งได้เลย',
+    emgHelperOn:n=>`${n} กำลังไปหาคุณ`, emgHelperOnAny:'มีคนรับเรื่องของคุณแล้ว',
+    emgWhat:'เกิดอะไรขึ้น (ไม่ใส่ก็ได้)', emgWhatPh:'สั้นๆ พอให้คนช่วยเตรียมตัวถูก',
+    emgHelping:'กำลังไปหา', emgHelped:'ช่วยแล้ว',
+    emgTake:'ฉันรับเรื่อง', emgDone:'ช่วยแล้ว', emgReopen:'ยังไม่จบ',
+    emgMarked:'บันทึกแล้ว',
+    emgByHelping:n=>`${n} กำลังไปหา`,
+    emgByHelped:(n,at)=>`${n} ช่วยแล้ว${at ? ' · ' + at : ''}`,
+    emgKin:'ผู้ติดต่อกรณีฉุกเฉิน',
+    emgCloseAsk:'ยังมีคนที่ขอความช่วยเหลือแล้วไม่ได้ทำเครื่องหมายว่าช่วยแล้ว ปิดเหตุการณ์เลยไหม',
+
+    nfCtas:{ 'parcel.arrived':'ไปรับพัสดุ', 'parcel.identified':'ไปรับพัสดุ',
+      'parcel.reminder':'ไปรับพัสดุ', 'issue.new':'รับเรื่อง', 'loan.reminder':'คืนของ',
+      'car.assigned':'เปิดงานขับรถ', 'car.nocar.req':'พิจารณาคำขอ', 'alert.help':'ดูกระดานเหตุ' },
+
+    dirEmgShow:'ดูผู้ติดต่อกรณีฉุกเฉิน',
+    dirEmgWhy:'เปิดดูเมื่อจำเป็นจริงๆ เท่านั้น',
+
+    abCreditT:'ใครทำระบบนี้',
+    abCreditBody:'ระบบนี้เริ่มจากคำถามง่ายๆ ว่าทำไมการหาพัสดุสักชิ้น จองรถสักคัน หรือถามว่าใครดูแลเรื่องไหน ต้องใช้เวลาเป็นวัน\n\nพัฒนาโดยพิพัฒน์ สุริยสมบูรณ์ ร่วมกับทีม Kenan Academy และ AI Taskforce ของมูลนิธิ โดยใช้ AI เป็นเครื่องมือช่วยเขียนและออกแบบ ดูแลระบบร่วมกับฝ่าย IT\n\nแต่สิ่งที่ทำให้มันใช้ได้จริง คือทุกคนที่กดบอกว่าตรงไหนใช้ยาก ตรงไหนพัง และตรงไหนดีแล้ว ข้อความที่ส่งเข้ามาทุกข้อความถูกอ่าน และหลายอย่างในหน้าที่คุณเห็นอยู่ตอนนี้ มาจากคนที่เดินมาบอกเฉยๆ ว่า "พี่ ตรงนี้มันแปลกๆ นะ"',
+    abCreditCta:'อยากให้ระบบทำอะไรได้อีก บอกได้เลย',
     sgHelp:'ช่วยเหลือ',
     lkWhy2:'ทางเข้าระบบอื่นที่คีนันใช้อยู่ กดแล้วจะออกไปนอก ' + APP_NAME + ' บางระบบอาจต้องเข้าสู่ระบบแยกอีกครั้ง',
     devCheer:'ถ้าวันนี้ใช้แล้วดี', devThanks:'ขอบคุณครับ เห็นแล้ว 🙌',
@@ -2350,7 +2553,7 @@ const T = {
     ctCall:'โทร',
 
     prTitle:'โปรไฟล์', prInfo:'ข้อมูลส่วนตัว', prSettings:'ตั้งค่า',
-    prLang:'ภาษา', prEmpId:'รหัสพนักงาน', prDept:'แผนก', prEmail:'อีเมล',
+    prLang:'ภาษา', prEmpId:'รหัสในระบบ', prDept:'แผนก', prEmail:'อีเมล',
     prPrivacy:'นโยบายความเป็นส่วนตัว', prLogout:'ออกจากระบบ',
 
     notifTitle:'การแจ้งเตือน', notifEmpty:'ยังไม่มีการแจ้งเตือน',
@@ -2506,8 +2709,12 @@ const T = {
     newsDue:d=>`Due ${d}`, newsExpired:'Deadline passed', newsBy:w=>`by ${w}`,
     newsAll:'All',
     admProj:'Project codes', admProjAdd:'Add a project', admProjCode:'Project code',
-    admProjCodePh:'e.g. WING2026', admProjName:'Project name',
-    admProjNamePh:'e.g. WING — Women in Green Growth',
+    admProjTypes:['Billable','Non-Billable','Cost Share','Back office'],
+    admProjDept:'Department', admProjDeptPick:'Pick a department',
+    admProjDepts:['IT','F&A','Procurement','HR','GA'],
+    admProjTypeWhy:'Choosing Back office asks for a department too, so it is clear whose work it is.',
+    admProjCodePh:'50166', admProjName:'Project name',
+    admProjNamePh:'ESCAP - WE INSPIRE NEXT GENs',
     admProjType:'Type', admProjTypePh:'e.g. Donor-funded / Core',
     admProjTrips:n=>`${n} trips charged`, admProjSaved:'Saved',
     admProjNeedCode:'A project code is required',
@@ -2580,8 +2787,8 @@ const T = {
     dbApprovals:'Waiting for your approval', dbBirthdays:'Birthdays today',
     apvApprove:'Approve', apvReject:'Decline', apvNote:'Note (optional)',
     apvDone:'Saved', apvCost:'Estimate',
-    prBirthday:'Birthday (day and month)', prShowBirthday:'Let colleagues see my birthday',
-    prShowBirthdaySub:'If on, your name appears on the home page on your birthday and you get a message on LINE. The year is never stored.',
+    prBirthday:'Birthday', prShowBirthday:'Let colleagues see my birthday',
+    prShowBirthdaySub:'If on, your name appears on the home page on your birthday and you get a message on LINE. Only the day and month are shown.',
     bdayWish:n=>`Happy birthday, ${n} 🎂`,
 
     carStart:'Start', carEnd:'Back at', carStopN:n=>`Stop ${n}`,
@@ -2662,7 +2869,7 @@ const T = {
     abP1:APP_NAME + ' started from a simple question: why do small office matters need so many separate channels? Parcels get asked about in a LINE group, rooms are booked on paper, vehicles by calling GA — and nobody can see what is free right now.',
     abP2:'It does not try to replace everything. It gathers the things everyone does every week into one place and lets you finish them in a few taps. The rest stays where it is, with a door to it under Other Kenan systems.',
     abBuild:'Current build', abCheers:'Cheers received',
-    abMadeBy:'Built by', abMadeByVal:'AI Taskforce × IT',
+    abMadeBy:'Looked after by', abMadeByVal:'AI Taskforce × Kenan Academy × IT',
 
     chTitle:'Tell us what works',
     chSub:'Nobody writes reviews for internal tools. If this saved you time, one tap lets the people who built it know.',
@@ -2784,6 +2991,71 @@ const T = {
     nfActionSub:'Someone or something is still waiting at the other end',
     nfUpdate:'Updates', nfInfo:'For information', nfOpen:'Open',
     /* ── help corner on home · other systems page ── */
+    /* ── build g: profile · news · people · emergency numbers · dev lines ── */
+    prSysId:APP_NAME + ' ID',
+    prEmpCode:'Employee ID (if you have one)', prEmpCodePh:'e.g. 10245',
+    prEmpCodeWhy:'Your HR employee number — different from the system ID above. Leave it blank for now if you do not know it; you can add it any time.',
+    prPhotoSrc:'Photo in the staff directory',
+    prPhotoLine:'Use LINE photo', prPhotoOwn:'Upload my own', prPhotoNone:'No photo',
+    prBirthdayHint:'Pick from the calendar. Only the day and month are used — the year is kept only if you switch it on below.',
+    prKeepYear:'Keep my birth year too', prKeepYearSub:'Off means the system forgets the year the moment you save, and keeps only day and month.',
+    prEmgTitle:'Emergency contact',
+    prEmgWhy:'If something happens and you cannot speak for yourself, colleagues need to know who to call. This never appears in the directory — it is only visible during a real emergency.',
+    prEmgName:'Contact name', prEmgNamePh:'Full name',
+    prEmgRel:'Relationship', prEmgPhone:'Phone number',
+    prEmgNeed:'Please add an emergency contact', prEmgNeedPhone:'Please add a number that can be dialled',
+    prEmgTell:'Please let this person know you have listed their name and number here.',
+    emgRels:['Spouse / partner','Parent','Sibling','Relative','Friend','Other'],
+
+    newsNPic:n=>`${n} image${n > 1 ? 's' : ''}`,
+
+    admPeople:'People',
+    admPeopleWhy:'Everything about people in one place — the staff list, roles, drivers and emergency numbers.',
+    admStaffSub:'Import names from work email, then each person links their own LINE.',
+    admRolesSub:'Who is an admin, who is an officer, and what each of them can see.',
+    admDrvSub:'Outsourced drivers, pairing codes and licences.',
+    admContacts:'Emergency numbers', admContactsSub:'The numbers shown on the hotline page — add, edit or switch them off.',
+
+    ctAdd:'Add a number', ctGroup:'Group',
+    ctGroupWhy:'Outside services appear as red buttons at the top, because those are the ones that must be found fastest.',
+    ctName:'Name to show', ctNamePh:'e.g. Emergency Medical', ctNameEn:'Name in English',
+    ctPhone:'Phone number', ctOrder:'Order',
+    ctOrderWhy:'Lower numbers come first — the most-used number deserves the lowest.',
+    ctOff:'Switch this off', ctOn:'Switch back on',
+    ctNeedName:'Add a name first', ctNeedPhone:'That number cannot be dialled',
+    ctEmpty:'No numbers yet', ctEmptyBody:'Add one above, or the public Thai emergency numbers will be used for now.',
+
+    dlTitle:'Developer notes',
+    dlWhy:'These lines show in the help corner on the home page and change day by day, so the whole office sees the same one on the same day. Only a super admin can edit them.',
+    dlPreview:'What shows today', dlLines:'All lines', dlAdd:'Add a line',
+    dlPhTh:'Thai', dlPhEn:'English (optional — Thai is used if left blank)',
+    dlNeedOne:'Keep at least one line', dlMax:'30 lines maximum',
+    dlDel:'Remove this line',
+
+    emgChange:'Change my answer',
+    emgWaiting:'The coordinators have been notified and are arranging help.',
+    emgWasHelped:'Recorded as helped',
+    emgWasHelpedSub:'If it is not resolved, change your answer to ask for help again.',
+    emgHelperOn:n=>`${n} is on the way to you`, emgHelperOnAny:'Someone has picked up your request',
+    emgWhat:'What happened (optional)', emgWhatPh:'A line or two, so help arrives prepared',
+    emgHelping:'On the way', emgHelped:'Helped',
+    emgTake:'I am on it', emgDone:'Helped', emgReopen:'Not done',
+    emgMarked:'Saved',
+    emgByHelping:n=>`${n} is on the way`,
+    emgByHelped:(n,at)=>`Helped by ${n}${at ? ' · ' + at : ''}`,
+    emgKin:'Emergency contact',
+    emgCloseAsk:'Some people who asked for help have not been marked as helped. Close the alert anyway?',
+
+    nfCtas:{ 'parcel.arrived':'Collect it', 'parcel.identified':'Collect it',
+      'parcel.reminder':'Collect it', 'issue.new':'Take it on', 'loan.reminder':'Return it',
+      'car.assigned':'Open the job', 'car.nocar.req':'Review request', 'alert.help':'Open board' },
+
+    dirEmgShow:'Show emergency contact',
+    dirEmgWhy:'Open this only when it is genuinely needed.',
+
+    abCreditT:'Who built this',
+    abCreditBody:'This started from a simple question: why does finding one parcel, booking one car, or working out who handles what take a whole day?\n\nBuilt by Pipat Suriyasomboon with the Kenan Academy team and the foundation’s AI Taskforce, using AI as a writing and design tool, and maintained together with IT.\n\nBut what makes it actually work is everyone who says which parts are awkward, which parts are broken, and which parts are fine. Every message sent in gets read, and a good deal of what you are looking at right now came from someone simply walking over to say “this bit is a little strange, you know”.',
+    abCreditCta:'Something else you wish this could do? Say so.',
     sgHelp:'Help',
     lkWhy2:'Ways into the other systems Kenan uses. These lead outside ' + APP_NAME + ' and some may ask you to sign in again.',
     devCheer:'If today went well', devThanks:'Thank you — noted 🙌',
@@ -3102,7 +3374,7 @@ const T = {
     ctCall:'Call',
 
     prTitle:'Profile', prInfo:'Personal information', prSettings:'Settings',
-    prLang:'Language', prEmpId:'Employee ID', prDept:'Department', prEmail:'Email',
+    prLang:'Language', prEmpId:'System ID', prDept:'Department', prEmail:'Email',
     prPrivacy:'Privacy policy', prLogout:'Log out',
 
     notifTitle:'Notifications', notifEmpty:'No notifications yet',
@@ -3127,7 +3399,10 @@ const MOCK = {
              department:'Social Impact and Innovation', position:'Senior Program Manager',
              email:'pipats@kenan-asia.org', office:'BKK', consent_at:'2026-08-20T03:00:00Z',
              roles:'staff,admin,driver', birthday:'11-24', show_birthday:true,
-             birth_year:'1988', show_birth_year:true, photo:'' },
+             birth_year:'1988', show_birth_year:true, photo:'',
+             emp_code:'10245', photo_src:'line', line_photo:'',
+             emg_name:'สุดา สุริยสมบูรณ์', emg_phone:'0819998888', emg_relation:'คู่สมรส' },
+      devLines:[],
       today:{ parcels:2, issues:1, loans:1, unidentified:2, driving:1,
         attentionTotal:6,
         attention:[
@@ -3141,6 +3416,10 @@ const MOCK = {
           { kind:'approval', id:'CAR-ALT-1', urg:90, tone:'warn',
             title:'รออนุมัติ: ขอใช้รถรับจ้าง',
             sub:'สมชาย กิตติวงศ์ · WING2026', cta:'พิจารณา', go:'cars', rec:'CAR-ALT-1' },
+          { kind:'ownedIssue', id:'ISU-9', urg:87, tone:'warn',
+            title:'คุณรับเรื่องไว้: เครื่องพิมพ์ชั้น 3 ไม่ดึงกระดาษ',
+            sub:'ไม่มีความเคลื่อนไหว 2 วัน · ผู้แจ้ง: มณฑา ใจดี',
+            cta:'อัปเดตเรื่อง', go:'issue-queue', rec:'ISU-9' },
           { kind:'parcel', id:'PCL-1', urg:86, tone:'warn',
             title:'พัสดุถึงคุณ · กล่องจาก Shopee',
             sub:'มาถึงเมื่อ 2 วันก่อน · รับที่เคาน์เตอร์หน้าออฟฟิศ',
@@ -3206,7 +3485,8 @@ const MOCK = {
     { record_id:'PCL-260830-008', tracking_no:'',              created_at:'2026-08-30T03:22:00Z' }]},
   getDirectory:{ ok:true, items:[
     { kenan_user_id:'K-1000', name_th:'พิพัฒน์ สุริยสมบูรณ์', name_en:'', nickname:'', roles:'staff,admin', position:'Senior Program Manager', department:'Education Program', email:'staff00@kenan-asia.org', phone:'0812345000', show_phone:false },
-    { kenan_user_id:'K-1007', name_th:'สมชาย กิตติวงศ์', name_en:'', nickname:'', position:'Program Officer', department:'Business and Economy', email:'staff01@kenan-asia.org', phone:'0812345001', show_phone:true },
+    { kenan_user_id:'K-1007', name_th:'สมชาย กิตติวงศ์', name_en:'', nickname:'', position:'Program Officer', department:'Business and Economy', email:'staff01@kenan-asia.org', phone:'0812345001', show_phone:true, emp_code:'10102',
+      emg:{ name:'มาลี กิตติวงศ์', phone:'0817776666', relation:'คู่สมรส' } },
     { kenan_user_id:'K-1014', name_th:'วราภรณ์ ทองดี', name_en:'', nickname:'', position:'M&E Specialist', department:'Social Impact and Innovation', email:'staff02@kenan-asia.org', phone:'0812345002', show_phone:true },
     { kenan_user_id:'K-1021', name_th:'ณัฐพล มณีรัตน์', name_en:'', nickname:'', position:'IT Officer', department:'HR', email:'staff03@kenan-asia.org', phone:'0812345003', show_phone:false },
     { kenan_user_id:'K-1028', name_th:'ชุนหลี แซ่ลิ้ม', name_en:'', nickname:'', roles:'staff,officer', position:'IT Manager', department:'Finance and Accounting', email:'staff04@kenan-asia.org', phone:'0812345004', show_phone:true },
@@ -3571,6 +3851,29 @@ const MOCK = {
       icon:'chart', category:'งานโครงการ', roles:'admin', sort_order:90, is_active:false }] },
   saveLink:{ ok:true }, deleteLink:{ ok:true },
 
+  getContactsAdmin:{ ok:true, items:[
+    { contact_id:'CT-1', group:'external', name_th:'เหตุฉุกเฉินแห่งชาติ',
+      name_en:'National Emergency', phone:'191', sort_order:1, is_active:true },
+    { contact_id:'CT-2', group:'internal', name_th:'ฝ่ายไอที', name_en:'IT Support',
+      phone:'021234567', sort_order:10, is_active:true },
+    { contact_id:'CT-3', group:'lead', name_th:'ผู้ประสานงานเหตุฉุกเฉิน',
+      name_en:'Emergency coordinator', phone:'0812345000', sort_order:1, is_active:false }]},
+  getDevLines:{ ok:true, items:[] },
+  helpUpdate:{ ok:true },
+  saveContact:{ ok:true },
+  saveDevLines:{ ok:true },
+  getAlertBoard:{ ok:true, active:true, canClose:true, canHelp:true, total:12,
+    alert:{ alert_id:'ALT-1', title:'ซ้อมอพยพอาคาร', at:'2026-09-06T02:00:00Z' },
+    help:[{ id:'K-1007', name:'สมชาย กิตติวงศ์', nickname:'ชาย', dept:'Business and Economy',
+            phone:'0812345001', location:'ชั้น 4 ห้องเก็บของ', note:'ประตูเปิดไม่ออก',
+            status:'help', emg:{ name:'มาลี ก.', phone:'0817776666', relation:'คู่สมรส' } }],
+    helping:[{ id:'K-1014', name:'วราภรณ์ ทองดี', nickname:'หนิง', dept:'Social Impact',
+               phone:'0812345002', location:'ชั้น 2', status:'helping', helper:'ชุนหลี แซ่ลิ้ม' }],
+    helped:[{ id:'K-1021', name:'ณัฐพล มณีรัตน์', nickname:'เบส', dept:'HR',
+              phone:'0812345003', status:'helped', helper:'ชุนหลี แซ่ลิ้ม',
+              helped_at:'2026-09-06T02:20:00Z' }],
+    none:[{ id:'K-1028', name:'ชุนหลี แซ่ลิ้ม', nickname:'ชุน', dept:'IT', phone:'0812345004' }],
+    safe:[{ id:'K-1035', name:'อารยา พงษ์ไพบูลย์', nickname:'ยา', dept:'IT', phone:'0812345005' }] },
   getAbout:{ ok:true, build:'2026-09-06c', total:0,
     tally:{ heart:0, clap:0, rocket:0, thanks:0, coffee:0 }, mine:{}, unread:1 },
   sendCheer:{ ok:true }, sendFeedback:{ ok:true },
@@ -3775,6 +4078,16 @@ function sheet(html, opt){
 }
 function closeSheet(){ $('#sheet').classList.remove('on'); $('#scrim').classList.remove('on'); }
 $('#scrim').onclick = closeSheet;
+$('#pnScrim').onclick = closePanel;
+$('#pnClose').onclick = closePanel;
+$('#zoom').onclick = () => $('#zoom').classList.remove('on');
+/* Esc ปิดของที่เปิดอยู่บนสุดก่อน — รูปเต็ม แล้วแผง แล้วแผ่นเลื่อน */
+addEventListener('keydown', e => {
+  if(e.key !== 'Escape') return;
+  if($('#zoom').classList.contains('on')){ $('#zoom').classList.remove('on'); return; }
+  if($('#panel').classList.contains('on')){ closePanel(); return; }
+  closeSheet();
+});
 
 function fmtDate(v){
   if(!v) return '—';
@@ -3805,6 +4118,7 @@ const IC = {
   cal:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 11h18"/><path d="M9 16l2 2 4-4"/></svg>',
   info:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>',
   search:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4.2-4.2"/></svg>',
+  lock:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="10.5" width="16" height="10.5" rx="2"/><path d="M8 10.5V7a4 4 0 018 0v3.5"/></svg>',
   ext:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M13 5h6v6"/><path d="M19 5l-8.5 8.5"/><path d="M18.5 14.5V18a2 2 0 01-2 2H6a2 2 0 01-2-2V7.5a2 2 0 012-2h3.5"/></svg>'
 };
 
@@ -3813,6 +4127,7 @@ const ROUTES = {};
 /* ผูกการเปลี่ยนหน้าเข้ากับประวัติเบราว์เซอร์
    ไม่ทำแบบนี้ ปุ่มย้อนกลับของมือถือจะเด้งออกจากแอปทันทีตั้งแต่หน้าแรก */
 function go(name, params = {}, replace = false){
+  if(typeof closePanel === 'function') closePanel();
   if(replace){
     if(S.stack.length) S.stack[S.stack.length - 1] = { name, params };
     else S.stack.push({ name, params });
@@ -3892,8 +4207,7 @@ function paintSide(active){
     if(S.isAdmin){
       admin.push({ go:'admin-res',  ic:IC.laptop, label:t('admRes') });
       admin.push({ go:'labels',     ic:IC.box,    label:t('admLabels') });
-      admin.push({ go:'admin-drv',  ic:IC.user,   label:t('admDrv') });
-      if(S.isSuper) admin.push({ go:'admin-staff', ic:IC.user, label:t('admStaff') });
+      admin.push({ go:'admin-people', ic:IC.user, label:t('admPeople') });
       admin.push({ go:'admin-proj', ic:IC.info,   label:t('admProj') });
     }
     admin.push({ go:'admin-drvrep', ic:IC.tool, label:t('admDrvRep') });
@@ -4316,7 +4630,8 @@ function SERVICE_GROUPS(){
     ...(S.isAdmin ? [
       { ic:IC.laptop, label:t('admRes'),   sub:t('svResS'),   go:'admin-res',  kw:'ทรัพยากร รถ ห้อง อุปกรณ์' },
       { ic:IC.box,    label:t('admLabels'),sub:t('svLabelS'), go:'labels',     kw:'ป้าย qr พิมพ์' },
-      { ic:IC.user,   label:t('admDrv'),   sub:t('svDrvS'),   go:'admin-drv',  kw:'คนขับ' },
+      { ic:IC.user,   label:t('admPeople'), sub:t('admPeopleWhy'), go:'admin-people',
+        kw:'คนขับ driver พนักงาน สิทธิ์ role staff เบอร์ฉุกเฉิน' },
       { ic:IC.info,   label:t('admProj'),  sub:t('svProjS'),  go:'admin-proj', kw:'โครงการ project' },
       { ic:IC.link,   label:t('lkManage'), sub:t('svLinkS'),  go:'admin-links',kw:'ลิงก์ ระบบอื่น' },
       { ic:IC.chat,   label:t('msgTitle'), sub:t('svMsgS'),   go:'admin-msgs', kw:'ข้อความ แจ้งเตือน line' }] : [])
@@ -4408,7 +4723,15 @@ ROUTES['other-systems'] = async () => {
  * บนจอคอมมันไปนั่งตรงมุมขวาบนที่เคยว่างเปล่า
  * บนมือถืออยู่ล่างสุด เพราะจอแคบต้องให้ "ต้องทำตอนนี้" มาก่อนเสมอ
  */
-const DEV_LINES = () => t('devLines');
+/* ชุดในโค้ดเป็นค่าตั้งต้น ถ้าผู้ดูแลสูงสุดแก้ไว้ ให้ใช้ของที่แก้แทน
+   ประโยคภาษาอังกฤษที่เว้นว่างไว้ ตกกลับมาใช้ภาษาไทย ดีกว่าขึ้นช่องว่าง */
+const DEV_LINES = () => {
+  const v = S.devLines;
+  if(Array.isArray(v) && v.length)
+    return v.map(x => (S.lang === 'th' ? x.text_th : (x.text_en || x.text_th)) || '')
+            .filter(Boolean);
+  return t('devLines');
+};
 
 function devBox(){
   /* เปลี่ยนประโยคไปตามวัน ไม่ได้สุ่ม — สุ่มแล้วรีเฟรชทีเปลี่ยนที ดูเหมือนระบบกระตุก
@@ -4465,6 +4788,800 @@ function wireDevBox(){
     });
   })();
 }
+
+
+/* ══════════════════════════════════════════════════════════════════
+ *  งานรอบ 2026-09-06 (build g)
+ *
+ *  แผงอ่านด้านข้าง · ประกาศ · โปรไฟล์ · สายด่วน · กระดานเหตุฉุกเฉิน
+ *  เมนูจัดการบุคลากรรวมศูนย์ · เบอร์ฉุกเฉิน · ประโยคผู้พัฒนา
+ * ══════════════════════════════════════════════════════════════════ */
+
+
+/* ────────────────────────────────────────────────────────────────
+ *  แผงอ่านด้านข้าง
+ *
+ *  แผ่นเลื่อนขึ้นจากล่าง (sheet) เหมาะกับการ "ตัดสินใจสั้นๆ" — เลือก ยืนยัน ปิด
+ *  แต่ไม่เหมาะกับการอ่านยาว เพราะบนจอคอมมันบังทั้งหน้าเพื่อแสดงข้อความสองย่อหน้า
+ *  ตรงนี้จึงเป็นคนละตัว: บนจอคอมเลื่อนเข้ามาจากขวาและอยู่ข้างๆ รายการเดิม
+ *  บนมือถือเปิดเต็มจอ เพราะจอแคบไม่มีที่ให้วางสองอย่างข้างกัน
+ * ──────────────────────────────────────────────────────────────── */
+let _pnPrev = null;
+
+function panel(html, title){
+  const p = $('#panel');
+  $x('#pnTitle').textContent = title || '';
+  $x('#pnBody').innerHTML = html;
+  p.classList.add('on');
+  $('#pnScrim').classList.add('on');
+  document.body.classList.add('pn-open');
+  _pnPrev = document.activeElement;
+  p.setAttribute('aria-hidden', 'false');
+  setTimeout(() => { const c = $('#pnClose'); if(c) c.focus(); }, 30);
+}
+
+function closePanel(){
+  const p = $('#panel');
+  if(!p.classList.contains('on')) return;
+  p.classList.remove('on');
+  p.setAttribute('aria-hidden', 'true');
+  $('#pnScrim').classList.remove('on');
+  document.body.classList.remove('pn-open');
+  try{ _pnPrev?.focus(); }catch(e){}
+  _pnPrev = null;
+}
+
+/* รูปในประกาศ กดแล้วต้องดูเต็มได้ — บนจอคอมรูปย่อขนาด 4:3 อ่านตัวหนังสือในภาพไม่ออก
+   ประกาศ HR ส่วนใหญ่คือภาพที่มีตัวหนังสือ ถ้าซูมไม่ได้ก็เท่ากับไม่ได้ประกาศ */
+function wireZoom(scope){
+  (scope || document).querySelectorAll('.imgcell img').forEach(im => {
+    im.style.cursor = 'zoom-in';
+    im.onclick = () => {
+      if(!im.src) return;
+      const z = $('#zoom');
+      $x('#zoomImg').src = im.src;
+      z.classList.add('on');
+    };
+  });
+}
+
+
+/* ══════════════════════════════════════════════════════════════════
+ *  ประกาศ
+ *
+ *  ของเดิมพิมพ์ทุกอย่างลงการ์ดเดียว: หัวเรื่อง เนื้อความเต็ม รูป ปุ่ม
+ *  บนมือถือแปลว่าต้องปัดผ่านประกาศเก่าทั้งฉบับกว่าจะถึงฉบับถัดไป
+ *  บนจอคอมยิ่งแปลก เพราะการ์ดกว้างเต็มจอแต่รูปข้างในเล็กเท่ามือถือ
+ *
+ *  ของใหม่: รายการเป็นหัวข้อย่อ อ่านทั้งหน้าได้ในหน้าจอเดียว
+ *  กดแล้วเนื้อความเต็มไปเปิดในแผงด้านข้าง (บนจอคอม) หรือเต็มจอ (มือถือ)
+ * ══════════════════════════════════════════════════════════════════ */
+ROUTES.news = async ({ id } = {}) => {
+  setTitle(t('news'));
+  $x('#main').innerHTML = `<div class="view">
+    ${S.isAdmin ? `<button class="btn primary" id="nAdd">${esc(t('newsAdd'))}</button>
+      <div class="note info" style="margin:12px 0 4px">${IC.info}<div>${esc(t('newsGuide'))}</div></div>` : ''}
+    <div id="list">${skeleton(3)}</div></div>`;
+  if($('#nAdd')) $('#nAdd').onclick = () => go('admin-news');
+
+  let items = [];
+  try{ const r = await apiRetry('getAnnouncements', {}, 'GET'); items = r?.items || []; }catch(e){}
+  if(!items.length){
+    $x('#list').innerHTML = emptyState(IC.news, t('newsEmpty'), t('newsEmptyBody'));
+    return;
+  }
+
+  const ttl  = a => S.lang === 'th' ? (a.title_th || a.title_en) : (a.title_en || a.title_th);
+  const body = a => (S.lang === 'th' ? (a.body_th || a.body_en) : (a.body_en || a.body_th)) || '';
+  const hot  = x => /สำคัญ|เร่งด่วน|Urgent|Important|ดำเนินการ|Action/.test(x);
+
+  /* หนึ่งประกาศ = สองบรรทัด: หัวเรื่อง แล้วบรรทัดล่างบอกว่าใครลง เมื่อไร กี่รูป
+     ตัดเนื้อความมาสองบรรทัดพอให้เดาได้ว่าเรื่องอะไร ที่เหลือไปอ่านในแผง */
+  const row = a => `
+    <button class="nwrow${a.expired ? ' off' : ''}" data-id="${esc(a.id)}">
+      <span class="nwx">
+        <span class="nwt">${esc(ttl(a))}</span>
+        <span class="nws">${esc(body(a).replace(/\s+/g, ' ').slice(0, 120))}</span>
+        <span class="nwm">${esc(fmtDate(a.at))}${a.author ? ' · ' + esc(t('newsBy')(a.author)) : ''}${
+          (a.image_ids || []).length ? ' · ' + esc(t('newsNPic')((a.image_ids || []).length)) : ''}</span>
+      </span>
+      <span class="nwr">
+        ${(a.tags || []).filter(hot).length
+          ? `<span class="ntag hot">${esc((a.tags || []).filter(hot)[0])}</span>` : ''}
+        ${a.due_at && !a.expired
+          ? `<span class="nwdue">${esc(t('newsDue')(fmtDate(a.due_at)))}</span>` : ''}
+        ${a.expired ? `<span class="ntag">${esc(t('newsExpired'))}</span>` : ''}
+        <span class="go">${IC.chev}</span>
+      </span>
+    </button>`;
+
+  const open = a => {
+    panel(`
+      <div class="nwhead">
+        <div class="nwmeta">${esc(fmtDate(a.at))}${a.author ? ' · ' + esc(t('newsBy')(a.author)) : ''}</div>
+        ${(a.tags || []).length ? `<div class="nwtags">${a.tags.map(x =>
+          `<span class="ntag ${hot(x) ? 'hot' : ''}">${esc(x)}</span>`).join('')}</div>` : ''}
+        <h2>${esc(ttl(a))}</h2>
+        ${a.due_at ? `<div class="nwdue2 ${a.expired ? 'off' : ''}">${
+          esc(a.expired ? t('newsExpired') : t('newsDue')(fmtDate(a.due_at)))}</div>` : ''}
+      </div>
+      <div class="nwbody">${esc(body(a))}</div>
+      ${(a.image_ids || []).length ? `<div class="imggrid nwpics">${
+        a.image_ids.map(id2 => `<div class="imgcell"><img data-ph="${esc(id2)}" alt=""></div>`).join('')}</div>` : ''}
+      ${a.cta_url && !a.expired ? `<a class="btn primary" href="${esc(a.cta_url)}" target="_blank"
+        rel="noopener" style="margin-top:16px;text-decoration:none">${
+        esc(a.cta_label || t('admNewsCta'))}</a>` : ''}`,
+      /* หัวแผงใช้ชื่อหมวด ไม่ใช่ชื่อประกาศ — ไม่งั้นหัวเรื่องเดียวกันจะขึ้นซ้อนกันสองบรรทัด
+         ตัวที่อยู่ในเนื้อหามีน้ำหนักถูกต้องกว่า และเป็นตัวที่คนอ่านจริง */
+      t('news'));
+    paintPhotos($('#pnBody')).then(() => wireZoom($('#pnBody')));
+  };
+
+  const allTags = [...new Set(items.flatMap(a => a.tags || []))];
+  let sel = '';
+  const paint = () => {
+    const list = sel ? items.filter(a => (a.tags || []).includes(sel)) : items;
+    $x('#nl').innerHTML = list.length ? `<div class="nwlist">${list.map(row).join('')}</div>`
+      : `<div class="quiet">${esc(t('pkNone'))}</div>`;
+    document.querySelectorAll('#nl .nwrow').forEach(b => b.onclick = () => {
+      const a = items.find(x => String(x.id) === b.dataset.id);
+      if(a) open(a);
+    });
+  };
+
+  $x('#list').innerHTML = `
+    ${allTags.length ? `<div class="chips" id="nf" style="margin-bottom:14px">
+      <button class="chip on" data-tg="">${esc(t('newsAll'))}</button>
+      ${allTags.map(x => `<button class="chip" data-tg="${esc(x)}">${esc(x)}</button>`).join('')}
+    </div>` : ''}
+    <div id="nl"></div>`;
+  document.querySelectorAll('#nf .chip').forEach(b => b.onclick = () => {
+    sel = b.dataset.tg;
+    document.querySelectorAll('#nf .chip').forEach(x => x.classList.toggle('on', x === b));
+    paint();
+  });
+  paint();
+
+  /* มาจากลิงก์ในข้อความแจ้งเตือน — เปิดฉบับนั้นให้เลย ไม่ต้องให้หาเอง */
+  if(id){ const a = items.find(x => String(x.id) === String(id)); if(a) open(a); }
+};
+
+
+/* ══════════════════════════════════════════════════════════════════
+ *  ฟอร์มแก้ข้อมูลส่วนตัว
+ *
+ *  รอบนี้แก้สี่เรื่องที่คนใช้จริงสะดุด
+ *  1) "รหัสพนักงาน" ที่โชว์อยู่ ที่จริงคือลำดับที่ลงทะเบียนเข้าระบบนี้
+ *     ไม่ใช่รหัสพนักงานขององค์กร — เรียกผิดชื่อมาตลอด
+ *  2) วันเกิดพิมพ์เป็นตัวเลขสองช่อง คนกรอกสลับวัน-เดือนกันประจำ
+ *  3) รูปในทำเนียบว่างเปล่าทั้งที่ทุกคนมีรูปใน LINE อยู่แล้ว
+ *  4) ไม่มีที่ให้ใส่ผู้ติดต่อกรณีฉุกเฉินเลย ทั้งที่เป็นเหตุผลหนึ่งที่ทำทำเนียบ
+ * ══════════════════════════════════════════════════════════════════ */
+
+/** MM-DD (+ปี) → ค่าที่ <input type="date"> รับได้ */
+function bdToISO(mmdd, yr){
+  const p = String(mmdd || '').split('-');
+  if(p.length !== 2 || !p[0] || !p[1]) return '';
+  const y = /^\d{4}$/.test(String(yr)) ? String(yr) : String(BD_NOYEAR);
+  return `${y}-${('0' + p[0]).slice(-2)}-${('0' + p[1]).slice(-2)}`;
+}
+/* ปีสมมติสำหรับคนที่ไม่อยากบอกปีเกิด — ต้องใส่ปีอะไรสักปีเพราะช่องวันที่บังคับ
+   2000 เป็นปีอธิกสุรทิน คนเกิด 29 กุมภาพันธ์จึงเลือกวันตัวเองได้ */
+const BD_NOYEAR = 2000;
+
+const EMG_RELS = () => t('emgRels');
+
+ROUTES['profile-edit'] = async ({ act } = {}) => {
+  setTitle(t('meProfile'));
+  const m = S.me || {};
+  const src = m.photo_src || (m.photo ? 'own' : 'line');
+  const linePic = m.line_photo || S.profile?.pictureUrl || '';
+
+  $x('#main').innerHTML = `<div class="view">
+    <div class="rows">
+      <div class="row"><div class="body"><div class="s">${esc(t('prSysId'))}</div>
+        <div class="t">${esc(m.kenan_user_id || '—')}</div></div></div>
+      <div class="row"><div class="body"><div class="s">${esc(t('prDept'))}</div>
+        <div class="t">${esc(m.department || '—')}</div></div></div>
+      <div class="row"><div class="body"><div class="s">${esc(t('prEmail'))}</div>
+        <div class="t">${esc(m.email || '—')}</div></div></div>
+    </div>
+    <p class="statnote" style="margin:8px 2px 0">${esc(t('meFixedWhy'))}</p>
+
+    <div class="card" style="margin-top:14px">
+      <div class="field"><label>${esc(t('prEmpCode'))}</label>
+        <input id="pEmp" value="${esc(m.emp_code || '')}" placeholder="${esc(t('prEmpCodePh'))}"
+          inputmode="numeric" maxlength="20">
+        <div class="hint">${esc(t('prEmpCodeWhy'))}</div></div>
+
+      <div class="field"><label>${esc(t('prPosition'))}</label>
+        <input id="pPos" value="${esc(m.position || '')}" placeholder="${esc(t('prPositionPh'))}"></div>
+
+      <!-- ── รูปในทำเนียบ ──
+           ค่าเริ่มต้นคือรูป LINE เพราะทุกคนมีอยู่แล้วและไม่ต้องทำอะไรเพิ่ม
+           แต่ต้องเลือกได้ทั้งสามทาง ไม่งั้นก็คือเอารูปเขามาใช้โดยไม่ได้ถาม -->
+      <div class="field"><label>${esc(t('prPhotoSrc'))}</label>
+        <div class="segp" id="pSrc">
+          <button type="button" data-src="line" class="${src === 'line' ? 'on' : ''}"
+            ${linePic ? '' : 'disabled'}>${esc(t('prPhotoLine'))}</button>
+          <button type="button" data-src="own"  class="${src === 'own'  ? 'on' : ''}">${esc(t('prPhotoOwn'))}</button>
+          <button type="button" data-src="none" class="${src === 'none' ? 'on' : ''}">${esc(t('prPhotoNone'))}</button>
+        </div>
+        <div class="prev" id="pPrev"></div>
+        <div class="hint">${esc(t('prPhotoWhy'))}</div>
+      </div>
+      <div id="pOwn" ${src === 'own' ? '' : 'hidden'}>
+        ${photoField('pPh', t('prPhoto'), m.photo || '', { optional:true, ratio:'1/1', max:'220px' })}
+      </div>
+
+      <!-- ── วันเกิด ──
+           เลือกจากปฏิทิน ไม่ใช่พิมพ์ตัวเลข — คนกรอก 08-15 กับ 15-08 สลับกันตลอด
+           แล้วระบบก็อวยพรผิดวันโดยไม่มีใครรู้ว่าผิดตรงไหน -->
+      <div class="field"><label>${esc(t('prBirthday'))}</label>
+        <input id="pBd" type="date" max="${esc(todayISO())}"
+          value="${esc(bdToISO(m.birthday, m.show_birth_year ? m.birth_year : ''))}">
+        <div class="hint">${esc(t('prBirthdayHint'))}</div></div>
+      <label class="switch" style="margin-bottom:8px">
+        <input type="checkbox" id="pShowBd" ${(m.show_birthday === true ||
+          String(m.show_birthday).toUpperCase() === 'TRUE') ? 'checked' : ''}>
+        <span><b>${esc(t('prShowBirthday'))}</b><br>
+          <span style="font-size:var(--fs-meta);color:var(--ink-3)">${esc(t('prShowBirthdaySub'))}</span></span>
+      </label>
+      <label class="switch" style="margin-bottom:12px">
+        <input type="checkbox" id="pShowYr" ${(m.show_birth_year === true ||
+          String(m.show_birth_year).toUpperCase() === 'TRUE') ? 'checked' : ''}>
+        <span><b>${esc(t('prKeepYear'))}</b><br>
+          <span style="font-size:var(--fs-meta);color:var(--ink-3)">${esc(t('prKeepYearSub'))}</span></span>
+      </label>
+
+      <div class="field"><label>${esc(t('prPhone'))}</label>
+        <input id="pPhone" inputmode="tel" value="${esc(m.phone || '')}" placeholder="08x-xxx-xxxx"></div>
+      <label class="check" style="margin:0">
+        <input type="checkbox" id="pShow" ${m.show_phone === true || String(m.show_phone) === 'TRUE' ? 'checked' : ''}>
+        <span><b>${esc(t('prShowPhone'))}</b><br>
+          <span style="color:var(--ink-3);font-size:var(--fs-meta)">${esc(t('prShowPhoneSub'))}</span></span>
+      </label>
+    </div>
+
+    <!-- ── ผู้ติดต่อกรณีฉุกเฉิน ──
+         ช่องนี้บังคับ เพราะมันมีไว้ใช้ในนาทีที่เจ้าตัวบอกอะไรไม่ได้แล้ว
+         ถ้าปล่อยให้ข้ามได้ วันที่ต้องใช้จริงจะเป็นวันที่พบว่าไม่มีใครกรอก -->
+    <div class="section-title" id="emgTop">${esc(t('prEmgTitle'))}</div>
+    <div class="card">
+      <div class="note info" style="margin-bottom:12px">${IC.info}<div>${esc(t('prEmgWhy'))}</div></div>
+      <div class="field"><label>${esc(t('prEmgName'))}<span class="req">*</span></label>
+        <input id="eName" value="${esc(m.emg_name || '')}" placeholder="${esc(t('prEmgNamePh'))}">
+        <div class="err" id="eNameE" hidden>${esc(t('prEmgNeed'))}</div></div>
+      <div class="field"><label>${esc(t('prEmgRel'))}</label>
+        <select id="eRel">${EMG_RELS().map(r =>
+          `<option ${m.emg_relation === r ? 'selected' : ''}>${esc(r)}</option>`).join('')}</select></div>
+      <div class="field" style="margin-bottom:0"><label>${esc(t('prEmgPhone'))}<span class="req">*</span></label>
+        <input id="ePhone" inputmode="tel" value="${esc(m.emg_phone || '')}" placeholder="08x-xxx-xxxx">
+        <div class="err" id="ePhoneE" hidden>${esc(t('prEmgNeedPhone'))}</div></div>
+      <p class="statnote" style="margin:12px 2px 0">${esc(t('prEmgTell'))}</p>
+    </div>
+
+    <div class="sticky-cta"><button class="btn primary" id="pSave">${esc(t('prSave'))}</button></div>
+  </div>`;
+
+  const pimg = { v:null }; wirePhoto('pPh', pimg);
+
+  /* ตัวอย่างรูปเปลี่ยนทันทีที่เลือก ไม่ต้องบันทึกก่อนถึงจะรู้ว่าได้อะไร */
+  let psrc = src;
+  const drawPrev = () => {
+    const u = psrc === 'line' ? linePic
+            : psrc === 'own'  ? (pimg.v?.card || m.photo || '') : '';
+    $x('#pPrev').innerHTML = u
+      ? `<img src="${esc(u)}" alt="" class="prev-im">`
+      : `<span class="prev-im prev-tx">${esc(String(m.nickname || m.name_th || '·').trim().charAt(0))}</span>`;
+    $('#pOwn').hidden = psrc !== 'own';
+  };
+  drawPrev();
+  document.querySelectorAll('#pSrc button').forEach(b => b.onclick = () => {
+    psrc = b.dataset.src;
+    document.querySelectorAll('#pSrc button').forEach(x => x.classList.toggle('on', x === b));
+    drawPrev();
+  });
+  const phIn = $('#pPh'); if(phIn) phIn.addEventListener('change', () => setTimeout(drawPrev, 400));
+
+  if(act === 'emg') setTimeout(() => {
+    const e = $('#emgTop'); if(!e) return;
+    e.scrollIntoView({ block:'start',
+      behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
+    $('#eName').focus();
+  }, 160);
+
+  $('#pSave').onclick = async () => {
+    const en = $('#eName').value.trim(), ep = $('#ePhone').value.trim();
+    const okN = !!en, okP = /^[0-9+][0-9\-\s]{5,}$/.test(ep);
+    $('#eNameE').hidden = okN; $('#ePhoneE').hidden = okP;
+    if(!okN || !okP){
+      $('#emgTop').scrollIntoView({ block:'start',
+        behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
+      toast(t('prEmgNeed'), 'bad');
+      return;
+    }
+
+    /* ช่องวันที่ให้ค่ามาเป็น YYYY-MM-DD แต่เซิร์ฟเวอร์รับ วัน-เดือน
+       แปลงตรงนี้ที่เดียว จะได้ไม่ต้องไปแก้กติกาฝั่งเซิร์ฟเวอร์ที่ของเดิมใช้อยู่ */
+    const iso = $('#pBd').value;
+    const keepYr = $('#pShowYr').checked;
+    const bdOut = iso ? `${iso.slice(8, 10)}-${iso.slice(5, 7)}` : '';
+    const yrOut = (iso && keepYr && Number(iso.slice(0, 4)) !== BD_NOYEAR) ? iso.slice(0, 4) : '';
+
+    const b = $('#pSave'); b.disabled = true;
+    try{
+      await apiRetry('updateMyProfile',
+        { phone:$('#pPhone').value.trim(), position:$('#pPos').value.trim(),
+          emp_code:$('#pEmp').value.trim(),
+          birthday:bdOut, birth_year:yrOut,
+          show_birthday:$('#pShowBd').checked ? 'true' : 'false',
+          show_birth_year:keepYr ? 'true' : 'false',
+          photo_src:psrc,
+          photo:pimg.v?.full || '', card:pimg.v?.card || '',
+          emg_name:en, emg_phone:ep, emg_relation:$('#eRel').value,
+          show_phone:$('#pShow').checked ? 'true' : 'false' }, 'POST');
+
+      S.me = S.me || {};
+      Object.assign(S.me, {
+        phone:$('#pPhone').value.trim(), position:$('#pPos').value.trim(),
+        emp_code:$('#pEmp').value.trim(), show_phone:$('#pShow').checked,
+        birthday:bdOut, birth_year:yrOut, photo_src:psrc,
+        show_birthday:$('#pShowBd').checked, show_birth_year:keepYr,
+        emg_name:en, emg_phone:ep, emg_relation:$('#eRel').value
+      });
+      if(pimg.v?.card) S.me.photo = pimg.v.card;
+      clearCache('dir'); clearCache('emp');
+      toast(t('prSaved'), 'ok');
+      go('profile', {}, true);
+    }catch(e){ toast(t('netErr'), 'bad'); }
+    b.disabled = false;
+  };
+};
+
+/** วันนี้แบบ YYYY-MM-DD ตามเวลาไทย — ใช้เป็นเพดานของช่องวันเกิด */
+function todayISO(){
+  const p = new Intl.DateTimeFormat('en-CA', { timeZone:'Asia/Bangkok',
+    year:'numeric', month:'2-digit', day:'2-digit' }).format(new Date());
+  return p;
+}
+
+
+/* ══════════════════════════════════════════════════════════════════
+ *  จัดการบุคลากร — รวมสามเมนูที่เคยแยกกัน
+ *
+ *  ของเดิมหน้าผู้ดูแลมีปุ่มสามปุ่มเรียงกัน: จัดการคนขับ · นำเข้ารายชื่อ · ตั้งสิทธิ์
+ *  ทั้งสามอันคือ "จัดการคน" เหมือนกัน แต่ถูกวางเหมือนเป็นคนละเรื่อง
+ *  คนที่อยากเพิ่มคนใหม่จึงต้องเดาว่าจะเข้าอันไหน
+ * ══════════════════════════════════════════════════════════════════ */
+ROUTES['admin-people'] = async () => {
+  setTitle(t('admPeople'));
+  const rows = [
+    { go:'admin-staff', ic:IC.user,  t:t('admStaff'), s:t('admStaffSub'), sup:true },
+    { go:'admin-roles', ic:IC.lock,  t:t('admRoles'), s:t('admRolesSub'), sup:true },
+    { go:'admin-drv',   ic:IC.car,   t:t('admDrv'),   s:t('admDrvSub') },
+    { go:'admin-contacts', ic:IC.sos, t:t('admContacts'), s:t('admContactsSub') }
+  ].filter(r => !r.sup || S.isSuper);
+
+  $x('#main').innerHTML = `<div class="view">
+    <p class="ab-body" style="margin:0 0 12px">${esc(t('admPeopleWhy'))}</p>
+    <div class="rows">${rows.map(r => `
+      <button class="row" data-go="${esc(r.go)}">
+        <div class="thumb" style="background:var(--brand-50);color:var(--brand)">${r.ic}</div>
+        <div class="body"><div class="t">${esc(r.t)}</div><div class="s">${esc(r.s)}</div></div>
+        <span class="go">${IC.chev}</span>
+      </button>`).join('')}</div>
+  </div>`;
+  document.querySelectorAll('#main [data-go]').forEach(b => b.onclick = () => go(b.dataset.go));
+};
+
+
+/* ══════════════════════════════════════════════════════════════════
+ *  เบอร์ฉุกเฉิน — เพิ่ม แก้ ปิดได้ในระบบ
+ *
+ *  ของเดิมอยู่ในชีทอย่างเดียว ซึ่งแปลว่าเบอร์ที่เปลี่ยนแล้วจะค้างไว้
+ *  จนกว่าจะมีคนนึกได้ว่ามีชีทนี้อยู่ เบอร์ฉุกเฉินที่ผิดแย่กว่าไม่มีเบอร์
+ *  เพราะคนกดแล้วเชื่อว่าโทรแล้ว
+ * ══════════════════════════════════════════════════════════════════ */
+ROUTES['admin-contacts'] = async () => {
+  setTitle(t('admContacts'));
+  $x('#main').innerHTML = `<div class="view">
+    <button class="btn primary" id="add">＋ ${esc(t('ctAdd'))}</button>
+    <div id="cl" style="margin-top:14px">${skeleton(3)}</div></div>`;
+  $('#add').onclick = () => ctEdit(null);
+
+  let items = [];
+  try{
+    const r = await apiRetry('getContactsAdmin', {}, 'GET');
+    if(!r?.ok){ $x('#cl').innerHTML = emptyState(IC.info, t('adminNo'), t('adminNoBody')); return; }
+    items = r.items || [];
+  }catch(e){ $x('#cl').innerHTML = emptyState(IC.info, t('netErr'), ''); return; }
+
+  const G = [{ k:'external', l:t('ctExternal') },
+             { k:'internal', l:t('ctInternal') },
+             { k:'lead',     l:t('ctLead') }];
+
+  $x('#cl').innerHTML = G.map(g => {
+    const rows = items.filter(c => c.group === g.k);
+    if(!rows.length) return '';
+    return `<div class="section-title">${esc(g.l)}</div><div class="rows">${rows.map(c => `
+      <button class="row" data-id="${esc(c.contact_id)}" ${c.is_active ? '' : 'style="opacity:.5"'}>
+        <div class="body">
+          <div class="t">${esc(c.name_th || c.name_en)}</div>
+          <div class="s num">${esc(c.phone)}${c.name_en && c.name_th ? ' · ' + esc(c.name_en) : ''}</div>
+        </div>
+        ${c.is_active ? `<span class="go">${IC.chev}</span>`
+          : `<span class="pill" style="background:var(--neutral);color:var(--ink-3)">${esc(t('admResInactive'))}</span>`}
+      </button>`).join('')}</div>`;
+  }).join('') || emptyState(IC.sos, t('ctEmpty'), t('ctEmptyBody'));
+
+  document.querySelectorAll('#cl .row').forEach(b =>
+    b.onclick = () => ctEdit(items.find(x => x.contact_id === b.dataset.id)));
+
+  function ctEdit(c){
+    sheet(`<h3>${esc(c ? (c.name_th || c.name_en) : t('ctAdd'))}</h3>
+      <div class="field"><label>${esc(t('ctGroup'))}</label>
+        <select id="cg">${G.map(g =>
+          `<option value="${g.k}" ${c && c.group === g.k ? 'selected' : ''}>${esc(g.l)}</option>`).join('')}</select>
+        <div class="hint">${esc(t('ctGroupWhy'))}</div></div>
+      <div class="field"><label>${esc(t('ctName'))}<span class="req">*</span></label>
+        <input id="cn" value="${esc(c?.name_th || '')}" placeholder="${esc(t('ctNamePh'))}"></div>
+      <div class="field"><label>${esc(t('ctNameEn'))}</label>
+        <input id="ce" value="${esc(c?.name_en || '')}"></div>
+      <div class="field"><label>${esc(t('ctPhone'))}<span class="req">*</span></label>
+        <input id="cp" inputmode="tel" value="${esc(c?.phone || '')}" placeholder="1669"></div>
+      <div class="field"><label>${esc(t('ctOrder'))}</label>
+        <input id="co" inputmode="numeric" value="${esc(String(c?.sort_order ?? 50))}">
+        <div class="hint">${esc(t('ctOrderWhy'))}</div></div>
+      <button class="btn primary" id="cs">${esc(t('admResSave'))}</button>
+      ${c ? `<button class="btn ghost" id="ct">${esc(c.is_active ? t('ctOff') : t('ctOn'))}</button>` : ''}
+      <button class="btn ghost" id="cx">${esc(t('cancel'))}</button>`);
+    $('#cx').onclick = closeSheet;
+
+    const save = extra => async () => {
+      const nm = $('#cn').value.trim(), ph = $('#cp').value.trim();
+      if(!nm){ toast(t('ctNeedName'), 'bad'); return; }
+      if(!/^\+?[0-9\-\s]{3,}$/.test(ph)){ toast(t('ctNeedPhone'), 'bad'); return; }
+      const b = $('#cs'); b.disabled = true;
+      try{
+        const r = await apiRetry('saveContact', Object.assign({
+          contact_id:c?.contact_id || '', group:$('#cg').value,
+          name_th:nm, name_en:$('#ce').value.trim(), phone:ph,
+          sort_order:$('#co').value.trim(),
+          is_active: c ? c.is_active : true
+        }, extra || {}), 'POST');
+        if(r?.error === 'BAD_PHONE'){ toast(t('ctNeedPhone'), 'bad'); b.disabled = false; return; }
+        if(r?.ok === false) throw 0;
+        closeSheet(); clearCache(); toast(t('admResSaved'), 'ok'); go('admin-contacts', {}, true);
+      }catch(e){ toast(t('netErr'), 'bad'); b.disabled = false; }
+    };
+    $('#cs').onclick = save(null);
+    if($('#ct')) $('#ct').onclick = save({ is_active: c.is_active ? 'false' : 'true' });
+  }
+};
+
+
+/* ══════════════════════════════════════════════════════════════════
+ *  ประโยคของผู้พัฒนาบนหน้าแรก — แก้ได้เฉพาะผู้ดูแลสูงสุด
+ *
+ *  ประโยคพวกนี้คือเสียงที่พูดกับทั้งออฟฟิศพร้อมกันทุกเช้า
+ *  ถ้าต้อง deploy ใหม่ทุกครั้งที่อยากเปลี่ยน มันก็จะไม่เคยถูกเปลี่ยน
+ * ══════════════════════════════════════════════════════════════════ */
+ROUTES['admin-devline'] = async () => {
+  setTitle(t('dlTitle'));
+  if(!S.isSuper){
+    $x('#main').innerHTML = `<div class="view" style="padding-top:36px">
+      ${emptyState(IC.info, t('adminNo'), t('adminNoBody'))}</div>`;
+    return;
+  }
+  $x('#main').innerHTML = `<div class="view"><div id="dw">${skeleton(3)}</div></div>`;
+
+  let rows = [];
+  try{ const r = await apiRetry('getDevLines', {}, 'GET'); rows = r?.items || []; }catch(e){}
+  /* ยังไม่เคยแก้ = แผ่นว่าง → เอาชุดที่อยู่ในโค้ดมาตั้งต้นให้ ไม่ใช่ให้เริ่มจากศูนย์
+     คนที่เปิดหน้านี้ครั้งแรกควรได้แก้ของที่เห็นอยู่จริง ไม่ใช่พิมพ์ใหม่ทั้งหมด */
+  if(!rows.length){
+    const th = t('devLines'), en = T.en.devLines || th;
+    rows = th.map((x, i) => ({ text_th:x, text_en:en[i] || '' }));
+  }
+
+  const draw = () => {
+    $x('#dl2').innerHTML = rows.map((r, i) => `
+      <div class="dlrow">
+        <div class="dlno">${i + 1}</div>
+        <div class="dlf">
+          <textarea data-i="${i}" data-f="th" rows="2" maxlength="220"
+            placeholder="${esc(t('dlPhTh'))}">${esc(r.text_th || '')}</textarea>
+          <textarea data-i="${i}" data-f="en" rows="2" maxlength="220"
+            placeholder="${esc(t('dlPhEn'))}">${esc(r.text_en || '')}</textarea>
+        </div>
+        <button class="dlx" data-x="${i}" aria-label="${esc(t('dlDel'))}">✕</button>
+      </div>`).join('');
+    document.querySelectorAll('#dl2 textarea').forEach(a => a.oninput = () => {
+      rows[Number(a.dataset.i)][a.dataset.f === 'th' ? 'text_th' : 'text_en'] = a.value;
+      drawPrev();
+    });
+    document.querySelectorAll('#dl2 .dlx').forEach(b => b.onclick = () => {
+      if(rows.length <= 1){ toast(t('dlNeedOne'), 'bad'); return; }
+      rows.splice(Number(b.dataset.x), 1); draw();
+    });
+    drawPrev();
+  };
+
+  /* ตัวอย่างจริงบนพื้นเดียวกับหน้าแรก — ประโยคที่อ่านดีในช่องแก้ไข
+     อาจยาวเกินสามบรรทัดตอนไปอยู่ในกล่องจริง */
+  const drawPrev = () => {
+    const d = new Date();
+    const ix = (d.getFullYear() * 366 + d.getMonth() * 31 + d.getDate()) % Math.max(rows.length, 1);
+    const line = (S.lang === 'th' ? rows[ix]?.text_th : rows[ix]?.text_en) || rows[ix]?.text_th || '';
+    $x('#dlPrev').innerHTML = `<div class="devbox" style="pointer-events:none">
+      <div class="dev-hd">
+        <img class="dev-logo" src="${LOGO_URI}" alt="" width="30" height="30">
+        <p class="dev-line">${esc(line)}</p>
+      </div></div>`;
+  };
+
+  $x('#dw').innerHTML = `
+    <div class="note info">${IC.info}<div>${esc(t('dlWhy'))}</div></div>
+    <div class="section-title">${esc(t('dlPreview'))}</div>
+    <div id="dlPrev"></div>
+    <div class="section-title">${esc(t('dlLines'))}</div>
+    <div id="dl2"></div>
+    <button class="btn ghost" id="dlAdd" style="margin-top:10px">＋ ${esc(t('dlAdd'))}</button>
+    <div class="sticky-cta"><button class="btn primary" id="dlSave">${esc(t('prSave'))}</button></div>`;
+  draw();
+
+  $('#dlAdd').onclick = () => {
+    if(rows.length >= 30){ toast(t('dlMax'), 'bad'); return; }
+    rows.push({ text_th:'', text_en:'' }); draw();
+    const all = document.querySelectorAll('#dl2 textarea');
+    all[all.length - 2]?.focus();
+  };
+
+  $('#dlSave').onclick = async () => {
+    const keep = rows.filter(r => (r.text_th || '').trim() || (r.text_en || '').trim());
+    if(!keep.length){ toast(t('dlNeedOne'), 'bad'); return; }
+    const b = $('#dlSave'); b.disabled = true;
+    try{
+      const r = await apiRetry('saveDevLines', { lines: JSON.stringify(keep) }, 'POST');
+      if(r?.ok === false) throw 0;
+      S.devLines = keep;
+      toast(t('prSaved'), 'ok'); go('home', {}, true);
+    }catch(e){ toast(t('netErr'), 'bad'); b.disabled = false; }
+  };
+};
+
+/* ══════════════════════════════════════════════════════════════════
+ *  สายด่วนและกระดานเหตุฉุกเฉิน — ปิดวงจร "ขอความช่วยเหลือ"
+ *
+ *  ของเดิมจบที่ปุ่มเดียว: กด "ต้องการความช่วยเหลือ" แล้วชื่อไปโผล่ในกระดานสีแดง
+ *  จากนั้นก็ค้างอยู่ตรงนั้นตลอดไป ไม่มีใครบอกได้ว่าไปถึงตัวเขาหรือยัง
+ *  ในเหตุจริงที่มีสิบคนขอความช่วยเหลือ กระดานแบบนั้นอ่านไม่ได้เลย
+ *  เพราะแยกไม่ออกว่าเหลือใครที่ยังไม่มีใครไปถึง
+ *
+ *  รอบนี้จึงมีสามสถานะ — ขอความช่วยเหลือ · มีคนรับเรื่อง · ช่วยแล้ว
+ *  และคนที่ขอเห็นสถานะของตัวเองด้วย ว่ามีใครกำลังมา
+ * ══════════════════════════════════════════════════════════════════ */
+ROUTES.calltree = async () => {
+  setTitle(t('ctTitle'));
+  $x('#main').innerHTML = `<div class="view"><div id="alertBox"></div><div id="list">${skeleton(4)}</div></div>`;
+
+  let A = null;
+  try{ A = await apiRetry('getActiveAlert', {}, 'GET'); }catch(e){}
+
+  if(A?.active){
+    const st = A.myStatus || '';
+    const asked = st === 'help' || st === 'helping' || st === 'helped';
+    const askBtns = `
+      <button class="btn g" id="bSafe" style="padding:24px;font-size:19px;border-radius:18px;background:var(--ok);color:#fff">
+        ${esc(t('emgSafe'))}<br><small style="font-size:12px;font-weight:600;opacity:.85">${esc(t('emgSafeSub'))}</small></button>
+      <div style="height:11px"></div>
+      <button class="btn r" id="bHelp" style="padding:24px;font-size:19px;border-radius:18px;background:var(--bad);color:#fff">
+        ${esc(t('emgHelp'))}<br><small style="font-size:12px;font-weight:600;opacity:.85">${esc(t('emgHelpSub'))}</small></button>`;
+
+    /* สถานะของฉัน — คนที่กดขอความช่วยเหลือแล้วเห็นแค่ "บันทึกแล้ว"
+       จะไม่รู้ว่าระบบทำอะไรต่อ แล้วก็จะกดซ้ำ หรือเลิกเชื่อระบบไปเลย */
+    const mine = !asked && st !== 'safe' ? '' :
+      st === 'safe' ? `<div class="note ok">✅<div><b>${esc(t('emgYouSaid')(t('emgSafe')))}</b></div></div>`
+      : st === 'helped' ? `<div class="note ok">✅<div><b>${esc(t('emgWasHelped'))}</b><br>
+          <span style="font-size:var(--fs-sec)">${esc(t('emgWasHelpedSub'))}</span></div></div>`
+      : st === 'helping' ? `<div class="note warn">🚶<div><b>${esc(
+          A.myHelper?.name ? t('emgHelperOn')(A.myHelper.name) : t('emgHelperOnAny'))}</b><br>
+          ${A.myHelper?.phone ? `<a href="tel:${esc(A.myHelper.phone)}" style="font-weight:700">${
+            esc(t('ctCall'))} ${esc(A.myHelper.phone)}</a>` : ''}</div></div>`
+      : `<div class="note warn">🆘<div><b>${esc(t('emgYouSaid')(t('emgHelp')))}</b><br>
+          <span style="font-size:var(--fs-sec)">${esc(t('emgWaiting'))}</span></div></div>`;
+
+    $x('#alertBox').innerHTML = `
+      <div class="alertbox" style="background:var(--bad);color:#fff;border-radius:18px;padding:17px;margin-bottom:14px">
+        <div style="font-size:var(--fs-meta);font-weight:800;opacity:.9;letter-spacing:.06em">${esc(fmtDate(A.alert.at))}</div>
+        <h3 style="margin:5px 0 6px;font-size:18px;font-weight:800;line-height:1.35">${esc(A.alert.title)}</h3>
+        <p style="margin:0;font-size:13px;opacity:.93;white-space:pre-wrap">${esc(A.alert.body || '')}</p>
+      </div>
+      ${st ? mine : askBtns}
+      ${st ? `<div style="height:10px"></div>
+        <button class="btn ghost" id="bAgain">${esc(t('emgChange'))}</button>` : ''}
+      ${A.canSeeBoard ? `<div style="height:11px"></div>
+        <button class="btn soft" id="bBoard">${esc(t('emgBoard'))}</button>` : ''}
+      <div style="height:16px"></div>`;
+
+    const wireSafe = () => { const b = $('#bSafe'); if(!b) return;
+      b.onclick = async () => {
+        try{ await apiRetry('respondAlert', { alert_id:A.alert.alert_id, status:'safe' }, 'POST');
+             toast(t('emgSent'), 'ok'); go('calltree', {}, true); }
+        catch(e){ toast(t('netErr'), 'bad'); }
+      };
+    };
+    const wireHelp = () => { const b = $('#bHelp'); if(!b) return;
+      b.onclick = () => {
+        sheet(`<h3>${esc(t('emgHelp'))}</h3>
+          <div class="field"><label>${esc(t('emgWhere'))}</label>
+            <input id="hLoc" placeholder="${esc(t('emgWherePh'))}"></div>
+          <div class="field"><label>${esc(t('emgWhat'))}</label>
+            <textarea id="hNote" rows="2" placeholder="${esc(t('emgWhatPh'))}"></textarea></div>
+          <button class="btn danger" id="hGo" style="background:var(--bad);color:#fff">${esc(t('emgSend'))}</button>
+          <button class="btn ghost" id="hX">${esc(t('cancel'))}</button>`);
+        $('#hX').onclick = closeSheet;
+        $('#hGo').onclick = async () => {
+          const loc = $('#hLoc').value.trim(), note = $('#hNote').value.trim();
+          closeSheet();
+          try{ await apiRetry('respondAlert',
+                { alert_id:A.alert.alert_id, status:'help', location:loc, note }, 'POST');
+               toast(t('emgSent'), 'ok'); go('calltree', {}, true); }
+          catch(e){ toast(t('netErr'), 'bad'); }
+        };
+      };
+    };
+    wireSafe(); wireHelp();
+
+    /* เปลี่ยนคำตอบได้ตลอด — สถานการณ์ฉุกเฉินเปลี่ยนได้ในสิบนาที
+       คนที่ตอบ "ปลอดภัย" ตอนแรกแล้วสถานการณ์แย่ลง ต้องขอความช่วยเหลือได้ */
+    if($('#bAgain')) $('#bAgain').onclick = () => {
+      $x('#alertBox').querySelector('.note')?.remove();
+      $('#bAgain').outerHTML = askBtns;
+      wireSafe(); wireHelp();
+    };
+    if($('#bBoard')) $('#bBoard').onclick = () => go('alert-board');
+
+  }else if(A?.canDeclare){
+    $x('#alertBox').innerHTML =
+      `<button class="btn ghost" id="dec" style="margin-bottom:14px">${esc(t('emgDeclare'))}</button>`;
+    $('#dec').onclick = declareSheet;
+  }
+
+  let items = [];
+  try{ const r = await apiRetry('getContacts', {}, 'GET'); items = r?.items || []; }catch(e){}
+  if(!items.length){
+    // ค่าตั้งต้นสำหรับกรณีที่ยังไม่ได้ใส่ในชีท — เบอร์ฉุกเฉินสาธารณะของไทย
+    items = [
+      { group:'external', name_th:'เหตุฉุกเฉินแห่งชาติ', name_en:'National Emergency', phone:'191' },
+      { group:'external', name_th:'การแพทย์ฉุกเฉิน',    name_en:'Emergency Medical',   phone:'1669' },
+      { group:'external', name_th:'ดับเพลิง',            name_en:'Fire',                phone:'199' }
+    ];
+  }
+  const groups = [
+    { k:'external', label:t('ctExternal'), sos:true },
+    { k:'internal', label:t('ctInternal') },
+    { k:'lead',     label:t('ctLead') }
+  ];
+  $x('#list').innerHTML = groups.map(g => {
+    const rows = items.filter(i => (i.group || 'internal') === g.k);
+    if(!rows.length) return '';
+    return `<div class="contact-group"><h3>${esc(g.label)}</h3><div class="rows">${rows.map(c => `
+      <div class="row">
+        <div class="body">
+          <div class="t">${esc(S.lang === 'th' ? (c.name_th || c.name_en) : (c.name_en || c.name_th))}</div>
+          <div class="s num">${esc(c.phone)}</div>
+        </div>
+        <a class="callbtn ${g.sos ? 'sos' : ''}" href="tel:${esc(c.phone)}" aria-label="${esc(t('ctCall'))}">${IC.phone}</a>
+      </div>`).join('')}</div></div>`;
+  }).join('') + (S.isAdmin
+    ? `<div style="height:14px"></div>
+       <button class="btn ghost" id="ctMan">${esc(t('admContacts'))}</button>` : '');
+  if($('#ctMan')) $('#ctMan').onclick = () => go('admin-contacts');
+};
+
+
+/* ── กระดานเหตุฉุกเฉิน ────────────────────────────────────────
+   เรียงตามสิ่งที่ต้องทำต่อ ไม่ใช่ตามตัวอักษร:
+   ยังไม่มีใครไปถึง → กำลังไปหา → ช่วยแล้ว → ยังไม่ตอบ → ปลอดภัย        */
+ROUTES['alert-board'] = async () => {
+  setTitle(t('emgBoard'));
+  $x('#main').innerHTML = `<div class="view"><div id="bd">${skeleton(3)}</div></div>`;
+  let b = null;
+  try{ b = await apiRetry('getAlertBoard', {}, 'GET'); }catch(e){}
+  if(!b?.ok){ $x('#bd').innerHTML = emptyState(IC.info, t('adminNo'), t('adminNoBody')); return; }
+  if(!b.active){ $x('#bd').innerHTML = emptyState(IC.bellBig, t('emgClosed'), ''); return; }
+
+  const helping = b.helping || [], helped = b.helped || [];
+  const answered = b.safe.length + b.help.length + helping.length + helped.length;
+
+  /* ปุ่มในแถวคือสิ่งที่ทำให้กระดานนี้ต่างจากรายชื่อเฉยๆ
+     คนดูแลต้องกดได้ตรงนั้นว่า "ฉันรับเรื่องนี้" โดยไม่ต้องออกไปหน้าอื่น */
+  const row = (r, kind) => `
+    <div class="row emgrow ${esc(kind)}">
+      <span class="av ${kind === 'help' ? 'no' : ''}">${
+        esc(String(r.nickname || r.name || '?').trim().charAt(0))}</span>
+      <div class="body">
+        <div class="t">${esc(r.name)}${r.nickname ? ' · ' + esc(r.nickname) : ''}</div>
+        <div class="s">${esc([r.dept, r.location, r.note].filter(Boolean).join(' · ') || '—')}</div>
+        ${r.helper ? `<div class="emgby">${esc(kind === 'helped'
+          ? t('emgByHelped')(r.helper, r.helped_at ? fmtDate(r.helped_at) : '')
+          : t('emgByHelping')(r.helper))}</div>` : ''}
+        ${r.emg ? `<button class="emgc" data-emg="${esc(r.id)}">${esc(t('emgKin'))}</button>` : ''}
+      </div>
+      <div class="emgacts">
+        ${r.phone ? `<a class="mini call" href="tel:${esc(r.phone)}" aria-label="${esc(t('ctCall'))}">📞</a>` : ''}
+        ${b.canHelp && kind === 'help'
+          ? `<button class="mini go" data-mk="helping" data-u="${esc(r.id)}">${esc(t('emgTake'))}</button>` : ''}
+        ${b.canHelp && kind === 'helping'
+          ? `<button class="mini ok" data-mk="helped" data-u="${esc(r.id)}">${esc(t('emgDone'))}</button>` : ''}
+        ${b.canHelp && kind === 'helped'
+          ? `<button class="mini" data-mk="help" data-u="${esc(r.id)}">${esc(t('emgReopen'))}</button>` : ''}
+      </div>
+    </div>`;
+
+  const sec = (title, rows, kind, tone) => rows.length ? `
+    <div class="section-title" ${tone ? `style="color:${tone}"` : ''}>${esc(title)} · ${rows.length}</div>
+    <div class="rows">${rows.map(r => row(r, kind)).join('')}</div>` : '';
+
+  $x('#bd').innerHTML = `
+    <div class="card" style="border-color:var(--bad,#DC2626)">
+      <div style="font-size:var(--fs-meta);font-weight:800;color:var(--bad,#DC2626)">${esc(fmtDate(b.alert.at))}</div>
+      <h3 style="margin:5px 0 0;font-size:17px">${esc(b.alert.title)}</h3>
+    </div>
+    <div class="tiles" style="margin-top:12px">
+      <div class="tile" style="min-height:76px;background:var(--bad-bg);border-color:var(--bad-line)">
+        <div class="nm" style="font-size:25px;color:var(--bad)">${b.help.length}</div>
+        <div class="en">${esc(t('emgHelpN'))}</div></div>
+      <div class="tile" style="min-height:76px;background:var(--warn-bg);border-color:var(--warn-line)">
+        <div class="nm" style="font-size:25px;color:var(--warn)">${b.none.length}</div>
+        <div class="en">${esc(t('emgNone'))}</div></div>
+      <div class="tile" style="min-height:76px;background:var(--ok-bg);border-color:var(--ok-line)">
+        <div class="nm" style="font-size:25px;color:var(--ok)">${b.safe.length + helped.length}</div>
+        <div class="en">${esc(t('emgSafeN'))}</div></div>
+      <div class="tile" style="min-height:76px">
+        <div class="nm" style="font-size:25px">${answered}/${b.total}</div>
+        <div class="en">${esc(t('emgTotal'))}</div></div>
+    </div>
+    ${sec(t('emgHelpN'),  b.help,  'help',    'var(--bad)')}
+    ${sec(t('emgHelping'), helping, 'helping', 'var(--warn)')}
+    ${sec(t('emgNone'),   b.none,  'none',    'var(--warn)')}
+    ${sec(t('emgHelped'), helped,  'helped',  'var(--ok)')}
+    ${sec(t('emgSafeN'),  b.safe,  'safe',    '')}
+    ${b.canClose ? `<div style="margin-top:16px"><button class="btn ghost" id="cls">${esc(t('emgClose'))}</button></div>` : ''}`;
+
+  /* ผู้ติดต่อกรณีฉุกเฉินไม่ขึ้นเอง ต้องกดเปิดทีละคน
+     เป็นข้อมูลของบุคคลที่สามที่พนักงานให้ไว้ ไม่ควรอยู่ในสายตาตอนเลื่อนดูเฉยๆ */
+  const all = [...b.help, ...helping, ...helped, ...b.none, ...b.safe];
+  document.querySelectorAll('#bd [data-emg]').forEach(x => x.onclick = () => {
+    const p = all.find(r => String(r.id) === x.dataset.emg);
+    if(!p?.emg) return;
+    x.outerHTML = `<div class="emgkin">
+      <b>${esc(t('emgKin'))}</b> ${esc(p.emg.name)}${p.emg.relation ? ' · ' + esc(p.emg.relation) : ''}<br>
+      <a href="tel:${esc(p.emg.phone)}">${esc(t('ctCall'))} ${esc(p.emg.phone)}</a></div>`;
+  });
+
+  document.querySelectorAll('#bd [data-mk]').forEach(x => x.onclick = async () => {
+    x.disabled = true;
+    try{
+      const r = await apiRetry('helpUpdate',
+        { alert_id:b.alert.alert_id, user_id:x.dataset.u, state:x.dataset.mk }, 'POST');
+      if(r?.ok === false) throw 0;
+      toast(t('emgMarked'), 'ok'); go('alert-board', {}, true);
+    }catch(e){ toast(t('netErr'), 'bad'); x.disabled = false; }
+  });
+
+  if($('#cls')) $('#cls').onclick = async () => {
+    if(b.help.length || helping.length){
+      if(!window.confirm(t('emgCloseAsk'))) return;
+    }
+    try{ await apiRetry('closeAlert', { alert_id:b.alert.alert_id }, 'POST');
+         toast(t('emgClosed'), 'ok'); go('alert-board', {}, true); }
+    catch(e){ toast(t('netErr'), 'bad'); }
+  };
+};
+
 
 ROUTES.search = async ({ kw } = {}) => {
   setTitle(t('schTitle'));
@@ -4590,21 +5707,24 @@ ROUTES.notifications = async () => {
     return;
   }
 
+  /* กริยาต่อเหตุการณ์ — ไม่มีในตาราง ค่อยใช้คำกลาง
+     เขียนไว้ที่เดียว จะได้ไม่ต้องไล่แก้ทั้งฝั่งเซิร์ฟเวอร์และฝั่งแอปเวลาเพิ่มเหตุการณ์ */
+  const nfCta = n => (t('nfCtas') || {})[String(n.event)] || t('nfOpen');
+
   const B = [
     { k:'action', l:t('nfAction'), s:t('nfActionSub') },
     { k:'update', l:t('nfUpdate'), s:'' },
     { k:'info',   l:t('nfInfo'),   s:'' }
   ];
   const row = n => `
-    <button class="nrow ${esc(n.bucket || 'update')}" ${n.record_id && n.go
-      ? `data-rec="${esc(n.record_id)}" data-go="${esc(n.go)}"` : ''}>
+    <button class="nrow ${esc(n.bucket || 'update')}" ${n.go
+      ? `data-rec="${esc(n.record_id || '')}" data-go="${esc(n.go)}"` : ''}>
       <span class="ndotm" aria-hidden="true"></span>
       <span class="nbody">
         <span class="nt">${esc(evLabel(n))}</span>
         <span class="ns">${esc(fmtDate(n.at))}</span>
       </span>
-      ${n.record_id && n.go
-        ? `<span class="ncta">${esc(t('nfOpen'))} ${IC.chev}</span>` : ''}
+      ${n.go ? `<span class="ncta">${esc(nfCta(n))} ${IC.chev}</span>` : ''}
     </button>`;
 
   $x('#list').innerHTML = B.map(b => {
@@ -4618,9 +5738,10 @@ ROUTES.notifications = async () => {
     </div>`;
   }).join('');
 
-  document.querySelectorAll('#list .nrow[data-rec]').forEach(b => b.onclick = () => {
+  document.querySelectorAll('#list .nrow[data-go]').forEach(b => b.onclick = () => {
     const dest = b.dataset.go || 'my-parcels';
-    go(dest, ['my-parcels', 'issues'].includes(dest) ? { rec:b.dataset.rec } : {});
+    const rec  = b.dataset.rec || '';
+    go(dest, (rec && ['my-parcels', 'issues', 'issue-queue'].includes(dest)) ? { rec } : {});
   });
   S.notifCount = 0; $x('#bellDot').hidden = true;
 };
@@ -4831,6 +5952,14 @@ ROUTES.about = async ({ act } = {}) => {
       <div><b id="abBuild">—</b><span>${esc(t('abBuild'))}</span></div>
       <div><b>${esc(t('abMadeByVal'))}</b><span>${esc(t('abMadeBy'))}</span></div>
       <div><b id="abTotal">—</b><span>${esc(t('abCheers'))}</span></div>
+    </div>
+
+    <div class="card" style="margin-top:16px">
+      <div style="font-size:var(--fs-cta);font-weight:700;margin-bottom:6px">${esc(t('abCreditT'))}</div>
+      <p style="font-size:var(--fs-sec);color:var(--ink-2);margin:0;line-height:1.75;white-space:pre-line">${
+        esc(t('abCreditBody'))}</p>
+      <p style="font-size:var(--fs-sec);color:var(--brand);font-weight:700;margin:12px 0 0">${
+        esc(t('abCreditCta'))}</p>
     </div>
 
     <div class="cheer">
@@ -5460,86 +6589,6 @@ ROUTES.unidentified = async () => {
   });
 };
 
-ROUTES.calltree = async () => {
-  setTitle(t('ctTitle'));
-  $x('#main').innerHTML = `<div class="view"><div id="alertBox"></div><div id="list">${skeleton(4)}</div></div>`;
-
-  // มีเหตุอยู่ → ปุ่มยืนยันสถานะต้องมาก่อนทุกอย่าง ตัวใหญ่ ไม่มีอะไรให้เลือกผิด
-  let A = null;
-  try{ A = await apiRetry('getActiveAlert', {}, 'GET'); }catch(e){}
-  if(A?.active){
-    const done = !!A.myStatus;
-    $x('#alertBox').innerHTML = `
-      <div class="alertbox" style="background:var(--bad);color:#fff;border-radius:18px;padding:17px;margin-bottom:14px">
-        <div style="font-size:var(--fs-meta);font-weight:800;opacity:.9;letter-spacing:.06em">${esc(fmtDate(A.alert.at))}</div>
-        <h3 style="margin:5px 0 6px;font-size:18px;font-weight:800;line-height:1.35">${esc(A.alert.title)}</h3>
-        <p style="margin:0;font-size:13px;opacity:.93;white-space:pre-wrap">${esc(A.alert.body || '')}</p>
-      </div>
-      ${done ? `<div class="note ok">✅<div><b>${esc(t('emgYouSaid')(
-            A.myStatus === 'help' ? t('emgHelp') : t('emgSafe')))}</b></div></div>` : `
-        <button class="btn g" id="bSafe" style="padding:24px;font-size:19px;border-radius:18px;background:var(--ok);color:#fff">
-          ${esc(t('emgSafe'))}<br><small style="font-size:12px;font-weight:600;opacity:.85">${esc(t('emgSafeSub'))}</small></button>
-        <div style="height:11px"></div>
-        <button class="btn r" id="bHelp" style="padding:24px;font-size:19px;border-radius:18px;background:var(--bad);color:#fff">
-          ${esc(t('emgHelp'))}<br><small style="font-size:12px;font-weight:600;opacity:.85">${esc(t('emgHelpSub'))}</small></button>`}
-      ${A.canSeeBoard ? `<div style="height:11px"></div>
-        <button class="btn soft" id="bBoard">${esc(t('emgBoard'))}</button>` : ''}
-      <div style="height:16px"></div>`;
-    if($('#bSafe')) $('#bSafe').onclick = async () => {
-      try{ await apiRetry('respondAlert', { alert_id:A.alert.alert_id, status:'safe' }, 'POST');
-           toast(t('emgSent'), 'ok'); go('calltree', {}, true); }
-      catch(e){ toast(t('netErr'), 'bad'); }
-    };
-    if($('#bHelp')) $('#bHelp').onclick = () => {
-      sheet(`<h3>${esc(t('emgHelp'))}</h3>
-        <div class="field"><label>${esc(t('emgWhere'))}</label>
-          <input id="hLoc" placeholder="${esc(t('emgWherePh'))}"></div>
-        <button class="btn danger" id="hGo" style="background:var(--bad);color:#fff">${esc(t('emgSend'))}</button>
-        <button class="btn ghost" id="hX">${esc(t('cancel'))}</button>`);
-      $('#hX').onclick = closeSheet;
-      $('#hGo').onclick = async () => {
-        const loc = $('#hLoc').value.trim(); closeSheet();
-        try{ await apiRetry('respondAlert',
-              { alert_id:A.alert.alert_id, status:'help', location:loc }, 'POST');
-             toast(t('emgSent'), 'ok'); go('calltree', {}, true); }
-        catch(e){ toast(t('netErr'), 'bad'); }
-      };
-    };
-    if($('#bBoard')) $('#bBoard').onclick = () => go('alert-board');
-  }else if(A?.canDeclare){
-    $x('#alertBox').innerHTML =
-      `<button class="btn ghost" id="dec" style="margin-bottom:14px">${esc(t('emgDeclare'))}</button>`;
-    $('#dec').onclick = declareSheet;
-  }
-  let items = [];
-  try{ const r = await apiRetry('getContacts', {}, 'GET'); items = r?.items || []; }catch(e){}
-  if(!items.length){
-    // ค่าตั้งต้นสำหรับกรณีที่ยังไม่ได้ใส่ในชีท — เบอร์ฉุกเฉินสาธารณะของไทย
-    items = [
-      { group:'external', name_th:'เหตุฉุกเฉินแห่งชาติ', name_en:'National Emergency', phone:'191' },
-      { group:'external', name_th:'การแพทย์ฉุกเฉิน',    name_en:'Emergency Medical',   phone:'1669' },
-      { group:'external', name_th:'ดับเพลิง',            name_en:'Fire',                phone:'199' }
-    ];
-  }
-  const groups = [
-    { k:'external', label:t('ctExternal'), sos:true },
-    { k:'internal', label:t('ctInternal') },
-    { k:'lead',     label:t('ctLead') }
-  ];
-  $x('#list').innerHTML = groups.map(g => {
-    const rows = items.filter(i => (i.group || 'internal') === g.k);
-    if(!rows.length) return '';
-    return `<div class="contact-group"><h3>${esc(g.label)}</h3><div class="rows">${rows.map(c => `
-      <div class="row">
-        <div class="body">
-          <div class="t">${esc(S.lang === 'th' ? (c.name_th || c.name_en) : (c.name_en || c.name_th))}</div>
-          <div class="s">${esc(c.phone)}</div>
-        </div>
-        <a class="callbtn ${g.sos ? 'sos' : ''}" href="tel:${esc(c.phone)}" aria-label="${esc(t('ctCall'))}">${IC.phone}</a>
-      </div>`).join('')}</div></div>`;
-  }).join('');
-};
-
 
 /* ══════════════════════════════════════════════════════════════════
  *  หน้า "ฉัน" — ปรับ 2026-09-06 (build e)
@@ -5641,79 +6690,6 @@ ROUTES.profile = async () => {
   };
 };
 
-/* ── ฟอร์มแก้ข้อมูลส่วนตัว — แยกออกมาเป็นหน้าของตัวเอง ── */
-ROUTES['profile-edit'] = async () => {
-  setTitle(t('meProfile'));
-  const m = S.me || {};
-  $x('#main').innerHTML = `<div class="view">
-    <div class="rows">
-      <div class="row"><div class="body"><div class="s">${esc(t('prEmpId'))}</div>
-        <div class="t">${esc(m.kenan_user_id || '—')}</div></div></div>
-      <div class="row"><div class="body"><div class="s">${esc(t('prDept'))}</div>
-        <div class="t">${esc(m.department || '—')}</div></div></div>
-      <div class="row"><div class="body"><div class="s">${esc(t('prEmail'))}</div>
-        <div class="t">${esc(m.email || '—')}</div></div></div>
-    </div>
-    <p class="statnote" style="margin:8px 2px 0">${esc(t('meFixedWhy'))}</p>
-
-    <div class="card" style="margin-top:14px">
-      <div class="field"><label>${esc(t('prPosition'))}</label>
-        <input id="pPos" value="${esc(m.position || '')}" placeholder="${esc(t('prPositionPh'))}"></div>
-      ${photoField('pPh', t('prPhoto'), S.me?.photo || '', { optional:true, ratio:'1/1', max:'220px' })}
-      <div style="font-size:var(--fs-meta);color:var(--ink-3);margin:-6px 0 14px">${esc(t('prPhotoWhy'))}</div>
-      <div class="times" style="margin-bottom:12px">
-        <div class="tbox"><div class="k">${esc(t('prBirthday'))}</div>
-          <input id="pBd" type="text" inputmode="numeric" maxlength="5" placeholder="15-08"
-            class="tin big" value="${esc(mmddToDdmm(S.me?.birthday))}"></div>
-        <div class="tbox"><div class="k">${esc(t('prBirthYear'))}</div>
-          <input id="pBy" type="text" inputmode="numeric" maxlength="4" placeholder="2530"
-            class="tin big" value="${esc(S.me?.birth_year || '')}"></div>
-      </div>
-      <label class="switch" style="margin-bottom:8px">
-        <input type="checkbox" id="pShowBd" ${(S.me?.show_birthday === true ||
-          String(S.me?.show_birthday).toUpperCase() === 'TRUE') ? 'checked' : ''}>
-        <span><b>${esc(t('prShowBirthday'))}</b><br>
-          <span style="font-size:var(--fs-meta);color:var(--ink-3)">${esc(t('prShowBirthdaySub'))}</span></span>
-      </label>
-      <label class="switch" style="margin-bottom:12px">
-        <input type="checkbox" id="pShowYr" ${(S.me?.show_birth_year === true ||
-          String(S.me?.show_birth_year).toUpperCase() === 'TRUE') ? 'checked' : ''}>
-        <span><b>${esc(t('prShowBirthYear'))}</b></span>
-      </label>
-      <div class="field"><label>${esc(t('prPhone'))}</label>
-        <input id="pPhone" inputmode="tel" value="${esc(m.phone || '')}" placeholder="08x-xxx-xxxx"></div>
-      <label class="check" style="margin:0">
-        <input type="checkbox" id="pShow" ${m.show_phone === true || String(m.show_phone) === 'TRUE' ? 'checked' : ''}>
-        <span><b>${esc(t('prShowPhone'))}</b><br>
-          <span style="color:var(--ink-3);font-size:var(--fs-meta)">${esc(t('prShowPhoneSub'))}</span></span>
-      </label>
-    </div>
-    <div class="sticky-cta"><button class="btn primary" id="pSave">${esc(t('prSave'))}</button></div>
-  </div>`;
-
-  const pimg = { v:null }; wirePhoto('pPh', pimg);
-  $('#pSave').onclick = async () => {
-    const b = $('#pSave'); b.disabled = true;
-    try{
-      await apiRetry('updateMyProfile',
-        { phone:$('#pPhone').value.trim(), position:$('#pPos').value.trim(),
-          birthday:$('#pBd').value.trim(), birth_year:$('#pBy').value.trim(),
-          show_birthday:$('#pShowBd').checked ? 'true' : 'false',
-          show_birth_year:$('#pShowYr').checked ? 'true' : 'false',
-          photo:pimg.v?.full || '', card:pimg.v?.card || '',
-          show_phone:$('#pShow').checked ? 'true' : 'false' }, 'POST');
-      S.me = S.me || {}; S.me.phone = $('#pPhone').value.trim();
-      S.me.position = $('#pPos').value.trim(); S.me.show_phone = $('#pShow').checked;
-      S.me.birthday = $('#pBd').value.trim(); S.me.show_birthday = $('#pShowBd').checked;
-      S.me.birth_year = $('#pBy').value.trim(); S.me.show_birth_year = $('#pShowYr').checked;
-      if(pimg.v?.card) S.me.photo = pimg.v.card;
-      clearCache('dir'); clearCache('emp');
-      toast(t('prSaved'), 'ok');
-      go('profile', {}, true);
-    }catch(e){ toast(t('netErr'), 'bad'); }
-    b.disabled = false;
-  };
-};
 
 /* ── วิธีใช้งาน — เขียนจากคำถามที่คนถามจริงตอนเริ่มใช้ ไม่ใช่คู่มือเรียงตามเมนู ── */
 ROUTES.help = async () => {
@@ -5752,66 +6728,6 @@ async function speedTest(){
 
 /* ── ข่าวสาร · ระบบจอง · เมนูผู้ดูแล (ปุ่มบน Rich Menu) ────────── */
 
-ROUTES.news = async () => {
-  setTitle(t('news'));
-  // แอดมินไม่ควรต้องออกไปเมนูผู้ดูแลเพื่อลงประกาศ ทั้งที่ยืนอยู่หน้าข่าวอยู่แล้ว
-  $x('#main').innerHTML = `<div class="view">
-    ${S.isAdmin ? `<button class="btn primary" id="nAdd">${esc(t('newsAdd'))}</button>
-      <div class="note info" style="margin:12px 0 4px">${IC.info}<div>${esc(t('newsGuide'))}</div></div>` : ''}
-    <div id="list">${skeleton(3)}</div></div>`;
-  if($('#nAdd')) $('#nAdd').onclick = () => go('admin-news');
-  let items = [];
-  try{ const r = await apiRetry('getAnnouncements', {}, 'GET'); items = r?.items || []; }catch(e){}
-  if(!items.length){
-    $x('#list').innerHTML = emptyState(IC.news, t('newsEmpty'), t('newsEmptyBody'));
-    return;
-  }
-  // กรองด้วยแท็ก — 40 คนอ่านประกาศเดียวกันหมด แต่ไม่ใช่ทุกเรื่องเกี่ยวกับทุกคน
-  const allTags = [...new Set(items.flatMap(a => a.tags || []))];
-  let sel = '';
-  const card = a => `
-    <div class="card" style="${a.expired ? 'opacity:.62' : ''}">
-      <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap">
-        <div style="font-size:var(--fs-meta);color:var(--ink-3);font-weight:700">${esc(fmtDate(a.at))}${
-          a.author ? ' · ' + esc(t('newsBy')(a.author)) : ''}</div>
-        ${(a.tags || []).length ? `<div style="display:flex;gap:5px;flex-wrap:wrap">${
-          a.tags.map(x => `<span class="ntag ${/สำคัญ|เร่งด่วน|Urgent|Important|ดำเนินการ|Action/.test(x)
-            ? 'hot' : ''}">${esc(x)}</span>`).join('')}</div>` : ''}
-      </div>
-      <h3 style="margin:6px 0 7px;font-size:16.5px;font-weight:800;line-height:1.35">
-        ${esc(S.lang==='th' ? (a.title_th || a.title_en) : (a.title_en || a.title_th))}</h3>
-      ${a.due_at ? `<div style="font-size:var(--fs-meta);font-weight:800;margin-bottom:7px;color:${
-        a.expired ? 'var(--ink-3)' : 'var(--warn)'}">${
-        esc(a.expired ? t('newsExpired') : t('newsDue')(fmtDate(a.due_at)))}</div>` : ''}
-      <div style="font-size:13.5px;color:var(--ink-2);white-space:pre-wrap;line-height:1.65">${
-        esc(S.lang==='th' ? (a.body_th || a.body_en || '') : (a.body_en || a.body_th || ''))}</div>
-      ${(a.image_ids || []).length ? `<div class="imggrid" style="margin-top:11px">${
-        a.image_ids.map(id => `<div class="imgcell"><img data-ph="${esc(id)}" alt=""></div>`).join('')}</div>` : ''}
-      ${a.cta_url && !a.expired ? `<a class="btn primary" href="${esc(a.cta_url)}" target="_blank"
-        rel="noopener" style="margin-top:12px;text-decoration:none">${
-        esc(a.cta_label || t('admNewsCta'))}</a>` : ''}
-    </div>`;
-
-  const paint = () => {
-    const list = sel ? items.filter(a => (a.tags || []).includes(sel)) : items;
-    $x('#nl').innerHTML = list.length ? list.map(card).join('')
-      : `<div class="quiet">${esc(t('pkNone'))}</div>`;
-    paintPhotos($('#nl'));
-  };
-
-  $x('#list').innerHTML = `
-    ${allTags.length ? `<div class="chips" id="nf" style="margin-bottom:14px">
-      <button class="chip on" data-tg="">${esc(t('newsAll'))}</button>
-      ${allTags.map(x => `<button class="chip" data-tg="${esc(x)}">${esc(x)}</button>`).join('')}
-    </div>` : ''}
-    <div id="nl"></div>`;
-  document.querySelectorAll('#nf .chip').forEach(b => b.onclick = () => {
-    sel = b.dataset.tg;
-    document.querySelectorAll('#nf .chip').forEach(x => x.classList.toggle('on', x === b));
-    paint();
-  });
-  paint();
-};
 
 ROUTES.reservation = async () => {
   setTitle(t('mResv'));
@@ -5861,11 +6777,7 @@ ROUTES.admin = async () => {
       <div style="height:9px"></div>
       <button class="btn ghost" id="toProj">${esc(t('admProj'))}</button>
       <div style="height:9px"></div>
-      <button class="btn ghost" id="toDrv">${esc(t('admDrv'))}</button>
-      ${S.isSuper ? `<div style="height:9px"></div>
-        <button class="btn ghost" id="toStaff">${esc(t('admStaff'))}</button>` : ''}
-      ${S.isSuper ? `<div style="height:9px"></div>
-        <button class="btn ghost" id="toRoles">${esc(t('admRoles'))}</button>` : ''}
+      <button class="btn ghost" id="toPeople">${esc(t('admPeople'))}</button>
       <div style="height:9px"></div>
       <button class="btn ghost" id="toDsr">${esc(t('admDsr'))}</button>
       <div style="height:9px"></div>
@@ -5874,6 +6786,8 @@ ROUTES.admin = async () => {
       <button class="btn ghost" id="toMsgs">${esc(t('msgTitle'))}</button>
       <div style="height:9px"></div>
       <button class="btn ghost" id="toFb">${esc(t('fbRead'))}</button>
+      ${S.isSuper ? `<div style="height:9px"></div>
+        <button class="btn ghost" id="toDl">${esc(t('dlTitle'))}</button>` : ''}
       <div class="section-title">${esc(t('admBackup'))}</div>
       <div id="bk">${skeleton(1)}</div>` : ''}
   </div>`;
@@ -5884,13 +6798,12 @@ ROUTES.admin = async () => {
   if($('#toNews'))  $('#toNews').onclick  = () => go('admin-news');
   if($('#toRes'))   $('#toRes').onclick   = () => go('admin-res');
   if($('#toProj'))  $('#toProj').onclick  = () => go('admin-proj');
-  if($('#toDrv'))   $('#toDrv').onclick   = () => go('admin-drv');
-  if($('#toStaff')) $('#toStaff').onclick = () => go('admin-staff');
-  if($('#toRoles')) $('#toRoles').onclick = () => go('admin-roles');
+  if($('#toPeople')) $('#toPeople').onclick = () => go('admin-people');
   if($('#toDsr'))   $('#toDsr').onclick   = () => go('admin-dsr');
   if($('#toLinks')) $('#toLinks').onclick = () => go('admin-links');
   if($('#toMsgs'))  $('#toMsgs').onclick  = () => go('admin-msgs');
   if($('#toFb'))    $('#toFb').onclick    = () => go('admin-feedback');
+  if($('#toDl'))    $('#toDl').onclick    = () => go('admin-devline');
 
   /* สถานะการสำรองข้อมูล — ระบบสำรองที่พังเงียบๆ แย่กว่าไม่มีระบบสำรองเลย
      เพราะทุกคนเชื่อว่ามีอยู่จนถึงวันที่ต้องใช้จริง จึงต้องเห็นได้ทุกครั้งที่เข้าหน้านี้ */
@@ -6196,8 +7109,19 @@ ROUTES.directory = async () => {
         ${p.email ? `<a class="btn ghost" href="mailto:${esc(p.email)}"
             style="text-decoration:none;word-break:break-all">✉ ${esc(p.email)}</a>` : ''}
         ${p.phone ? `<button class="btn ghost" id="cp">${esc(t('dirCopy'))}</button>` : ''}
+        ${p.emg ? `<div id="emgBox"><button class="btn ghost" id="emgS"
+            style="color:var(--bad)">${esc(t('dirEmgShow'))}</button>
+          <p class="statnote" style="margin:6px 2px 0;text-align:center">${esc(t('dirEmgWhy'))}</p></div>` : ''}
         <button class="btn ghost" id="cx">${esc(t('close'))}</button>`);
       $('#cx').onclick = closeSheet;
+      /* ผู้ติดต่อกรณีฉุกเฉินไม่ขึ้นเอง ต้องกดเปิด — เป็นข้อมูลของคนที่ไม่ได้ใช้ระบบนี้
+         และไม่มีเหตุผลที่จะให้มันผ่านตาใครตอนเลื่อนหาเบอร์เพื่อนร่วมงานเฉยๆ */
+      if($('#emgS')) $('#emgS').onclick = () => {
+        $x('#emgBox').innerHTML = `<div class="emgkin">
+          <b>${esc(t('emgKin'))}</b> ${esc(p.emg.name)}${
+            p.emg.relation ? ' · ' + esc(p.emg.relation) : ''}<br>
+          <a href="tel:${esc(p.emg.phone)}">${esc(t('ctCall'))} ${esc(p.emg.phone)}</a></div>`;
+      };
       if($('#cp')) $('#cp').onclick = async () => {
         try{ await navigator.clipboard.writeText(p.phone); toast(t('dirCopied'), 'ok'); }
         catch(e){ toast(p.phone); }
@@ -7152,55 +8076,6 @@ function returnSheet(i){
 /* ── กระดานสถานะฉุกเฉิน ─────────────────────────────────────
    ตัวเลขที่สำคัญที่สุดคือ "ยังไม่ตอบ" ไม่ใช่ "ปลอดภัย"
    เพราะคนปลอดภัยไม่ต้องทำอะไรต่อ แต่คนที่เงียบต้องตามทุกคน */
-ROUTES['alert-board'] = async () => {
-  setTitle(t('emgBoard'));
-  $x('#main').innerHTML = `<div class="view"><div id="bd">${skeleton(3)}</div></div>`;
-  let b = null;
-  try{ b = await apiRetry('getAlertBoard', {}, 'GET'); }catch(e){}
-  if(!b?.ok){ $x('#bd').innerHTML = emptyState(IC.info, t('adminNo'), t('adminNoBody')); return; }
-  if(!b.active){ $x('#bd').innerHTML = emptyState(IC.bellBig, t('emgClosed'), ''); return; }
-
-  const answered = b.safe.length + b.help.length;
-  const list = (rows, cls) => rows.length ? `<div class="rows" ${cls ? 'style="border-color:var(--bad-line,#FECACA)"' : ''}>${
-    rows.map(r => `<div class="row">
-      <span class="av ${cls ? 'no' : ''}">${esc(String(r.nickname || r.name || '?').trim().charAt(0))}</span>
-      <div class="body">
-        <div class="t">${esc(r.name)}${r.nickname ? ' · ' + esc(r.nickname) : ''}</div>
-        <div class="s">${esc([r.dept, r.location, r.note].filter(Boolean).join(' · ') || '—')}</div>
-      </div>
-      ${r.phone ? `<a class="mini call" href="tel:${esc(r.phone)}">📞</a>` : ''}
-    </div>`).join('')}</div>` : '';
-
-  $x('#bd').innerHTML = `
-    <div class="card" style="border-color:var(--bad,#DC2626)">
-      <div style="font-size:var(--fs-meta);font-weight:800;color:var(--bad,#DC2626)">${esc(fmtDate(b.alert.at))}</div>
-      <h3 style="margin:5px 0 0;font-size:17px">${esc(b.alert.title)}</h3>
-    </div>
-    <div class="tiles" style="margin-top:12px">
-      <div class="tile" style="min-height:76px;background:var(--warn-bg);border-color:var(--warn-line)">
-        <div class="nm" style="font-size:25px;color:var(--warn)">${b.none.length}</div>
-        <div class="en">${esc(t('emgNone'))}</div></div>
-      <div class="tile" style="min-height:76px;background:var(--bad-bg);border-color:var(--bad-line)">
-        <div class="nm" style="font-size:25px;color:var(--bad)">${b.help.length}</div>
-        <div class="en">${esc(t('emgHelpN'))}</div></div>
-      <div class="tile" style="min-height:76px;background:var(--ok-bg);border-color:var(--ok-line)">
-        <div class="nm" style="font-size:25px;color:var(--ok)">${b.safe.length}</div>
-        <div class="en">${esc(t('emgSafeN'))}</div></div>
-      <div class="tile" style="min-height:76px">
-        <div class="nm" style="font-size:25px">${answered}/${b.total}</div>
-        <div class="en">${esc(t('emgTotal'))}</div></div>
-    </div>
-    ${b.help.length ? `<div class="section-title" style="color:var(--bad)">${esc(t('emgHelpN'))}</div>${list(b.help, true)}` : ''}
-    ${b.none.length ? `<div class="section-title" style="color:var(--warn)">${esc(t('emgNone'))}</div>${list(b.none)}` : ''}
-    ${b.safe.length ? `<div class="section-title">${esc(t('emgSafeN'))}</div>${list(b.safe)}` : ''}
-    ${b.canClose ? `<div style="margin-top:16px"><button class="btn ghost" id="cls">${esc(t('emgClose'))}</button></div>` : ''}`;
-
-  if($('#cls')) $('#cls').onclick = async () => {
-    try{ await apiRetry('closeAlert', { alert_id:b.alert.alert_id }, 'POST');
-         toast(t('emgClosed'), 'ok'); go('alert-board', {}, true); }
-    catch(e){ toast(t('netErr'), 'bad'); }
-  };
-};
 
 /* ── ประกาศเหตุฉุกเฉิน (admin) ──────────────────────────────── */
 function declareSheet(){
@@ -7472,8 +8347,21 @@ ROUTES['admin-proj'] = async () => {
       ${it ? `<div style="font-size:var(--fs-meta);color:var(--ink-3);margin:-6px 0 12px">${esc(t('admProjLocked'))}</div>` : ''}
       <div class="field"><label>${esc(t('admProjName'))}</label>
         <input id="pn" value="${esc(it?.name_th || '')}" placeholder="${esc(t('admProjNamePh'))}"></div>
+      <!-- ประเภทเคยเป็นช่องพิมพ์อิสระ ผลคือมี Core, core, งานหลัก, Back-office ปนกันในชีทเดียว
+           แล้วสรุปยอดตามประเภทไม่ได้เลย เพราะระบบมองว่าเป็นคนละประเภท -->
       <div class="field"><label>${esc(t('admProjType'))}</label>
-        <input id="pt" value="${esc(it?.type || '')}" placeholder="${esc(t('admProjTypePh'))}"></div>
+        <select id="pt">
+          <option value="">—</option>
+          ${t('admProjTypes').map(x => `<option ${String(it?.type || '').indexOf(x) === 0
+            ? 'selected' : ''}>${esc(x)}</option>`).join('')}
+        </select></div>
+      <div class="field" id="pdWrap" hidden><label>${esc(t('admProjDept'))}</label>
+        <select id="pd">
+          <option value="">${esc(t('admProjDeptPick'))}</option>
+          ${t('admProjDepts').map(x => `<option ${
+            String(it?.type || '').slice(12) === x ? 'selected' : ''}>${esc(x)}</option>`).join('')}
+        </select>
+        <div class="hint">${esc(t('admProjTypeWhy'))}</div></div>
       <div class="field"><label>${esc(t('admProjPm'))}<span class="req">*</span></label>
         <button class="btn ghost" id="pmBtn" style="text-align:left;justify-content:flex-start">${
           esc(it?.pm_name || t('admProjPmPick'))}</button>
@@ -7485,6 +8373,11 @@ ROUTES['admin-proj'] = async () => {
       ${it ? `<button class="btn ghost" id="ptog">${esc(it.is_active ? t('admResOff') : t('admResOn'))}</button>` : ''}
       <button class="btn ghost" id="pcx">${esc(t('cancel'))}</button>`);
     $('#pcx').onclick = closeSheet;
+
+    /* Back office เก็บเป็น "Back office - IT" สายเดียว ไม่ต้องเพิ่มคอลัมน์ในชีท
+       และยังกรองด้วยคำว่า Back office ได้เหมือนเดิม */
+    const syncType = () => { $('#pdWrap').hidden = $('#pt').value !== 'Back office'; };
+    $('#pt').onchange = syncType; syncType();
 
     let pm = it?.pm_id ? { kenan_user_id:it.pm_id, name_th:it.pm_name } : null;
     let mem = (it?.member_ids || []).map((id, i) =>
@@ -7516,7 +8409,9 @@ ROUTES['admin-proj'] = async () => {
       try{
         const r = await apiRetry('saveProject', Object.assign({
           project_code:code, orig:it?.project_code || '',
-          name_th:$('#pn').value.trim(), type:$('#pt').value.trim(),
+          name_th:$('#pn').value.trim(),
+          type: $('#pt').value === 'Back office' && $('#pd').value
+                  ? 'Back office - ' + $('#pd').value : $('#pt').value,
           pm_id: pm?.kenan_user_id || '',
           member_ids: mem.map(m => m.kenan_user_id).join(','),
           is_active: it ? it.is_active : true
@@ -9526,6 +10421,7 @@ ROUTES['my-data'] = async () => {
     <div class="section-title" style="margin-top:18px">${esc(t('mdProfile'))}</div>
     <div class="rows">
       ${row(t('prEmpId'), p.kenan_user_id)}
+      ${row(t('prEmpCode'), p.emp_code)}
       ${row(t('fEmail'), p.email)}
       ${row(t('fName'), p.name_th)}
       ${row(t('fNameE'), p.name_en)}
@@ -9534,6 +10430,9 @@ ROUTES['my-data'] = async () => {
       ${row(t('mdPosition'), p.position)}
       ${row(t('admDrvPhone'), p.phone + (p.phone ? ' · ' + (p.show_phone ? t('mdShown') : t('mdHidden')) : ''))}
       ${row(t('prBirthday'), p.birthday)}
+      ${row(t('prEmgTitle'), p.emg_name
+        ? p.emg_name + (p.emg_relation ? ' · ' + p.emg_relation : '') +
+          (p.emg_phone ? ' · ' + p.emg_phone : '') : '')}
       ${row(t('mdPhoto'), yn(p.has_photo))}
       ${row(t('mdRoles'), p.roles)}
       ${row(t('mdLineLinked'), yn(p.line_linked))}
@@ -9805,7 +10704,13 @@ ROUTES.consent = async ({ readonly } = {}) => {
     <h4>ข้อมูลที่เก็บ</h4>
     <ul><li>ชื่อ-นามสกุล ชื่อเล่น แผนก ที่ตั้ง อีเมลองค์กร</li>
     <li>รหัสผู้ใช้ LINE (สำหรับส่งการแจ้งเตือน)</li>
-    <li>ภาพถ่ายพัสดุ อุปกรณ์ หรือปัญหาที่แจ้ง และเวลาที่บันทึกแต่ละขั้นตอน</li></ul>
+    <li>ภาพถ่ายพัสดุ อุปกรณ์ หรือปัญหาที่แจ้ง และเวลาที่บันทึกแต่ละขั้นตอน</li>
+    <li>รูปโปรไฟล์ LINE ของคุณ ใช้แสดงในทำเนียบบุคลากร เปลี่ยนเป็นรูปอื่นหรือปิดไม่ให้แสดงได้ในหน้าฉัน</li>
+    <li>ข้อมูลที่คุณเลือกกรอกเอง เช่น ตำแหน่ง เบอร์โทร รหัสพนักงาน และวันเกิด (เก็บปีเกิดต่อเมื่อคุณเปิดสวิตช์ไว้)</li>
+    <li>ชื่อ ความสัมพันธ์ และเบอร์โทรของผู้ติดต่อกรณีฉุกเฉินที่คุณระบุ</li></ul>
+    <h4>ผู้ติดต่อกรณีฉุกเฉิน</h4>
+    <p>เป็นข้อมูลของบุคคลอื่นที่คุณเป็นผู้ให้ไว้ กรุณาแจ้งเจ้าตัวด้วย ระบบจะไม่แสดงในทำเนียบตามปกติ
+    และจะเปิดให้เห็นเฉพาะตอนมีการประกาศเหตุฉุกเฉิน โดยผู้ประสานงานต้องกดเปิดดูเป็นรายคน</p>
     <h4>ใช้ทำอะไร</h4>
     <ul><li>ระบุตัวผู้รับพัสดุและแจ้งเตือนให้มารับ</li>
     <li>ยืนยันการส่งมอบและการคืนของ</li>
@@ -9821,7 +10726,14 @@ ROUTES.consent = async ({ readonly } = {}) => {
     <h4>What we collect</h4>
     <ul><li>Name, nickname, department, office, work email</li>
     <li>LINE user ID (for notifications)</li>
-    <li>Photos of parcels, equipment or reported issues, and timestamps of each step</li></ul>
+    <li>Photos of parcels, equipment or reported issues, and timestamps of each step</li>
+    <li>Your LINE profile picture, shown in the staff directory — you can replace it or switch it off under Me</li>
+    <li>Anything you choose to fill in yourself: position, phone, employee ID and birthday (the year is kept only if you switch it on)</li>
+    <li>The name, relationship and phone number of the emergency contact you provide</li></ul>
+    <h4>Emergency contact</h4>
+    <p>This is someone else's information that you provide, so please tell them. It never appears in the
+    directory in normal use; it becomes visible only during a declared emergency, and a coordinator has to
+    open it person by person.</p>
     <h4>How it is used</h4>
     <ul><li>Identifying parcel recipients and notifying them</li>
     <li>Confirming handover and return of items</li>
@@ -10103,7 +11015,11 @@ async function boot(){
 
   let auth;
   try{
-    auth = await apiRetry('bootstrap', { want: START_AT || '' }, 'GET');
+    /* ส่ง URL รูปโปรไฟล์ LINE ไปด้วย เซิร์ฟเวอร์เก็บไว้ให้ทำเนียบใช้
+       ทำตรงนี้เพราะเป็นจุดเดียวที่ LIFF บอกเราได้ และไม่ต้องเพิ่มขั้นตอนให้ผู้ใช้ */
+    auth = await apiRetry('bootstrap',
+      { want: START_AT || '', pic: S.profile?.pictureUrl || '' }, 'GET');
+    if(auth?.devLines) S.devLines = auth.devLines;
     if(auth?.announcements) S.bootNews = auth.announcements;
     if(auth?.pre) S.pre = { key:auth.pre.key, v:auth.pre.v, at:Date.now() };
     if(auth?.today) S.today = auth.today;

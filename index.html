@@ -743,6 +743,9 @@ body.drvmode #side{display:none!important}
 body.drvmode main{grid-column:1/-1!important;max-width:820px;margin:0 auto}
 @media(min-width:900px){ body.drvmode #app{grid-template-columns:1fr!important} }
 body.drvmode .nav{display:flex!important}
+/* ปุ่มสลับภาษาบนแถบบน — คนขับกดพลาดแล้วทั้งหน้ากลายเป็นภาษาอังกฤษ
+   แล้วหาทางกดกลับไม่เจอ เพราะคำว่า TH/EN ก็เล็กและอยู่มุมจอ */
+body.drvmode .langtop{display:none!important}
 .drvcard{border:1px solid var(--line);border-radius:var(--r);background:var(--surface);
   padding:14px;margin-bottom:12px}
 .drvcard.live{border-color:var(--warn);border-width:2px}
@@ -996,6 +999,159 @@ body.pn-open{overflow:hidden}
 .nrow.action .ncta{background:var(--brand);color:#fff;border-radius:999px;padding:6px 11px;
   font-weight:800}
 .nrow.action .ncta svg{width:14px;height:14px}
+
+/* ══════════ รูปคนในแถวรายการ ══════════
+   บั๊กเก่า: .av ถูกใช้ในหน้าทำเนียบและกระดานเหตุฉุกเฉินมาตลอด
+   แต่มีกฎ CSS แค่ .pk-row .av (หน้าเลือกคน) กับ .row img.av{object-fit}
+   ตัวที่อยู่ใน .row จึงไม่เคยมีขนาดเลย — ตัวอักษรย่อไม่มีวงกลม
+   และพอเปลี่ยนมาใช้รูปโปรไฟล์ LINE ซึ่งเป็นไฟล์เต็มขนาด รูปก็ขยายเต็มการ์ด
+   จนบังชื่อคนอื่นทั้งหน้า ที่ผ่านมารอดมาได้เพราะรูปเดิมเป็น thumbnail จิ๋วในชีท */
+.row .av{ width:38px; height:38px; flex:0 0 auto; border-radius:50%;
+  background:var(--brand-50); color:var(--brand);
+  font-size:15px; font-weight:800; line-height:1;
+  display:grid; place-items:center; overflow:hidden }
+.row img.av{ object-fit:cover; display:block }
+.row .av.no{ background:var(--bad-bg); color:var(--bad) }
+
+/* ══════════ พอร์ทัลคนขับ ══════════
+   คนขับส่วนใหญ่อายุ 50+ ใช้มือถือกลางแดด และเปิดแอปตอนกำลังจะออกรถ
+   ทุกอย่างในโหมดนี้จึงใหญ่กว่าที่อื่นในระบบหนึ่งขั้น และปุ่มต้องมีสี
+   ปุ่มพื้นขาวขอบบางบนพื้นขาว คือปุ่มที่คนไม่รู้ว่าเป็นปุ่ม */
+body.drvmode{ --fs-body:17px; --fs-sec:15px; --fs-meta:13px }
+.drv{ padding-bottom:30px }
+.dgreet{ font-size:19px; font-weight:700; color:var(--ink); margin:2px 0 10px }
+.dveh{ display:flex; align-items:center; gap:9px; padding:10px 13px; border-radius:var(--r);
+  background:var(--brand-50); color:var(--brand); font-size:15px; font-weight:700; margin-bottom:18px }
+.dveh svg{ width:22px; height:22px; flex:0 0 auto }
+.dsec{ margin:22px 0 10px; font-size:15px; font-weight:800; color:var(--ink-3);
+  letter-spacing:.02em }
+
+/* ── งานถัดไป: การ์ดใหญ่หนึ่งใบ ── */
+.dhero{ border:2px solid var(--brand); border-radius:var(--r-xl); padding:18px 17px 17px;
+  background:var(--surface); box-shadow:var(--shadow) }
+.dhero.live{ border-color:var(--ok); background:var(--ok-bg) }
+.dhero-h{ display:flex; align-items:baseline; gap:10px; flex-wrap:wrap }
+.dhero-t{ font-size:36px; font-weight:800; line-height:1; letter-spacing:-.01em;
+  font-variant-numeric:tabular-nums; color:var(--brand) }
+.dhero.live .dhero-t{ color:var(--ok) }
+.dhero-d{ font-size:17px; font-weight:700; color:var(--ink-2) }
+.dhero-live{ margin-left:auto; font-size:13px; font-weight:800; color:#fff;
+  background:var(--ok); padding:4px 11px; border-radius:999px }
+.dhero-v{ margin-top:10px; font-size:17px; font-weight:700; color:var(--ink) }
+.dhero-r{ margin-top:4px; font-size:19px; font-weight:800; line-height:1.4; color:var(--ink) }
+.dhero-m{ margin-top:12px; font-size:15px; line-height:1.75; color:var(--ink-2) }
+.dhero-n{ color:var(--ink-3) }
+
+/* ── จุดแวะ ── */
+.dstops{ margin-top:14px; border-top:1px dashed var(--line); padding-top:12px }
+.dstop{ display:flex; align-items:center; gap:11px; padding:7px 0 }
+.dstop-n{ flex:0 0 auto; width:28px; height:28px; border-radius:50%; display:grid;
+  place-items:center; background:var(--brand-50); color:var(--brand);
+  font-size:14px; font-weight:800 }
+.dstop-x{ flex:1; min-width:0; font-size:15px; font-weight:600; line-height:1.4 }
+.dstop.hit .dstop-n{ background:var(--ok); color:#fff }
+.dstop.hit .dstop-x{ color:var(--ink-3); text-decoration:line-through }
+.dstop-b{ flex:0 0 auto; padding:9px 14px; border-radius:999px; border:0;
+  background:var(--brand); color:#fff; font-size:14px; font-weight:700; cursor:pointer }
+
+/* ── ปุ่มของคนขับ: สูง 64–68px มีสีเสมอ ── */
+.dbtn{ display:flex; align-items:center; justify-content:center; gap:9px; width:100%;
+  min-height:64px; margin-top:12px; border:0; border-radius:16px; cursor:pointer;
+  font-size:19px; font-weight:800; text-align:center; text-decoration:none;
+  padding:12px 14px; line-height:1.3 }
+.dbtn.go{ background:var(--brand); color:#fff }
+.dbtn.go:active{ background:var(--brand-700) }
+.dbtn.ret{ background:var(--ok); color:#fff }
+.dbtn.call{ background:var(--surface); color:var(--brand); border:2px solid var(--brand);
+  min-height:56px; font-size:17px }
+.dbtn.map{ background:var(--brand-50); color:var(--brand); min-height:56px; font-size:17px }
+.dbtn.off{ background:var(--surface); color:var(--danger); border:2px solid var(--danger);
+  min-height:56px; font-size:17px }
+.dbtn-d{ width:12px; height:12px; border-radius:50%; background:#fff; flex:0 0 auto }
+.dhero-btns{ display:flex; gap:10px; margin-top:14px }
+.dhero-btns .dbtn{ margin-top:0 }
+
+/* ── งานอื่นๆ ── */
+.dlist{ display:flex; flex-direction:column; gap:9px }
+.drow{ display:flex; align-items:center; gap:13px; width:100%; text-align:left; cursor:pointer;
+  padding:15px 15px; border-radius:var(--r-lg); border:1.5px solid var(--line);
+  background:var(--surface) }
+.drow:active{ background:var(--brand-50) }
+.drow.off{ opacity:.62; cursor:default }
+.drow-t{ flex:0 0 auto; font-size:19px; font-weight:800; color:var(--brand);
+  font-variant-numeric:tabular-nums }
+.drow.off .drow-t{ color:var(--ink-3) }
+.drow-x{ flex:1; min-width:0 }
+.drow-n{ display:block; font-size:16px; font-weight:700; line-height:1.35 }
+.drow-s{ display:block; font-size:14px; color:var(--ink-3); margin-top:2px }
+.drow-g{ flex:0 0 auto; width:20px; height:20px; color:var(--ink-3) }
+.drow-g svg{ width:20px; height:20px }
+
+.dnone{ display:flex; flex-direction:column; align-items:center; gap:6px; text-align:center;
+  padding:32px 18px; border-radius:var(--r-xl); border:2px dashed var(--line);
+  color:var(--ink-3) }
+.dnone svg{ width:44px; height:44px; color:var(--brand-300) }
+.dnone b{ font-size:17px; color:var(--ink-2) }
+.dnone span{ font-size:14px }
+
+/* ช่องกรอกของคนขับใหญ่กว่าที่อื่น — เลขไมล์พิมพ์กลางแดดด้วยนิ้วโป้ง */
+.dbig{ font-size:20px!important; padding:15px 14px!important; font-weight:700 }
+
+/* ตัวเลือกเหตุผล: แถวเต็มความกว้าง กดพลาดยาก */
+.dopts{ display:flex; flex-direction:column; gap:8px }
+.dopt{ width:100%; text-align:left; padding:15px 15px; border-radius:14px;
+  border:2px solid var(--line); background:var(--surface); color:var(--ink);
+  font-size:16px; font-weight:600; cursor:pointer }
+.dopt.on{ border-color:var(--brand); background:var(--brand-50); color:var(--brand);
+  font-weight:800 }
+
+/* ══════════ ตารางงานของคนขับ (ฝั่งผู้ดูแล) ══════════ */
+.djrow .s{ white-space:normal; overflow:visible; text-overflow:clip; line-height:1.5 }
+.chips .chip[disabled]{ opacity:.45; cursor:not-allowed }
+
+/* ══════════ ลายเซ็นคนทำ ══════════
+   ใส่ชื่อตัวเองตรงๆ กลางหน้าอ่านแล้วเหมือนป้ายโฆษณาตัวเอง
+   แต่ไม่ใส่เลยก็ไม่จริง เพราะมีคนลงมือทำอยู่จริงๆ
+   ทางออกคือให้มันเป็นลายเซ็นเล็กๆ ที่ต้องเอานิ้วไปแตะถึงจะเห็นชื่อ
+   คนที่อยากรู้ว่าใครทำจะได้รู้ คนที่ไม่ได้สนใจก็เห็นแค่รูปการ์ตูนน่ารักๆ */
+.sig{ position:relative; display:block; margin:0 auto 6px; padding:4px 8px;
+  background:none; border:0; cursor:pointer; line-height:0 }
+.sig-i{ height:52px; width:auto; display:block; color:var(--brand);
+  transition:transform .2s cubic-bezier(.34,1.56,.64,1) }
+.sig:hover .sig-i, .sig.on .sig-i{ transform:translateY(-2px) }
+.sig-t{ position:absolute; left:50%; top:100%; margin-top:5px;
+  transform:translateX(-50%); white-space:nowrap;
+  background:var(--ink); color:#fff; font-size:var(--fs-meta); font-weight:600;
+  line-height:1.4; padding:5px 10px; border-radius:8px;
+  opacity:0; pointer-events:none; transition:opacity .16s ease; z-index:2 }
+.sig-t::before{ content:''; position:absolute; left:50%; top:-4px; width:8px; height:8px;
+  transform:translateX(-50%) rotate(45deg); background:var(--ink); border-radius:2px }
+.sig:hover .sig-t, .sig:focus-visible .sig-t, .sig.on .sig-t{ opacity:1 }
+/* จุดไข่ปลาจางๆ บอกว่ากดได้ — ไม่งั้นบนมือถือจะไม่มีใครรู้ว่าแตะได้ */
+.sig-h{ display:block; margin:2px auto 0; width:26px; height:0;
+  border-top:1.5px dotted var(--brand-300) }
+
+/* ══════════ ปิดท้ายหน้าเกี่ยวกับ ══════════ */
+.ab-close{ margin:18px 0 0; padding-top:16px; border-top:1px solid var(--line);
+  font-size:var(--fs-body); font-weight:700; color:var(--brand);
+  text-align:center; line-height:1.55 }
+.ab-h{ margin:22px 0 10px; font-size:var(--fs-h2); font-weight:800 }
+
+/* ══════════ ลายเซ็นเป็นรูปมาสคอตจริง ══════════
+   ของเดิมวาดเป็น SVG เอง รอบนี้ใช้รูปที่เจ้าตัวทำมา — เป็นตัวเขาจริงๆ มากกว่า */
+.sig-im{ display:block; width:64px; height:64px; border-radius:50%;
+  transition:transform .2s cubic-bezier(.34,1.56,.64,1) }
+.sig:hover .sig-im, .sig.on .sig-im{ transform:translateY(-2px) scale(1.04) }
+
+/* ══════════ เนื้อหาฉบับเต็ม ══════════
+   ยาวสามพันคำ ระยะบรรทัดกับความกว้างจึงสำคัญกว่าหน้าอื่น
+   จอคอมจำกัดความกว้างไว้ ไม่งั้นสายตาต้องกวาดข้ามจอทุกบรรทัด */
+.ab-long{ max-width:64ch; margin-left:auto; margin-right:auto }
+.ab-long p{ line-height:1.85 }
+.ab-ul{ margin:10px 0 16px; padding-left:20px; color:var(--ink-2);
+  font-size:var(--fs-body); line-height:1.8 }
+.ab-ul li{ margin-bottom:6px }
+.ab-ul li::marker{ color:var(--brand-300) }
 
 /* ══════════ มุมช่วยเหลือบนหน้าแรก ══════════
    เล็ก เป็นมิตร และไม่แย่งความสนใจจาก "ต้องทำตอนนี้"
@@ -1645,7 +1801,7 @@ const CFG = {
   GAS_URL : 'https://script.google.com/macros/s/AKfycbyOjh4BAAbzY5QfZNG_oGuxbmvZwHjEAKazRMuMxrDeoNknE_rqEoAFdkuJldOPP_q_eg/exec',
   LIFF_TIMEOUT_MS : 3500,
   CONSENT_VERSION : '2026-09-01',
-  BUILD : '2026-09-06g'      // ต้องตรงกับ BUILD ใน Code.gs ที่ Deploy ไว้
+  BUILD : '2026-09-06j'      // ต้องตรงกับ BUILD ใน Code.gs ที่ Deploy ไว้
 };
 
 /* เก็บ ?go=... ไว้ตั้งแต่ต้น เพราะเดี๋ยวจะล้าง query string ทิ้งหลัง LIFF ล็อกอิน
@@ -1660,7 +1816,8 @@ const START_AT = (function(){
             'cars','car-new','driver','admin-proj','admin-drv','admin-staff','zoom',
             'item','labels','driver-portal','driver-me','driver-report','driver-pair',
             'admin-drvrep','my-data','admin-dsr','services',
-            'admin-people','admin-contacts','admin-devline'].includes(g) ? g : null;
+            'admin-people','admin-contacts','admin-devline','about-long',
+            'driver-jobs'].includes(g) ? g : null;
   }catch(e){ return null; }
 })();
 /* ?rec=PCL-xxx → เปิดพัสดุชิ้นนั้นให้เลย (ลิงก์ที่ส่งไปในข้อความ LINE) */
@@ -1744,7 +1901,7 @@ const T = {
     navHome:'หน้าแรก', navParcel:'พัสดุ', navSos:'ฉุกเฉิน', navMe:'ฉัน', navLog:'บันทึกพัสดุ',
     navNotif:'แจ้งเตือน',
     sgWork:'งานของฉัน', sgBook:'จอง ยืม คืน', sgInfo:'ข้อมูลองค์กร', sgAdmin:'สำหรับผู้ดูแล',
-    admDrv:'จัดการคนขับ', admDrvAdd:'เพิ่มคนขับ', admDrvName:'ชื่อคนขับ',
+    admDrv:'จัดการคนขับ', admDrvAdd:'เพิ่มคนขับ', admDrvEdit:'แก้ข้อมูล', admDrvName:'ชื่อคนขับ',
     admDrvPhone:'เบอร์โทร', admDrvCompany:'สังกัด', admDrvCompanyPh:'เช่น Kenan / บริษัทรถเช่า ABC',
     admDrvNote:'หมายเหตุ', admDrvNotePh:'เช่น ขับรถตู้ได้ · มีใบขับขี่ ท.2',
     admDrvPhoto:'รูปคนขับ',
@@ -1961,6 +2118,7 @@ const T = {
     carAltNotifyWhy:'เหมาะกับของด่วนหน้างานที่รอไม่ได้ · PM ได้รับแจ้งทันทีเพื่อทราบ ไม่ต้องกดอะไร',
     carAltRequest:'ขออนุมัติ PM ก่อนเดินทาง',
     carAltRequestWhy:'เหมาะกับเที่ยวที่วางแผนไว้และมีค่าใช้จ่ายสูง · ต้องรอ PM กดอนุมัติในแอป',
+    carAltAfterT:'บันทึกเรียบร้อย',
     carAltLogged:pm=>`บันทึกแล้ว${pm ? ' · แจ้ง ' + pm + ' เรียบร้อย' : ''}`,
     carAltSent:pm=>`ส่งคำขอแล้ว${pm ? ' · รอ ' + pm + ' อนุมัติ' : ''}`,
     dbApprovals:'คำขอที่รอคุณอนุมัติ', dbBirthdays:'วันเกิดวันนี้',
@@ -2045,10 +2203,98 @@ const T = {
 
     abTitle:'เกี่ยวกับ ' + APP_NAME,
     abTag:'ที่เดียวสำหรับเรื่องประจำวันในออฟฟิศ — พัสดุ ห้องประชุม รถ อุปกรณ์ และเรื่องแจ้งซ่อม',
-    abP1:APP_NAME + ' เกิดจากคำถามง่ายๆ ว่าทำไมเรื่องเล็กๆ ในออฟฟิศถึงต้องใช้หลายช่องทาง พัสดุถามในไลน์กลุ่ม จองห้องเขียนในกระดาษ จองรถโทรหา GA แล้วไม่มีใครรู้ว่าตอนนี้อะไรว่างอยู่บ้าง',
-    abP2:'ระบบนี้ไม่ได้ตั้งใจจะแทนทุกอย่าง แค่รวบเรื่องที่ทุกคนต้องทำทุกสัปดาห์มาไว้ที่เดียว แล้วให้จบได้ในไม่กี่ครั้งกด ส่วนที่เหลือยังอยู่ที่เดิม และมีทางเข้าอยู่ในแท็บระบบอื่นๆ',
+    /* ── รอบ h: เรื่องเล่าหน้าเกี่ยวกับ + ลายเซ็นคนทำ ── */
+    sigWho:'dev by Pipat S. & AI friends',
+    /* ── รอบ i: ฉบับเต็มของเรื่องเล่าหน้าเกี่ยวกับ ── */
+    /* ── รอบ j: แก้ไขการจอง · ตารางงานคนขับ · ทางออกเมื่อไม่มีรถ ── */
+    ebEdit:'แก้ไขการจอง', ebTitle:'แก้ไขการจอง',
+    ebDate:'วันที่', ebFrom:'ตั้งแต่', ebTo:'ถึง',
+    ebSave:'บันทึกการแก้ไข', ebSaved:'แก้ไขเรียบร้อย',
+    ebNeedTime:'ใส่วันและเวลาให้ครบก่อน', ebBadTime:'เวลาสิ้นสุดต้องหลังเวลาเริ่ม',
+    ebClash:(who,d,e)=>`ช่วงนี้มีคนจองไว้แล้ว${who ? ' — ' + who : ''} (${d} ถึง ${e}) ลองเลือกเวลาอื่น`,
+    ebLocked:'ใบนี้เริ่มไปแล้วหรือปิดไปแล้ว แก้ย้อนหลังไม่ได้',
+    ebVeh:'รถที่ใช้',
+    ebNoDriver:'ยังไม่กำหนดคนขับ',
+    ebDriverWhy:'เปลี่ยนคนขับได้เฉพาะเจ้าหน้าที่ · ระบบจะแจ้งคนขับคนใหม่ให้เอง',
+    ebWhoCan:'แก้ได้เฉพาะการจองของตัวเอง',
+
+    djTitle:'ตารางงานของคนขับ', djPick:'เลือกคนขับจากรายการก่อน',
+    djJobs:'ดูตารางงาน / แก้ไขงาน',
+    djVeh:'รถที่ดูแล', djVehSave:'บันทึกรถที่ดูแล', djVehSaved:'บันทึกแล้ว',
+    djVehWhy:'รถที่เลือกไว้จะถูกกำหนดคนขับให้อัตโนมัติเมื่อมีคนจองรถคันนั้น',
+    djVehTaken:n=>`รถคันนี้เป็นของ ${n} อยู่แล้ว`,
+    djUpcoming:'งานที่ยังไม่จบ', djPast:'ประวัติงาน',
+    djNoUpcoming:'ยังไม่มีงานที่รออยู่', djNoPast:'ยังไม่มีประวัติงาน',
+    djBy:n=>`ผู้จอง ${n}`,
+    djTapEdit:'แตะที่งานเพื่อแก้เวลา เปลี่ยนรถ หรือย้ายให้คนขับคนอื่น',
+
+    carNoFreePick:'รถคันที่เลือกไม่ว่างช่วงนี้',
+    carAltEntry:'ไม่มีรถที่ใช้ได้? กดดูทางเลือกอื่น',
+    carAltEntryWhy:'ใช้ Grab หรือรถรับจ้าง แล้วให้ระบบแจ้ง PM ของโครงการให้',
+    carGrabOpen:'เปิดแอป Grab',
+    carGrabAfter:'บันทึกไว้แล้ว · กดปุ่มด้านล่างเพื่อเรียกรถได้เลย',
+    abReadLong:'อ่านฉบับเต็ม',
+    abLongT:APP_NAME + ' เกิดขึ้นได้ยังไง (ฉบับเต็ม)',
+    abLongLead:'ฉบับย่ออยู่ในหน้าเกี่ยวกับ · หน้านี้คือฉบับเต็มสำหรับคนที่อยากอ่านที่มาทั้งหมด',
+    abLong:[
+      ['p', APP_NAME + ' ไม่ได้เริ่มจากคำถามว่า “เราจะเอา AI มาทำอะไรดี?” แต่มันเริ่มจากคำถามง่ายกว่านั้นครับว่า “ในแต่ละวัน เรากำลังเสียเวลาและพลังกับอะไรที่จริง ๆ แล้วระบบน่าจะช่วยเราได้บ้าง?”'],
+      ['p', 'หลายเรื่องในชีวิตการทำงานของพวกเราอาจดูเป็นเรื่องเล็กถ้ามองแยกกัน ไม่ว่าจะเป็นตามหาว่าพัสดุของใครมาถึงแล้ว จองรถและประสานคนขับ ยืมอุปกรณ์แล้วไม่รู้ว่าอยู่กับใคร หาข้อมูล เช็กว่าสิ่งที่แจ้งไปถึงขั้นตอนไหน หรือแค่พยายามหาว่า “เรื่องนี้ต้องถามใคร?”'],
+      ['p', 'แต่เรื่องเล็ก ๆ เหล่านี้เกิดขึ้นซ้ำแทบทุกวัน เมื่อไม่มีระบบกลางช่วยจัดการ ติดตาม หรือสื่อสารให้ทุกคนเห็นข้อมูลชุดเดียวกัน งานก็จะค่อย ๆ ไหลกลับไปอยู่ที่คนไม่กี่คน ต้องตาม ต้องถาม ต้องจำ และต้องคอยเชื่อมข้อมูลระหว่างคนให้เอง'],
+      ['p', 'ตรงนี้ไม่ใช่แค่เรื่อง “เสียเวลา” ครับ เมื่อข้อมูลกระจายอยู่หลายช่องทางหรือไม่มีจุดกลางในการติดตาม ก็มีโอกาสเกิดงานซ้ำ การตกหล่น ความเข้าใจไม่ตรงกัน และ human error ได้ง่ายขึ้น และเมื่อเกิดซ้ำไปเรื่อย ๆ สิ่งที่เริ่มจาก friction เล็ก ๆ ก็สามารถสะสมเป็นภาระที่กระทบทั้งคุณภาพงาน เวลา คนที่รับผิดชอบ และวิธีการทำงานขององค์กรโดยรวมได้'],
+      ['h', 'หลักที่ใช้'],
+      ['p', 'ผมเลยเริ่มลองมองปัญหาเหล่านี้ผ่าน AI, Automation และ Process Design หลักที่ผมใช้ค่อนข้างง่ายครับ'],
+      ['ul', ['เรื่องไหนที่ระบบจำแทนเราได้ — ให้ระบบช่วยจำ',
+              'เรื่องไหนระบบแจ้งแทนเราได้ — ให้ระบบช่วยแจ้ง',
+              'เรื่องไหน user ทำเองได้ — ทำให้เป็น self-service',
+              'และเก็บเวลาและพลังของคนไว้กับงานที่ต้องใช้ judgement, creativity และการทำงานกับคนจริง ๆ']],
+      ['p', 'นั่นคือจุดเริ่มต้นของ ' + APP_NAME],
+      ['p', APP_NAME + ' จึงไม่ได้ตั้งใจจะเป็นแค่ “เว็บรวมเมนู” หรือระบบใหม่อีกหนึ่งตัวที่เพิ่มเข้ามาในองค์กร แต่ผมอยากให้มันเป็นจุดกลางของงานเล็ก ๆ ในแต่ละวันที่ทุกคนควรทำได้ง่ายขึ้น'],
+      ['ul', ['พัสดุ', 'การจองรถ', 'การยืม-คืนอุปกรณ์', 'Emergency',
+              'การแจ้งเรื่องและติดตามสถานะ', 'ข้อมูลบุคลากร', 'ข่าวสาร',
+              'ไปจนถึงบริการอื่น ๆ ที่จะค่อย ๆ เชื่อมเข้ามาในอนาคต']],
+      ['h', 'จุดเริ่มต้นของ journey'],
+      ['p', 'สำหรับผม ' + APP_NAME + ' เป็นหนึ่งใน use case แรก ๆ ที่ได้พิสูจน์แนวคิดว่า AI Transformation ไม่จำเป็นต้องเริ่มจากระบบใหญ่ ราคาแพง หรืออะไรที่ดูหวือหวา บางครั้งมันเริ่มจากการเข้าใจปัญหาเล็ก ๆ ที่เกิดขึ้นจริงให้ดีพอ แล้วสร้างวิธีที่ง่ายกว่าเดิมขึ้นมาทีละเรื่อง'],
+      ['p', 'จุดเริ่มต้นของ journey นี้ต้องขอบคุณโครงการ Kenan Academy ที่เปิดพื้นที่ให้ผมได้พัฒนางานด้าน AI Automation, AI Use Case และ Powered Workplace Systems และที่สำคัญคือให้โอกาสผมได้ลองเอาสิ่งที่เรียนรู้ไปใช้กับโจทย์จริงขององค์กร'],
+      ['p', 'ประสบการณ์จากตรงนั้นก็ต่อยอดมาสู่บทบาทด้าน AI Solutions & Implementation ใน AI Taskforce ซึ่งหนึ่งใน mission สำคัญสำหรับผมคือ ทำอย่างไรให้ AI ไม่ได้อยู่แค่ใน training, slide หรือ demo แต่กลายเป็น use case ที่คนในองค์กรสัมผัสได้จริงว่า “วิธีทำงานของเราดีขึ้นจากเดิม” ' + APP_NAME + ' เป็นหนึ่งในชิ้นงานแรก ๆ ของ journey นั้น'],
+      ['h', 'AI เปลี่ยนต้นทุนของการสร้างระบบภายใน'],
+      ['p', 'และอีกสิ่งหนึ่งที่ผมคิดว่า ' + APP_NAME + ' แสดงให้เห็นค่อนข้างชัดคือ AI เปลี่ยนต้นทุนและความเป็นไปได้ของการพัฒนาระบบภายในองค์กรไปมาก'],
+      ['p', 'ถ้าระบบลักษณะนี้ต้องเริ่มด้วยการจ้างทีมภายนอกทั้งหมด ค่าใช้จ่ายไม่ได้มีแค่ “ค่าคนเขียนโค้ด” แต่รวมถึงการวิเคราะห์ process, เก็บ requirement, ออกแบบ UX/UI, พัฒนา frontend และ backend, เชื่อมระบบ, ทดสอบ, debugging รวมถึงการปรับแก้หลังผู้ใช้เริ่มทดลองจริง ถ้าทำครบวงจรในรูปแบบนั้น ต้นทุนการพัฒนามีโอกาสอยู่ในระดับหลักแสนบาทได้ไม่ยาก โดยเฉพาะเมื่อระบบมีหลาย workflow และต้องปรับต่อเนื่องจาก feedback ของผู้ใช้'],
+      ['p', 'แน่นอนว่า AI ไม่ได้ทำให้การสร้างระบบ “ไม่มีต้นทุน” เพราะยังต้องมีคนเข้าใจปัญหา ออกแบบ ตัดสินใจ ทดลอง ตรวจสอบ แก้ไข และรับผิดชอบกับสิ่งที่นำไปใช้จริง แต่ AI ทำให้คนหนึ่งคนสามารถทำงานข้ามหลายบทบาทได้มากขึ้น และเมื่อใช้ร่วมกับเครื่องมือที่ Kenan มีอยู่แล้ว เราสามารถลด cash investment, ลดต้นทุนของการทดลอง และลดการพึ่งพาการจ้างพัฒนาภายนอกในช่วงเริ่มต้นได้อย่างมาก'],
+      ['p', 'ที่สำคัญกว่านั้นคือ เราสามารถสร้างของจริงเร็วขึ้น แล้วให้ผู้ใช้จริงช่วยบอกเราว่าอะไรควรอยู่ อะไรควรตัด และอะไรควรพัฒนาต่อ แทนที่จะลงทุนก้อนใหญ่ก่อนที่จะรู้ว่าสิ่งที่สร้างขึ้นตอบโจทย์จริงหรือไม่'],
+      ['h', 'ระบบนี้เกิดจากพวกเราทุกคน'],
+      ['p', 'และตรงนี้คืออีกสิ่งที่สำคัญมากสำหรับ ' + APP_NAME + ' ถึงผมจะเป็นคนลงมือพัฒนาระบบหลัก แต่มันเกิดขึ้นมาได้จากพวกเราทุกคนครับ จากประสบการณ์จริงของเพื่อน ๆ พนักงาน จากเรื่องที่ทุกคนต้องเจอในงานประจำ และจากจุดที่ใครบางคนรู้สึกว่า “มันน่าจะง่ายกว่านี้ได้”'],
+      ['ul', ['บาง feature เริ่มจากคำถามว่า “ทำไมเรื่องนี้ต้องทำหลายขั้นตอนจัง?”',
+              'บางอย่างเริ่มจาก “ถ้ากดตรงนี้แล้วทำได้เลยก็น่าจะดีนะ”',
+              'และบางอย่างเริ่มง่ายมากจากคนเดินมาบอกผมว่า “พี่ ตรงนี้มันแปลก ๆ นะ”']],
+      ['p', 'หลายอย่างที่ทุกคนเห็นอยู่ใน ' + APP_NAME + ' วันนี้ ก็ค่อย ๆ โตมาจากบทสนทนาแบบนี้ครับ และผมอยากให้มันเป็นแบบนี้ต่อไป'],
+      ['h', 'ระบบจะมีความหมายก็ต่อเมื่อเราใช้มันร่วมกัน'],
+      ['p', 'เพราะสุดท้าย ระบบจะดีแค่ไหนก็ไม่มีความหมาย ถ้าเราไม่ได้ใช้มันร่วมกันจริง หนึ่งในสาเหตุที่งานเกิดการตามซ้ำ ถามซ้ำ ข้อมูลไม่ตรงกัน หรือตกหล่นได้ง่าย คือเรายังมีข้อมูลและการสื่อสารกระจายอยู่หลายที่ เมื่อคนหนึ่งใช้ช่องทางหนึ่ง อีกคนใช้ช่องทางหนึ่ง ก็ยากที่ทุกคนจะเห็นสถานะเดียวกันในเวลาเดียวกัน'],
+      ['p', 'เพราะฉะนั้น ' + APP_NAME + ' จะช่วยเราได้มากที่สุด ก็ต่อเมื่อเราค่อย ๆ ใช้มันเป็น shared way of working ของพวกเรา ไม่ใช่เพราะทุกอย่างในระบบต้องสมบูรณ์ตั้งแต่วันนี้ — จริง ๆ แล้วตรงกันข้ามครับ ผมอยากให้ทุกคนลองใช้ แล้วช่วยบอกกันตรง ๆ'],
+      ['ul', ['ตรงไหนดี — บอกได้',
+              'ตรงไหนงง — บอกได้',
+              'อะไรไม่จำเป็น — บอกได้',
+              'ตรงไหนยังเสียเวลาเหมือนเดิม — ยิ่งอยากให้บอก']],
+      ['p', 'เพราะ feedback เหล่านี้ไม่ได้เป็นเพียง comment เกี่ยวกับเว็บไซต์ แต่มันเป็น input ที่ทำให้เราสามารถออกแบบวิธีทำงานของ Kenan ให้ดีขึ้นไปด้วยกัน'],
+      ['p', 'ถ้ามีงานอะไรที่ทุกวันนี้ยังทำให้คุณคิดว่า “ทำไมเรายังต้องทำแบบนี้อยู่นะ?” ส่งมาได้เลยครับ เพราะอันนั้นอาจเป็น use case ถัดไปที่เราช่วยกันเปลี่ยนให้ดีขึ้นจริงก็ได้'],
+      ['p', APP_NAME + ' จึงไม่ใช่แค่ระบบที่ผมอยากสร้างให้เสร็จ แต่เป็นจุดเริ่มต้นของสิ่งที่ผมอยากเห็นเกิดขึ้นกับวิธีทำงานของพวกเรา'],
+      ['ul', ['ให้ระบบช่วยรับภาระที่ไม่จำเป็น',
+              'ให้ข้อมูลไปถึงคนที่ต้องใช้ได้ง่ายขึ้น',
+              'ให้คนมีเวลาและพลังกลับคืนมา',
+              'และให้เทคโนโลยีช่วยพวกเราสร้างผลลัพธ์ที่มากขึ้น โดยไม่ต้องทำงานให้หนักขึ้นตลอดเวลา']]
+    ],
+    abStoryT:APP_NAME + ' เกิดขึ้นได้ยังไง',
+    abStory:[
+      APP_NAME + ' เริ่มจากเรื่องเล็ก ๆ ในชีวิตการทำงานที่เกิดซ้ำทุกวันครับ ไม่ว่าจะเป็นตามหาพัสดุ จองรถ ยืมอุปกรณ์ เช็กสถานะงาน หรือหาว่า “เรื่องนี้ต้องถามใคร?” พอไม่มีระบบกลางช่วยจัดการ เรื่องเล็ก ๆ เหล่านี้ก็กลายเป็นงานซ้ำ งานตกหล่น และภาระที่ไปกองอยู่กับคนไม่กี่คน',
+      'ผมเลยลองเอา AI, Automation และการออกแบบวิธีทำงานใหม่ มาช่วยเปลี่ยนเรื่องที่เคยต้องตาม ต้องถาม และต้องจำ ให้ระบบช่วยจัดการแทนเรา',
+      APP_NAME + ' เป็นหนึ่งใน use case แรก ๆ ที่เกิดจากแนวคิดนี้ ต้องขอบคุณ Kenan Academy Project ที่เปิดโอกาสให้ผมได้พัฒนางานด้าน AI Automation, AI Use Case และ Powered Workplace Systems และต่อยอดมาสู่บทบาทด้าน AI Solutions & Implementation ใน AI Taskforce',
+      'ถึงผมจะเป็นคนลงมือพัฒนาระบบหลัก แต่ ' + APP_NAME + ' เกิดขึ้นจากพวกเราทุกคนครับ จากปัญหาที่เจอจริง ไอเดียของเพื่อน ๆ และความรู้สึกง่าย ๆ ว่า “มันน่าจะมีวิธีที่ดีกว่านี้”',
+      'อีกมุมหนึ่ง ถ้าต้องจ้างทีมภายนอกมาวิเคราะห์ ออกแบบ พัฒนา เชื่อมระบบ และทดสอบทั้งหมด ต้นทุนอาจอยู่ในระดับหลักแสนบาท แต่ AI และเครื่องมือที่ Kenan มีอยู่แล้ว ช่วยให้เราทดลองและพัฒนาระบบได้เร็วขึ้นด้วยต้นทุนที่ต่ำลงมาก',
+      'สุดท้าย ระบบจะมีความหมายก็ต่อเมื่อเราใช้มันร่วมกันครับ เพราะถ้าข้อมูลยังแยกอยู่หลายช่องทาง งานซ้ำและการตกหล่นก็จะยังเกิดอยู่',
+      'ลองใช้ ' + APP_NAME + ' แล้วบอกกันตรง ๆ ได้เลยว่าอะไรเวิร์ก อะไรยังไม่เวิร์ก หรืออะไรที่คุณคิดว่า “ตรงนี้มันน่าจะง่ายกว่านี้ได้” เพราะนั่นอาจกลายเป็นสิ่งต่อไปที่เราช่วยกันทำให้เกิดขึ้นจริง'
+    ],
+    abClose:APP_NAME + ' — Smarter work. Lighter load. Greater impact.',
     abBuild:'รุ่นที่ใช้อยู่', abCheers:'กำลังใจที่ได้รับ',
-    abMadeBy:'ดูแลโดย', abMadeByVal:'AI Taskforce × Kenan Academy × IT',
+    abMadeBy:'ดูแลโดย', abMadeByVal:'AI Taskforce Team',
 
     chTitle:'ชอบตรงไหนบอกหน่อย',
     chSub:'ระบบภายในไม่มีใครเขียนรีวิวให้ ถ้ามันช่วยงานคุณได้จริง กดสักปุ่มให้คนทำรู้หน่อยก็ยังดี',
@@ -2232,9 +2478,6 @@ const T = {
     dirEmgShow:'ดูผู้ติดต่อกรณีฉุกเฉิน',
     dirEmgWhy:'เปิดดูเมื่อจำเป็นจริงๆ เท่านั้น',
 
-    abCreditT:'ใครทำระบบนี้',
-    abCreditBody:'ระบบนี้เริ่มจากคำถามง่ายๆ ว่าทำไมการหาพัสดุสักชิ้น จองรถสักคัน หรือถามว่าใครดูแลเรื่องไหน ต้องใช้เวลาเป็นวัน\n\nพัฒนาโดยพิพัฒน์ สุริยสมบูรณ์ ร่วมกับทีม Kenan Academy และ AI Taskforce ของมูลนิธิ โดยใช้ AI เป็นเครื่องมือช่วยเขียนและออกแบบ ดูแลระบบร่วมกับฝ่าย IT\n\nแต่สิ่งที่ทำให้มันใช้ได้จริง คือทุกคนที่กดบอกว่าตรงไหนใช้ยาก ตรงไหนพัง และตรงไหนดีแล้ว ข้อความที่ส่งเข้ามาทุกข้อความถูกอ่าน และหลายอย่างในหน้าที่คุณเห็นอยู่ตอนนี้ มาจากคนที่เดินมาบอกเฉยๆ ว่า "พี่ ตรงนี้มันแปลกๆ นะ"',
-    abCreditCta:'อยากให้ระบบทำอะไรได้อีก บอกได้เลย',
     sgHelp:'ช่วยเหลือ',
     lkWhy2:'ทางเข้าระบบอื่นที่คีนันใช้อยู่ กดแล้วจะออกไปนอก ' + APP_NAME + ' บางระบบอาจต้องเข้าสู่ระบบแยกอีกครั้ง',
     devCheer:'ถ้าวันนี้ใช้แล้วดี', devThanks:'ขอบคุณครับ เห็นแล้ว 🙌',
@@ -2460,7 +2703,7 @@ const T = {
     dGA:'General Administration', dGAs:'อาคาร · ซ่อม · แอร์ · ไฟฟ้า · ประปา · พัสดุ · รถ',
     dHR:'HR', dHRs:'ลา · สวัสดิการ · เอกสารบุคคล',
     dFIN:'Finance and Accounting', dFINs:'เบิกจ่าย · ใบเสร็จ · งบประมาณ',
-    dPUR:'Purchasing', dPURs:'ขอซื้อ · จัดหา · ผู้ขาย',
+    dPUR:'Procurement', dPURs:'ขอซื้อ · จัดหา · ผู้ขาย',
     dOTH:'ไม่แน่ใจ', dOTHs:'ให้ GA ช่วยคัดแล้วส่งต่อให้',
 
 
@@ -2567,7 +2810,7 @@ const T = {
     navHome:'Home', navParcel:'Parcels', navSos:'Emergency', navMe:'Me', navLog:'Log parcel',
     navNotif:'Alerts',
     sgWork:'My work', sgBook:'Book & borrow', sgInfo:'Directory & info', sgAdmin:'Admin',
-    admDrv:'Drivers', admDrvAdd:'Add a driver', admDrvName:'Driver name',
+    admDrv:'Drivers', admDrvAdd:'Add a driver', admDrvEdit:'Edit details', admDrvName:'Driver name',
     admDrvPhone:'Phone', admDrvCompany:'Employer', admDrvCompanyPh:'e.g. Kenan / ABC car rental',
     admDrvNote:'Notes', admDrvNotePh:'e.g. can drive the van, holds a Type 2 licence',
     admDrvPhoto:'Driver photo',
@@ -2782,6 +3025,7 @@ const T = {
     carAltNotifyWhy:'For urgent situations that cannot wait. The PM is informed immediately, no action needed from them.',
     carAltRequest:'Ask the PM to approve first',
     carAltRequestWhy:'For planned trips with a higher cost. You wait for the PM to approve in the app.',
+    carAltAfterT:'Recorded',
     carAltLogged:pm=>`Logged${pm ? ' · ' + pm + ' has been told' : ''}`,
     carAltSent:pm=>`Request sent${pm ? ' · waiting for ' + pm : ''}`,
     dbApprovals:'Waiting for your approval', dbBirthdays:'Birthdays today',
@@ -2866,10 +3110,95 @@ const T = {
 
     abTitle:'About ' + APP_NAME,
     abTag:'One place for the everyday things — parcels, meeting rooms, vehicles, equipment and maintenance requests',
-    abP1:APP_NAME + ' started from a simple question: why do small office matters need so many separate channels? Parcels get asked about in a LINE group, rooms are booked on paper, vehicles by calling GA — and nobody can see what is free right now.',
-    abP2:'It does not try to replace everything. It gathers the things everyone does every week into one place and lets you finish them in a few taps. The rest stays where it is, with a door to it under Other Kenan systems.',
+    /* ── build h: the About story + the maker's signature ── */
+    sigWho:'dev by Pipat S. & AI friends',
+    /* ── build i: the long version of the About story ── */
+    /* ── build j: edit a booking · driver schedules · the no-car path ── */
+    ebEdit:'Edit booking', ebTitle:'Edit booking',
+    ebDate:'Date', ebFrom:'From', ebTo:'To',
+    ebSave:'Save changes', ebSaved:'Saved',
+    ebNeedTime:'Fill in the date and both times first', ebBadTime:'The end time must be after the start',
+    ebClash:(who,d,e)=>`That slot is already booked${who ? ' by ' + who : ''} (${d} to ${e}). Try another time.`,
+    ebLocked:'This one has already started or closed — it can no longer be changed.',
+    ebVeh:'Vehicle',
+    ebNoDriver:'No driver yet',
+    ebDriverWhy:'Only officers can change the driver. The new driver is notified automatically.',
+    ebWhoCan:'You can only edit your own bookings',
+
+    djTitle:'Driver schedule', djPick:'Pick a driver from the list first',
+    djJobs:'Schedule and job history',
+    djVeh:'Vehicles they drive', djVehSave:'Save vehicles', djVehSaved:'Saved',
+    djVehWhy:'Bookings for the selected vehicles are assigned to this driver automatically.',
+    djVehTaken:n=>`Already assigned to ${n}`,
+    djUpcoming:'Open jobs', djPast:'Job history',
+    djNoUpcoming:'No open jobs', djNoPast:'No history yet',
+    djBy:n=>`Booked by ${n}`,
+    djTapEdit:'Tap a job to change its time, swap the vehicle, or hand it to another driver.',
+
+    carNoFreePick:'The vehicle you picked is busy then',
+    carAltEntry:'No suitable vehicle? See the alternatives',
+    carAltEntryWhy:'Take a Grab or hired car, and let the system notify the project PM.',
+    carGrabOpen:'Open the Grab app',
+    carGrabAfter:'Recorded — tap below to book a ride',
+    abReadLong:'Read the full version',
+    abLongT:'How did ' + APP_NAME + ' start? (full version)',
+    abLongLead:'The short version is on the About page. This is the whole story, for anyone who wants it.',
+    abLong:[
+      ['p', APP_NAME + ' did not start with the question “What can we use AI for?” It started with a much simpler one: “What are we spending time and energy on every day that a system could probably handle better?”'],
+      ['p', 'Many of the things we deal with at work seem small when we look at them one at a time. Finding out whose parcel has arrived. Booking a car and coordinating with a driver. Borrowing equipment and trying to find out who currently has it. Looking for information. Checking the status of something already reported. Or simply trying to answer: “Who am I supposed to ask about this?”'],
+      ['p', 'But these small things happen repeatedly. When there is no shared system to manage, track, or communicate them, the work gradually falls back onto a small number of people. Someone has to remember. Someone has to follow up. Someone has to answer the same question again. Someone has to connect information between different people and different channels.'],
+      ['p', 'And that is not only a matter of lost time. When information is scattered and there is no single place to see the current status, it becomes easier for work to be duplicated, overlooked, misunderstood, or lost. Over time, small operational frictions can become recurring problems that affect the quality of work, the people responsible for it, and the way the organisation works as a whole.'],
+      ['h', 'The principle'],
+      ['p', 'That is why I started looking at these challenges through AI, automation, and process design. The principle is actually quite simple.'],
+      ['ul', ['If a system can remember something for us — let it remember.',
+              'If a system can send the notification — let it notify.',
+              'If a user can complete something through self-service — make that possible.',
+              'And keep people’s time and energy for the work that actually requires judgement, creativity, and human interaction.']],
+      ['p', 'That became the starting point for ' + APP_NAME + '.'],
+      ['p', 'I do not see ' + APP_NAME + ' as simply another internal website or another menu of tools. I want it to become a shared place for the small but important parts of our working day that should be easier than they currently are.'],
+      ['ul', ['Parcels', 'Car booking', 'Equipment borrowing and returns', 'Emergency communication',
+              'Issue reporting and follow-up', 'Staff information', 'Internal updates',
+              'And, over time, other services connected into the same experience']],
+      ['h', 'Where the journey began'],
+      ['p', 'For me, ' + APP_NAME + ' is also one of the first practical demonstrations that AI transformation does not have to begin with an expensive, large-scale, or highly sophisticated project. Sometimes it starts by understanding a small, recurring problem well enough to build a better way around it.'],
+      ['p', 'The journey began through the Kenan Academy project, which gave me the opportunity to develop work around AI Automation, AI Use Cases, and Powered Workplace Systems, and more importantly, to apply those ideas to real organisational challenges.'],
+      ['p', 'That experience later connected to my work in AI Solutions & Implementation within the AI Taskforce, where one of the missions that matters most to me is making sure AI does not remain only in training sessions, presentations, or demonstrations. It should eventually become something where people can genuinely say: “This has made the way we work better.” ' + APP_NAME + ' is one of the first pieces of that journey.'],
+      ['h', 'AI changes the economics of building internal systems'],
+      ['p', 'If a system like ' + APP_NAME + ' were developed entirely through a conventional external development process, the organisation would not only be paying for coding. There would also be costs for process discovery, requirement gathering, UX/UI design, frontend and backend development, integrations, testing, debugging, deployment, and repeated iteration after real users begin trying the system. For a system with multiple workflows and continuous refinement, that development cost could reasonably reach hundreds of thousands of baht.'],
+      ['p', 'AI does not mean that building a system has no cost. Someone still has to understand the problem, design the workflow, make decisions, test the system, identify risks, fix what does not work, and take responsibility for what eventually goes into real use.'],
+      ['p', 'What AI changes is how much one person or a small team can do. Combined with tools that Kenan already has, AI lets us reduce external development costs, lower the cash investment required to test an idea, and iterate much more quickly based on real user feedback. Instead of making a large investment before knowing whether something works, we can build a practical version, let people use it, learn from the experience, and improve it continuously.'],
+      ['h', 'This came from all of us'],
+      ['p', 'And that brings me to probably the most important part of ' + APP_NAME + '. Although I have been the main person building the system, it has come from all of us — from the actual experiences of Kenan staff, and from the moments when someone felt that something could be easier.'],
+      ['ul', ['Some features started from “Why does this take so many steps?”',
+              'Some started from “Couldn’t we just click here and get it done?”',
+              'And some started very simply, with someone walking over to say “P’, something about this part feels a bit strange.”']],
+      ['p', 'A surprising number of the features you see in ' + APP_NAME + ' today have grown from conversations like these. And I hope it continues that way.'],
+      ['h', 'A system only matters if we use it together'],
+      ['p', 'Because ultimately, even the best system has little value if we do not use it together. One of the reasons work gets repeated, information gets missed, or people have to keep following things up is that our information and communication are still spread across different places. When different people use different channels, it becomes difficult for everyone to see the same status at the same time.'],
+      ['p', APP_NAME + ' can help most when it gradually becomes a shared way of working for all of us. That does not mean the system has to be perfect today. In fact, the opposite is true. I want everyone to try it and tell us directly:'],
+      ['ul', ['What works.', 'What is confusing.', 'What is unnecessary.', 'What still takes too much time.']],
+      ['p', 'That feedback is not just feedback about a website. It is input into how we can design a better way of working together at Kenan.'],
+      ['p', 'So if there is something in your day-to-day work that still makes you think “Why are we still doing it this way?” — send it in. That might become the next use case we improve together.'],
+      ['p', APP_NAME + ' is therefore not simply a system I want to finish building. I see it as the beginning of a way of working that I hope we can continue shaping together:'],
+      ['ul', ['Let systems take care of unnecessary coordination.',
+              'Let information reach the right people more easily.',
+              'Give people back more of their time and energy.',
+              'And use technology to help us create more impact without simply asking everyone to work harder.']]
+    ],
+    abStoryT:'How did ' + APP_NAME + ' start?',
+    abStory:[
+      APP_NAME + ' started with the small things we deal with every day. On their own they may not seem like major problems. But when the same issues happen again and again without a clear system to manage, track, or communicate them, small tasks start piling up on a few people. That creates more room for human error, takes up time and attention, and over time can turn small frustrations into recurring operational problems.',
+      'It could be something as simple as finding out whose parcel has arrived, booking a car, borrowing equipment, looking for information, checking the status of something you reported, or just trying to figure out: “Who am I supposed to ask about this?”',
+      'That made me start looking at these everyday challenges through the lens of AI, automation, and better process design — asking where technology could take over the things we currently have to chase, ask about, remember, or coordinate manually.',
+      APP_NAME + ' is one of the first use cases where I had the opportunity to turn that idea into something people can actually use. I am grateful to the Kenan Academy project for the chance to develop work around AI Automation, AI Use Cases, and Powered Workplace Systems — experience that led to my role in AI Solutions & Implementation within the AI Taskforce, where an important part of the mission is turning AI into practical use cases that change how we work.',
+      'Although I have been the main person building the system, ' + APP_NAME + ' has come from all of us. It comes from the real experiences of Kenan colleagues, from moments when someone thought, “Surely this could be easier,” and from ideas shared by people who simply want to make our workplace better.',
+      'There is another side to this story as well. If a system like this were developed entirely through an external team — process analysis, UX/UI design, software development, integration, testing and iteration — the cost could reasonably reach hundreds of thousands of baht. Using AI together with tools Kenan already has lets us experiment, improve, and build new use cases much faster and for far less.',
+      'But ultimately, even the best system has little value if we do not use it together. When information is spread across different channels, the same questions and follow-ups keep happening, and important details can easily be missed.',
+      'So please try ' + APP_NAME + ' and tell us honestly what works, what is confusing, what still wastes your time — or even just “there must be a better way to do this.” Send it in. It might become the next thing we build together.'
+    ],
+    abClose:APP_NAME + ' — Smarter work. Lighter load. Greater impact.',
     abBuild:'Current build', abCheers:'Cheers received',
-    abMadeBy:'Looked after by', abMadeByVal:'AI Taskforce × Kenan Academy × IT',
+    abMadeBy:'Looked after by', abMadeByVal:'AI Taskforce Team',
 
     chTitle:'Tell us what works',
     chSub:'Nobody writes reviews for internal tools. If this saved you time, one tap lets the people who built it know.',
@@ -3053,9 +3382,6 @@ const T = {
     dirEmgShow:'Show emergency contact',
     dirEmgWhy:'Open this only when it is genuinely needed.',
 
-    abCreditT:'Who built this',
-    abCreditBody:'This started from a simple question: why does finding one parcel, booking one car, or working out who handles what take a whole day?\n\nBuilt by Pipat Suriyasomboon with the Kenan Academy team and the foundation’s AI Taskforce, using AI as a writing and design tool, and maintained together with IT.\n\nBut what makes it actually work is everyone who says which parts are awkward, which parts are broken, and which parts are fine. Every message sent in gets read, and a good deal of what you are looking at right now came from someone simply walking over to say “this bit is a little strange, you know”.',
-    abCreditCta:'Something else you wish this could do? Say so.',
     sgHelp:'Help',
     lkWhy2:'Ways into the other systems Kenan uses. These lead outside ' + APP_NAME + ' and some may ask you to sign in again.',
     devCheer:'If today went well', devThanks:'Thank you — noted 🙌',
@@ -3281,7 +3607,7 @@ const T = {
     dGA:'General Administration', dGAs:'Building · repairs · air-con · parcels · vehicles',
     dHR:'HR', dHRs:'Leave · benefits · personnel documents',
     dFIN:'Finance and Accounting', dFINs:'Reimbursement · receipts · budget',
-    dPUR:'Purchasing', dPURs:'Purchase requests · vendors',
+    dPUR:'Procurement', dPURs:'Purchase requests · vendors',
     dOTH:'Not sure', dOTHs:'GA will triage and forward it for you',
 
 
@@ -3859,6 +4185,38 @@ const MOCK = {
     { contact_id:'CT-3', group:'lead', name_th:'ผู้ประสานงานเหตุฉุกเฉิน',
       name_en:'Emergency coordinator', phone:'0812345000', sort_order:1, is_active:false }]},
   getDevLines:{ ok:true, items:[] },
+  editBooking:{ ok:true },
+  assignDriverVehicles:{ ok:true },
+  driverJobs:(function(){
+    const p = n => String(n).padStart(2,'0'), D = new Date();
+    const k = i => { const x = new Date(D.getTime() + i*86400000);
+      return x.getFullYear()+'-'+p(x.getMonth()+1)+'-'+p(x.getDate()); };
+    return { ok:true, canEdit:true,
+      driver:{ driver_id:'DRV-A1', name:'สมพงษ์ ขับดี', phone:'0812345678', company:'ไทยรุ่งเรืองขนส่ง' },
+      vehicles:[
+        { resource_id:'V1', name:'โตโยต้า เวลอซ', plate:'ฮธ-1234', mine:true, taken:'' },
+        { resource_id:'V2', name:'โตโยต้า แคมรี่', plate:'กข-5678', mine:false, taken:'' },
+        { resource_id:'V3', name:'Toyota Commuter', plate:'งจ-9012', mine:false, taken:'ประยูร ทางไกล' }],
+      drivers:[{ driver_id:'DRV-A1', name:'สมพงษ์ ขับดี' },
+               { driver_id:'DRV-B2', name:'ประยูร ทางไกล' }],
+      upcoming:[
+        { record_id:'CAR-11', status:'assigned', title:'ลงพื้นที่โรงเรียนวัดสุทธิ',
+          start_at:k(1)+'T08:30:00+07:00', end_at:k(1)+'T16:00:00+07:00',
+          resource_id:'V1', vehicle:'โตโยต้า เวลอซ ฮธ-1234', project:'WING2026',
+          trip:'ไปส่ง แล้วไปรับกลับ', route:'2 จุด · ปลายทาง โรงเรียนวัดสุทธิ',
+          who:'วราภรณ์ ทองดี', km:'', upcoming:true },
+        { record_id:'CAR-12', status:'requested', title:'รับวิทยากรจากสนามบิน',
+          start_at:k(3)+'T06:00:00+07:00', end_at:k(3)+'T10:00:00+07:00',
+          resource_id:'V1', vehicle:'โตโยต้า เวลอซ ฮธ-1234', project:'AISKILL25',
+          trip:'รับ-ส่งแขกหรือวิทยากร', route:'สนามบินสุวรรณภูมิ',
+          who:'พิพัฒน์ สุริยสมบูรณ์', km:'', upcoming:true }],
+      past:[
+        { record_id:'CAR-7', status:'returned', title:'ส่งเอกสารกระทรวง',
+          start_at:k(-2)+'T13:00:00+07:00', end_at:k(-2)+'T15:30:00+07:00',
+          resource_id:'V1', vehicle:'โตโยต้า เวลอซ ฮธ-1234', project:'BACKOFFICE',
+          trip:'ไปส่งของ / รับของ', route:'กระทรวงศึกษาธิการ',
+          who:'มณฑา ใจดี', km:'42', upcoming:false }] };
+  })(),
   helpUpdate:{ ok:true },
   saveContact:{ ok:true },
   saveDevLines:{ ok:true },
@@ -3874,7 +4232,7 @@ const MOCK = {
               helped_at:'2026-09-06T02:20:00Z' }],
     none:[{ id:'K-1028', name:'ชุนหลี แซ่ลิ้ม', nickname:'ชุน', dept:'IT', phone:'0812345004' }],
     safe:[{ id:'K-1035', name:'อารยา พงษ์ไพบูลย์', nickname:'ยา', dept:'IT', phone:'0812345005' }] },
-  getAbout:{ ok:true, build:'2026-09-06c', total:0,
+  getAbout:{ ok:true, build:CFG.BUILD, total:0,
     tally:{ heart:0, clap:0, rocket:0, thanks:0, coffee:0 }, mine:{}, unread:1 },
   sendCheer:{ ok:true }, sendFeedback:{ ok:true },
   listFeedback:{ ok:true, items:[
@@ -4704,6 +5062,80 @@ ROUTES.services = async () => {
    ถ้าต้องเข้าบริการแล้วเลื่อนลงไปจนสุดถึงจะเจอ เท่ากับซ่อนของสำคัญไว้ก้นหน้า
    ตอนนี้จึงมีทั้งในแถบข้างบนจอคอม และยังอยู่ท้ายหน้าบริการเหมือนเดิม
    ใช้ตัววาดตัวเดียวกัน ไม่ได้เขียนซ้ำสองชุด */
+
+/* ══════════════════════════════════════════════════════════════════
+ *  ลายเซ็นคนทำ — การ์ตูนคนหนึ่งคนกับเพื่อน AI หนึ่งตัว
+ *
+ *  โจทย์คือ "อยากให้เครดิตตัวเอง แต่ใส่ชื่อโต้งๆ แล้วมันแปลก"
+ *  ซึ่งเป็นความรู้สึกที่ถูกต้อง — ป้ายชื่อกลางหน้าอ่านเหมือนโฆษณาตัวเอง
+ *  แต่การไม่ใส่เลยก็ไม่จริง เพราะมีคนนั่งทำอยู่จริงๆ
+ *
+ *  จึงทำเป็นลายเซ็น: เห็นเป็นรูปการ์ตูนเล็กๆ ก่อน
+ *  ชี้เมาส์ (จอคอม) หรือแตะ (มือถือ) ถึงจะขึ้นชื่อ
+ *  คนที่อยากรู้ว่าใครทำก็ได้รู้ คนที่ไม่ได้สนใจก็ไม่ต้องอ่าน
+ * ══════════════════════════════════════════════════════════════════ */
+
+/* วาดเป็น SVG ไม่ใช่ไฟล์รูป เพราะต้องคมทั้งจอมือถือและจอคอม
+   และต้องเปลี่ยนสีตามธีมได้เอง (ใช้ currentColor ทั้งหมด) */
+const SIG_ART = 'data:image/png;base64,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';
+
+/** ลายเซ็น — ใช้ในหน้าเกี่ยวกับ ตรงหัวบล็อกให้กำลังใจ */
+function sigBlock(){
+  return `<button class="sig" id="sigBtn" type="button" aria-label="${esc(t('sigWho'))}">
+    <img class="sig-im" src="${SIG_ART}" alt="" width="64" height="64">
+    <span class="sig-h" aria-hidden="true"></span>
+    <span class="sig-t" role="status">${esc(t('sigWho'))}</span>
+  </button>`;
+}
+
+/** บนจอคอมชี้เมาส์ก็ขึ้นเอง (CSS) · บนมือถือไม่มี hover จึงต้องแตะ
+    แตะแล้วโชว์สามวินาทีแล้วหายเอง จะได้ไม่ต้องมีปุ่มปิด */
+function wireSig(){
+  const b = $('#sigBtn'); if(!b) return;
+  let tm = null;
+  b.onclick = () => {
+    b.classList.add('on');
+    clearTimeout(tm);
+    tm = setTimeout(() => b.classList.remove('on'), 3000);
+  };
+}
+
+
+
+/* ══════════════════════════════════════════════════════════════════
+ *  เกี่ยวกับ Kenan ONE — ฉบับเต็ม
+ *
+ *  หน้าเกี่ยวกับมีฉบับย่อพอให้อ่านจบในลิฟต์ ส่วนที่มาทั้งหมดยาวกว่านั้นมาก
+ *  ยัดทั้งสองอย่างไว้หน้าเดียวจะได้ผลแย่ทั้งคู่ — คนรีบก็เลื่อนผ่าน
+ *  คนอยากอ่านก็ต้องหาเอาเองว่าเนื้อหาจริงเริ่มตรงไหน จึงแยกเป็นสองหน้า
+ * ══════════════════════════════════════════════════════════════════ */
+ROUTES['about-long'] = async () => {
+  setTitle(t('abLongT'));
+  const blocks = t('abLong').map(b =>
+      b[0] === 'h'  ? `<h3 class="ab-h">${esc(b[1])}</h3>`
+    : b[0] === 'ul' ? `<ul class="ab-ul">${b[1].map(x => `<li>${esc(x)}</li>`).join('')}</ul>`
+    :                 `<p>${esc(b[1])}</p>`).join('');
+
+  $x('#main').innerHTML = `<div class="view">
+    <header class="ab-hero">
+      <img class="ab-logo" src="${LOGO_URI}" alt="" width="84" height="84">
+      <h2>${esc(t('abLongT'))}</h2>
+      <p>${esc(t('abLongLead'))}</p>
+    </header>
+    <div class="ab-body ab-long">
+      ${blocks}
+      <p class="ab-close">${esc(t('abClose'))}</p>
+    </div>
+    <div style="height:16px"></div>
+    <button class="btn primary" id="alFb">${esc(t('meReport'))}</button>
+    <div style="height:9px"></div>
+    <button class="btn ghost" id="alBack">${esc(t('abTitle'))}</button>
+  </div>`;
+  $('#alFb').onclick   = () => go('about', { act:'feedback' });
+  $('#alBack').onclick = () => go('about');
+};
+
+
 ROUTES['other-systems'] = async () => {
   setTitle(t('svOther'));
   $x('#main').innerHTML = `<div class="view">
@@ -5943,10 +6375,12 @@ ROUTES.about = async ({ act } = {}) => {
       <p>${esc(t('abTag'))}</p>
     </div>
 
+    <h3 class="ab-h">${esc(t('abStoryT'))}</h3>
     <div class="ab-body">
-      <p>${esc(t('abP1'))}</p>
-      <p>${esc(t('abP2'))}</p>
+      ${t('abStory').map(x => `<p>${esc(x)}</p>`).join('')}
+      <p class="ab-close">${esc(t('abClose'))}</p>
     </div>
+    <button class="btn soft" id="abLong" style="margin-top:14px">${esc(t('abReadLong'))}</button>
 
     <div class="ab-facts">
       <div><b id="abBuild">—</b><span>${esc(t('abBuild'))}</span></div>
@@ -5954,15 +6388,8 @@ ROUTES.about = async ({ act } = {}) => {
       <div><b id="abTotal">—</b><span>${esc(t('abCheers'))}</span></div>
     </div>
 
-    <div class="card" style="margin-top:16px">
-      <div style="font-size:var(--fs-cta);font-weight:700;margin-bottom:6px">${esc(t('abCreditT'))}</div>
-      <p style="font-size:var(--fs-sec);color:var(--ink-2);margin:0;line-height:1.75;white-space:pre-line">${
-        esc(t('abCreditBody'))}</p>
-      <p style="font-size:var(--fs-sec);color:var(--brand);font-weight:700;margin:12px 0 0">${
-        esc(t('abCreditCta'))}</p>
-    </div>
-
     <div class="cheer">
+      ${sigBlock()}
       <h3>${esc(t('chTitle'))}</h3>
       <p class="cheer-sub">${esc(t('chSub'))}</p>
       <div class="cheer-row" id="chRow">${CHEER.map(c => `
@@ -6001,6 +6428,8 @@ ROUTES.about = async ({ act } = {}) => {
   </div>`;
 
   $('#abPol').onclick = () => go('privacy');
+  $('#abLong').onclick = () => go('about-long');
+  wireSig();
   /* มาจากปุ่ม "แจ้งปัญหา" — พาไปที่ช่องเขียนเลย ไม่ใช่ให้เลื่อนหาเอง */
   if(act === 'feedback') setTimeout(() => {
     const b = $('#fbB'); if(!b) return;
@@ -7166,7 +7595,7 @@ const ISSUE_DEPTS = () => [
   { v:'General Administration', l:t('dGA'),  s:t('dGAs')  },
   { v:'HR',                     l:t('dHR'),  s:t('dHRs')  },
   { v:'Finance and Accounting', l:t('dFIN'), s:t('dFINs') },
-  { v:'Purchasing',             l:t('dPUR'), s:t('dPURs') },
+  { v:'Procurement',            l:t('dPUR'), s:t('dPURs') },
   { v:'OTHER',                  l:t('dOTH'), s:t('dOTHs') }
 ];
 const issuePill = i => `<span class="pill ${
@@ -7727,12 +8156,22 @@ ROUTES.rooms = async (params = {}) => {
         <span class="av">${esc(String(b.who||'?').trim().charAt(0))}</span>
         <div class="body"><div class="t">${esc(b.who)}</div>
           <div class="s">${esc(b.who_dept || '')}</div></div></div></div>
-      ${mine ? `<button class="btn danger" id="cx2" style="background:var(--bad);color:#fff">${esc(t('rmCancel'))}</button>`
+      ${mine ? `<button class="btn primary" id="ed2">${esc(t('ebEdit'))}</button>
+           <button class="btn danger" id="cx2" style="background:var(--bad);color:#fff">${esc(t('rmCancel'))}</button>`
         : `<div class="note info">${IC.info}<div>${esc(t('rmSwapHint'))}</div></div>
            ${b.who_phone?`<a class="btn primary" href="tel:${esc(b.who_phone)}" style="text-decoration:none;margin-top:10px">📞 ${esc(b.who_phone)}</a>`:''}
            ${b.who_email?`<a class="btn ghost" href="mailto:${esc(b.who_email)}" style="text-decoration:none;word-break:break-all">✉ ${esc(b.who_email)}</a>`:''}`}
       <button class="btn ghost" id="cl">${esc(t('close'))}</button>`);
     $('#cl').onclick = closeSheet;
+    /* แก้ในใบเดิม ไม่ใช่ยกเลิกแล้วจองใหม่ — ระหว่างที่ยกเลิกไปแล้วยังไม่ได้จองใหม่
+       ช่วงเวลานั้นเปิดให้คนอื่นแทรกเข้ามาจองทับได้จริง */
+    if($('#ed2')) $('#ed2').onclick = () => {
+      closeSheet();
+      setTimeout(() => editBookSheet('room', b, {
+        resources: r.rooms.map(x => ({ id:x.resource_id, name:x.name_th })),
+        onDone: () => go('rooms', { date:sel, mode, kind }, true)
+      }), 200);
+    };
     if($('#cx2')) $('#cx2').onclick = async () => {
       closeSheet();
       try{ await apiRetry('cancelRoomBooking', { record_id:b.record_id }, 'POST');
@@ -7950,7 +8389,9 @@ function itemSheet(i){
         <div class="row"><div class="body">
           <div class="t">${esc(fmtDate(x.start_at))} – ${esc(hhmm(x.end_at))}</div>
           <div class="s">${esc(x.who)}</div></div>
-          ${x.mine ? `<button class="mini" data-cr="${esc(x.record_id)}"
+          ${x.mine ? `<button class="mini" data-er="${esc(x.record_id)}"
+            data-es="${esc(x.start_at)}" data-ee="${esc(x.end_at)}">${esc(t('ebEdit'))}</button>
+          <button class="mini" data-cr="${esc(x.record_id)}"
             style="background:var(--bad-bg,#FEF2F2);color:var(--bad)">✕</button>` : ''}
         </div>`).join('')}</div>` : ''}
     <div style="height:12px"></div>
@@ -7963,6 +8404,13 @@ function itemSheet(i){
   if($('#now')) $('#now').onclick = () => { closeSheet(); setTimeout(() => borrowSheet(i), 220); };
   if($('#ret')) $('#ret').onclick = () => { closeSheet(); setTimeout(() => returnSheet(i), 220); };
   if($('#rsv')) $('#rsv').onclick = () => { closeSheet(); setTimeout(() => reserveSheet(i), 220); };
+  document.querySelectorAll('[data-er]').forEach(b => b.onclick = () => {
+    closeSheet();
+    setTimeout(() => editBookSheet('borrow', {
+      record_id:b.dataset.er, start_at:b.dataset.es, end_at:b.dataset.ee,
+      title:i.name_th, resource_id:i.resource_id
+    }, { onDone: () => { clearCache('eq'); go('equipment', {}, true); } }), 200);
+  });
   document.querySelectorAll('[data-cr]').forEach(b => b.onclick = async () => {
     closeSheet();
     try{ await apiRetry('cancelReservation', { record_id:b.dataset.cr }, 'POST');
@@ -8114,7 +8562,7 @@ function declareSheet(){
 ROUTES['admin-drv'] = async () => {
   setTitle(t('admDrv'));
   $x('#main').innerHTML = `<div class="view">
-    <div class="note info">${IC.info}<div>${esc(t('admDrvWhy'))}</div></div>
+    <div class="note info">${IC.info}<div>${esc(t('admDrvWhy'))}<br>${esc(t('djTapEdit'))}</div></div>
     <button class="btn primary" id="add" style="margin-top:12px">＋ ${esc(t('admDrvAdd'))}</button>
     <div id="dv" style="margin-top:14px">${skeleton(3)}</div></div>`;
   $('#add').onclick = () => drvEdit(null);
@@ -8141,13 +8589,22 @@ ROUTES['admin-drv'] = async () => {
                    : '○ ' + esc(t('admDrvUnpaired'))}</div>
         ${licWarn(d.licence_expiry)}
       </div>
-      ${d.is_active ? `<span class="go">${IC.chev}</span>`
-        : `<span class="pill" style="background:var(--neutral);color:var(--ink-3)">${esc(t('admResInactive'))}</span>`}
+      <span style="display:flex;flex-direction:column;gap:6px;align-items:flex-end;flex:0 0 auto">
+        ${d.is_active ? `<span class="go">${IC.chev}</span>`
+          : `<span class="pill" style="background:var(--neutral);color:var(--ink-3)">${esc(t('admResInactive'))}</span>`}
+        <span class="mini" data-edit="1">${esc(t('admDrvEdit'))}</span>
+      </span>
     </button>`).join('')
     : emptyState(IC.user, t('admDrvEmpty'), t('admDrvEmptyBody'));
 
+  /* แตะการ์ด = ดูตารางงาน (คำถามที่ถามบ่อยที่สุด)
+     ส่วนการแก้ข้อมูลคนขับย้ายไปอยู่ปุ่มเล็กมุมขวา เพราะนานๆ แก้ที */
   document.querySelectorAll('#dv .rcard').forEach(b =>
-    b.onclick = () => drvEdit(items.find(x => x.driver_id === b.dataset.id)));
+    b.onclick = ev => {
+      const it = items.find(x => x.driver_id === b.dataset.id);
+      if(ev.target.closest('[data-edit]')) drvEdit(it);
+      else go('driver-jobs', { id:b.dataset.id });
+    });
 
   function drvEdit(it){
     sheet(`<h3>${esc(it ? it.name : t('admDrvAdd'))}</h3>
@@ -8872,11 +9329,26 @@ function tripSheet(x, r, refresh){
             sp.km != null ? sp.km + ' ' + t('carKm') : ''].filter(Boolean).join(' · '))}</div>
         </div></div>`).join('')}</div>` : ''}
     <span class="pill new" style="margin-bottom:10px;display:inline-block">${esc(carStName(x.status))}</span>
+    ${(mine || r.isOfficer) && ['requested','assigned'].includes(x.status)
+      ? `<button class="btn primary" id="edc">${esc(t('ebEdit'))}</button>` : ''}
     ${mine && x.status !== 'in_use'
       ? `<button class="btn" id="cx" style="background:var(--bad);color:#fff">${esc(t('carCancel'))}</button>`
       : (!mine ? `<div class="note info">${IC.info}<div>${esc(t('rmSwapHint'))}</div></div>` : '')}
     <button class="btn ghost" id="cl3">${esc(t('close'))}</button>`);
   $('#cl3').onclick = closeSheet;
+  if($('#edc')) $('#edc').onclick = () => {
+    closeSheet();
+    setTimeout(() => editBookSheet('car', {
+      record_id:x.record_id, start_at:x.start_at, end_at:x.end_at,
+      title:x.title, resource_id:x.resource_id, driver_id:x.driver_id
+    }, {
+      officer: !!r.isOfficer,
+      resources: r.vehicles.map(v => ({ id:v.resource_id,
+        name:v.name_th + (v.plate ? ' · ' + v.plate : '') })),
+      drivers: r.drivers || [],
+      onDone: refresh
+    }), 200);
+  };
   if($('#cx')) $('#cx').onclick = async () => {
     closeSheet();
     try{ await apiRetry('cancelCarBooking', { record_id:x.record_id }, 'POST');
@@ -9002,6 +9474,10 @@ async function pickPlace(initial){
     setTimeout(() => inp.focus(), 260);
   });
 }
+
+/* ทางเข้าเรียกรถ — แยกเป็นค่าคงที่ตัวเดียว เผื่อวันหนึ่งเปลี่ยนเป็น
+   Grab for Business ของมูลนิธิ จะได้แก้ที่เดียวไม่ต้องไล่หา */
+const GRAB_URL = 'https://www.grab.com/th/transport/';
 
 const TRIP_TYPES = () => [
   { v:'staff_one', th:'ไปส่งพนักงาน', en:'Drop staff off' },
@@ -9272,9 +9748,14 @@ ROUTES['car-new'] = async ({ date, veh:preVeh, hour } = {}) => {
     const [s2,e2] = win();
     const allBusy = r.vehicles.every(v =>
       r.trips.some(x => x.resource_id === v.resource_id && overlap(s2,e2,x.start_at,x.end_at)));
-    $x('#noFree').innerHTML = allBusy ? `<div class="note" style="border-color:var(--bad);margin-top:8px">
-      ${IC.info}<div><b>${esc(t('carNoFree'))}</b><br>${esc(t('carGrabHint'))}</div></div>
-      <button class="btn ghost" id="grabBtn" style="margin-top:8px">${esc(t('carGrab'))}</button>` : '';
+    const pickBusy = vehId && r.trips.some(x =>
+      x.resource_id === vehId && overlap(s2, e2, x.start_at, x.end_at));
+    $x('#noFree').innerHTML = `${(allBusy || pickBusy)
+        ? `<div class="note" style="border-color:var(--bad);margin-top:8px">${IC.info}<div><b>${
+            esc(allBusy ? t('carNoFree') : t('carNoFreePick'))}</b><br>${esc(t('carGrabHint'))}</div></div>` : ''}
+      <button class="btn ${(allBusy || pickBusy) ? 'soft' : 'ghost'}" id="grabBtn"
+        style="margin-top:8px">${esc(t('carAltEntry'))}</button>
+      <div class="fhint" style="margin-top:5px">${esc(t('carAltEntryWhy'))}</div>`;
     if($('#grabBtn')) $('#grabBtn').onclick = () => altSheet();
   }
 
@@ -9317,11 +9798,15 @@ ROUTES['car-new'] = async ({ date, veh:preVeh, hour } = {}) => {
           note:$('#an').value.trim(), purpose:$('#pp').value.trim(),
           project_code:project, wanted:`${s3} → ${e3}`,
           start_at:s3, end_at:e3 }, 'POST');
-        closeSheet();
         toast(mode === 'approve'
           ? t('carAltSent')(r?.pm_name || '')
           : t('carAltLogged')(r?.pm_name || ''), 'ok');
-        S.stack = [{ name:'home', params:{} }]; go('home');
+        $x('#sheetBody').innerHTML = `<h3>${esc(t('carAltAfterT'))}</h3>
+          <p class="sub">${esc(t('carGrabAfter'))}</p>
+          <a class="btn primary" href="${GRAB_URL}" target="_blank" rel="noopener"
+             style="text-decoration:none">${esc(t('carGrabOpen'))}</a>
+          <button class="btn ghost" id="aHome">${esc(t('navHome'))}</button>`;
+        $('#aHome').onclick = () => { closeSheet(); S.stack = [{ name:'home', params:{} }]; go('home'); };
       }catch(e){ toast(t('netErr'),'bad'); b.disabled = false; }
     };
     $('#aNotify').onclick = send('notify');
@@ -9902,58 +10387,257 @@ function drvGroups(jobs){
   return g;
 }
 
-function drvJobCard(j){
-  const live = j.status === 'in_use';
-  const stops = Array.isArray(j.stops) ? j.stops : [];
-  const hit = new Set((j.stop_log || []).map(x => Number(x.i)));
-  return `<div class="drvcard ${live ? 'live' : ''}" data-j="${esc(j.record_id)}">
-    <div style="display:flex;justify-content:space-between;gap:10px;align-items:flex-start">
-      <div style="min-width:0">
-        <div style="font-size:16px;font-weight:800;line-height:1.3">${esc(j.title || '-')}</div>
-        <div style="font-size:var(--fs-sec);color:var(--ink-2);margin-top:3px">
-          ${esc(j.vehicle || '')} · ${esc(hhmm(j.start_at))} → ${esc(hhmm(j.end_at))}</div>
-        <div style="font-size:12px;color:var(--ink-3);margin-top:2px">
-          ${esc(fmtDate(j.start_at))}${j.project_code ? ' · ' + esc(j.project_code) : ''}</div>
-      </div>
-      ${live ? `<span class="pill new" style="flex:0 0 auto">● ${esc(carStName('in_use'))}</span>` : ''}
+
+/* ══════════════════════════════════════════════════════════════════
+ *  แก้ไขการจอง · ตารางงานคนขับ · พอร์ทัลคนขับโฉมใหม่
+ *  เพิ่ม 2026-09-06 (build j)
+ * ══════════════════════════════════════════════════════════════════ */
+
+
+/* ────────────────────────────────────────────────────────────────
+ *  แผ่นแก้ไขการจอง
+ *
+ *  ของเดิมจองแล้วแก้ไม่ได้ ต้องยกเลิกแล้วจองใหม่ทั้งใบ
+ *  ซึ่งนอกจากจะเสียเวลาแล้ว ช่วงที่ยกเลิกไปยังเปิดให้คนอื่นแทรกเข้ามาจองทับได้
+ *  ระหว่างที่เรากำลังกรอกใบใหม่อยู่
+ *
+ *  ตัวเดียวใช้ได้ทั้งห้อง รถ และอุปกรณ์ เพราะสามอย่างนี้คือ
+ *  "ของชิ้นหนึ่งถูกจองในช่วงเวลาหนึ่ง" เหมือนกันหมด ต่างกันแค่ช่องที่แก้ได้
+ * ──────────────────────────────────────────────────────────────── */
+
+/**
+ * @param kind  'room' | 'car' | 'borrow'
+ * @param rec   { record_id, start_at, end_at, title, resource_id, project_code, driver_id }
+ * @param opt   { resources:[{id,name}], drivers:[…], projects:[…], officer:bool, onDone:fn }
+ */
+function editBookSheet(kind, rec, opt = {}){
+  const d0 = dayKey(rec.start_at), t1 = hhmm(rec.start_at), t2 = hhmm(rec.end_at);
+  const res = opt.resources || [];
+  const drv = opt.drivers || [];
+
+  sheet(`<h3>${esc(t('ebTitle'))}</h3>
+    <p class="sub">${esc(rec.title || '')}</p>
+    <div class="field"><label>${esc(t('ebDate'))}</label>
+      <input id="ebD" type="date" value="${esc(d0)}"></div>
+    <div class="times" style="margin-bottom:14px">
+      <div class="tbox"><div class="k">${esc(t('ebFrom'))}</div>
+        <input id="ebS" type="time" step="900" value="${esc(t1)}" class="tin big"></div>
+      <div class="tbox"><div class="k">${esc(t('ebTo'))}</div>
+        <input id="ebE" type="time" step="900" value="${esc(t2)}" class="tin big"></div>
     </div>
+    ${kind !== 'borrow' ? `<div class="field"><label>${
+      esc(kind === 'car' ? t('carPurpose') : t('rmSubject'))}</label>
+      <input id="ebT" value="${esc(rec.title || '')}"></div>` : ''}
+    ${res.length > 1 ? `<div class="field"><label>${
+      esc(kind === 'car' ? t('ebVeh') : t('rmPick'))}</label>
+      <select id="ebR">${res.map(x => `<option value="${esc(x.id)}" ${
+        String(x.id) === String(rec.resource_id) ? 'selected' : ''}>${esc(x.name)}</option>`).join('')}</select></div>` : ''}
+    ${(kind === 'car' && opt.officer && drv.length) ? `<div class="field"><label>${esc(t('carDriver'))}</label>
+      <select id="ebV"><option value="">${esc(t('ebNoDriver'))}</option>${drv.map(x =>
+        `<option value="${esc(x.driver_id || x.id)}" ${
+          String(x.driver_id || x.id) === String(rec.driver_id) ? 'selected' : ''}>${
+          esc(x.name)}</option>`).join('')}</select>
+      <div class="hint">${esc(t('ebDriverWhy'))}</div></div>` : ''}
+    <div class="err" id="ebErr" hidden></div>
+    <button class="btn primary" id="ebGo">${esc(t('ebSave'))}</button>
+    <button class="btn ghost" id="ebX">${esc(t('cancel'))}</button>`, { wide:true });
 
-    <div style="margin-top:10px;font-size:var(--fs-sec);color:var(--ink-2);line-height:1.7">
-      <div><b>${esc(t('dpPax'))}:</b> ${esc(j.requester || '-')}${
-        j.requester_dept ? ' · ' + esc(j.requester_dept) : ''}${
-        j.passengers ? ' · ' + esc(j.passengers) : ''}</div>
-      ${j.items ? `<div><b>${esc(t('dpItems'))}:</b> ${esc(j.items)}</div>` : ''}
-      ${j.note ? `<div style="color:var(--ink-3)">${esc(j.note)}</div>` : ''}
-    </div>
+  $('#ebX').onclick = closeSheet;
+  $('#ebGo').onclick = async () => {
+    const day = $('#ebD').value, a = $('#ebS').value, b = $('#ebE').value;
+    const err = m => { const e = $('#ebErr'); e.textContent = m; e.hidden = false; };
+    if(!day || !a || !b){ err(t('ebNeedTime')); return; }
+    if(b <= a){ err(t('ebBadTime')); return; }
 
-    ${stops.length ? `<div style="margin-top:10px">
-      <div style="font-size:var(--fs-meta);font-weight:800;color:var(--ink-3);text-transform:uppercase;
-        letter-spacing:.05em">${esc(t('dpStops'))}</div>
-      ${stops.map((sp,i) => `<div class="stopline ${hit.has(i) ? 'hit' : ''}">
-        <span class="dot"></span>
-        <div style="min-width:0;flex:1">
-          <div style="font-size:var(--fs-sec);font-weight:600">${i+1}. ${esc(sp.to || sp.place || '-')}</div>
-          ${sp.km != null ? `<div style="font-size:var(--fs-meta);color:var(--ink-3)">${esc(String(sp.km))} ${esc(t('carKm'))}</div>` : ''}
-        </div>
-        ${live && !hit.has(i) ? `<button class="mini" data-stop="${i}" data-sj="${esc(j.record_id)}"
-          style="flex:0 0 auto">${esc(t('dpStopped'))}</button>` : ''}
-      </div>`).join('')}
-    </div>` : ''}
+    const btn = $('#ebGo'); btn.disabled = true; $('#ebErr').hidden = true;
+    const body = {
+      record_id: rec.record_id,
+      start_at: `${day}T${a}:00+07:00`,
+      end_at:   `${day}T${b}:00+07:00`
+    };
+    if($('#ebT')) body.title = $('#ebT').value.trim();
+    if($('#ebR')) body.resource_id = $('#ebR').value;
+    if($('#ebV')) body.driver_id = $('#ebV').value;
 
-    ${j.requester_phone
-      ? `<a class="btn soft" href="tel:${esc(j.requester_phone)}" style="margin-top:11px;display:block;text-align:center">
-           ${esc(t('dpCall'))} ${esc(j.requester_phone)}</a>`
-      : `<div class="fhint" style="margin:10px 0 0">${esc(t('dpNoPhone'))}</div>`}
-
-    ${['returned','cancelled'].includes(j.status) ? '' : `
-      <button class="btn ${live ? 'g' : 'primary'} drvbig" data-act="${live ? 'return' : 'depart'}"
-        data-r="${esc(j.record_id)}" ${live ? 'style="background:var(--ok);color:#fff"' : ''}>
-        ${esc(live ? t('dpReturn') : t('dpDepart'))}</button>`}
-  </div>`;
+    try{
+      const r = await apiRetry('editBooking', body, 'POST');
+      if(r?.error === 'CLASH'){
+        /* บอกให้ชัดว่าชนกับใคร ช่วงไหน — "จองไม่ได้" เฉยๆ ทำให้คนลองสุ่มเวลาไปเรื่อย */
+        err(t('ebClash')(r.clash?.who || '', fmtDate(r.clash?.start_at), hhmm(r.clash?.end_at)));
+        btn.disabled = false; return;
+      }
+      if(r?.error === 'LOCKED'){ err(t('ebLocked')); btn.disabled = false; return; }
+      if(r?.ok === false) throw 0;
+      closeSheet(); toast(t('ebSaved'), 'ok');
+      opt.onDone?.();
+    }catch(e){ err(t('netErr')); btn.disabled = false; }
+  };
 }
 
+
+/* ────────────────────────────────────────────────────────────────
+ *  ตารางงานของคนขับรายคน (ผู้ดูแล)
+ *
+ *  หน้าจัดการคนขับเดิมตอบได้แค่ "คนนี้คือใคร" แต่คำถามที่ผู้ดูแลถามจริง
+ *  คือ "พรุ่งนี้พี่สมพงษ์ว่างไหม" กับ "วันนี้เขาเข้าไม่ได้ ต้องย้ายงานไหนบ้าง"
+ * ──────────────────────────────────────────────────────────────── */
+ROUTES['driver-jobs'] = async ({ id } = {}) => {
+  setTitle(t('djTitle'));
+  $x('#main').innerHTML = `<div class="view"><div id="dj">${skeleton(3)}</div></div>`;
+  if(!id){ $x('#dj').innerHTML = emptyState(IC.info, t('djPick'), ''); return; }
+
+  let r = null;
+  try{ r = await apiRetry('driverJobs', { driver_id:id }, 'GET'); }catch(e){}
+  if(!r?.ok){ $x('#dj').innerHTML = emptyState(IC.info, t('adminNo'), t('adminNoBody')); return; }
+
+  const row = j => `
+    <button class="row djrow" data-j="${esc(j.record_id)}">
+      <div class="body">
+        <div class="t">${esc(hhmm(j.start_at))}–${esc(hhmm(j.end_at))} · ${esc(j.title || '-')}</div>
+        <div class="s">${esc([fmtDate(j.start_at), j.trip, j.vehicle].filter(Boolean).join(' · '))}</div>
+        <div class="s">${esc([j.who ? t('djBy')(j.who) : '', j.route, j.project,
+          j.km ? j.km + ' ' + t('carKm') : ''].filter(Boolean).join(' · '))}</div>
+      </div>
+      <span class="pill ${['returned','cancelled'].includes(j.status) ? 'done' : 'wait'}">${
+        esc(carStName(j.status))}</span>
+    </button>`;
+
+  $x('#dj').innerHTML = `
+    <div class="card">
+      <div style="font-size:17px;font-weight:800">${esc(r.driver.name)}</div>
+      <div style="font-size:var(--fs-sec);color:var(--ink-3)">${
+        esc([r.driver.company, r.driver.phone].filter(Boolean).join(' · '))}</div>
+      ${r.driver.phone ? `<a class="btn soft" href="tel:${esc(r.driver.phone)}"
+        style="margin-top:10px;text-decoration:none">${IC.phone} ${esc(t('ctCall'))}</a>` : ''}
+    </div>
+
+    <div class="section-title">${esc(t('djVeh'))}</div>
+    <div class="chips" id="djv">${r.vehicles.map(v => `
+      <button class="chip ${v.mine ? 'on' : ''}" data-v="${esc(v.resource_id)}"
+        ${v.taken ? 'disabled title="' + esc(t('djVehTaken')(v.taken)) + '"' : ''}>
+        ${esc(v.name)}${v.plate ? ' · ' + esc(v.plate) : ''}${v.taken ? ' 🔒' : ''}</button>`).join('')}</div>
+    <div class="fhint" style="margin-top:6px">${esc(t('djVehWhy'))}</div>
+    <button class="btn soft" id="djSave" style="margin-top:10px" hidden>${esc(t('djVehSave'))}</button>
+
+    <div class="section-title">${esc(t('djUpcoming'))} · ${r.upcoming.length}</div>
+    ${r.upcoming.length ? `<div class="rows">${r.upcoming.map(row).join('')}</div>`
+      : `<div class="quiet">${esc(t('djNoUpcoming'))}</div>`}
+
+    <div class="section-title">${esc(t('djPast'))}</div>
+    ${r.past.length ? `<div class="rows">${r.past.map(row).join('')}</div>`
+      : `<div class="quiet">${esc(t('djNoPast'))}</div>`}`;
+
+  /* ── จับคู่รถ ── */
+  let picked = new Set(r.vehicles.filter(v => v.mine).map(v => String(v.resource_id)));
+  const orig = [...picked].sort().join(',');
+  document.querySelectorAll('#djv .chip:not([disabled])').forEach(b => b.onclick = () => {
+    const k = b.dataset.v;
+    picked.has(k) ? picked.delete(k) : picked.add(k);
+    b.classList.toggle('on', picked.has(k));
+    $('#djSave').hidden = [...picked].sort().join(',') === orig;
+  });
+  $('#djSave').onclick = async () => {
+    const b = $('#djSave'); b.disabled = true;
+    try{
+      await apiRetry('assignDriverVehicles',
+        { driver_id:id, resource_ids:[...picked].join(',') }, 'POST');
+      clearCache(); toast(t('djVehSaved'), 'ok'); go('driver-jobs', { id }, true);
+    }catch(e){ toast(t('netErr'), 'bad'); b.disabled = false; }
+  };
+
+  /* ── แก้ไขงาน ── */
+  const all = [...r.upcoming, ...r.past];
+  document.querySelectorAll('#dj .djrow').forEach(b => b.onclick = () => {
+    const j = all.find(x => x.record_id === b.dataset.j); if(!j) return;
+    if(['returned','cancelled'].includes(j.status)){ toast(t('ebLocked'), ''); return; }
+    editBookSheet('car', {
+      record_id:j.record_id, start_at:j.start_at, end_at:j.end_at,
+      title:j.title, resource_id:j.resource_id, driver_id:id
+    }, {
+      officer: true,
+      resources: r.vehicles.map(v => ({ id:v.resource_id, name:v.name + (v.plate ? ' · ' + v.plate : '') })),
+      drivers: r.drivers,
+      onDone: () => go('driver-jobs', { id }, true)
+    });
+  });
+};
+
+
+/* ════════════════════════════════════════════════════════════════
+ *  พอร์ทัลคนขับ — เขียนใหม่ทั้งหน้า
+ *
+ *  คนขับส่วนใหญ่อายุ 50+ ใช้มือถือกลางแดด และเปิดแอปตอนกำลังจะออกรถ
+ *  หน้าเดิมเป็นรายการงานเรียงกันเหมือนหน้าอื่นในระบบ ซึ่งแปลว่า
+ *  คำถามเดียวที่เขามี — "งานต่อไปคืออะไร" — ต้องอ่านเองจากกองข้อมูล
+ *
+ *  ของใหม่: งานถัดไปหนึ่งงานเป็นพระเอกเต็มจอ ปุ่มใหญ่ ตัวหนังสือใหญ่
+ *  ที่เหลือเป็นรายการสั้นๆ ข้างล่าง · ภาษาไทยอย่างเดียว ไม่มีสวิตช์ภาษา
+ * ════════════════════════════════════════════════════════════════ */
+
+/** ปุ่มหลักของคนขับ — สูง 68px เพราะนิ้วโป้งกลางแดดไม่ได้แม่นยำเท่าเมาส์ */
+const drvAct = (j, live) => `
+  <button class="dbtn ${live ? 'ret' : 'go'}" data-act="${live ? 'return' : 'depart'}"
+    data-r="${esc(j.record_id)}">
+    <span class="dbtn-d"></span>${esc(live ? 'ถึงแล้ว · กลับถึงออฟฟิศ' : 'เริ่มออกเดินทาง')}</button>`;
+
+function drvHero(j){
+  const live = j.status === 'in_use';
+  const stops = Array.isArray(j.stops) ? j.stops : [];
+  const from  = stops.length ? (stops[0].from || 'ออฟฟิศ') : 'ออฟฟิศ';
+  const to    = stops.length ? (stops[stops.length - 1].to || stops[stops.length - 1].place || '') : '';
+  const hit   = new Set((j.stop_log || []).map(x => Number(x.i)));
+
+  return `<section class="dhero ${live ? 'live' : ''}">
+    <div class="dhero-h">
+      <span class="dhero-t">${esc(hhmm(j.start_at))}</span>
+      <span class="dhero-d">${esc(drvDayWord(j.start_at))}</span>
+      ${live ? '<span class="dhero-live">● กำลังเดินทาง</span>' : ''}
+    </div>
+    <div class="dhero-v">${esc(j.vehicle || '-')}${j.plate ? ' · ' + esc(j.plate) : ''}</div>
+    <div class="dhero-r">${esc(from)}${to ? ' → ' + esc(to) : ''}</div>
+    <div class="dhero-m">
+      <div><b>${esc(j.title || '-')}</b></div>
+      <div>ผู้โดยสาร ${esc(j.requester || '-')}${j.passengers ? ' · ' + esc(j.passengers) : ''}</div>
+      ${j.items ? `<div>ของที่ต้องขน ${esc(j.items)}</div>` : ''}
+      ${j.note ? `<div class="dhero-n">${esc(j.note)}</div>` : ''}
+    </div>
+
+    ${stops.length ? `<div class="dstops">${stops.map((sp, i) => `
+      <div class="dstop ${hit.has(i) ? 'hit' : ''}">
+        <span class="dstop-n">${i + 1}</span>
+        <span class="dstop-x">${esc(sp.to || sp.place || '-')}</span>
+        ${live && !hit.has(i) ? `<button class="dstop-b" data-stop="${i}"
+          data-sj="${esc(j.record_id)}">ถึงจุดนี้</button>` : ''}
+      </div>`).join('')}</div>` : ''}
+
+    <div class="dhero-btns">
+      ${j.requester_phone
+        ? `<a class="dbtn call" href="tel:${esc(j.requester_phone)}">โทรหาผู้โดยสาร</a>`
+        : ''}
+      ${to ? `<a class="dbtn map" target="_blank" rel="noopener"
+          href="https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(to)}">ดูเส้นทาง</a>` : ''}
+    </div>
+    ${drvAct(j, live)}
+    ${live ? '' : `<button class="dbtn off" data-cancel="${esc(j.record_id)}">ไปงานนี้ไม่ได้</button>`}
+  </section>`;
+}
+
+/** วันนี้ / พรุ่งนี้ / วันที่ — คนขับสนใจแค่สามคำนี้ ไม่ต้องมีวันในสัปดาห์ */
+function drvDayWord(iso){
+  const d = dayKey(iso), today = dayKey(new Date());
+  const tm = new Date(); tm.setDate(tm.getDate() + 1);
+  if(d === today) return 'วันนี้';
+  if(d === dayKey(tm)) return 'พรุ่งนี้';
+  return fmtDate(iso).split(' ').slice(0, 2).join(' ');
+}
+
+
+/* ══════════════════════════════════════════════════════════════════
+ *  หน้าแรกของคนขับ
+ *  เปิดมาแล้วต้องรู้ทันทีว่า "งานต่อไปคืออะไร" โดยไม่ต้องอ่านอะไรเลย
+ * ══════════════════════════════════════════════════════════════════ */
 ROUTES['driver-portal'] = async () => {
-  setTitle(t('dpMyJobs'));
+  setTitle('งานของฉัน');
   const ok = await loadDriver(true);
   if(!ok){
     $x('#main').innerHTML = `<div class="view">${
@@ -9963,52 +10647,137 @@ ROUTES['driver-portal'] = async () => {
     if($('#gp')) $('#gp').onclick = () => go('driver-pair');
     return;
   }
-  const g = drvGroups(S.drvJobs);
-  const sec = (list, label) => list.length
-    ? `<div class="section-title">${esc(label)}</div>${list.map(drvJobCard).join('')}` : '';
 
-  $x('#main').innerHTML = `<div class="view">
-    ${S.drvVeh.length ? `<div class="note info">${IC.car}<div><b>${esc(t('dpMyVeh'))}:</b> ${
-      esc(S.drvVeh.map(v => v.name + (v.plate ? ' · ' + v.plate : '')).join(', '))}</div></div>` : ''}
-    ${sec(g.today, t('dpToday'))}
-    ${sec(g.soon,  t('dpSoon'))}
-    ${(g.today.length + g.soon.length) ? '' : emptyState(IC.car, t('dpNone'), t('dpNoneBody'))}
-    ${g.done.length ? `<div class="section-title" style="margin-top:20px">${esc(t('dpDone'))}</div>
-      <div class="rows">${g.done.slice(0,6).map(j => `<div class="row"><div class="body">
-        <div class="t">${esc(j.title || '-')}</div>
-        <div class="s">${esc(fmtDate(j.start_at))} · ${esc(j.vehicle || '')}${
-          j.odo_out && j.odo_in ? ' · ' + esc(String(Number(j.odo_in) - Number(j.odo_out))) + ' ' + esc(t('carKm')) : ''}</div>
-      </div></div>`).join('')}</div>` : ''}
+  const jobs = (S.drvJobs || []).filter(j => !['returned','cancelled'].includes(j.status));
+  /* งานที่กำลังเดินทางอยู่มาก่อนเสมอ ต่อให้เวลาเริ่มจะเก่ากว่างานอื่น
+     เพราะปุ่มที่เขาต้องกดต่อไปคือ "กลับถึงออฟฟิศ" ของงานนั้น */
+  jobs.sort((a, b) => (b.status === 'in_use') - (a.status === 'in_use') ||
+                      String(a.start_at).localeCompare(String(b.start_at)));
+  const next = jobs[0];
+  const rest = jobs.slice(1);
+  const done = (S.drvJobs || []).filter(j => j.status === 'returned').reverse();
+
+  const name = firstName(S.driver?.name || '');
+  const myVeh = (S.drvVeh || []).map(v => v.name + (v.plate ? ' · ' + v.plate : '')).join(', ');
+
+  $x('#main').innerHTML = `<div class="view drv">
+    <div class="dgreet">สวัสดีครับ ${esc(name ? 'พี่' + name : '')}</div>
+    ${myVeh ? `<div class="dveh">${IC.car}<span>${esc(myVeh)}</span></div>` : ''}
+
+    ${next ? `<h3 class="dsec">งานถัดไป</h3>${drvHero(next)}`
+           : `<div class="dnone">${IC.car}<b>วันนี้ไม่มีงานที่ต้องออกรถ</b>
+              <span>ถ้ามีงานใหม่ ระบบจะส่งไลน์บอกทันที</span></div>`}
+
+    ${rest.length ? `<h3 class="dsec">งานถัดไปอีก ${rest.length} งาน</h3>
+      <div class="dlist">${rest.map(j => `
+        <button class="drow" data-open="${esc(j.record_id)}">
+          <span class="drow-t">${esc(hhmm(j.start_at))}</span>
+          <span class="drow-x">
+            <span class="drow-n">${esc(j.title || '-')}</span>
+            <span class="drow-s">${esc(drvDayWord(j.start_at))}${
+              j.vehicle ? ' · ' + esc(j.vehicle) : ''}</span>
+          </span>
+          <span class="drow-g">${IC.chev}</span>
+        </button>`).join('')}</div>` : ''}
+
+    ${done.length ? `<h3 class="dsec">งานที่จบแล้ว</h3>
+      <div class="dlist">${done.slice(0, 5).map(j => `
+        <div class="drow off">
+          <span class="drow-t">${esc(hhmm(j.start_at))}</span>
+          <span class="drow-x">
+            <span class="drow-n">${esc(j.title || '-')}</span>
+            <span class="drow-s">${esc(fmtDate(j.start_at))}${
+              j.odo_out && j.odo_in
+                ? ' · ' + esc(String(Number(j.odo_in) - Number(j.odo_out))) + ' กม.' : ''}</span>
+          </span>
+        </div>`).join('')}</div>` : ''}
   </div>`;
 
-  document.querySelectorAll('#main [data-act]').forEach(b => b.onclick = () => odoSheet(b.dataset.act, b.dataset.r));
-  document.querySelectorAll('#main [data-stop]').forEach(b => b.onclick = async () => {
-    b.disabled = true;
-    try{
-      await apiRetry('driverJobAct', { record_id:b.dataset.sj, act:'stop', stop_index:b.dataset.stop }, 'POST');
-      toast(t('dpStopped'),'ok'); go('driver-portal', {}, true);
-    }catch(e){ toast(t('netErr'),'bad'); b.disabled = false; }
+  /* งานอื่นในรายการ กดแล้วเลื่อนขึ้นมาเป็นงานหลักชั่วคราว
+     ดีกว่าเปิดหน้าใหม่ เพราะคนขับไม่ต้องหาทางกดย้อนกลับ */
+  document.querySelectorAll('#main [data-open]').forEach(b => b.onclick = () => {
+    const j = jobs.find(x => x.record_id === b.dataset.open); if(!j) return;
+    sheet(drvHero(j) + `<button class="btn ghost" id="dcx">ปิด</button>`, { wide:true });
+    $('#dcx').onclick = closeSheet;
+    wireDrvActions();
   });
+  wireDrvActions();
+
+  function wireDrvActions(){
+    document.querySelectorAll('[data-act]').forEach(b => b.onclick = () => odoSheet(b.dataset.act, b.dataset.r));
+    document.querySelectorAll('[data-cancel]').forEach(b => b.onclick = () => cancelSheet(b.dataset.cancel));
+    document.querySelectorAll('[data-stop]').forEach(b => b.onclick = async () => {
+      b.disabled = true;
+      try{
+        await apiRetry('driverJobAct',
+          { record_id:b.dataset.sj, act:'stop', stop_index:b.dataset.stop }, 'POST');
+        toast('บันทึกแล้ว', 'ok'); closeSheet(); go('driver-portal', {}, true);
+      }catch(e){ toast('ต่อเน็ตไม่ได้ ลองใหม่อีกครั้ง', 'bad'); b.disabled = false; }
+    });
+  }
 
   function odoSheet(act, rec){
-    sheet(`<h3>${esc(act === 'depart' ? t('dpDepart') : t('dpReturn'))}</h3>
-      <div class="field"><label>${esc(act === 'depart' ? t('dpOdoOut') : t('dpOdoIn'))}</label>
-        <input id="od" inputmode="numeric" placeholder="${esc(t('dpOdoPh'))}"></div>
-      <div class="fhint">${esc(t('dpOdoSkip'))}</div>
-      <button class="btn primary" id="okd">${esc(t('confirm'))}</button>
-      <button class="btn ghost" id="cxd">${esc(t('cancel'))}</button>`);
+    const out = act === 'depart';
+    sheet(`<h3>${out ? 'เริ่มออกเดินทาง' : 'กลับถึงออฟฟิศแล้ว'}</h3>
+      <div class="field"><label>${out ? 'เลขไมล์ตอนออก' : 'เลขไมล์ตอนกลับ'}</label>
+        <input id="od" inputmode="numeric" class="dbig" placeholder="เช่น 128450"></div>
+      <div class="fhint">ไม่ทันดูก็ข้ามได้ครับ กดยืนยันได้เลย</div>
+      <button class="btn primary dbtn ${out ? 'go' : 'ret'}" id="okd">${
+        out ? 'ยืนยัน ออกเดินทาง' : 'ยืนยัน ถึงแล้ว'}</button>
+      <button class="btn ghost" id="cxd">ยกเลิก</button>`);
     $('#cxd').onclick = closeSheet;
     setTimeout(() => $('#od')?.focus(), 250);
     $('#okd').onclick = async () => {
       $('#okd').disabled = true;
       try{
         await apiRetry('driverJobAct', { record_id:rec, act, odo:$('#od').value.trim() }, 'POST');
-        closeSheet(); toast(act === 'depart' ? t('drvDeparted') : t('drvReturned'), 'ok');
+        closeSheet(); toast(out ? 'บันทึกว่าออกเดินทางแล้ว' : 'บันทึกว่ากลับถึงแล้ว', 'ok');
         go('driver-portal', {}, true);
-      }catch(e){ toast(t('netErr'),'bad'); $('#okd').disabled = false; }
+      }catch(e){ toast('ต่อเน็ตไม่ได้ ลองใหม่อีกครั้ง', 'bad'); $('#okd').disabled = false; }
+    };
+  }
+
+  /* ── ยกเลิกงาน ──
+     เหตุผลเป็นตัวเลือก ไม่ใช่ช่องพิมพ์ เพราะระบบต้องรู้ว่าใบนี้จบแล้ว
+     หรือยังต้องหาคนขับใหม่ ซึ่งสองอย่างนี้แยกจากข้อความอิสระไม่ได้ */
+  function cancelSheet(rec){
+    sheet(`<h3>ไปงานนี้ไม่ได้</h3>
+      <p class="sub">เลือกเหตุผลด้วยครับ ระบบจะแจ้งผู้จองกับผู้ดูแลให้เอง</p>
+      <div class="dopts" id="dcr">${DRV_CANCEL_REASONS.map((x, i) => `
+        <button class="dopt ${i === 0 ? 'on' : ''}" data-k="${esc(x.k)}">${esc(x.th)}</button>`).join('')}</div>
+      <div class="field" style="margin-top:14px"><label>อยากบอกอะไรเพิ่ม (ไม่ใส่ก็ได้)</label>
+        <input id="dcn" class="dbig" placeholder="เช่น รถเข้าอู่ถึงบ่าย"></div>
+      <button class="btn dbtn off" id="dcgo">ยืนยัน ยกเลิกงานนี้</button>
+      <button class="btn ghost" id="dcx2">ไม่ยกเลิก</button>`);
+    let reason = DRV_CANCEL_REASONS[0].k;
+    document.querySelectorAll('#dcr .dopt').forEach(b => b.onclick = () => {
+      reason = b.dataset.k;
+      document.querySelectorAll('#dcr .dopt').forEach(x => x.classList.toggle('on', x === b));
+    });
+    $('#dcx2').onclick = closeSheet;
+    $('#dcgo').onclick = async () => {
+      $('#dcgo').disabled = true;
+      try{
+        const r = await apiRetry('driverJobAct',
+          { record_id:rec, act:'cancel', reason, note:$('#dcn').value.trim() }, 'POST');
+        if(r?.ok === false) throw 0;
+        closeSheet();
+        toast(r?.killed ? 'ยกเลิกงานเรียบร้อย' : 'แจ้งแล้ว ผู้ดูแลจะหาคนขับใหม่ให้', 'ok');
+        go('driver-portal', {}, true);
+      }catch(e){ toast('ต่อเน็ตไม่ได้ ลองใหม่อีกครั้ง', 'bad'); $('#dcgo').disabled = false; }
     };
   }
 };
+
+/* ต้องตรงกับ DRV_CANCEL ใน Code.gs — ฝั่งเซิร์ฟเวอร์เป็นตัวตัดสินว่าใบจบหรือไปต่อ */
+const DRV_CANCEL_REASONS = [
+  { k:'pax_cancel', th:'ผู้โดยสารแจ้งยกเลิก' },
+  { k:'urgent_job', th:'มีงานด่วนแทรก' },
+  { k:'vehicle',    th:'รถมีปัญหา / เข้าอู่' },
+  { k:'sick',       th:'ป่วย / ลากะทันหัน' },
+  { k:'traffic',    th:'ติดภารกิจก่อนหน้า ไปไม่ทัน' },
+  { k:'other',      th:'อื่นๆ' }
+];
 
 ROUTES['driver-pair'] = async () => {
   setTitle(t('dpPair'));
@@ -10035,6 +10804,7 @@ ROUTES['driver-pair'] = async () => {
       }
       toast(t('dpPairOk'),'ok');
       S.driverMode = true; document.body.classList.add('drvmode');
+      S.lang = 'th';                       // โหมดคนขับเป็นภาษาไทยเสมอ
       S.driver = null; S.stack = [];
       go('driver-portal', {}, true);
     }catch(e){ toast(t('netErr'),'bad'); b.disabled = false; }
@@ -10069,12 +10839,9 @@ ROUTES['driver-me'] = async () => {
     ${photoField('mlp', t('dpLicPhoto'), null, { optional:true, max:'240px', prompt:t('dpLicPhoto') })}
     ${d.has_licence_photo ? `<div class="fhint">${esc(t('dpLicHave'))}</div>` : ''}
     <button class="btn primary" id="msv">${esc(t('dpSave'))}</button>
-    <div style="height:10px"></div>
-    <button class="btn ghost" id="mlang">${S.lang === 'th' ? 'English' : 'ภาษาไทย'}</button>
   </div>`;
   const img = { v:null }; wirePhoto('mph', img);
   const lic = { v:null }; wirePhoto('mlp', lic);
-  $('#mlang').onclick = () => { S.lang = S.lang === 'th' ? 'en' : 'th'; go('driver-me', {}, true); };
   $('#msv').onclick = async () => {
     const b = $('#msv'); b.disabled = true;
     try{
@@ -10593,7 +11360,7 @@ ROUTES.register = async () => {
           <option>HR</option><option>Finance and Accounting</option>
           <option>Education Program</option><option>Business and Economy Program</option>
           <option>Social Impact and Innovation Program</option><option>Partnership and Communications</option>
-          <option>IT</option><option>General Administration</option><option>Purchasing</option>
+          <option>IT</option><option>General Administration</option><option>Procurement</option>
         </select></div>
       <div class="field"><label>${esc(t('fOffice'))}</label>
         <select id="rOffice"><option value="BKK">Bangkok</option><option value="DEEPSOUTH">Deep South</option></select></div>
@@ -11032,6 +11799,7 @@ async function boot(){
      เซิร์ฟเวอร์ส่งข้อมูลพอร์ทัลคนขับมาให้ในคำขอเดียวกันแล้ว ไม่ต้องยิงซ้ำ */
   if(auth?.driverMode){
     S.driverMode = true; document.body.classList.add('drvmode');
+    S.lang = 'th';                         // โหมดคนขับเป็นภาษาไทยเสมอ
     S.driver = auth.driver; S.drvJobs = auth.jobs || [];
     S.drvVeh = auth.vehicles || []; S.drvReports = auth.reports || [];
     S.stack = [];

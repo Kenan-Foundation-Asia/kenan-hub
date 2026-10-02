@@ -3718,6 +3718,282 @@ const t = k => T[S.lang][k];
 const DEMO = !CFG.GAS_URL || CFG.GAS_URL.startsWith('PASTE_') || location.search.includes('demo');
 /* ?demo=driver = พรีวิวมุมคนขับ · ?demo เฉยๆ = มุมพนักงาน/ผู้ดูแลเหมือนเดิม */
 const DEMO_DRIVER = DEMO && /[?&]demo=driver/.test(location.search);
+/* ══════════════════════════════════════════════════════════════════
+ *  โหมดพรีวิว: ข้อมูลตัวอย่างเป็นภาษาอังกฤษด้วยเมื่อสลับเป็น EN
+ *
+ *  ปุ่ม TH/EN เปลี่ยนเฉพาะป้ายกำกับในหน้าจอ ส่วนข้อมูลตัวอย่างใน MOCK
+ *  เป็นภาษาไทยฝังไว้ตายตัว เวลาพรีเซนให้ผู้ฟังต่างชาติจึงได้หน้าจอครึ่งๆ:
+ *  เมนูอังกฤษ แต่ชื่อคน ชื่อห้อง ชื่องาน ยังเป็นไทยหมด
+ *
+ *  ทางเลือกที่ไม่เอา: ทำ MOCK สองชุด — เพราะต้องตามแก้สองที่ไปตลอด
+ *  แล้ววันหนึ่งจะลืมแก้ชุดใดชุดหนึ่งแน่นอน
+ *  ทางที่เลือก: แปลตอนอ่านออกจาก MOCK ชั้นเดียว ซึ่งมีจุดเดียวคือใน api()
+ * ══════════════════════════════════════════════════════════════════ */
+const DEMO_EN = {
+  'พิพัฒน์ สุริยสมบูรณ์':'Pipat Suriyasomboon',
+  'พิพัฒน์ ส.':'Pipat S.',
+  'พิ':'Pi',
+  'สมชาย กิตติวงศ์':'Somchai Kittiwong',
+  'สมชาย ก.':'Somchai K.',
+  'ชาย':'Chai',
+  'วราภรณ์ ทองดี':'Waraporn Thongdee',
+  'วราภรณ์ ท.':'Waraporn T.',
+  'วราภรณ์':'Waraporn',
+  'หนิง':'Ning',
+  'ณัฐพล มณีรัตน์':'Nattapon Maneerat',
+  'ณัฐพล ม.':'Nattapon M.',
+  'เบส':'Best',
+  'ชุนหลี แซ่ลิ้ม':'Chunlee Saelim',
+  'ชุนหลี ตั้งมั่น':'Chunlee Tangman',
+  'ชุน':'Chun',
+  'อารยา พงษ์ไพบูลย์':'Araya Pongpaiboon',
+  'ยา':'Ya',
+  'กิตติ ศรีสุข':'Kitti Srisuk',
+  'มณฑา ใจดี':'Montha Jaidee',
+  'ธนกร วัฒนา':'Thanakorn Wattana',
+  'ปิยะดา สุขสันต์':'Piyada Suksan',
+  'สมพงษ์ ขับดี':'Sompong Khapdee',
+  'ประยูร ทางไกล':'Prayoon Thangklai',
+  'วิรัตน์ ใจเย็น':'Wirat Jaiyen',
+  'ณัฐพร สุขใจ':'Nattaporn Sukjai',
+  'ณัฐพร ส.':'Nattaporn S.',
+  'กัลยา มณีรัตน์':'Kanlaya Maneerat',
+  'กัลยา ม.':'Kanlaya M.',
+  'ธนพล ศรีสุข':'Thanapon Srisuk',
+  'มาลี กิตติวงศ์':'Malee Kittiwong',
+  'มาลี ก.':'Malee K.',
+  'สุดา สุริยสมบูรณ์':'Suda Suriyasomboon',
+  'นก':'Nok',
+  'ทดสอบ ระบบ — อีเมลไม่ใช่ @kenan-asia.org':'Test Account — email is not @kenan-asia.org',
+  'คู่สมรส':'Spouse',
+  'การเงินและจัดซื้อ':'Finance and Procurement',
+  'งานบุคคล':'Human Resources',
+  'งานสำนักงาน':'Office administration',
+  'งานโครงการ':'Programs',
+  'เรียนรู้และพัฒนา':'Learning and Development',
+  'ทั้งองค์กร':'Whole organisation',
+  'อาคาร/สถานที่':'Building and facilities',
+  'ฝ่ายบุคคล (HR)':'Human Resources (HR)',
+  'ฝ่ายไอที':'IT Support',
+  'นิติบุคคลอาคาร':'Building Management',
+  'ผู้ประสานงานเหตุฉุกเฉิน':'Emergency coordinator',
+  'เหตุฉุกเฉินแห่งชาติ':'National Emergency',
+  'การแพทย์ฉุกเฉิน':'Emergency Medical',
+  'ดับเพลิง':'Fire',
+  'ไทยรุ่งเรืองขนส่ง':'Thai Rungruang Transport',
+  'บริษัทรถเช่า ABC':'ABC Car Rental',
+  'ห้อง Frank Kenan':'Frank Kenan Room',
+  'ห้อง Partnership':'Partnership Room',
+  'ห้อง Inspiration':'Inspiration Room',
+  'ห้อง Collaboration':'Collaboration Room',
+  'ห้อง Focus':'Focus Room',
+  'ห้องเก็บของ ชั้น 1':'Storage room, 1st floor',
+  'ประชุมใหญ่':'Large meeting room',
+  'ประชุมย่อย':'Small meeting room',
+  'ห้องเล็ก':'Small room',
+  'ชั้น 2':'2nd floor',
+  'ชั้น 4 ห้องเก็บของ':'4th floor storage room',
+  'ตู้ AV ชั้น 2':'AV cabinet, 2nd floor',
+  'ตู้ AV ชั้น 2 ช่อง 1':'AV cabinet, 2nd floor · slot 1',
+  'ตู้ AV ชั้น 2 ช่อง 3':'AV cabinet, 2nd floor · slot 3',
+  'มูลนิธิคีนันแห่งเอเซีย':'Kenan Foundation Asia',
+  'มูลนิธิคีนันแห่งเอเซีย ถนนวิทยุ กรุงเทพมหานคร':'Kenan Foundation Asia, Wireless Road, Bangkok',
+  'กระทรวงศึกษาธิการ':'Ministry of Education',
+  'ท่าอากาศยานสุวรรณภูมิ':'Suvarnabhumi Airport',
+  'สนามบินสุวรรณภูมิ':'Suvarnabhumi Airport',
+  'โรงเรียนวัดสุทธิวราราม':'Wat Suthiwararam School',
+  'โรงแรมอนันตรา สยาม':'Anantara Siam Hotel',
+  'โรงแรม A สุขุมวิท':'Hotel A, Sukhumvit',
+  'โรงแรม B พระราม 9':'Hotel B, Rama 9',
+  'โรงแรมปทุมวัน ปริ๊นเซส ถนนพญาไท กรุงเทพมหานคร 10330':'Pathumwan Princess Hotel, Phayathai Road, Bangkok 10330',
+  'โรงแรมสยามเคมปินสกี้ ถนนพระราม 1 กรุงเทพมหานคร 10330':'Siam Kempinski Hotel, Rama 1 Road, Bangkok 10330',
+  'โรงแรมเอเชีย ราชเทวี ถนนพญาไท กรุงเทพมหานคร 10400':'Asia Hotel Ratchathewi, Phayathai Road, Bangkok 10400',
+  'โรงแรมแมนดาริน สามย่าน ถนนพระราม 4 กรุงเทพมหานคร 10500':'Mandarin Hotel Samyan, Rama 4 Road, Bangkok 10500',
+  'ไปกระทรวงศึกษาธิการ':'To the Ministry of Education',
+  'ไปรับเอกสารด่วนที่กรมพัฒนาธุรกิจ':'Urgent document pickup at the Department of Business Development',
+  'โตโยต้า เวลอซ':'Toyota Veloz',
+  'โตโยต้า แคมรี่':'Toyota Camry',
+  'โตโยต้า เวลอซ ฮธ-1234':'Toyota Veloz ฮธ-1234',
+  'รถตู้':'Van',
+  'รถเก๋ง':'Sedan',
+  'ขาว':'White',
+  'เทา':'Grey',
+  'เบนซิน':'Petrol',
+  'ดีเซล':'Diesel',
+  'ฮค-1234 กรุงเทพมหานคร':'ฮค-1234 Bangkok',
+  '2กท-5678 กรุงเทพมหานคร':'2กท-5678 Bangkok',
+  'ขับรถตู้ได้ · ใบขับขี่ ท.2':'Can drive the van · Class 2 licence',
+  'ยางหน้าซ้ายลมอ่อน เติมแล้วแต่ควรให้ช่างดู':'Front-left tyre is low. Topped it up, but a mechanic should look at it.',
+  'กล้อง Canon R6':'Canon R6 camera',
+  'กล้อง':'Camera',
+  '20MP · 4K60 · เมาท์ RF':'20MP · 4K60 · RF mount',
+  'แบต 2 ก้อน · สายชาร์จ':'2 batteries · charging cable',
+  'ไมค์ลอย Shure':'Shure wireless mic',
+  'ไมค์ลอย Shure 2 ตัว':'2 Shure wireless mics',
+  'โปรเจกเตอร์ Epson':'Epson projector',
+  'โปรเจกเตอร์ Epson EB-992F':'Epson EB-992F projector',
+  'เสียง':'Audio',
+  'ภาพ':'Display',
+  'หนังสือ':'Books',
+  'สำรอง':'Spare',
+  'ทีวี 55"':'55" TV',
+  'จอ + Polycom':'Screen + Polycom',
+  'ลงพื้นที่โรงเรียนวัดสุทธิ':'School visit — Wat Suthi',
+  'ลงพื้นที่โรงเรียนบ้านหนองแวง':'School visit — Ban Nong Waeng',
+  'ลงพื้นที่โรงเรียน':'School field visit',
+  'ส่งทีมไปโรงเรียนวัดสุทธิ':'Take the team to Wat Suthi School',
+  'ส่งเอกสารกระทรวง':'Deliver documents to the Ministry',
+  'ส่งเอกสารกระทรวงศึกษาธิการ':'Deliver documents to the Ministry of Education',
+  'รับวิทยากรจากสนามบิน':'Airport pickup for the speaker',
+  'รับวิทยากร':'Speaker pickup',
+  'ตรวจสถานที่จัดอบรม':'Training venue inspection',
+  'ตรวจสถานที่':'Venue inspection',
+  'ประชุมผู้บริจาค':'Donor meeting',
+  'เที่ยวที่ไม่ได้จองล่วงหน้า':'Unbooked trip',
+  'ทีม WING ประจำสัปดาห์':'WING team weekly',
+  'ประชุมทีม WING ประจำสัปดาห์':'WING team weekly meeting',
+  'ประชุมทีมประจำสัปดาห์':'Weekly team meeting',
+  'ประชุม Partnership รายเดือน':'Monthly Partnership meeting',
+  'สัมภาษณ์ผู้สมัคร':'Candidate interview',
+  'เวิร์กช็อป M&E':'M&E workshop',
+  'อบรม MSME':'MSME training',
+  'อบรมออนไลน์ MSME รุ่น 3':'MSME online training, cohort 3',
+  'ทีม M&E 2 คน':'2 people from M&E',
+  'อีก 1 คน':'1 more person',
+  'อีก 3 คน':'3 more people',
+  'กล่องสื่อการสอน 2 กล่อง':'2 boxes of teaching materials',
+  'กล่องเอกสารจากกระทรวง':'Document box from the Ministry',
+  'ของที่ระลึกงานอบรม':'Training souvenirs',
+  'กล่อง Shopee':'Shopee parcel',
+  'เอกสารจาก HR':'Documents from HR',
+  'พัสดุถึง กัลยา มณีรัตน์':'Parcel for Kanlaya Maneerat',
+  'พัสดุถึง ณัฐพร สุขใจ':'Parcel for Nattaporn Sukjai',
+  'พัสดุ ไม่ทราบผู้รับ':'Parcel — recipient unknown',
+  'พัสดุถึงคุณ · กล่องจาก Shopee':'A parcel for you · Shopee box',
+  'มีพัสดุถึงคุณ':'A parcel has arrived for you',
+  'มาถึงเมื่อ 2 วันก่อน · รับที่เคาน์เตอร์หน้าออฟฟิศ':'Arrived 2 days ago · pick it up at the front counter',
+  'เลยกำหนดคืน: กล้อง Canon R6':'Overdue: Canon R6 camera',
+  'ครบกำหนดเมื่อ 2 วันก่อน · อาจมีคนรอใช้อยู่':'Due 2 days ago · someone may be waiting for it',
+  'ของที่คุณยืมยังไม่ได้คืน':'You still have a borrowed item',
+  'ต้องออกรถ 13:00 · รับวิทยากรจากสนามบิน':'Leave at 13:00 · airport pickup for the speaker',
+  'ประชุม 15:30 · ทีม WING ประจำสัปดาห์':'Meeting 15:30 · WING team weekly',
+  'รออนุมัติ: ขอใช้รถรับจ้าง':'Awaiting your approval: hired-car request',
+  'สมชาย กิตติวงศ์ · WING2026':'Somchai Kittiwong · WING2026',
+  'คุณรับเรื่องไว้: เครื่องพิมพ์ชั้น 3 ไม่ดึงกระดาษ':'You took this on: 3rd-floor printer is not feeding paper',
+  'ไม่มีความเคลื่อนไหว 2 วัน · ผู้แจ้ง: มณฑา ใจดี':'No movement for 2 days · reported by Montha Jaidee',
+  'ประตูเปิดไม่ออก':'The door will not open',
+  'ซ้อมอพยพอาคาร':'Building evacuation drill',
+  'ซ้อมอพยพหนีไฟประจำปี 12 ก.ย.':'Annual fire evacuation drill, 12 Sep',
+  'วันศุกร์ที่ 12 ก.ย. เวลา 14:00 ทุกคนลงจุดรวมพลหน้าอาคาร':'Friday 12 Sep at 14:00 — everyone to the assembly point in front of the building.',
+  'ปิดปรับปรุงห้องประชุม Focus 20-22 ส.ค.':'Focus meeting room closed for refurbishment, 20–22 Aug',
+  'งดใช้ห้อง Focus ชั่วคราว ใช้ห้อง Collaboration แทนได้':'Focus room is unavailable for now. Use the Collaboration room instead.',
+  'อัปเดตนโยบายการเบิกค่าเดินทาง (Travel Expense Policy)':'Travel Expense Policy update',
+  'กรอกแบบฟอร์มรับทราบ':'Complete the acknowledgement form',
+  'ขอลาวันที่ 10 ก.ย. ไปต่อใบขับขี่':'Requesting leave on 10 Sep to renew my driving licence',
+  'ขอลบเบอร์โทรออกจากทำเนียบ':'Request to remove my phone number from the directory',
+  'ลบเบอร์ออกจากทำเนียบแล้ว แจ้งผู้ยื่นทางอีเมล 14 ส.ค.':'Number removed from the directory; requester notified by email on 14 Aug.',
+  'ขอแก้ชื่อภาษาอังกฤษให้ตรงกับพาสปอร์ต':'Request to correct my English name to match my passport',
+  'ตั้งแต่มีแจ้งเตือนพัสดุ ไม่ต้องเดินลงไปดูที่เคาน์เตอร์ทุกวันแล้วค่ะ ขอบคุณมาก':'Since the parcel alerts started I no longer have to walk down to the counter every day. Thank you!',
+  'อยากให้จองห้องแล้วเลือกได้เลยว่าจะให้ส่งนัดใน Outlook ให้ใครบ้าง จะได้ไม่ต้องไปสร้างนัดซ้ำอีกรอบ':'It would help if booking a room let me pick who gets the Outlook invite, so I do not have to create the meeting twice.',
+  'ระบบงานบุคคล':'HR system',
+  'ระบบจัดซื้อ':'Procurement system',
+  'ระบบจองเรียนออนไลน์':'Online course booking',
+  'ขอลา ดูสลิป ยื่นเบิกสวัสดิการ':'Leave requests, payslips and benefit claims',
+  'ขออนุมัติซื้อและติดตามใบสั่งซื้อ':'Purchase approvals and order tracking',
+  'ลงชื่อเรียนคอร์สที่มูลนิธิเปิดให้พนักงาน':'Sign up for courses the foundation runs for staff',
+  'คลัง prompt และเคสการใช้ AI ของทีม Champion':'Prompt library and AI use cases from the Champion team',
+  'แผนงานและสถานะงานของแต่ละโครงการ':'Work plans and task status for each project',
+  'รายงานผู้บริหาร':'Management reports',
+  'ไม่ผูกโครงการ':'Not linked to a project',
+  'นโยบาย':'Policy',
+  'สำคัญ':'Important',
+  'ต้องดำเนินการ':'Action needed',
+  'ดูพัสดุ':'View parcel',
+  'คืนของ':'Return it',
+  'เปิดงาน':'Open the job',
+  'พิจารณา':'Review it',
+  'ดูรายละเอียด':'See details',
+  'อัปเดตเรื่อง':'Update the issue',
+  'จองห้องเรียบร้อย':'Room booked',
+  'มีงานขับรถใหม่':'New driving job',
+  'สุขสันต์วันเกิด {nickname}':'Happy birthday, {nickname}',
+  'ไปส่ง แล้วไปรับกลับ':'Drop off and pick up',
+  'ไปส่งของ / รับของ':'Deliver or collect goods',
+  'รับ-ส่งแขกหรือวิทยากร':'Guest or speaker transfer',
+  '2 จุด · ปลายทาง โรงเรียนวัดสุทธิ':'Wat Suthi School (2 stops)',
+  'วันนี้ 13:00 → 16:00':'Today 13:00 → 16:00',
+  '6 ก.ย. 14:30':'6 Sep 14:30',
+  '5 ต.ค. 2026':'5 Oct 2026',
+  '02-229-3131 ต่อ 118':'02-229-3131 ext. 118',
+  'พัสดุ ของ กล่อง parcel':'parcel package box delivery',
+  'แจ้ง ซ่อม เรื่อง issue':'report repair issue fix',
+  'ห้อง ประชุม room meeting':'room meeting book',
+  'รถ เดินทาง ลงพื้นที่ car vehicle':'car vehicle travel field trip',
+  'อุปกรณ์ ยืม กล้อง equipment borrow':'equipment borrow camera gear',
+  'มีผลตั้งแต่ 1 ต.ค. 2569\nอัตราค่าเดินทางในเขตกรุงเทพปรับใหม่ กรุณาอ่านเอกสารแนบและกรอกแบบฟอร์มรับทราบ':'Effective 1 Oct 2026\nBangkok travel rates have been revised. Please read the attachment and complete the acknowledgement form.',
+  '{title}\nเลขพัสดุ {tracking_no}\nวางไว้ที่เคาน์เตอร์หน้าออฟฟิศ · บันทึกโดย {by}\n\nดูรูปจ่าหน้าและกดรับของ\n{link}':'{title}\nTracking no. {tracking_no}\nLeft at the front counter · logged by {by}\n\nSee the label photo and collect it\n{link}',
+  '{title}\nเลยกำหนดคืนมา {overdue} วัน\nยืมไปแล้ว {borrowed} วัน\nถ้าใช้เสร็จแล้ว กดคืนในแอปพร้อมถ่ายรูปได้เลย อาจมีคนกำลังรอใช้อยู่':'{title}\n{overdue} days overdue\nBorrowed {borrowed} days ago\nIf you are done with it, return it in the app with a photo — someone may be waiting for it.',
+  '{vehicle}\n{when}\nผู้โดยสาร {who}\nไปทำอะไร {purpose}\nมีจุดแวะ {stops} จุด\n\nเปิดแอปเพื่อดูเส้นทางและกดออกเดินทาง':'{vehicle}\n{when}\nPassengers {who}\nPurpose {purpose}\n{stops} stop(s) on the way\n\nOpen the app to see the route and start the trip',
+  '{room}\n{when}\nเรื่อง {title}\n\nส่งไฟล์ปฏิทินไปที่อีเมลคุณแล้ว เปิดแล้วเพิ่มลง Outlook ได้เลย':'{room}\n{when}\nSubject {title}\n\nA calendar file has been emailed to you — open it to add the booking to Outlook.'
+};
+/* คำที่ยาวกว่าต้องถูกแทนก่อน ไม่งั้น "วราภรณ์" จะไปกินคำว่า "วราภรณ์ ทองดี" */
+const DEMO_EN_KEYS = Object.keys(DEMO_EN).sort((a, b) => b.length - a.length);
+const TH_RE = /[\u0E00-\u0E7F]/;
+
+function demoEnStr(v){
+  if(DEMO_EN[v] !== undefined) return DEMO_EN[v];     // ตรงทั้งก้อนก่อน
+  if(!TH_RE.test(v)) return v;                         // ไม่มีอักษรไทย ไม่ต้องยุ่ง
+  let out = v;                                         // ที่เหลือค่อยไล่แทนทีละคำ
+  for(const k of DEMO_EN_KEYS) if(out.includes(k)) out = out.split(k).join(DEMO_EN[k]);
+  return out;
+}
+
+/** วิ่งลึกทั้งก้อนแล้วคืนของใหม่ — ห้ามแก้ MOCK เพราะมันถูกใช้ซ้ำทุกคำขอ */
+function demoEn(v){
+  if(typeof v === 'string') return demoEnStr(v);
+  if(Array.isArray(v)) return v.map(demoEn);
+  if(v && typeof v === 'object'){
+    const o = {};
+    for(const k of Object.keys(v)) o[k] = demoEn(v[k]);
+    return o;
+  }
+  return v;
+}
+
+/** ข้อมูลที่ถูกอ่านตอนบูต (หน้าแรก ข่าว โปรไฟล์) ไม่ได้ผ่าน api()
+    จึงต้องหยิบมาแปลใหม่ตอนสลับภาษา ไม่งั้นหน้าแรกจะค้างเป็นไทยอยู่หน้าเดียว */
+/** ข้อความบนแถบพรีวิว — เปลี่ยนภาษาตามปุ่ม TH/EN เหมือนทุกอย่างในหน้า */
+function demoBanner(){
+  return S.lang === 'en'
+    ? 'Preview mode · sample data' + (DEMO_DRIVER ? ' · driver view' : '')
+    : 'โหมดพรีวิว · ข้อมูลตัวอย่าง' + (DEMO_DRIVER ? ' · มุมคนขับ' : '');
+}
+function demoSwitch(toDriver){
+  if(S.lang === 'en') return toDriver ? 'Driver view →' : '← Staff view';
+  return toDriver ? 'มุมคนขับ →' : '← มุมพนักงาน';
+}
+
+function demoRelang(){
+  if(!DEMO) return;
+  const a = MOCK.bootstrap || MOCK.getAuthState;
+  const src = (S.lang === 'en') ? demoEn(a) : a;
+  S.me = src.user; S.today = src.today || null; S.bootNews = src.announcements || null;
+  if(S.driver){
+    const d = MOCK.driverPortal;
+    const dv = (S.lang === 'en') ? demoEn(d) : d;
+    S.driver = dv.driver; S.drvJobs = dv.jobs || [];
+    S.drvVeh = dv.vehicles || []; S.drvReports = dv.reports || [];
+  }
+  /* แถบพรีวิวถูกวาดครั้งเดียวตอนบูต จึงต้องมาแก้ข้อความเองตอนสลับภาษา */
+  const bt = document.getElementById('dmTx');
+  if(bt) bt.textContent = demoBanner();
+  const bs = document.getElementById('dmStaff');
+  if(bs) bs.textContent = demoSwitch(false);
+  const bd = document.getElementById('dmDrv');
+  if(bd) bd.textContent = demoSwitch(true);
+  clearCache();
+}
+
 const MOCK = {
   bootstrap:(function(){
     const d=new Date(), k=`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
@@ -4382,7 +4658,9 @@ async function api(action, payload = {}, method = 'GET'){
   if(DEMO){
     await new Promise(r => setTimeout(r, 260));       // จำลองดีเลย์จริง จะได้เห็น skeleton
     const v = MOCK[action];
-    return (typeof v === 'function' ? v(payload) : v) ?? { ok:true };
+    const r = (typeof v === 'function' ? v(payload) : v) ?? { ok:true };
+    // สลับเป็น EN แล้วข้อมูลตัวอย่างต้องเป็นอังกฤษด้วย ไม่ใช่เมนูอังกฤษบนข้อมูลไทย
+    return (S.lang === 'en') ? demoEn(r) : r;
   }
   if(!CFG.GAS_URL || CFG.GAS_URL.startsWith('PASTE_')) throw new Error('NO_CONFIG');
   const t0 = performance.now();
@@ -4543,6 +4821,10 @@ $('#backBtn').onclick = back;
 document.querySelectorAll('#langTop button').forEach(b => b.onclick = () => {
   if(S.lang === b.dataset.l) return;
   S.lang = b.dataset.l;
+  /* ในโหมดพรีวิว ข้อมูลที่โหลดไว้ตอนบูตต้องถูกแปลใหม่ด้วย
+     ไม่งั้นเมนูเปลี่ยนภาษาแล้วแต่หน้าแรกยังเป็นข้อมูลภาษาเดิม */
+  demoRelang();
+  paintNav();
   const cur = S.stack[S.stack.length - 1];
   render(cur?.name || 'home', cur?.params || {});
 });
@@ -11777,7 +12059,8 @@ async function boot(){
   if(DEMO){
     S.uid = 'U-demo';
     S.profile = { displayName:'พิพัฒน์ ส.', pictureUrl:'' };
-    const a = MOCK.bootstrap || MOCK.getAuthState;
+    const a0 = MOCK.bootstrap || MOCK.getAuthState;
+    const a = (S.lang === 'en') ? demoEn(a0) : a0;
     S.me = a.user; S.isAdmin = a.isAdmin; S.isOfficer = a.isOfficer; S.isSuper = !!a.isSuper;
     S.regStatus = a.registrationStatus; S.notifCount = a.notificationCount;
     S.today = a.today || null; S.bootNews = a.announcements || null;
@@ -11785,9 +12068,9 @@ async function boot(){
     const banner = el(`<div style="background:#FFFBEB;border-bottom:1px solid #FDE68A;color:#92400E;
       font-size:var(--fs-meta);font-weight:600;text-align:center;padding:6px 12px;
       display:flex;gap:10px;justify-content:center;align-items:center;flex-wrap:wrap">
-      <span>โหมดพรีวิว · ข้อมูลตัวอย่าง${DEMO_DRIVER ? ' · มุมคนขับ' : ''}</span>
-      <a href="?demo" style="color:#92400E;font-weight:800;${DEMO_DRIVER ? '' : 'display:none'}">← มุมพนักงาน</a>
-      <a href="?demo=driver" style="color:#92400E;font-weight:800;${DEMO_DRIVER ? 'display:none' : ''}">มุมคนขับ →</a>
+      <span id="dmTx">${esc(demoBanner())}</span>
+      <a href="?demo" id="dmStaff" style="color:#92400E;font-weight:800;${DEMO_DRIVER ? '' : 'display:none'}">${esc(demoSwitch(false))}</a>
+      <a href="?demo=driver" id="dmDrv" style="color:#92400E;font-weight:800;${DEMO_DRIVER ? 'display:none' : ''}">${esc(demoSwitch(true))}</a>
     </div>`);
     document.querySelector('.topbar').after(banner);
 

@@ -4977,6 +4977,89 @@ function chrome(name){
     b.classList.toggle('on', b.dataset.go === name || (name === 'parcel-in' && b.dataset.go === 'my-parcels')));
 }
 let RENDER_SEQ = 0;
+/* ===== Help popups (mascot) — edit the text below; one entry per page name ===== */
+const __HELP = {
+  'admin-drv': { auto:true,
+    th:{ t:'เพิ่มคนขับ ทำยังไง', s:[
+      'กด "เพิ่มคนขับ" แล้วกรอกชื่อและเบอร์ พร้อมถ่ายรูปคนขับ (ต้องมีชื่อกับรูปครบก่อน ระบบถึงจะบันทึกได้)',
+      'กด "บันทึก" ระบบจะสร้างการ์ดคนขับขึ้นมา',
+      'ที่การ์ดคนขับ กด "สร้างรหัสเข้าใช้งาน" จะได้รหัส 6 หลัก กด "คัดลอกรหัส" แล้วส่งให้คนขับ',
+      'คนขับเปิดแอปจาก LINE ของตัวเอง เลือกเข้าสู่ระบบแบบคนขับ (Driver sign-in) แล้วใส่รหัสครั้งเดียว หลังจากนั้นเปิดแอปก็เข้าหน้าคนขับได้เลย',
+      'ถ้าเปลี่ยนคนขับหรือเปลี่ยนเครื่อง ให้กด "ถอดการเชื่อมต่อ" แล้วออกรหัสใหม่'] },
+    en:{ t:'How to add a driver', s:[
+      'Tap "Add a driver", fill in the name and phone, and take a photo of the driver (name and photo are needed before it can be saved).',
+      'Tap "Save" — a driver card appears.',
+      'On the driver card tap "Create a sign-in code" to get a 6-digit code, then "Copy code" and send it to the driver.',
+      'The driver opens the app from their own LINE, chooses Driver sign-in and enters the code once. After that the app opens straight to the driver page.',
+      'If the driver changes or gets a new phone, tap "Unlink from LINE" and issue a new code.'] } },
+  'driver-pair': { auto:true,
+    th:{ t:'เข้าสู่ระบบคนขับ', s:[
+      'ขอรหัส 6 หลักจากทีม GA หรือผู้ดูแลระบบ',
+      'พิมพ์รหัสแล้วกด "Sign in" ทำครั้งเดียวพอ',
+      'หลังจากนี้เปิดแอปจาก LINE เครื่องนี้จะเข้าหน้างานของคนขับทันที'] },
+    en:{ t:'Driver sign-in', s:[
+      'Ask the GA team or a system admin for a 6-digit code.',
+      'Type the code and tap Sign in. You only do this once.',
+      'From then on, opening the app from LINE on this phone goes straight to your jobs.'] } },
+  'parcel-in': { auto:true,
+    th:{ t:'บันทึกพัสดุเข้า', s:[
+      'กดถ่ายรูปซองหรือฉลากพัสดุ',
+      'เลือกชื่อผู้รับ พิมพ์ค้นหาบางส่วนได้ เช่น "พิ" หรือ "พัฒน์" ถ้าไม่ทราบผู้รับให้เลือก "ไม่ทราบผู้รับ"',
+      'ใส่เลขพัสดุถ้ามี (ไม่บังคับ)',
+      'กด "บันทึกและแจ้งผู้รับ" ผู้รับจะได้รับแจ้งเตือน'] },
+    en:{ t:'Log a parcel', s:[
+      'Tap to photograph the envelope or parcel label.',
+      'Choose the recipient. You can type part of a name, for example "pi". If you cannot tell who it is for, choose the unknown option.',
+      'Add the tracking number if there is one (optional).',
+      'Tap "Save and notify recipient" — the recipient gets a notification.'] } },
+  'my-parcels': {
+    th:{ t:'พัสดุของฉัน', s:[
+      'พัสดุที่ถึงคุณจะขึ้นที่นี่',
+      'เมื่อไปรับของแล้ว กดรับในรายการนั้น สถานะจะเปลี่ยนเป็น "รับแล้ว"'] },
+    en:{ t:'My parcels', s:[
+      'Parcels that arrived for you show up here.',
+      'After you collect one, mark it as collected and its status changes to Picked up.'] } },
+  'services': {
+    th:{ t:'หน้าบริการ', s:[
+      'แตะบริการที่ต้องการเพื่อเข้าใช้ เช่น จองรถ จองห้อง ยืมอุปกรณ์',
+      'หาไม่เจอ พิมพ์ชื่อในช่องค้นหาด้านบนได้เลย'] },
+    en:{ t:'Services', s:[
+      'Tap a service to open it, for example vehicles, meeting rooms or equipment.',
+      'Cannot find it? Type its name in the search box at the top.'] } }
+};
+function __mascot(sz){ return '<svg width="' + sz + '" height="' + sz + '" viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="30" fill="#e6f4fb" stroke="#0a7ab5" stroke-width="3"/><circle cx="23" cy="28" r="4" fill="#0a3d5c"/><circle cx="41" cy="28" r="4" fill="#0a3d5c"/><path d="M21 40 Q32 50 43 40" fill="none" stroke="#0a3d5c" stroke-width="3" stroke-linecap="round"/><circle cx="17" cy="38" r="3.5" fill="#ffb3b3" opacity=".7"/><circle cx="47" cy="38" r="3.5" fill="#ffb3b3" opacity=".7"/></svg>'; }
+function __helpOpen(name){
+  var h = __HELP[name]; if(!h) return;
+  var th = (S.lang === 'th'); var c = th ? h.th : h.en;
+  var old = document.getElementById('helpPop'); if(old) old.remove();
+  var o = document.createElement('div'); o.id = 'helpPop';
+  o.style.cssText = 'position:fixed;inset:0;z-index:10000;background:rgba(0,0,0,.45);display:flex;align-items:flex-end;justify-content:center';
+  o.innerHTML = '<div style="background:#fff;width:100%;max-width:560px;border-radius:20px 20px 0 0;padding:18px 18px calc(18px + env(safe-area-inset-bottom));max-height:80vh;overflow:auto">' +
+    '<div style="display:flex;align-items:center;gap:12px;margin-bottom:10px">' + __mascot(56) + '<div style="font-size:18px;font-weight:700">' + c.t + '</div></div>' +
+    '<ol style="margin:0 0 14px 20px;padding:0;font-size:15px;line-height:1.55">' + c.s.map(function(x){ return '<li style="margin-bottom:8px">' + x + '</li>'; }).join('') + '</ol>' +
+    '<button id="helpOk" class="btn primary" style="width:100%">' + (th ? 'เข้าใจแล้ว' : 'Got it') + '</button></div>';
+  document.body.appendChild(o);
+  o.onclick = function(e){ if(e.target === o) o.remove(); };
+  document.getElementById('helpOk').onclick = function(){ o.remove(); };
+}
+function __helpFor(name){
+  var h = __HELP[name]; var fab = document.getElementById('helpFab');
+  if(!h){ if(fab) fab.style.display = 'none'; return; }
+  if(!fab){
+    fab = document.createElement('button'); fab.id = 'helpFab'; fab.setAttribute('aria-label', 'Help');
+    fab.style.cssText = 'position:fixed;right:14px;bottom:150px;z-index:9000;width:54px;height:54px;border-radius:50%;background:#fff;border:2px solid #0a7ab5;box-shadow:0 4px 14px rgba(0,0,0,.25);padding:0;display:grid;place-items:center';
+    fab.innerHTML = __mascot(40); document.body.appendChild(fab);
+  }
+  fab.style.display = 'grid'; fab.onclick = function(){ __helpOpen(name); };
+  if(h.auto){
+    var k = 'kenan_help_' + name; var seen = false;
+    try{ seen = !!localStorage.getItem(k); }catch(e){}
+    if(!seen){
+      try{ localStorage.setItem(k, '1'); }catch(e){}
+      setTimeout(function(){ var cur = S.stack[S.stack.length - 1]; if(cur && cur.name === name) __helpOpen(name); }, 900);
+    }
+  }
+}
 async function render(name, params){
   const seq = ++RENDER_SEQ;
   /* ลิงก์เก่าหรือปุ่มย้อนกลับพาคนขับไปหน้าพนักงานได้ — พาเขากลับมาหน้าของเขา
@@ -4984,7 +5067,7 @@ async function render(name, params){
   if(S.driverMode && !['driver-portal','driver-me','driver-report','driver-pair','offline','gate'].includes(name)){
     name = 'driver-portal'; params = {};
   }
-  chrome(name);
+  chrome(name); try{ __helpFor(name); }catch(e){}
   const fn = ROUTES[name] || ROUTES.home;
   $x('#main').innerHTML = `<div class="view">${skeleton(2)}</div>`;
   try{ await fn(params); }

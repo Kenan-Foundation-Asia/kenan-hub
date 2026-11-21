@@ -4654,6 +4654,7 @@ const MOCK = {
 };
 
 /* ── 4. API — คุยกับ Apps Script เดิม (ไม่ต้องรื้อ backend) ───── */
+function __idt(){ try{ return (window.liff && liff.isLoggedIn()) ? (liff.getIDToken() || '') : ''; }catch(e){ return ''; } }
 async function api(action, payload = {}, method = 'GET'){
   if(DEMO){
     await new Promise(r => setTimeout(r, 260));       // จำลองดีเลย์จริง จะได้เห็น skeleton
@@ -4669,7 +4670,7 @@ async function api(action, payload = {}, method = 'GET'){
   const tm = ac ? setTimeout(() => ac.abort(), 20000) : null;
   let res;
   if(method === 'GET'){
-    const q = new URLSearchParams({ action, uid:S.uid||'', _t:Date.now(), ...payload });
+    const q = new URLSearchParams({ action, uid:S.uid||'', idt:__idt(), _t:Date.now(), ...payload });
     res = await fetch(`${base}?${q}`, { method:'GET', redirect:'follow', cache:'no-store',
                                         signal: ac ? ac.signal : undefined });
   }else{
@@ -4677,7 +4678,7 @@ async function api(action, payload = {}, method = 'GET'){
     res = await fetch(base, {
       method:'POST', redirect:'follow',
       headers:{ 'Content-Type':'text/plain;charset=utf-8' },
-      body: JSON.stringify({ action, uid:S.uid, ...payload }),
+      body: JSON.stringify({ action, uid:S.uid, idt:__idt(), ...payload }),
       signal: ac ? ac.signal : undefined
     });
   }
@@ -4685,6 +4686,7 @@ async function api(action, payload = {}, method = 'GET'){
   const text = await res.text();
   try {
     const j = JSON.parse(text);
+    if(j && (j.error === 'AUTH_EXPIRED' || j.error === 'AUTH_REQUIRED')){ try{ if(window.liff){ liff.logout(); liff.login(); } }catch(_){} }
     // เก็บเวลาไว้ 12 รายการหลังสุด เอาไว้ดูว่าช้าที่เครือข่าย ที่ Apps Script หรือที่ชีท
     S.timings.unshift({ a:action, net:Math.round(performance.now()-t0),
                         srv:j?.ms ?? null, db:j?.dbMs ?? null });

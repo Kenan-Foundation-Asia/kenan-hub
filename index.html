@@ -7223,10 +7223,25 @@ ROUTES['parcel-in'] = async () => {
     }
   };
 
-  $('#scanBtn').onclick = async () => {
+  /* อ่านฉลากพัสดุบนเครื่องผู้ใช้เอง (OCR ในเบราว์เซอร์) — รูปไม่ถูกส่งออกไปที่ใดเลย ปลอดภัยตาม PDPA */
+async function localScanParcel(photo){
+  if(!window.Tesseract){
+    await new Promise((res, rej) => { const s = document.createElement('script'); s.src = 'https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js'; s.onload = res; s.onerror = rej; document.head.appendChild(s); });
+  }
+  const out = await Tesseract.recognize(photo, 'tha+eng');
+  const text = (out && out.data && out.data.text) || '';
+  const norm = s => String(s || '').toLowerCase().replace(/\s|\./g, '');
+  const T = norm(text);
+  const tm = text.replace(/[ \-]/g, '').match(/[A-Z]{2}\d{9}[A-Z]{2}|TH[0-9A-Z]{10,15}|\d{12,15}/);
+  let hit = null;
+  (S.employees || []).forEach(p => { const n = norm(p.name_th); if(!hit && n.length > 3 && T.includes(n)) hit = p; });
+  (S.employees || []).forEach(p => { const n = norm(p.nickname); if(!hit && n.length > 2 && T.includes(n)) hit = p; });
+  return { ok:true, trackingNo: tm ? tm[0] : '', recipientName: hit ? hit.name_th : '' };
+}
+$('#scanBtn').onclick = async () => {
     const b = $('#scanBtn'); b.disabled = true; b.textContent = t('inScanning');
     try{
-      const r = await apiRetry('scanParcelPhoto', { photo:S.draft.photo }, 'POST');
+      const r = await localScanParcel(S.draft.photo);
       if(r?.trackingNo) $('#trk').value = r.trackingNo;
       const guess = (r?.recipientName || '').trim();
       let matched = null;

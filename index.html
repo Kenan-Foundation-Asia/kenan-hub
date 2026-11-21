@@ -12031,6 +12031,8 @@ $('#lbFit').onclick = () => lbSet(lbZ > 1 ? 1 : 2.5);
    40+ คน เลื่อนหาใน dropdown ไม่ไหว → พิมพ์ 2-3 ตัวอักษรแล้วกรอง
    ค้นได้ทั้งชื่อไทย ชื่ออังกฤษ และชื่อเล่น เพราะฉลากพัสดุมักเขียนชื่อเล่น */
 /** รายชื่อพนักงานถูกโหลดแบบเรียกเมื่อใช้ ถ้าลืมเรียกก่อน ตัวเลือกจะว่างเปล่า */
+/* auto-reload once when a newer version of this page is published (avoids stale LINE/browser cache) */
+(function(){ try{ fetch(location.pathname, { method:'HEAD', cache:'no-store' }).then(function(r){ var v = r.headers.get('etag') || r.headers.get('last-modified') || ''; if(!v) return; var old = null; try{ old = localStorage.getItem('kenan_ver'); localStorage.setItem('kenan_ver', v); }catch(e){ return; } if(old && old !== v){ fetch(location.pathname, { cache:'reload' }).then(function(){ location.reload(); }).catch(function(){}); } }).catch(function(){}); }catch(e){} })();
 async function ensureEmployees(){
   if(S.employees.length) return;
   try{ const r = await apiRetry('getEmployees', {}, 'GET'); S.employees = r?.items || []; }catch(e){}
@@ -12047,10 +12049,9 @@ function pickPerson(){
 
     const paint = (kw) => {
       const k = norm(kw);
-      const hits = !k ? S.employees
-        : S.employees.filter(p => norm(p.name_th).includes(k) ||
-                                  norm(p.name_en).includes(k) ||
-                                  norm(p.nickname).includes(k));
+      const toks = String(kw || '').toLowerCase().split(/\s+/).map(x => x.replace(/\./g, '')).filter(Boolean);
+      const hits = !toks.length ? S.employees
+        : S.employees.filter(p => { const h = norm([p.name_th, p.name_en, p.nickname, p.department].join(' ')); return toks.every(x => h.includes(x)); });
       listEl.innerHTML =
         `<button class="pk-row unknown" data-u="1">
            <span class="av">?</span>

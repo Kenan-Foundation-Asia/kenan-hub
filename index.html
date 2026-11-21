@@ -11776,10 +11776,41 @@ ROUTES.offline = async () => {
 
 /* ── Registration ─────────────────────────────────────────────── */
 ROUTES.register = async () => {
-  const wireDriverEscape = () => { const b = $('#regDrv'); if(b) b.onclick = () => go('driver-pair'); };
+  const wireDriverEscape = () => { const b = $('#regDrv'); if(b) b.onclick = () => { S.regRole = null; render('register', {}); }; };
   if(S.regStatus === 'pending'){
     $x('#main').innerHTML = `<div class="view" style="padding-top:40px">
       ${emptyState(IC.bellBig, t('regPending'), t('regPendingBody'))}</div>`;
+    return;
+  }
+  /* ต้องเลือกบทบาทก่อนเสมอ — กันคนขับ/คนนอกกรอกฟอร์มพนักงานผิดทาง */
+  if(!S.regRole || S.regRole === 'outsource'){
+    const th = S.lang === 'th';
+    const ox = S.regRole === 'outsource';
+    const L = th ? {
+      h:'คุณเป็นใคร?', s:'เลือกก่อน เพื่อพาไปหน้าที่ถูกต้อง',
+      drv:'🚗 ฉันเป็นคนขับรถ', stf:'🏢 ฉันเป็นพนักงานคีนัน', out:'🧹 ฉันเป็นพนักงานภายนอก (outsource / แม่บ้านแทน)',
+      oh:'พนักงานภายนอก', ob:'กรุณาแจ้งผู้ดูแลระบบ (Admin) ของคีนันให้ลงทะเบียนและออกรหัสเข้าใช้งานให้ก่อน แล้วจึงกลับมาใช้งานได้', bk:'← กลับไปเลือกใหม่'
+    } : {
+      h:'Who are you?', s:'Choose first so we can take you to the right place',
+      drv:'🚗 I am a driver', stf:'🏢 I am Kenan staff', out:'🧹 I am an outsourced worker (outsource / substitute housekeeper)',
+      oh:'Outsourced worker', ob:'Please ask a Kenan administrator to register you and issue a sign-in code first, then come back.', bk:'← Choose again'
+    };
+    const bs = 'display:block;width:100%;min-height:64px;font-size:18px;font-weight:800;margin-top:12px;text-align:left;padding:14px 16px';
+    $x('#main').innerHTML = `<div class="view">${stepBar(ONBOARD(), 2)}</div>
+      <div id="roleOv" style="position:fixed;left:0;right:0;bottom:0;top:64px;z-index:60;background:rgba(15,30,40,.55);display:flex;align-items:center;justify-content:center;padding:18px">
+        <div class="card" style="width:100%;max-width:420px;padding:22px">
+          ${ox ? `<h2 style="margin:0 0 8px">${esc(L.oh)}</h2><p style="margin:0 0 16px;font-size:17px;line-height:1.5">${esc(L.ob)}</p><button class="btn ghost" id="roleBack" style="${bs}">${esc(L.bk)}</button>`
+          : `<h2 style="margin:0 0 4px">${esc(L.h)}</h2><p style="margin:0;color:var(--ink-3)">${esc(L.s)}</p>
+          <button class="btn" id="roleStf" style="${bs}">${esc(L.stf)}</button>
+          <button class="btn ghost" id="roleDrv" style="${bs}">${esc(L.drv)}</button>
+          <button class="btn ghost" id="roleOut" style="${bs}">${esc(L.out)}</button>`}
+        </div>
+      </div>`;
+    const again = () => render('register', {});
+    if($('#roleStf')) $('#roleStf').onclick = () => { S.regRole = 'staff'; again(); };
+    if($('#roleDrv')) $('#roleDrv').onclick = () => { S.regRole = 'driver'; go('driver-pair'); };
+    if($('#roleOut')) $('#roleOut').onclick = () => { S.regRole = 'outsource'; again(); };
+    if($('#roleBack')) $('#roleBack').onclick = () => { S.regRole = null; again(); };
     return;
   }
   /* คนขับ outsource ไม่มีอีเมล @kenan-asia.org จะกรอกฟอร์มนี้ยังไงก็ไม่ผ่าน
@@ -11787,7 +11818,7 @@ ROUTES.register = async () => {
   $x('#main').innerHTML = `<div class="view">
     ${stepBar(ONBOARD(), 2)}
     <div class="greet"><h2>${esc(t('regTitle'))}</h2><p>${esc(t('regLead'))}</p></div>
-    <button class="btn ghost" id="regDrv" style="margin-bottom:14px">🚗 ${esc(t('dpIam'))}</button>
+    <button class="btn ghost" id="regDrv" style="margin-bottom:14px">${S.lang === 'th' ? 'เปลี่ยนบทบาท (ไม่ใช่พนักงาน?)' : 'Change role (not staff?)'}</button>
     <div class="card">
       <div class="field"><label>${esc(t('fName'))}<span class="req">*</span><span class="en">${esc(t('fNameEn'))}</span></label>
         <input id="rName" autocomplete="name"><div class="err" id="eName" hidden>${esc(t('errName'))}</div></div>

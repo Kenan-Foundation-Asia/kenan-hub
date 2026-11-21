@@ -1656,6 +1656,13 @@ body.drvmode{ --fs-body:17px; --fs-sec:15px; --fs-meta:13px }
 .svi-i{ flex:0 0 auto; width:38px; height:38px; border-radius:10px;
   background:var(--brand-50); color:var(--brand); display:grid; place-items:center }
 .svi-i svg{ width:20px; height:20px }
+@media (max-width:640px){
+  .svl{ display:grid; grid-template-columns:1fr 1fr }
+  .svl .svi{ flex-direction:column; align-items:flex-start; gap:8px; padding:14px 12px; border-right:1px solid var(--line) }
+  .svl .svi:nth-child(2n){ border-right:0 }
+  .svl .svi .go{ display:none }
+  .svi-s{ white-space:normal; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical }
+}
 .svi-x{ flex:1; min-width:0 }
 .svi-n{ display:block; font-size:var(--fs-body); font-weight:600; color:var(--ink) }
 .svi-s{ display:block; font-size:var(--fs-meta); color:var(--ink-3); margin-top:1px;
@@ -2767,7 +2774,7 @@ const T = {
     inShoot:'แตะเพื่อถ่ายรูปกล่อง', inShootSub:'ถ่ายให้เห็นชื่อผู้รับชัดๆ',
     inShootAny:'แตะเพื่อถ่ายรูป',
     inRetake:'ถ่ายใหม่',
-    inScan:'ให้ AI อ่านฉลาก', inScanning:'กำลังอ่าน…',
+    inScan:'อ่านฉลากจากรูป', inScanning:'กำลังอ่าน…',
     inScanOk:'อ่านได้แล้ว ตรวจสอบให้ถูกก่อนบันทึก',
     inScanFail:'อ่านไม่ออก เลือกชื่อเองได้เลย',
     inRecipient:'ผู้รับ', inRecipientEn:'Recipient',
@@ -3671,7 +3678,7 @@ const T = {
     inShoot:'Tap to photograph the parcel', inShootSub:'Make sure the recipient name is readable',
     inShootAny:'Tap to take a photo',
     inRetake:'Retake',
-    inScan:'Let AI read the label', inScanning:'Reading…',
+    inScan:'Read the label', inScanning:'Reading…',
     inScanOk:'Read successfully — please check before saving',
     inScanFail:'Could not read it — pick the name manually',
     inRecipient:'Recipient', inRecipientEn:'ผู้รับ',
@@ -4655,6 +4662,18 @@ const MOCK = {
 
 /* ── 4. API — คุยกับ Apps Script เดิม (ไม่ต้องรื้อ backend) ───── */
 function __idt(){ try{ return (window.liff && liff.isLoggedIn()) ? (liff.getIDToken() || '') : ''; }catch(e){ return ''; } }
+function __friendBar(){
+  try{
+    if(document.getElementById('friendBar')) return;
+    const th = (S.lang === 'th');
+    const d = document.createElement('div'); d.id = 'friendBar';
+    d.style.cssText = 'position:fixed;left:12px;right:12px;bottom:84px;z-index:9999;background:#0a7ab5;color:#fff;border-radius:14px;padding:12px 14px;display:flex;align-items:center;gap:10px;box-shadow:0 6px 20px rgba(0,0,0,.25);font-size:14px';
+    d.innerHTML = '<span style="flex:1">' + (th ? 'เพิ่มเพื่อน Kenan ONE เพื่อรับแจ้งเตือนใน LINE' : 'Add Kenan ONE as a friend to get alerts in LINE') + '</span><button id="friendGo" style="background:#fff;color:#0a7ab5;border-radius:10px;padding:8px 12px;font-weight:700">' + (th ? 'เพิ่มเพื่อน' : 'Add') + '</button><button id="friendX" style="color:#fff;font-size:18px;padding:4px 8px" aria-label="close">✕</button>';
+    document.body.appendChild(d);
+    document.getElementById('friendX').onclick = function(){ d.remove(); };
+    document.getElementById('friendGo').onclick = function(){ try{ liff.openWindow({ url:'https://line.me/R/ti/p/@974jmahd', external:false }); }catch(e){ location.href = 'https://line.me/R/ti/p/@974jmahd'; } d.remove(); };
+  }catch(e){}
+}
 async function api(action, payload = {}, method = 'GET'){
   if(DEMO){
     await new Promise(r => setTimeout(r, 260));       // จำลองดีเลย์จริง จะได้เห็น skeleton
@@ -7230,15 +7249,28 @@ async function localScanParcel(photo){
   if(!window.Tesseract){
     await new Promise((res, rej) => { const s = document.createElement('script'); s.src = 'https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js'; s.onload = res; s.onerror = rej; document.head.appendChild(s); });
   }
-  const out = await Tesseract.recognize(photo, 'tha+eng');
-  const text = (out && out.data && out.data.text) || '';
+  const img = await new Promise((res, rej) => { const im = new Image(); im.onload = () => res(im); im.onerror = rej; im.src = photo; });
+  const sc = Math.min(1, 1500 / Math.max(img.naturalWidth, img.naturalHeight));
+  const w = Math.round(img.naturalWidth * sc), h = Math.round(img.naturalHeight * sc);
+  const mk = deg => { const c = document.createElement('canvas'); const sw = (deg === 90 || deg === 270); c.width = sw ? h : w; c.height = sw ? w : h; const x = c.getContext('2d'); x.fillStyle = '#fff'; x.fillRect(0, 0, c.width, c.height); x.translate(c.width / 2, c.height / 2); x.rotate(deg * Math.PI / 180); x.drawImage(img, -w / 2, -h / 2, w, h); return c; };
   const norm = s => String(s || '').toLowerCase().replace(/\s|\./g, '');
-  const T = norm(text);
-  const tm = text.replace(/[ \-]/g, '').match(/[A-Z]{2}\d{9}[A-Z]{2}|TH[0-9A-Z]{10,15}|\d{12,15}/);
-  let hit = null;
-  (S.employees || []).forEach(p => { const n = norm(p.name_th); if(!hit && n.length > 3 && T.includes(n)) hit = p; });
-  (S.employees || []).forEach(p => { const n = norm(p.nickname); if(!hit && n.length > 2 && T.includes(n)) hit = p; });
-  return { ok:true, trackingNo: tm ? tm[0] : '', recipientName: hit ? hit.name_th : '' };
+  const worker = await Tesseract.createWorker('tha+eng');
+  let best = { score: -1, tm: null, hit: null };
+  try{
+    for(const deg of [0, 90, 270, 180]){
+      const out = await worker.recognize(mk(deg));
+      const text = (out && out.data && out.data.text) || '';
+      const T = norm(text);
+      const tm = text.replace(/[ \-]/g, '').match(/[A-Z]{2}\d{9}[A-Z]{2}|TH[0-9A-Z]{10,15}|\d{12,15}/);
+      let hit = null;
+      (S.employees || []).forEach(p => { const n = norm(p.name_th); if(!hit && n.length > 3 && T.includes(n)) hit = p; });
+      (S.employees || []).forEach(p => { const n = norm(p.nickname); if(!hit && n.length > 2 && T.includes(n)) hit = p; });
+      const score = (hit ? 100 : 0) + (tm ? 50 : 0) + ((out && out.data && out.data.confidence) || 0) / 10;
+      if(score > best.score) best = { score: score, tm: tm, hit: hit };
+      if(hit || tm) break;
+    }
+  } finally { try{ await worker.terminate(); }catch(e){} }
+  return { ok:true, trackingNo: best.tm ? best.tm[0] : '', recipientName: best.hit ? best.hit.name_th : '' };
 }
 $('#scanBtn').onclick = async () => {
     const b = $('#scanBtn'); b.disabled = true; b.textContent = t('inScanning');
@@ -12115,6 +12147,7 @@ async function boot(){
       if(!liff.isLoggedIn()){ liff.login(); return; }
       S.profile = await liff.getProfile();
       S.uid = S.profile.userId;
+      try{ liff.getFriendship().then(function(f){ if(f && f.friendFlag === false) __friendBar(); }).catch(function(){}); }catch(e){}
       // ล้าง ?code=&state=&liff... ที่ LIFF ต่อท้ายมาหลังล็อกอิน
       // ไม่ล้างแล้วกดรีเฟรชหรือย้อนกลับจะวนกลับเข้า flow ล็อกอินซ้ำ
       if(location.search) history.replaceState({}, '', location.pathname);

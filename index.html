@@ -1705,6 +1705,29 @@ select:focus-visible, textarea:focus-visible, [tabindex]:focus-visible{
 .seg2 button,.chip{min-height:44px;padding-left:14px;padding-right:14px}
 .dev-b,.dev-e{min-height:44px;min-width:44px}
 @media(max-width:420px){.svi-s{display:none}}
+
+/* ===== Theme "office" (opt-in: ?theme=office, off: ?theme=off) ===== */
+html.t-office{--bg:#FBFAF6;--line:#C9D3D9;--r-sm:3px;--r:4px;--r-lg:6px;--r-xl:8px;--shadow:none;--shadow-lg:0 2px 0 rgba(8,58,82,.25);--font:'Sarabun','Prompt',-apple-system,sans-serif;--font-head:'Noto Serif Thai','Prompt',serif}
+html.t-office body{background:var(--bg);font-family:var(--font)}
+html.t-office h1,html.t-office h2,html.t-office h3{font-family:var(--font-head);letter-spacing:0}
+html.t-office .card,html.t-office .atc,html.t-office .svl,html.t-office .qa-b,html.t-office .srchbar,html.t-office .rows,html.t-office .allsv,html.t-office .wk-d{box-shadow:none;border:1px solid var(--line);border-radius:var(--r)}
+html.t-office .hz-h{border-top:2px solid var(--navy);padding-top:10px;margin-bottom:12px}
+html.t-office .hz-h h3{font-size:18px;color:var(--navy)}
+html.t-office .hhead h2{font-size:24px;color:var(--navy)}
+html.t-office .hhead .hdate,html.t-office .hdate{text-transform:none;letter-spacing:0;font-size:15px;font-weight:600;color:var(--primary)}
+html.t-office .hhead-logo{border-radius:4px}
+html.t-office .svl{background:#fff;overflow:hidden}
+html.t-office .svi{border-radius:0;border:0;border-bottom:1px solid var(--line);background:#fff;padding-top:14px;padding-bottom:14px}
+html.t-office .svi:last-child{border-bottom:0}
+html.t-office .svi-i{background:none;color:var(--navy);border-radius:0;border:0;width:30px}
+html.t-office .svi-n{font-family:var(--font-head);font-size:17px;font-weight:700;color:var(--navy)}
+html.t-office .atc{border-left:5px solid var(--primary);background:#fff}
+html.t-office .atc.bad{border-left-color:var(--danger)}
+html.t-office .atc.warn{border-left-color:var(--warn)}
+html.t-office .qa-b{background:#fff;color:var(--navy);font-weight:700}
+html.t-office .nav{border-top:2px solid var(--navy);box-shadow:none}
+html.t-office .btn{border-radius:var(--r);box-shadow:none}
+html.t-office .bday{background:#fff;border:1px solid var(--line);border-left:5px solid var(--warn);border-radius:var(--r)}
 </style>
 </head>
 <body>
@@ -12223,7 +12246,8 @@ async function boot(){
   $x('#sbrandTx').textContent = APP_NAME;
   document.querySelectorAll('.brand .mark, .sbrand .mark').forEach(i => { i.src = LOGO_URI; });
 
-  try{ const sv = localStorage.getItem('kn_lang'); if(sv === 'en' || sv === 'th') S.lang = sv; }catch(e){}
+  try{ const tq = new URLSearchParams(location.search).get('theme'); if(tq === 'office') localStorage.setItem('kn_theme','office'); if(tq === 'off') localStorage.removeItem('kn_theme'); if(localStorage.getItem('kn_theme') === 'office'){ document.documentElement.classList.add('t-office'); const fl = document.createElement('link'); fl.rel = 'stylesheet'; fl.href = 'https://fonts.googleapis.com/css2?family=Noto+Serif+Thai:wght@600;700&family=Sarabun:wght@400;600;700&display=swap'; document.head.appendChild(fl); } }catch(e){}
+    try{ const sv = localStorage.getItem('kn_lang'); if(sv === 'en' || sv === 'th') S.lang = sv; }catch(e){}
 
   if(DEMO){
     S.uid = 'U-demo';

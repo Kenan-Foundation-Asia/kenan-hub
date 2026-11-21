@@ -32,7 +32,7 @@
   /* ไล่ระดับเทาสร้างจาก Davys Grey ของแบรนด์ ไม่ใช่เทาสำเร็จรูปของ framework */
   --ink:#22282B;
   --ink-2:#4D4D4D;
-  --ink-3:#6F7A80;
+  --ink-3:#566168;
   --bg:#F4F7F9;
   --surface:#FFFFFF;
   --line:#DCE5EA;
@@ -66,8 +66,8 @@
   --fs-h2:17px;      /* หัวข้อส่วน */
   --fs-body:15px;    /* เนื้อความหลัก */
   --fs-cta:16px;     /* ปุ่มหลัก */
-  --fs-sec:13px;     /* ข้อความรอง */
-  --fs-meta:12px;    /* ข้อมูลประกอบที่ไม่สำคัญมาก — ต่ำกว่านี้ไม่มี */
+  --fs-sec:14px;     /* ข้อความรอง */
+  --fs-meta:14px;    /* ข้อมูลประกอบที่ไม่สำคัญมาก — ต่ำกว่านี้ไม่มี */
   --lh:1.6;          /* ระยะบรรทัดของภาษาไทย */
 }
 
@@ -1701,6 +1701,10 @@ select:focus-visible, textarea:focus-visible, [tabindex]:focus-visible{
   }
 }
 
+/* tap targets >= 44px, small screens: hide tile sub-lines */
+.seg2 button,.chip{min-height:44px;padding-left:14px;padding-right:14px}
+.dev-b,.dev-e{min-height:44px;min-width:44px}
+@media(max-width:420px){.svi-s{display:none}}
 </style>
 </head>
 <body>
@@ -11789,17 +11793,17 @@ ROUTES.register = async () => {
     const L = th ? {
       h:'คุณเป็นใคร?', s:'เลือกก่อน เพื่อพาไปหน้าที่ถูกต้อง',
       drv:'🚗 ฉันเป็นคนขับรถ', stf:'🏢 ฉันเป็นพนักงานคีนัน', out:'🧹 ฉันเป็นพนักงานภายนอก (outsource / แม่บ้านแทน)',
-      oh:'พนักงานภายนอก', ob:'กรุณาแจ้งผู้ดูแลระบบ (Admin) ของคีนันให้ลงทะเบียนและออกรหัสเข้าใช้งานให้ก่อน แล้วจึงกลับมาใช้งานได้', bk:'← กลับไปเลือกใหม่'
+      oh:'พนักงานภายนอก', ob:'ไม่ต้องมีรหัส เพียงเพิ่มเพื่อน LINE ของคีนัน แล้วแจ้งเรื่องที่ต้องการทางแชทได้เลย', add:'➕ เพิ่มเพื่อน LINE คีนัน', bk:'← กลับไปเลือกใหม่'
     } : {
       h:'Who are you?', s:'Choose first so we can take you to the right place',
       drv:'🚗 I am a driver', stf:'🏢 I am Kenan staff', out:'🧹 I am an outsourced worker (outsource / substitute housekeeper)',
-      oh:'Outsourced worker', ob:'Please ask a Kenan administrator to register you and issue a sign-in code first, then come back.', bk:'← Choose again'
+      oh:'Outsourced worker', ob:'No code needed. Just add Kenan on LINE and message us in the chat whenever you need something.', add:'➕ Add Kenan on LINE', bk:'← Choose again'
     };
     const bs = 'display:block;width:100%;min-height:64px;font-size:18px;font-weight:800;margin-top:12px;text-align:left;padding:14px 16px';
     $x('#main').innerHTML = `<div class="view">${stepBar(ONBOARD(), 2)}</div>
       <div id="roleOv" style="position:fixed;left:0;right:0;bottom:0;top:64px;z-index:60;background:rgba(15,30,40,.55);display:flex;align-items:center;justify-content:center;padding:18px">
         <div class="card" style="width:100%;max-width:420px;padding:22px">
-          ${ox ? `<h2 style="margin:0 0 8px">${esc(L.oh)}</h2><p style="margin:0 0 16px;font-size:17px;line-height:1.5">${esc(L.ob)}</p><button class="btn ghost" id="roleBack" style="${bs}">${esc(L.bk)}</button>`
+          ${ox ? `<h2 style="margin:0 0 8px">${esc(L.oh)}</h2><p style="margin:0 0 16px;font-size:17px;line-height:1.5">${esc(L.ob)}</p><a class="btn" href="https://line.me/R/ti/p/@974jmahd" style="${bs};text-align:center;text-decoration:none;margin-bottom:4px">${esc(L.add)}</a><button class="btn ghost" id="roleBack" style="${bs}">${esc(L.bk)}</button>`
           : `<h2 style="margin:0 0 4px">${esc(L.h)}</h2><p style="margin:0;color:var(--ink-3)">${esc(L.s)}</p>
           <button class="btn" id="roleStf" style="${bs}">${esc(L.stf)}</button>
           <button class="btn ghost" id="roleDrv" style="${bs}">${esc(L.drv)}</button>

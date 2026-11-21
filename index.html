@@ -7194,7 +7194,7 @@ ROUTES['parcel-in'] = async () => {
         <p style="opacity:.7;font-weight:400;margin-top:4px">${esc(t('inShootSub'))}</p></div>
     </label>
     <div style="margin-top:14px" id="afterShot" hidden>
-      <button class="btn soft" id="scanBtn">${esc(t('inScan'))}</button>
+      <button class="btn soft" id="scanBtn" hidden style="display:none">${esc(t('inScan'))}</button>
       <div class="field" style="margin-top:16px">
         <label>${esc(t('inRecipient'))}<span class="en">${esc(t('inRecipientEn'))}</span></label>
         <button class="picker-btn" id="rcp">
@@ -11720,7 +11720,7 @@ ROUTES.register = async () => {
           <option>HR</option><option>Finance and Accounting</option>
           <option>Education Program</option><option>Business and Economy Program</option>
           <option>Social Impact and Innovation Program</option><option>Partnership and Communications</option>
-          <option>IT</option><option>General Administration</option><option>Procurement</option>
+          <option>IT</option><option>General Administration</option><option>Procurement</option><option value="Driver / External">Driver / External · คนขับรถ / บุคคลภายนอก</option>
         </select></div>
       <div class="field"><label>${esc(t('fOffice'))}</label>
         <select id="rOffice"><option value="BKK">Bangkok</option><option value="DEEPSOUTH">Deep South</option></select></div>

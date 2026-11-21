@@ -1717,7 +1717,7 @@ select:focus-visible, textarea:focus-visible, [tabindex]:focus-visible{
         stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4.2-4.2"/></svg>
     </button>
     <div class="langtop" id="langTop">
-      <button data-l="th">TH</button><button data-l="en">EN</button>
+      <button data-l="th">ไทย</button><button data-l="en">EN</button>
     </div>
   </header>
 
@@ -4842,6 +4842,7 @@ $('#backBtn').onclick = back;
 document.querySelectorAll('#langTop button').forEach(b => b.onclick = () => {
   if(S.lang === b.dataset.l) return;
   S.lang = b.dataset.l;
+  try{ localStorage.setItem('kn_lang', S.lang); }catch(e){}
   /* ในโหมดพรีวิว ข้อมูลที่โหลดไว้ตอนบูตต้องถูกแปลใหม่ด้วย
      ไม่งั้นเมนูเปลี่ยนภาษาแล้วแต่หน้าแรกยังเป็นข้อมูลภาษาเดิม */
   demoRelang();
@@ -4968,7 +4969,7 @@ function chrome(name){
   $('#title').hidden   = isHome && window.innerWidth < 900;
   $('#nav').hidden     = isFull;
   $x('#side').style.display = isFull ? 'none' : '';
-  $x('#langTop').hidden = isFull;
+  $x('#langTop').hidden = false;
   // ปุ่มลอยโผล่เฉพาะหน้าที่เกี่ยวกับพัสดุและเมนูผู้ดูแลเท่านั้น
   // หน้าอื่น (โดยเฉพาะหน้าฉุกเฉิน) ห้ามมีอะไรมาบัง
   $('#fab').hidden = !S.isOfficer ||
@@ -7546,7 +7547,7 @@ ROUTES.profile = async () => {
 
   const ACT = {
     /* สลับภาษาแล้ววาดหน้าเดิมใหม่ทันที ไม่ต้องพากลับหน้าแรก */
-    lang: () => { S.lang = S.lang === 'th' ? 'en' : 'th'; paintNav(); go('profile', {}, true); },
+    lang: () => { S.lang = S.lang === 'th' ? 'en' : 'th'; try{ localStorage.setItem('kn_lang', S.lang); }catch(e){} paintNav(); go('profile', {}, true); },
     dl:   () => go('my-data', { act:'download' }),
     fix:  () => go('my-data', { act:'rectify' }),
     dsr:  () => go('my-data', { act:'rights' }),
@@ -12187,7 +12188,7 @@ async function boot(){
   $x('#sbrandTx').textContent = APP_NAME;
   document.querySelectorAll('.brand .mark, .sbrand .mark').forEach(i => { i.src = LOGO_URI; });
 
-  try{ if(navigator.language?.startsWith('en')) S.lang = 'en'; }catch(e){}
+  try{ const sv = localStorage.getItem('kn_lang'); if(sv === 'en' || sv === 'th') S.lang = sv; }catch(e){}
 
   if(DEMO){
     S.uid = 'U-demo';

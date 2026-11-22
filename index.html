@@ -1901,6 +1901,21 @@ div.thumb.pthumb{ display:grid; place-items:center; cursor:default }
     grid-template-areas:'head head' 'bday bday' 'news news' 'att week' 'quick help' }
 }
 
+/* แดชบอร์ดความปลอดภัย: แถบสัดส่วนสถานะ + ป้าย "มุมมองพนักงาน" */
+.dbar{display:flex;height:10px;border-radius:6px;overflow:hidden;background:var(--neutral,#e6e9ee);margin-top:8px}
+.dbar.big{height:16px;border-radius:8px;margin-top:12px}
+.dbar i{display:block;height:100%}
+#vsBar{position:fixed;left:12px;bottom:84px;z-index:9998;display:flex;gap:8px;align-items:center;
+  background:#1d2b36;color:#fff;border-radius:999px;padding:8px 8px 8px 14px;font-size:13px;font-weight:600;
+  box-shadow:0 6px 20px rgba(0,0,0,.28);max-width:calc(100vw - 24px)}
+#vsBar button{background:#fff;color:#1d2b36;border-radius:999px;padding:6px 12px;font-weight:800;font-size:13px}
+@media print{
+  #side, aside, #nav, nav, #vsBar, #fab, .noprint, #topbar, header, .tabbar{display:none!important}
+  body{background:#fff!important}
+  .view{max-width:none!important;padding:0!important}
+}
+@media (min-width:900px){ #vsBar{bottom:20px} }
+
 </style>
 </head>
 <body>
@@ -2024,10 +2039,14 @@ const START_AT = (function(){
             'item','labels','driver-portal','driver-me','driver-report','driver-pair',
             'admin-drvrep','my-data','admin-dsr','services',
             'admin-people','admin-contacts','admin-devline','about-long',
-            'driver-jobs'].includes(g) ? g : null;
+            'driver-jobs','admin-drvreq','safety-dash','alert-history','alert-report'].includes(g) ? g : null;
   }catch(e){ return null; }
 })();
 /* ?rec=PCL-xxx → เปิดพัสดุชิ้นนั้นให้เลย (ลิงก์ที่ส่งไปในข้อความ LINE) */
+/* ?alert_id=ALT-xxx → เปิดตรงเหตุฉุกเฉินเรื่องนั้น (เปิดได้หลายเหตุพร้อมกัน ลิงก์ในไลน์ระบุเหตุให้) */
+const START_ALERT = (function(){
+  try{ return new URLSearchParams(location.search).get('alert_id') || null; }catch(e){ return null; }
+})();
 const START_REC = (function(){
   try{ return new URLSearchParams(location.search).get('rec') || null; }catch(e){ return null; }
 })();
@@ -2755,6 +2774,90 @@ const T = {
     dpPairExp:'รหัสหมดอายุแล้ว ขอรหัสใหม่จาก GA ได้เลย',
     dpPairUsed:'รหัสนี้ถูกใช้กับ LINE เครื่องอื่นไปแล้ว แจ้งผู้ดูแลให้ถอดการเชื่อมต่อก่อน',
     dpPairMany:'ลองผิดหลายครั้งเกินไป รออีก 10 นาทีแล้วลองใหม่',
+    dpReq:'ยังไม่มีรหัส? ขอจากทีมงาน',
+    dpReqSent:'ส่งคำขอให้ทีมงานแล้ว เมื่อทีมตรวจสอบ รหัสจะส่งมาที่แชต LINE นี้ แล้วนำมากรอกด้านบน',
+    dpReqSoon:'เพิ่งขอไป รออีกสักครู่ ทีมงานได้รับแจ้งแล้ว',
+    admDrvReq:'คำขอรหัสคนขับ', admDrvReqSub:'คนขับกดขอรหัสจาก LINE รับเรื่อง ตรวจตัวตน แล้วส่งรหัสให้',
+    admDrvReqWhy:'คนขับที่ยังไม่ผูกบัญชีกดขอรหัสจากแอป ระบบแจ้งผู้ดูแล GA และ HR พร้อมกัน ให้คนแรกที่ตรวจสอบกด "รับเรื่อง" คนอื่นจะได้ไม่ออกรหัสซ้ำ',
+    drqEmpty:'ยังไม่มีคำขอรหัส', drqEmptyBody:'เมื่อคนขับกดขอรหัส จะขึ้นที่นี่และแจ้งเตือนใน LINE',
+    drqWho:'ชื่อใน LINE', drqClaim:'รับเรื่อง', drqClaimed:'ผู้รับเรื่อง',
+    drqPick:'เลือกคนขับที่ตรวจตัวตนแล้ว', drqVerify:'ฉันตรวจตัวตนแล้ว (โทรหรือเทียบชื่อกับคนขับ)',
+    drqIssue:'ส่งรหัสเข้า LINE ของผู้ขอ', drqIssued:'ส่งรหัสให้แล้ว',
+    drqStPending:'รอรับเรื่อง', drqStClaimed:'กำลังตรวจสอบ', drqStDone:'ออกรหัสแล้ว',
+    drqNeedPick:'เลือกคนขับก่อน', drqNeedVerify:'ติ๊กยืนยันตัวตนก่อนส่งรหัส',
+    drqWhy:'รหัสจะถูกส่งไปที่ LINE ของคนที่กดขอเท่านั้น ใช้ได้ครั้งเดียว อายุ 24 ชม.',
+    smsCard:'SMS สำรอง (สำหรับคนไม่มีไลน์/อีเมล)', smsOn:'เปิดใช้งาน', smsOff:'ยังปิดอยู่',
+    smsUsed:'ใช้ไปเดือนนี้ {u}/{l} ข้อความ', smsGap:'มี {n} คนที่ไม่มีไลน์และอีเมล (ในนี้ {m} คนไม่มีเบอร์มือถือที่ใช้ได้)',
+    smsHowTo:'ต้องมีบัญชีผู้ให้บริการ SMS และตั้งค่าคีย์โดยผู้ดูแลระบบก่อน (ไม่ตั้ง = ไม่ส่งและไม่มีค่าใช้จ่าย) ส่งเฉพาะเหตุระดับฉุกเฉิน ไม่ส่งตอนซ้อม',
+    smsContact:'เบอร์ให้โทรกลับ', smsSentToast:'ส่ง SMS ให้ {n} คนที่ไม่มีไลน์/อีเมลแล้ว', smsCapWarn:'SMS ถึงเพดานเดือนนี้ เหลือ {n} คนที่ส่งไม่ได้ ให้โทรตาม',
+    phSafe:'☎ ติดต่อแล้ว: ปลอดภัย', phHelp:'☎ ติดต่อแล้ว: ต้องการช่วย', phBy:'☎ บันทึกโดย {n} หลังโทรคุย', phByAny:'☎ บันทึกหลังโทรคุย',
+    phDone:'บันทึกแล้ว', phTaken:'เจ้าตัวตอบเองแล้ว',
+    emgKind:'ประเภทเหตุ', emgKfire:'ไฟไหม้', emgKquake:'แผ่นดินไหว', emgKflood:'น้ำท่วม', emgKsecurity:'ความปลอดภัย',
+    emgKmedical:'การแพทย์', emgKweather:'สภาพอากาศ', emgKother:'อื่นๆ',
+    emgLevel:'ระดับ',
+    emgLvInfo:'แจ้งเพื่อทราบ', emgLvInfoSub:'ไม่ต้องตอบกลับ ไม่มีการเตือนซ้ำ',
+    emgLvWatch:'เฝ้าระวัง', emgLvWatchSub:'ขอให้ยืนยันสถานะ เตือนซ้ำครั้งเดียวที่ 15 นาที',
+    emgLvEmergency:'ฉุกเฉิน', emgLvEmergencySub:'ต้องยืนยันทันที เตือนซ้ำที่ 5 และ 15 นาที และแจ้งหัวหน้าทีม',
+    emgEnHead:'ฉบับภาษาอังกฤษ (ส่งไปพร้อมข้อความไทย)', emgTitleEn:'หัวข้อ (อังกฤษ)', emgBodyEn:'รายละเอียด (อังกฤษ)',
+    emgNoLineWarn:'มี {n} คนที่ไม่มีไลน์ ข้อความไลน์ถึงไม่ได้ — ดูรายชื่อที่กระดานเพื่อโทรตาม', emgNoLine:'ไม่มีไลน์ · โทรตาม',
+    repTitle:'ประวัติและรายงานเหตุ', repEmpty:'ยังไม่เคยมีการประกาศเหตุ', repEmptyBody:'เมื่อมีเหตุหรือการซ้อม ผลจะสรุปไว้ที่นี่ให้ย้อนดูได้',
+    repOpen:'ดูรายงาน', repAnswered:'ตอบแล้ว', repOpenNow:'กำลังเปิดอยู่', repDrillTag:'ซ้อม',
+    repDuration:'ใช้เวลา', repFirst:'ตอบคนแรกภายใน', repMedian:'ค่ากลางเวลาตอบ', rep5:'ตอบภายใน 5 นาที', rep15:'ตอบภายใน 15 นาที',
+    repSec:'วินาที', repMinU:'นาที',
+    repHelp:'การขอความช่วยเหลือ', repHelpN:'ขอความช่วยเหลือ', repHelpStart:'เริ่มมีคนไปช่วย (ค่ากลาง)', repHelpDone:'ช่วยเสร็จ (ค่ากลาง)',
+    repUnresolved:'ยังไม่ปิดเรื่อง', repWithLoc:'แนบตำแหน่ง', repWithPhoto:'แนบรูป', repWithAudio:'แนบเสียง',
+    repNever:'คนที่ไม่เคยตอบ', repNoLine:'ในนี้ไม่มีไลน์ {n} คน', repNoLineTag:'ไม่มีไลน์',
+    repTeams:'อัตราตอบรายทีม (ต่ำสุดก่อน)', repInsights:'สิ่งที่ควรทำต่อ', repReminders:'เตือนซ้ำอัตโนมัติ',
+    repPrint:'พิมพ์ / บันทึก PDF', repCopy:'คัดลอกสรุป', repCopied:'คัดลอกสรุปแล้ว', repBack:'กลับไปประวัติ',
+    repNamesOnlyResp:'รายชื่อคนที่ไม่ตอบเห็นได้เฉพาะทีมตอบสนอง', repHistoryBtn:'ประวัติและรายงานเหตุ',
+    insLowRate:'อัตราตอบ {v}% ต่ำกว่าเป้า 90% — ตรวจรายชื่อคนที่ไม่ตอบและช่องทางติดต่อ',
+    insNoLine:'คนที่ไม่ตอบ {v} คนไม่มีไลน์ — ชวนให้ผูกไลน์หรือเก็บอีเมลสำรอง',
+    insSlow:'ค่ากลางเวลาตอบ {v} นาที (ช้ากว่า 10 นาที) — ลองซ้อมและย้ำวิธีตอบ',
+    insWeakTeam:'ทีม {v} ตอบเพียง {n}% — ควรคุยกับหัวหน้าทีม',
+    insNoLead:'มี {v} ทีมที่มีสมาชิกตั้งแต่ 4 คนแต่ยังไม่มีหัวหน้าทีม',
+    insHelpNoStart:'มี {v} เรื่องขอความช่วยเหลือที่ไม่มีบันทึกว่าเริ่มไปช่วย',
+    insUnresolved:'มี {v} เรื่องขอความช่วยเหลือที่ยังไม่ถูกปิดว่าช่วยเสร็จ',
+    insAllGood:'ไม่พบจุดที่ต้องแก้ ✓ ผลดีมาก',
+    ccBanner:'ช่วยตรวจข้อมูลติดต่อฉุกเฉินของคุณ', ccBannerSub:'ใช้เวลาไม่ถึง 1 นาที — หากเกิดเหตุจริง ทีมจะติดต่อคุณหรือคนใกล้ชิดได้ทัน',
+    ccBannerMissing:'คุณยังไม่ได้ใส่ผู้ติดต่อกรณีฉุกเฉิน', ccLater:'ไว้ทีหลัง', ccGo:'ตรวจและยืนยัน',
+    ccTitle:'ข้อมูลติดต่อฉุกเฉิน', ccName:'ชื่อผู้ติดต่อ', ccRel:'ความสัมพันธ์', ccPhone:'เบอร์ผู้ติดต่อ', ccMyPhone:'เบอร์ของคุณ',
+    ccConfirm:'ข้อมูลถูกต้อง — ยืนยัน', ccWhy:'ข้อมูลนี้เห็นได้เฉพาะตอนมีเหตุฉุกเฉินจริง และเฉพาะทีมตอบสนอง',
+    ccSaved:'ขอบคุณ บันทึกการยืนยันแล้ว', ccBad:'กรอกชื่อและเบอร์ผู้ติดต่อให้ครบ (เบอร์อย่างน้อย 9 หลัก)',
+    ccReportTitle:'ข้อมูลติดต่อฉุกเฉินของพนักงาน', ccRpUp:'ยืนยันแล้ว', ccRpDue:'ถึงรอบทวน', ccRpMissing:'ยังไม่มีข้อมูล',
+    ccRpNote:'ถึงรอบทวนเมื่อยังไม่มีข้อมูล หรือยืนยันล่าสุดเกิน 1 ปี',
+    dashTitle:'แดชบอร์ดความปลอดภัย', dashOpen:'ดูแดชบอร์ดภาพรวม',
+    dashNone:'ตอนนี้ไม่มีเหตุฉุกเฉินที่เปิดอยู่', dashNoneBody:'เมื่อมีการประกาศเหตุ ตัวเลขจะขึ้นที่นี่ทันทีและรีเฟรชเอง',
+    dashSafe:'ปลอดภัยแล้ว', dashWait:'ยังไม่ตอบ', dashHelp:'ขอความช่วยเหลือ', dashCare:'กำลังไปช่วย / ช่วยแล้ว',
+    dashOf:'จากทั้งหมด', dashElapsed:'ผ่านมาแล้ว', dashMin:'นาที', dashClosed:'ปิดเหตุแล้ว', dashLive:'กำลังเกิดเหตุ',
+    dashTrend:'จำนวนคนที่ตอบแล้วตามเวลา', dashByOffice:'แยกตามสำนักงาน', dashByTeam:'แยกตามทีม',
+    dashPending:'คนที่ยังไม่ตอบ', dashPendingMore:'และอีก {n} คน', dashHelps:'ผู้ขอความช่วยเหลือ',
+    dashLead:'หัวหน้า', dashNoLead:'ยังไม่มีหัวหน้า', dashUpdated:'อัปเดตล่าสุด', dashAuto:'รีเฟรชเองทุก 20 วินาที',
+    dashRefresh:'รีเฟรชตอนนี้', dashToBoard:'ไปกระดานดำเนินการ', dashViewOnly:'มุมมองสำหรับผู้บริหาร ดูอย่างเดียว ไม่เห็นรูป เสียง หรือข้อความของผู้ขอความช่วยเหลือ',
+    dashNoAccess:'หน้านี้สำหรับผู้บริหารและทีมตอบสนอง',
+    vsBtn:'ดูเป็นพนักงาน', vsBtnSub:'ลองใช้แอปเหมือนพนักงานทั่วไป เห็นเมนูและปุ่มเท่าที่เขาเห็นจริง',
+    vsPill:'กำลังดูในมุมพนักงาน', vsBack:'กลับมุมของฉัน',
+    vsNote:'จำลองเฉพาะหน้าจอ สิทธิ์จริงยังตรวจที่เซิร์ฟเวอร์ตามบัญชีของคุณ',
+    roleExec:'ผู้บริหาร (ดูอย่างเดียว)', roleExecSub:'ดูแดชบอร์ดความปลอดภัยแบบเรียลไทม์ ไม่แก้ไขอะไร ไม่เห็นรูป/เสียง/ข้อความของผู้ขอความช่วยเหลือ',
+    emgOthers:'เหตุอื่นที่เปิดอยู่ตอนนี้', emgTooMany:'เปิดเหตุพร้อมกันได้สูงสุด 5 เรื่อง ปิดเรื่องที่จบแล้วก่อน',
+    emgTeamScope:'คุณเห็นเฉพาะสมาชิกในทีมของคุณ (หัวหน้าทีม) ส่วนเรื่องอื่นให้ทีมตอบสนองดูแล',
+    roleLeadHead:'ป้ายเสริม', roleLead:'หัวหน้าทีม',
+    roleLeadSub:'ดูแลทีม = สำนักงานเดียวกัน + แผนกเดียวกัน: ได้แจ้งเตือนเมื่อสมาชิกขอความช่วยเหลือหรือไม่ตอบ และกดรับไปช่วยได้เฉพาะคนในทีม',
+    emgDrill:'นี่คือการซ้อม (ไม่ใช่เหตุจริง)',
+    emgDrillWhy:'ทุกคนยังได้รับแจ้งและกดตอบได้เหมือนจริง แต่ข้อความจะมีป้าย "ซ้อม" ชัดเจน และแยกจากสถิติเหตุจริง',
+    emgDrillTag:'ซ้อม — ไม่ใช่เหตุจริง', emgRealActive:'ตอนนี้มีเหตุจริงอยู่ ซ้อมซ้อนไม่ได้ ปิดเหตุจริงก่อน',
+    emgRemind:'เตือนคนที่ยังไม่ตอบ ({n} คน)', emgRemindAsk:'ส่งไลน์เตือนคนที่ยังไม่ตอบ {n} คนตอนนี้เลยไหม?',
+    emgRemindDone:'ส่งเตือนแล้ว {n} คน',
+    sosOpt:'ไม่ต้องกรอกอะไรก็กดส่งได้ ใส่เท่าที่สะดวก — ตำแหน่ง รูป หรือเสียงช่วยให้ทีมไปหาได้เร็วขึ้น',
+    sosGeo:'แชร์ตำแหน่งของฉัน', sosGeoBusy:'กำลังหาตำแหน่ง…',
+    sosGeoOk:'แนบตำแหน่งแล้ว (คลาดเคลื่อนประมาณ {n} ม.)', sosGeoFail:'หาตำแหน่งไม่ได้ พิมพ์บอกที่อยู่แทนได้',
+    sosPhoto:'ถ่ายรูปสถานการณ์ (ไม่บังคับ)',
+    sosRec:'อัดเสียง', sosRecStop:'หยุดอัด', sosRecDel:'ลบเสียง', sosRecMax:'อัดได้สูงสุด 30 วินาที',
+    sosRecFail:'เปิดไมโครโฟนไม่ได้ ข้ามส่วนนี้แล้วส่งได้เลย',
+    sosWho:'ตำแหน่ง รูป และเสียงนี้ทีมตอบสนอง (ผู้ดูแล, GA, HR และผู้ที่มาช่วย) เท่านั้นที่เห็น เพื่อนร่วมงานคนอื่นไม่เห็นรายละเอียด',
+    sosMap:'เปิดแผนที่', sosViewPhoto:'ดูรูป', sosListen:'ฟังเสียง', sosMediaFail:'เปิดไฟล์ไม่ได้',
+    sumTitle:'ภาพรวมตอนนี้', sumSafe:'ปลอดภัยแล้ว', sumWait:'ยังไม่ตอบ', sumCare:'ทีมงานกำลังดูแล',
+    sumTeam:'เพื่อนร่วมทีมของคุณ', sumNoTeam:'ยังไม่มีข้อมูลทีม',
+    sumStSafe:'ปลอดภัย', sumStNone:'ยังไม่ตอบ', sumStCare:'ทีมงานกำลังดูแล',
     dpIam:'ฉันเป็นคนขับรถ',
     dpOff:'บัญชีคนขับนี้ถูกปิดการใช้งาน', dpOffBody:'ติดต่อทีม GA เพื่อเปิดใช้งานอีกครั้ง',
     dpNavJobs:'งาน', dpNavRep:'แจ้งเรื่อง', dpNavMe:'ฉัน',
@@ -3659,6 +3762,90 @@ const T = {
     dpPairExp:'That code has expired — ask GA for a new one',
     dpPairUsed:'This code is already linked to another LINE account. Ask an admin to unlink it first.',
     dpPairMany:'Too many wrong attempts. Wait 10 minutes and try again.',
+    dpReq:'No code yet? Ask the team',
+    dpReqSent:'Request sent. Once the team has checked who you are, the code arrives in this LINE chat — enter it above.',
+    dpReqSoon:'You just asked. Please wait a moment — the team has been notified.',
+    admDrvReq:'Driver code requests', admDrvReqSub:'Drivers ask for a code from LINE. Claim it, check who they are, send the code.',
+    admDrvReqWhy:'A driver who is not linked yet asks for a code in the app. Admins, GA and HR are all notified. Whoever checks first taps "Claim" so nobody issues a second code.',
+    drqEmpty:'No code requests', drqEmptyBody:'When a driver asks for a code it shows up here and in LINE.',
+    drqWho:'LINE name', drqClaim:'Claim', drqClaimed:'Claimed by',
+    drqPick:'Pick the driver you have verified', drqVerify:'I have verified who this is (called them or matched the name)',
+    drqIssue:'Send the code to the requester\'s LINE', drqIssued:'Code sent',
+    drqStPending:'Waiting', drqStClaimed:'Being checked', drqStDone:'Code issued',
+    drqNeedPick:'Pick a driver first', drqNeedVerify:'Tick the verification box before sending',
+    drqWhy:'The code goes only to the LINE account that asked. Single use, valid 24 hours.',
+    smsCard:'Backup SMS (for people with no LINE or email)', smsOn:'Enabled', smsOff:'Still off',
+    smsUsed:'Used this month: {u}/{l} messages', smsGap:'{n} people have neither LINE nor email ({m} of them have no usable mobile number)',
+    smsHowTo:'Needs an SMS provider account and keys set up by the system admin first (not set = nothing is sent and nothing is charged). Sent for Emergency level only, never for drills.',
+    smsContact:'Call-back number', smsSentToast:'SMS sent to {n} people with no LINE or email', smsCapWarn:'SMS hit this month\'s cap — {n} people could not be texted. Please call them.',
+    phSafe:'☎ Reached: safe', phHelp:'☎ Reached: needs help', phBy:'☎ Recorded by {n} after a phone call', phByAny:'☎ Recorded after a phone call',
+    phDone:'Recorded', phTaken:'They already replied themselves',
+    emgKind:'Type of incident', emgKfire:'Fire', emgKquake:'Earthquake', emgKflood:'Flood', emgKsecurity:'Security',
+    emgKmedical:'Medical', emgKweather:'Weather', emgKother:'Other',
+    emgLevel:'Level',
+    emgLvInfo:'For information', emgLvInfoSub:'No reply needed, no reminders.',
+    emgLvWatch:'Watch', emgLvWatchSub:'Asks everyone to confirm their status. One reminder at 15 minutes.',
+    emgLvEmergency:'Emergency', emgLvEmergencySub:'Must confirm now. Reminders at 5 and 15 minutes, and team leads are told.',
+    emgEnHead:'English version (sent together with the Thai text)', emgTitleEn:'Title (English)', emgBodyEn:'Details (English)',
+    emgNoLineWarn:'{n} people have no LINE, so the message cannot reach them — see the list on the board to call them.', emgNoLine:'No LINE · call them',
+    repTitle:'Incident history and reports', repEmpty:'No incident has been declared yet', repEmptyBody:'Incidents and drills are summarised here so you can look back.',
+    repOpen:'View report', repAnswered:'replied', repOpenNow:'Open now', repDrillTag:'Drill',
+    repDuration:'Duration', repFirst:'First reply within', repMedian:'Median reply time', rep5:'Replied within 5 min', rep15:'Replied within 15 min',
+    repSec:'sec', repMinU:'min',
+    repHelp:'Help requests', repHelpN:'Asked for help', repHelpStart:'Someone started helping (median)', repHelpDone:'Help completed (median)',
+    repUnresolved:'Not closed', repWithLoc:'With location', repWithPhoto:'With photo', repWithAudio:'With voice note',
+    repNever:'Never replied', repNoLine:'{n} of them have no LINE', repNoLineTag:'No LINE',
+    repTeams:'Reply rate by team (lowest first)', repInsights:'What to do next', repReminders:'Automatic reminders',
+    repPrint:'Print / save as PDF', repCopy:'Copy summary', repCopied:'Summary copied', repBack:'Back to history',
+    repNamesOnlyResp:'Names of people who did not reply are visible to the response team only', repHistoryBtn:'Incident history and reports',
+    insLowRate:'Reply rate {v}% is below the 90% target — check who did not reply and how to reach them.',
+    insNoLine:'{v} people who did not reply have no LINE — encourage linking LINE or collect a backup email.',
+    insSlow:'Median reply time was {v} min (over 10) — try a drill and remind people how to reply.',
+    insWeakTeam:'Team {v} replied only {n}% — worth a word with the team lead.',
+    insNoLead:'{v} teams with 4+ members still have no team lead.',
+    insHelpNoStart:'{v} help requests have no record of anyone starting to help.',
+    insUnresolved:'{v} help requests were never closed as helped.',
+    insAllGood:'Nothing to fix ✓ Very good result.',
+    ccBanner:'Please check your emergency contact', ccBannerSub:'Under a minute — if something real happens, the team can reach you or someone close to you in time.',
+    ccBannerMissing:'You have not added an emergency contact yet', ccLater:'Later', ccGo:'Check and confirm',
+    ccTitle:'Emergency contact', ccName:'Contact name', ccRel:'Relationship', ccPhone:'Contact phone', ccMyPhone:'Your phone',
+    ccConfirm:'This is correct — confirm', ccWhy:'This is shown only during a real emergency, and only to the response team.',
+    ccSaved:'Thank you — confirmation saved', ccBad:'Please fill in the contact name and a full phone number (at least 9 digits).',
+    ccReportTitle:'Staff emergency contacts', ccRpUp:'Confirmed', ccRpDue:'Due for review', ccRpMissing:'No data yet',
+    ccRpNote:'Due when there is no data, or the last confirmation is over a year old.',
+    dashTitle:'Safety dashboard', dashOpen:'Open the overview dashboard',
+    dashNone:'No emergency is open right now', dashNoneBody:'When one is declared, the numbers appear here immediately and refresh on their own.',
+    dashSafe:'Marked safe', dashWait:'Not replied', dashHelp:'Asking for help', dashCare:'On the way / helped',
+    dashOf:'out of', dashElapsed:'Elapsed', dashMin:'min', dashClosed:'Closed', dashLive:'In progress',
+    dashTrend:'People who have replied over time', dashByOffice:'By office', dashByTeam:'By team',
+    dashPending:'Not replied yet', dashPendingMore:'and {n} more', dashHelps:'People asking for help',
+    dashLead:'Lead', dashNoLead:'No lead yet', dashUpdated:'Last updated', dashAuto:'Refreshes every 20 seconds',
+    dashRefresh:'Refresh now', dashToBoard:'Go to the action board', dashViewOnly:'Executive view — read only. Photos, voice notes and messages from people asking for help are not shown.',
+    dashNoAccess:'This page is for executives and the response team.',
+    vsBtn:'View as staff', vsBtnSub:'Use the app as an ordinary employee would, seeing only the menus and buttons they see.',
+    vsPill:'Viewing as staff', vsBack:'Back to my view',
+    vsNote:'Screen simulation only. Real permissions are still checked on the server for your own account.',
+    roleExec:'Executive (view only)', roleExecSub:'Sees the live safety dashboard. Changes nothing. Does not see photos, voice notes or messages from people asking for help.',
+    emgOthers:'Other open incidents', emgTooMany:'At most 5 incidents can be open at once. Close one that has ended first.',
+    emgTeamScope:'You are seeing only the members of your own team (team lead). The response team looks after everyone else.',
+    roleLeadHead:'Extra tag', roleLead:'Team lead',
+    roleLeadSub:'Looks after a team = same office + same department: gets alerts when a member asks for help or does not reply, and can step in for people in that team only.',
+    emgDrill:'This is a drill (not a real emergency)',
+    emgDrillWhy:'Everyone is still notified and can reply as normal, but messages carry a clear "Drill" label and are kept apart from real-incident records.',
+    emgDrillTag:'Drill — not a real emergency', emgRealActive:'A real emergency is open. You cannot start a drill on top of it — close it first.',
+    emgRemind:'Remind people who have not replied ({n})', emgRemindAsk:'Send a LINE reminder to the {n} people who have not replied?',
+    emgRemindDone:'Reminded {n} people',
+    sosOpt:'You can send without filling anything in. Add what you can — a location, photo or voice note helps the team reach you faster.',
+    sosGeo:'Share my location', sosGeoBusy:'Finding your location…',
+    sosGeoOk:'Location attached (accurate to about {n} m)', sosGeoFail:'Could not get your location — type where you are instead.',
+    sosPhoto:'Take a photo of the situation (optional)',
+    sosRec:'Record voice', sosRecStop:'Stop recording', sosRecDel:'Delete recording', sosRecMax:'Up to 30 seconds',
+    sosRecFail:'Could not open the microphone — skip this and send.',
+    sosWho:'Only the response team (admins, GA, HR and whoever comes to help) can see this location, photo and voice note. Colleagues do not see the details.',
+    sosMap:'Open map', sosViewPhoto:'View photo', sosListen:'Play voice note', sosMediaFail:'Could not open the file',
+    sumTitle:'Where things stand', sumSafe:'Marked safe', sumWait:'Not replied', sumCare:'Team is on it',
+    sumTeam:'Your teammates', sumNoTeam:'No team data yet',
+    sumStSafe:'Safe', sumStNone:'Not replied', sumStCare:'Team is on it',
     dpIam:'I am a driver',
     dpOff:'This driver account is switched off', dpOffBody:'Contact the GA team to switch it back on.',
     dpNavJobs:'Jobs', dpNavRep:'Report', dpNavMe:'Me',
@@ -4244,6 +4431,10 @@ function demoParcelImg(id){
   return 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg);
 }
 
+const DEMO_DRQ = [
+  { req_id:'DRQ-1', at:new Date(Date.now() - 12*60000).toISOString(), display_name:'Somchai (LINE)', status:'pending', claimed_by:'' },
+  { req_id:'DRQ-0', at:new Date(Date.now() - 26*3600000).toISOString(), display_name:'ประยูร', status:'done', claimed_by:'GA' }
+];
 const MOCK = {
   bootstrap:(function(){
     const d=new Date(), k=`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
@@ -4527,6 +4718,16 @@ const MOCK = {
   driverSelf:{ ok:true },
   driverReport:{ ok:true, report_id:'DRP-2' },
   driverPairCode:{ ok:true, code:'481027', expires:'6 ก.ย. 14:30', name:'สมพงษ์ ขับดี' },
+  /* คำขอรหัสคนขับ — เดโมจำลองสถานะจริง: รับเรื่อง → ส่งรหัส */
+  driverRequestCode:(() => { let n = 0; return () => (++n > 1 ? { ok:false, error:'TOO_SOON' } : { ok:true, req_id:'DRQ-DEMO' }); })(),
+  getDriverRequests:() => ({ ok:true, items:DEMO_DRQ.map(x => ({ ...x })) }),
+  claimDriverRequest:q => { const x = DEMO_DRQ.find(i => i.req_id === q.req_id);
+    if(!x) return { ok:false, error:'NOT_FOUND' };
+    if(x.status === 'claimed') return { ok:false, error:'TAKEN' };
+    x.status = 'claimed'; x.claimed_by = 'คุณ (ตัวอย่าง)'; return { ok:true }; },
+  issueDriverRequest:q => { const x = DEMO_DRQ.find(i => i.req_id === q.req_id);
+    if(!x) return { ok:false, error:'NOT_FOUND' };
+    x.status = 'done'; return { ok:true }; },
   driverUnpair:{ ok:true },
   driverReports:{ ok:true, items:[
     { report_id:'DRP-1', at:'2026-09-05T07:10:00+07:00', kind:'vehicle', driver:'สมพงษ์ ขับดี',
@@ -4822,17 +5023,44 @@ const MOCK = {
   saveContact:{ ok:true },
   saveDevLines:{ ok:true },
   getAlertBoard:{ ok:true, active:true, canClose:true, canHelp:true, total:12,
-    alert:{ alert_id:'ALT-1', title:'ซ้อมอพยพอาคาร', at:'2026-09-06T02:00:00Z' },
+    alert:{ alert_id:'ALT-1', title:'ซ้อมอพยพอาคาร', at:'2026-09-06T02:00:00Z', drill:true },
     help:[{ id:'K-1007', name:'สมชาย กิตติวงศ์', nickname:'ชาย', dept:'Business and Economy',
             phone:'0812345001', location:'ชั้น 4 ห้องเก็บของ', note:'ประตูเปิดไม่ออก',
-            status:'help', emg:{ name:'มาลี ก.', phone:'0817776666', relation:'คู่สมรส' } }],
+            status:'help', emg:{ name:'มาลี ก.', phone:'0817776666', relation:'คู่สมรส' },
+            lat:13.7563, lng:100.5018, acc:18, has_photo:true, has_audio:true }],
     helping:[{ id:'K-1014', name:'วราภรณ์ ทองดี', nickname:'หนิง', dept:'Social Impact',
                phone:'0812345002', location:'ชั้น 2', status:'helping', helper:'ชุนหลี แซ่ลิ้ม' }],
     helped:[{ id:'K-1021', name:'ณัฐพล มณีรัตน์', nickname:'เบส', dept:'HR',
               phone:'0812345003', status:'helped', helper:'ชุนหลี แซ่ลิ้ม',
               helped_at:'2026-09-06T02:20:00Z' }],
-    none:[{ id:'K-1028', name:'ชุนหลี แซ่ลิ้ม', nickname:'ชุน', dept:'IT', phone:'0812345004' }],
+    none:[{ id:'K-1028', name:'ชุนหลี แซ่ลิ้ม', nickname:'ชุน', dept:'IT', phone:'0812345004' },
+          { id:'K-1099', name:'สมศักดิ์ ใจดี', nickname:'ศักดิ์', dept:'Field team', phone:'0812345099', no_line:true }],
     safe:[{ id:'K-1035', name:'อารยา พงษ์ไพบูลย์', nickname:'ยา', dept:'IT', phone:'0812345005' }] },
+  /* เดโมเหตุฉุกเฉิน: เปิดด้วย ?demo&alert (ใส่ &staff เพื่อดูในมุมพนักงานทั่วไป) ปกติไม่โชว์ จะได้ไม่รกหน้าแรก */
+  getActiveAlert:p => {
+    const q = location.search;
+    if(!/[?&]alert\b/.test(q)) return { active:false, canDeclare:!/[?&]exec\b/.test(q), canDash:true };
+    const exec = /[?&]exec\b/.test(q);                                  // ผู้บริหาร: เห็นแดชบอร์ด ไม่มีกระดานดำเนินการ
+    const staff = /[?&]staff\b/.test(q) || exec, multi = /[?&]multi\b/.test(q);
+    const A1 = { alert_id:'ALT-1', title:'ซ้อมอพยพอาคาร', body:'กรุณายืนยันสถานะของคุณ',
+                 title_en:'Building evacuation drill', body_en:'Please confirm your status.',
+                 level:(q.match(/[?&]level=(info|watch)/) || [])[1] || 'emergency', kind:'fire',
+                 at:new Date(Date.now() - 6*60000).toISOString(), office:'ALL', drill:/[?&]drill\b/.test(q) };
+    const A2 = { alert_id:'ALT-2', title:'น้ำท่วมสำนักงานภาคใต้', body:'งดเดินทางเข้าออฟฟิศ',
+                 at:new Date(Date.now() - 20*60000).toISOString(), office:'DEEPSOUTH', drill:false };
+    const all = multi ? [A2, A1] : [A1];                               // เหตุจริงก่อน เหมือนหลังบ้าน
+    const sel = all.find(x => x.alert_id === p?.alert_id) || all[0];
+    return { active:true, canDeclare:!staff, canSeeBoard:!staff, canDash:!/[?&]staff\b/.test(q), myStatus:'', alert:sel,
+      others: all.filter(x => x !== sel).map(x => ({ alert_id:x.alert_id, title:x.title, drill:x.drill, at:x.at, myStatus:'' })) };
+  },
+  remindAlertNow:{ ok:true, reminded:1 },
+  respondAlert:{ ok:true },
+  /* พนักงานทั่วไปเห็นแค่ภาพรวม + สถานะทีมตัวเอง (ปลอดภัย / ยังไม่ตอบ / ทีมงานกำลังดูแล) */
+  getAlertSummary:{ ok:true, total:12, safe:5, wait:6, care:1,
+    team:[{ name:'ชุนหลี', status:'safe' }, { name:'อารยา', status:'none' }, { name:'สมชาย', status:'care' }] },
+  getHelpMedia:q => ({ ok:true, data: q.kind === 'photo'
+    ? 'data:image/svg+xml;utf8,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="640" height="400"><rect width="640" height="400" fill="#dbe9ee"/><text x="320" y="205" font-size="30" text-anchor="middle" fill="#456">ตัวอย่างรูปจากผู้ขอความช่วยเหลือ</text></svg>')
+    : 'data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQAAAAA=' }),
   getAbout:{ ok:true, build:CFG.BUILD, total:0,
     tally:{ heart:0, clap:0, rocket:0, thanks:0, coffee:0 }, mine:{}, unread:1 },
   sendCheer:{ ok:true }, sendFeedback:{ ok:true },
@@ -4963,7 +5191,150 @@ function __friendBar(){
     document.getElementById('friendGo').onclick = function(){ try{ liff.openWindow({ url:'https://line.me/R/ti/p/@974jmahd', external:false }); }catch(e){ location.href = 'https://line.me/R/ti/p/@974jmahd'; } d.remove(); };
   }catch(e){}
 }
+/* เดโมรายงานหลังเหตุ + ทวนข้อมูลติดต่อฉุกเฉิน */
+{ const ago = m => new Date(Date.now() - m * 60000).toISOString();
+  MOCK.getAlertHistory = () => ({ ok:true, items:[
+    { alert_id:'ALT-9', title:'ซ้อมอพยพอาคารประจำปี', title_en:'Annual evacuation drill', at:ago(60*24*9), closed_at:ago(60*24*9 - 22), status:'closed', drill:true, level:'emergency', kind:'fire', total:41, answered:38, rate:93, helps:1 },
+    { alert_id:'ALT-8', title:'เฝ้าระวังน้ำท่วมสำนักงานภาคใต้', title_en:'Flood watch — Deep South office', at:ago(60*24*40), closed_at:ago(60*24*40 - 300), status:'closed', drill:false, level:'watch', kind:'flood', total:12, answered:9, rate:75, helps:0 },
+    { alert_id:'ALT-7', title:'ประกาศปิดปรับปรุงลิฟต์', at:ago(60*24*75), closed_at:ago(60*24*75 - 5), status:'closed', drill:false, level:'info', kind:'other', total:41, answered:0, rate:0, helps:0 }] });
+  MOCK.getAlertReport = p => {
+    const info = p?.alert_id === 'ALT-7', weak = p?.alert_id === 'ALT-8';
+    const rate = info ? 0 : weak ? 75 : 93, total = weak ? 12 : 41, answered = Math.round(total * rate / 100);
+    return { ok:true,
+      alert:{ alert_id:p?.alert_id, title:weak ? 'เฝ้าระวังน้ำท่วมสำนักงานภาคใต้' : info ? 'ประกาศปิดปรับปรุงลิฟต์' : 'ซ้อมอพยพอาคารประจำปี',
+              title_en:weak ? 'Flood watch — Deep South office' : info ? '' : 'Annual evacuation drill', body:'', at:ago(60*24*9), closed_at:ago(60*24*9 - 22),
+              status:'closed', drill:!weak && !info, level:info ? 'info' : weak ? 'watch' : 'emergency', kind:weak ? 'flood' : info ? 'other' : 'fire', office:'ALL' },
+      durationMin:22, remind1_at:ago(60*24*9 - 5), remind2_at:ago(60*24*9 - 15),
+      total, answered, rate, neverCount:total - answered, noLineNever:weak ? 2 : 1,
+      firstSec:48, medianSec:weak ? 780 : 190, within5:weak ? 5 : 30, within15:weak ? 8 : 37,
+      help:{ total:weak ? 0 : 1, withLoc:1, withPhoto:1, withAudio:0, unresolved:0, medianToStartSec:210, medianToDoneSec:560 },
+      offices:[{ office:'BKK', total:29, answered:29, rate:100 }, { office:'DEEPSOUTH', total:12, answered:weak ? 9 : 9, rate:75 }],
+      teams:[{ office:'DEEPSOUTH', dept:'Field team', lead:weak ? '' : 'พี่หมัด', total:12, answered:9, rate:75 },
+             { office:'BKK', dept:'Education', lead:'พี่ปอ', total:9, answered:9, rate:100 },
+             { office:'BKK', dept:'Business and Economy', lead:'', total:8, answered:8, rate:100 }],
+      never:[{ name:'สมศักดิ์', dept:'Field team', office:'DEEPSOUTH', no_line:true }, { name:'ลลิตา', dept:'Field team', office:'DEEPSOUTH', no_line:false },
+             { name:'ธนา', dept:'Education', office:'BKK', no_line:false }].slice(0, Math.min(3, total - answered)),
+      insights:info ? [] : weak ? [{ k:'lowRate', v:75 }, { k:'noLine', v:2 }, { k:'slow', v:13 }, { k:'weakTeam', v:'Field team', n:75 }, { k:'noLead', v:1 }]
+                               : [{ k:'noLine', v:1 }] };
+  };
+  MOCK.getSmsStatus = () => ({ ok:true, enabled:/[?&]sms\b/.test(location.search), configured:true, provider:'twilio', used:12, limit:100, mode:'gap',
+    escalate:false, contactPhone:'02-123-4567', gapPeople:3, gapNoPhone:1 });
+  MOCK.markByPhone = () => ({ ok:true });
+  let cc = { due:true, done:false };
+  MOCK.getContactCheck = () => ({ ok:true, due:cc.due, missing:false, verified_at:'2025-09-01T00:00:00+07:00', ageDays:448, phone:'0812345678',
+    emg:{ name:'มาลี ใจดี', phone:'0817776666', relation:'คู่สมรส' } });
+  MOCK.confirmContacts = () => { cc.due = false; return { ok:true }; };
+  MOCK.getContactCheckReport = () => ({ ok:true, total:42, upToDate:25, due:17, missing:6, list:[], recheckDays:365 });
+}
+
+/* เดโมแดชบอร์ด: ตัวเลขขยับทุกครั้งที่รีเฟรช (จำลองคนทยอยตอบ) จะได้เห็นการรีเฟรชเองทำงาน */
+{ let tick = 0;
+  MOCK.getAlertDashboard = p => {
+    tick++;
+    const off = [{ office:'BKK', total:30 }, { office:'DEEPSOUTH', total:12 }];
+    const teams = [
+      { office:'BKK', dept:'Education', lead:'พี่ปอ', total:9 }, { office:'BKK', dept:'Business and Economy', lead:'', total:8 },
+      { office:'BKK', dept:'Social Impact and Innovation', lead:'น้องมะ', total:7 }, { office:'BKK', dept:'General Administration', lead:'พี่นิด', total:6 },
+      { office:'DEEPSOUTH', dept:'Field team', lead:'พี่หมัด', total:12 }];
+    const total = 42, safe = Math.min(36, 14 + tick * 4), help = 2, care = 1;
+    const wait = total - safe - help - care;
+    const split = o => { const s = Math.min(o.total, Math.round(o.total * safe / total)); return { ...o, safe:s, wait:Math.max(0, o.total - s - (o.help || 0)), help:o.help || 0, care:0 }; };
+    const names = ['อารยา','ชุนหลี','วราภรณ์','ณัฐพล','มณฑา','สมศักดิ์','ปิยะ','รัตนา','ธนา','กานดา','พงษ์','ลลิตา'];
+    const pending = names.slice(0, Math.min(wait, names.length)).map((n, i) => ({ name:n, dept:teams[i % teams.length].dept, office:teams[i % teams.length].office, phone:'08123450' + String(10 + i) }));
+    return { ok:true, active:true, canBoard:!/[?&]exec\b/.test(location.search),
+      alert:{ alert_id:'ALT-1', title:'ซ้อมอพยพอาคาร', at:new Date(Date.now() - (6 + tick) * 60000).toISOString(), office:'ALL', drill:/[?&]drill\b/.test(location.search) },
+      others:/[?&]multi\b/.test(location.search) ? [{ alert_id:'ALT-2', title:'น้ำท่วมสำนักงานภาคใต้', drill:false, at:new Date(Date.now() - 20*60000).toISOString() }] : [],
+      totals:{ total, safe, wait, help, helping:care, helped:0 },
+      offices:off.map(split), teams:teams.map((m, i) => ({ ...split(m), help:i === 0 ? 1 : i === 4 ? 1 : 0 })),
+      timeline:Array.from({ length:8 + tick }, (_, i) => ({ m:i, n:Math.round(i * i * 0.45 + i * 1.5) })),
+      pending, pendingTotal:wait,
+      helps:[{ name:'สมชาย กิตติวงศ์', dept:'Education', status:'help', lat:13.7563, lng:100.5018 },
+             { name:'ธนา ใจดี', dept:'Field team', status:'helping', helper:'พี่หมัด', lat:6.8686, lng:101.2505 }] };
+  }; }
+
+/* เดโมกระดานเหตุฉุกเฉิน: เลือกเหตุตาม alert_id ได้ และ ?multi = มีเหตุที่สองเปิดอยู่ด้วย */
+{ const b0 = MOCK.getAlertBoard;
+  MOCK.getAlertBoard = p => {
+    const r = JSON.parse(JSON.stringify(b0));
+    const multi = /[?&]multi\b/.test(location.search);
+    if(multi && p?.alert_id === 'ALT-2'){
+      r.alert = { alert_id:'ALT-2', title:'น้ำท่วมสำนักงานภาคใต้', at:new Date(Date.now() - 20*60000).toISOString(), drill:false };
+      r.help = []; r.helping = []; r.helped = []; r.safe = []; r.none = r.none.slice(0, 1);
+    }
+    if(multi) r.others = p?.alert_id === 'ALT-2'
+      ? [{ alert_id:'ALT-1', title:b0.alert.title, drill:true, at:b0.alert.at }]
+      : [{ alert_id:'ALT-2', title:'น้ำท่วมสำนักงานภาคใต้', drill:false, at:new Date(Date.now() - 20*60000).toISOString() }];
+    if(/[?&]lead\b/.test(location.search)){ r.scope = 'team'; r.canRemind = false; r.canClose = false; }
+    return r;
+  }; }
+
+/* ข้อความตั้งต้นภาษาไทยที่เซิร์ฟเวอร์ใส่เองเมื่อผู้ใช้ไม่ได้กรอก (เช่น ชื่อพัสดุ ชื่อการจอง)
+   แปลเฉพาะ "ทั้งข้อความตรงกัน" เท่านั้น — ข้อมูลที่คนพิมพ์เองไม่แตะ จะได้ไม่ทำให้ชื่อคน/ข้อความจริงเพี้ยน */
+const SRV_EN_EXACT = {
+  'พัสดุถึงคุณ':'A parcel for you', 'พัสดุ':'Parcel', 'ประชุม':'Meeting', 'เดินทาง':'Trip',
+  'เที่ยวที่ไม่ได้จองล่วงหน้า':'Unplanned trip', 'เรื่องแจ้งซ่อม':'Repair request',
+  'อุปกรณ์':'Equipment', 'งานขับรถ':'Driving job', 'คำขอใช้รถรับจ้าง':'Hired-transport request',
+  'ยังไม่ระบุผู้รับ':'Recipient not identified'
+};
+function srvEnStr(s){
+  if(Object.prototype.hasOwnProperty.call(SRV_EN_EXACT, s)) return SRV_EN_EXACT[s];
+  /* ป้ายสถานะเรื่องแจ้ง (ISSUE_ST ประกาศไว้ท้ายไฟล์ จึงอ่านตอนเรียกใช้ ไม่ใช่ตอนโหลด) */
+  const k = Object.keys(ISSUE_ST.th).find(x => ISSUE_ST.th[x] === s); if(k) return ISSUE_ST.en[k];
+  let m = s.match(/^พัสดุถึง (.+)$/); if(m) return 'Parcel for ' + m[1];
+  return s;
+}
+function srvEn(v, d = 0){
+  if(d > 8 || v == null) return v;
+  if(typeof v === 'string') return /[฀-๿]/.test(v) ? srvEnStr(v) : v;
+  if(Array.isArray(v)) return v.map(x => srvEn(x, d + 1));
+  if(typeof v === 'object'){ const o = {}; for(const k in v) o[k] = srvEn(v[k], d + 1); return o; }
+  return v;
+}
+/* ── "ดูเป็นพนักงาน" (ผู้ดูแลลองใช้แอปในมุมพนักงานทั่วไป) ─────────────────────
+   สลับธงสิทธิ์ฝั่งหน้าจอเป็นพนักงาน → เมนู/ปุ่มแอดมินหายไปเหมือนที่พนักงานเห็นจริง
+   + ตัดคำขอที่เป็นของผู้ดูแลทิ้ง และลบธง can* ออกจากคำตอบของเซิร์ฟเวอร์ (เช่น canDeclare ของหน้าเหตุฉุกเฉิน)
+   เป็นการจำลองหน้าจอเท่านั้น: สิทธิ์จริงยังตรวจที่เซิร์ฟเวอร์ตามบัญชีจริงเสมอ ไม่ได้ลดสิทธิ์ของบัญชี */
+const VS_BLOCK = new Set(['getContactsAdmin','saveContact','getDevLines','saveDevLines','getLinksAdmin','listFeedback',
+  'getUnidentifiedParcels','getAdminSummary','recountPush','getUsersForAdmin','setUserRoles','getIssueQueue',
+  'getDriversAdmin','getProjectsAdmin','getResourcesAdmin','getAlertBoard','getHelpMedia','getAlertDashboard',
+  'createAlert','closeAlert','remindAlertNow','helpUpdate','getDriverRequests','claimDriverRequest','issueDriverRequest',
+  'getAlertHistory','getAlertReport','getContactCheckReport','getSmsStatus','markByPhone']);
+const VS_FLAGS = ['canDeclare','canSeeBoard','canDash','canClose','canHelp','canRemind','canManage','canBoard','isAdmin','isOfficer','isSuper'];
+function vsStrip(v, d = 0){
+  if(d > 8 || v == null || typeof v !== 'object') return v;
+  if(Array.isArray(v)) return v.map(x => vsStrip(x, d + 1));
+  const o = {}; for(const k in v) o[k] = VS_FLAGS.includes(k) ? false : vsStrip(v[k], d + 1);
+  return o;
+}
+const hasExecRole = u => String(u?.roles || '').split(',').map(s => s.trim()).includes('exec');
+function paintViewBar(){
+  document.getElementById('vsBar')?.remove();
+  if(!S.viewStaff) return;
+  const d = document.createElement('div'); d.id = 'vsBar'; d.setAttribute('role', 'status');
+  d.innerHTML = `<span>👁 ${esc(t('vsPill'))}</span><button type="button" id="vsOff">${esc(t('vsBack'))}</button>`;
+  document.body.appendChild(d);
+  document.getElementById('vsOff').onclick = () => setViewStaff(false);
+}
+function setViewStaff(on){
+  if(on && !S.viewStaff){
+    S._real = { isAdmin:S.isAdmin, isOfficer:S.isOfficer, isSuper:S.isSuper, isExec:S.isExec };
+    S.isAdmin = S.isOfficer = S.isSuper = S.isExec = false; S.viewStaff = true;
+  }else if(!on && S.viewStaff){
+    Object.assign(S, S._real || {}); S.viewStaff = false;
+  }
+  paintViewBar();
+  S.stack = [];
+  clearCache?.();
+  go(on ? 'home' : 'admin', {}, true);
+}
 async function api(action, payload = {}, method = 'GET'){
+  if(S.viewStaff){
+    if(VS_BLOCK.has(action)) return { ok:false, error:'FORBIDDEN' };
+    return vsStrip(await apiRaw(action, payload, method));
+  }
+  return apiRaw(action, payload, method);
+}
+async function apiRaw(action, payload = {}, method = 'GET'){
   if(DEMO){
     await new Promise(r => setTimeout(r, 260));       // จำลองดีเลย์จริง จะได้เห็น skeleton
     const v = MOCK[action];
@@ -4999,7 +5370,7 @@ async function api(action, payload = {}, method = 'GET'){
     S.timings.unshift({ a:action, net:Math.round(performance.now()-t0),
                         srv:j?.ms ?? null, db:j?.dbMs ?? null });
     S.timings.length = Math.min(S.timings.length, 12);
-    return j;
+    return (S.lang === 'en') ? srvEn(j) : j;
   }
   catch(e){
     // Apps Script คืน HTML แทน JSON ได้ในบางจังหวะ (cold start / หน้า redirect ของ Google)
@@ -5270,7 +5641,7 @@ function paintDriverNav(active){
 function chrome(name){
   if(S.driverMode){
     // หน้าที่คนขับเข้าได้มีเท่านี้ นอกจากนี้พาไปหน้างานของเขาแทน
-    const okPages = ['driver-portal','driver-me','driver-report','driver-pair','offline','gate'];
+    const okPages = ['driver-portal','driver-me','driver-report','driver-pair','offline','gate','calltree'];
     paintDriverNav(name);
     $('#backBtn').hidden = true;
     $('#brand').hidden   = true;
@@ -5391,7 +5762,8 @@ async function render(name, params){
   const seq = ++RENDER_SEQ;
   /* ลิงก์เก่าหรือปุ่มย้อนกลับพาคนขับไปหน้าพนักงานได้ — พาเขากลับมาหน้าของเขา
      เซิร์ฟเวอร์ปฏิเสธอยู่แล้ว แต่หน้าจอ error ไม่ได้ช่วยให้เขาทำงานต่อได้ */
-  if(S.driverMode && !['driver-portal','driver-me','driver-report','driver-pair','offline','gate'].includes(name)){
+  /* 'calltree' เปิดให้คนขับด้วย — เหตุฉุกเฉินต้องนับคนขับ และเขาต้องกดตอบ "ปลอดภัย / ขอความช่วยเหลือ" ได้ */
+  if(S.driverMode && !['driver-portal','driver-me','driver-report','driver-pair','offline','gate','calltree'].includes(name)){
     name = 'driver-portal'; params = {};
   }
   chrome(name); try{ __helpFor(name); }catch(e){}
@@ -5483,7 +5855,14 @@ const EV = {
        'car.passenger':'🚗 คุณถูกระบุเป็นผู้โดยสาร', 'car.nocar':'🚕 ไม่มีรถว่าง',
        'car.nocar.req':'🚕 ขออนุมัติใช้รถรับจ้าง', 'car.nocar.ok':'✅ อนุมัติแล้ว',
        'car.nocar.no':'❌ ไม่อนุมัติ', 'birthday':'🎂 สุขสันต์วันเกิด',
-       'car.returned':'✅ รถกลับถึงออฟฟิศแล้ว', 'car.cancelled':'❌ งานขับรถถูกยกเลิก' },
+       'car.returned':'✅ รถกลับถึงออฟฟิศแล้ว', 'car.cancelled':'❌ งานขับรถถูกยกเลิก',
+       'parcel.identified':'📦 พบพัสดุที่เป็นของคุณ', 'issue.forwarded':'🛠 เรื่องของคุณถูกส่งต่อแล้ว',
+       'book.changed':'📝 การจองของคุณถูกแก้ไข', 'car.changed':'🚗 งานขับรถมีการเปลี่ยนแปลง',
+       'car.cancelled.pax':'❌ งานเดินทางถูกยกเลิกแล้ว', 'car.driver.off':'⚠️ คนขับไปงานนี้ไม่ได้',
+       'car.needdriver':'🚗 ต้องหาคนขับใหม่', 'alert.helping':'🆘 มีคนกำลังไปหาคุณ',
+       'alert.helped':'✅ บันทึกว่าช่วยเหลือเรียบร้อยแล้ว', 'birthday.wish':'🎂 มีคนส่งคำอวยพรวันเกิดให้คุณ',
+       'driver.codeRequest':'🚗 คนขับขอรหัสเข้าใช้งาน', 'driver.codeRemind':'⏰ ยังไม่มีใครรับเรื่องขอรหัสคนขับ',
+       'driver.paired':'✅ คนขับผูกบัญชีสำเร็จ', 'driver.pairAbuse':'⚠️ กรอกรหัสคนขับผิดหลายครั้ง' },
   en:{ 'parcel.arrived':'📦 A parcel arrived for you', 'parcel.reminder':'⏰ Parcel not picked up yet',
        'welcome':'👋 Registration complete', 'role.changed':'🔑 Your access was changed',
        'alert':'🚨 Emergency announcement', 'alert.help':'🆘 Someone needs help',
@@ -5494,9 +5873,21 @@ const EV = {
        'car.passenger':'🚗 You are listed as a passenger', 'car.nocar':'🚕 No vehicle available',
        'car.nocar.req':'🚕 Approval requested for hired transport', 'car.nocar.ok':'✅ Approved',
        'car.nocar.no':'❌ Not approved', 'birthday':'🎂 Happy birthday',
-       'car.returned':'✅ Vehicle is back at the office', 'car.cancelled':'❌ Driving job cancelled' }
+       'car.returned':'✅ Vehicle is back at the office', 'car.cancelled':'❌ Driving job cancelled',
+       'parcel.identified':'📦 We found a parcel that is yours', 'issue.forwarded':'🛠 Your report was passed on',
+       'book.changed':'📝 Your booking was changed', 'car.changed':'🚗 A driving job changed',
+       'car.cancelled.pax':'❌ The trip was cancelled', 'car.driver.off':'⚠️ The driver cannot take this job',
+       'car.needdriver':'🚗 A new driver is needed', 'alert.helping':'🆘 Someone is on the way to you',
+       'alert.helped':'✅ Marked as helped', 'birthday.wish':'🎂 Someone sent you a birthday wish',
+       'driver.codeRequest':'🚗 A driver asked for a sign-in code', 'driver.codeRemind':'⏰ Nobody has picked up the driver code request',
+       'driver.paired':'✅ A driver is now linked', 'driver.pairAbuse':'⚠️ Wrong driver code entered many times' }
 };
-const evLabel = n => n?.title || (EV[S.lang] || {})[n?.event] || n?.message || '';
+/* หัวเรื่องแจ้งเตือน: ใช้ตารางตามภาษาที่เลือกก่อน — หัวเรื่องจากเซิร์ฟเวอร์เป็นภาษาไทยเสมอ
+   ถ้าเอามาก่อน คนที่สลับเป็น EN จะเห็นแจ้งเตือนเป็นไทย (เจอในหน้าจริงแล้ว) */
+const evLabel = n => (EV[S.lang] || {})[n?.event]
+  || (S.lang === 'th' ? n?.title : '') || n?.message
+  || (S.lang === 'th' ? '' : (EV.en[String(n?.event || '').replace(/\.[^.]+$/, '')] || ''))
+  || n?.title || '';
 
 const mmddToDdmm = v => {
   const m = String(v || '').match(/^(\d{2})-(\d{2})$/);
@@ -6557,6 +6948,7 @@ ROUTES['admin-people'] = async () => {
     { go:'admin-staff', ic:IC.user,  t:t('admStaff'), s:t('admStaffSub'), sup:true },
     { go:'admin-roles', ic:IC.lock,  t:t('admRoles'), s:t('admRolesSub'), sup:true },
     { go:'admin-drv',   ic:IC.car,   t:t('admDrv'),   s:t('admDrvSub') },
+    { go:'admin-drvreq', ic:IC.user, t:t('admDrvReq'), s:t('admDrvReqSub') },
     { go:'admin-contacts', ic:IC.sos, t:t('admContacts'), s:t('admContactsSub') }
   ].filter(r => !r.sup || S.isSuper);
 
@@ -6759,12 +7151,33 @@ ROUTES['admin-devline'] = async () => {
  *  รอบนี้จึงมีสามสถานะ — ขอความช่วยเหลือ · มีคนรับเรื่อง · ช่วยแล้ว
  *  และคนที่ขอเห็นสถานะของตัวเองด้วย ว่ามีใครกำลังมา
  * ══════════════════════════════════════════════════════════════════ */
-ROUTES.calltree = async () => {
+/* ข้อความเหตุตามภาษาที่เลือก (มีฉบับอังกฤษ = ใช้ฉบับอังกฤษเมื่อเปิด EN) + ป้ายระดับ */
+const altTitle = a => (S.lang === 'en' && a?.title_en) ? a.title_en : (a?.title || '');
+const altBody  = a => (S.lang === 'en' && a?.body_en) ? a.body_en : (a?.body || '');
+const lvPill   = l => l === 'info' ? `<span class="pill done">📢 ${esc(t('emgLvInfo'))}</span>`
+                    : l === 'watch' ? `<span class="pill wait">⚠️ ${esc(t('emgLvWatch'))}</span>` : '';
+
+/* เหตุอื่นที่เปิดอยู่พร้อมกัน — แสดงเป็นแถวเล็กๆ กดสลับดูได้ (ใช้ทั้งหน้าตอบสถานะและกระดาน) */
+function otherAlertsHtml(list, route){
+  if(!list?.length) return '';
+  return `<div class="section-title">${esc(t('emgOthers'))}</div>
+    <div class="rows" style="margin-bottom:12px">${list.map(o => `
+      <button class="row" data-alt="${esc(o.alert_id)}" data-rt="${esc(route)}">
+        <div class="body"><div class="t">${o.drill ? '🧪 ' : '🚨 '}${esc(altTitle(o))}</div>
+          <div class="s">${esc(fmtDate(o.at))}${o.myStatus === 'safe' ? ' · ✅ ' + esc(t('emgSafe')) : ''}</div></div>
+        <span class="go">${IC.chev}</span></button>`).join('')}</div>`;
+}
+function wireOtherAlerts(){
+  document.querySelectorAll('[data-alt]').forEach(b =>
+    b.onclick = () => go(b.dataset.rt, { id:b.dataset.alt }, true));
+}
+
+ROUTES.calltree = async (params = {}) => {
   setTitle(t('ctTitle'));
   $x('#main').innerHTML = `<div class="view"><div id="alertBox"></div><div id="list">${skeleton(4)}</div></div>`;
 
   let A = null;
-  try{ A = await apiRetry('getActiveAlert', {}, 'GET'); }catch(e){}
+  try{ A = await apiRetry('getActiveAlert', params.id ? { alert_id:params.id } : {}, 'GET'); }catch(e){}
 
   if(A?.active){
     const st = A.myStatus || '';
@@ -6792,10 +7205,12 @@ ROUTES.calltree = async () => {
     $x('#alertBox').innerHTML = `
       <div class="alertbox" style="background:var(--bad);color:#fff;border-radius:18px;padding:17px;margin-bottom:14px">
         <div style="font-size:var(--fs-meta);font-weight:800;opacity:.9;letter-spacing:.06em">${esc(fmtDate(A.alert.at))}</div>
-        <h3 style="margin:5px 0 6px;font-size:18px;font-weight:800;line-height:1.35">${esc(A.alert.title)}</h3>
-        <p style="margin:0;font-size:13px;opacity:.93;white-space:pre-wrap">${esc(A.alert.body || '')}</p>
+        ${A.alert.drill ? `<div style="display:inline-block;background:rgba(255,255,255,.22);border-radius:8px;padding:3px 9px;font-size:12px;font-weight:800;margin-top:6px">🧪 ${esc(t('emgDrillTag'))}</div>` : ''}
+        ${A.alert.level && A.alert.level !== 'emergency' ? `<div style="display:inline-block;background:rgba(255,255,255,.22);border-radius:8px;padding:3px 9px;font-size:12px;font-weight:800;margin:6px 0 0 6px">${A.alert.level === 'info' ? '📢 ' + esc(t('emgLvInfo')) : '⚠️ ' + esc(t('emgLvWatch'))}</div>` : ''}
+        <h3 style="margin:5px 0 6px;font-size:18px;font-weight:800;line-height:1.35">${esc(altTitle(A.alert))}</h3>
+        <p style="margin:0;font-size:13px;opacity:.93;white-space:pre-wrap">${esc(altBody(A.alert))}</p>
       </div>
-      ${st ? mine : askBtns}
+      ${A.alert.level === 'info' ? `<div class="note info">${IC.info}<div><b>${esc(t('emgLvInfo'))}</b> — ${esc(t('emgLvInfoSub'))}</div></div>` : (st ? mine : askBtns)}
       ${st ? `<div style="height:10px"></div>
         <button class="btn ghost" id="bAgain">${esc(t('emgChange'))}</button>` : ''}
       ${A.canSeeBoard ? `<div style="height:11px"></div>
@@ -6805,27 +7220,93 @@ ROUTES.calltree = async () => {
     const wireSafe = () => { const b = $('#bSafe'); if(!b) return;
       b.onclick = async () => {
         try{ await apiRetry('respondAlert', { alert_id:A.alert.alert_id, status:'safe' }, 'POST');
-             toast(t('emgSent'), 'ok'); go('calltree', {}, true); }
+             toast(t('emgSent'), 'ok'); go('calltree', { id:A.alert.alert_id }, true); }
         catch(e){ toast(t('netErr'), 'bad'); }
       };
     };
     const wireHelp = () => { const b = $('#bHelp'); if(!b) return;
       b.onclick = () => {
+        /* ขอความช่วยเหลือ: ไม่บังคับกรอกอะไรเลย กดส่งได้ทันที
+           ตำแหน่ง/รูป/เสียงเป็นของเสริม สำหรับคนที่พิมพ์ไม่สะดวกหรือไม่รู้ว่าตัวเองอยู่ตรงไหน
+           อัดเสียงใช้ MediaRecorder ซึ่งบางเครื่องในเบราว์เซอร์ของ LINE ไม่รองรับ → ซ่อนปุ่มถ้าไม่รองรับ ที่เหลือส่งได้ปกติ */
+        const canRec = !!(navigator.mediaDevices?.getUserMedia && window.MediaRecorder);
+        const geo = { v:null }, pic = { v:null }, voice = { blob:null, mime:'', rec:null, stream:null, timer:null, t0:0 };
+        const stopMic = () => { try{ voice.stream?.getTracks().forEach(x => x.stop()); }catch(e){} voice.stream = null;
+                                clearInterval(voice.timer); };
         sheet(`<h3>${esc(t('emgHelp'))}</h3>
+          <div class="note info" style="margin-bottom:12px">${IC.info}<div>${esc(t('sosOpt'))}</div></div>
           <div class="field"><label>${esc(t('emgWhere'))}</label>
             <input id="hLoc" placeholder="${esc(t('emgWherePh'))}"></div>
+          <button class="btn soft" id="hGeo" type="button">📍 ${esc(t('sosGeo'))}</button>
+          <div id="hGeoS" style="font-size:var(--fs-meta);color:var(--ink-3);margin:6px 0 12px"></div>
+          ${photoField('hPh', t('sosPhoto'), null, { optional:true, max:'150px', prompt:t('sosPhoto') })}
+          ${canRec ? `<div class="field"><button class="btn soft" id="hRec" type="button">🎙 ${esc(t('sosRec'))}</button>
+            <div id="hRecS" style="font-size:var(--fs-meta);color:var(--ink-3);margin-top:6px">${esc(t('sosRecMax'))}</div>
+            <div id="hRecP"></div></div>` : ''}
           <div class="field"><label>${esc(t('emgWhat'))}</label>
             <textarea id="hNote" rows="2" placeholder="${esc(t('emgWhatPh'))}"></textarea></div>
+          <div style="font-size:var(--fs-meta);color:var(--ink-3);margin:0 0 12px">🔒 ${esc(t('sosWho'))}</div>
           <button class="btn danger" id="hGo" style="background:var(--bad);color:#fff">${esc(t('emgSend'))}</button>
           <button class="btn ghost" id="hX">${esc(t('cancel'))}</button>`);
-        $('#hX').onclick = closeSheet;
+        const close = () => { try{ if(voice.rec && voice.rec.state !== 'inactive') voice.rec.stop(); }catch(e){} stopMic(); closeSheet(); };
+        $('#hX').onclick = close;
+        wirePhoto('hPh', pic);
+
+        $('#hGeo').onclick = () => {
+          const s = $('#hGeoS'); s.textContent = t('sosGeoBusy');
+          if(!navigator.geolocation){ s.textContent = t('sosGeoFail'); return; }
+          navigator.geolocation.getCurrentPosition(p => {
+            geo.v = { lat:+p.coords.latitude.toFixed(6), lng:+p.coords.longitude.toFixed(6),
+                      acc:Math.round(p.coords.accuracy || 0) };
+            s.textContent = '✅ ' + t('sosGeoOk').replace('{n}', geo.v.acc);
+          }, () => { geo.v = null; s.textContent = t('sosGeoFail'); },
+          { enableHighAccuracy:true, timeout:12000, maximumAge:30000 });
+        };
+
+        if(canRec && $('#hRec')) $('#hRec').onclick = async () => {
+          const btn = $('#hRec');
+          if(voice.rec && voice.rec.state === 'recording'){ voice.rec.stop(); return; }
+          try{
+            voice.stream = await navigator.mediaDevices.getUserMedia({ audio:true });
+            const chunks = [];
+            voice.rec = new MediaRecorder(voice.stream);
+            voice.rec.ondataavailable = e => { if(e.data && e.data.size) chunks.push(e.data); };
+            voice.rec.onstop = () => {
+              stopMic();
+              voice.mime = voice.rec.mimeType || 'audio/webm';
+              voice.blob = new Blob(chunks, { type:voice.mime });
+              btn.textContent = '🎙 ' + t('sosRec');
+              const url = URL.createObjectURL(voice.blob);
+              $('#hRecP').innerHTML = `<audio controls src="${url}" style="width:100%;margin-top:8px"></audio>
+                <button class="btn ghost" id="hRecDel" type="button" style="margin-top:4px">${esc(t('sosRecDel'))}</button>`;
+              $('#hRecDel').onclick = () => { voice.blob = null; $('#hRecP').innerHTML = ''; };
+              $('#hRecS').textContent = t('sosRecMax');
+            };
+            voice.rec.start(); voice.t0 = Date.now(); voice.blob = null; $('#hRecP').innerHTML = '';
+            btn.textContent = '⏹ ' + t('sosRecStop');
+            voice.timer = setInterval(() => {
+              const s = Math.floor((Date.now() - voice.t0) / 1000);
+              $('#hRecS').textContent = '● ' + s + ' / 30 s';
+              if(s >= 30 && voice.rec.state === 'recording') voice.rec.stop();
+            }, 500);
+          }catch(e){ stopMic(); $('#hRecS').textContent = t('sosRecFail'); }
+        };
+
         $('#hGo').onclick = async () => {
           const loc = $('#hLoc').value.trim(), note = $('#hNote').value.trim();
-          closeSheet();
-          try{ await apiRetry('respondAlert',
-                { alert_id:A.alert.alert_id, status:'help', location:loc, note }, 'POST');
-               toast(t('emgSent'), 'ok'); go('calltree', {}, true); }
-          catch(e){ toast(t('netErr'), 'bad'); }
+          const go1 = $('#hGo'); go1.disabled = true;
+          let audio = '';
+          if(voice.blob){
+            audio = await new Promise(res => { const fr = new FileReader();
+              fr.onload = () => res(String(fr.result || '')); fr.onerror = () => res(''); fr.readAsDataURL(voice.blob); });
+          }
+          const body = { alert_id:A.alert.alert_id, status:'help', location:loc, note };
+          if(geo.v){ body.lat = geo.v.lat; body.lng = geo.v.lng; body.acc = geo.v.acc; }
+          if(pic.v){ body.photo = pic.v.full; body.thumb = pic.v.thumb; }
+          if(audio){ body.audio = audio; body.audio_mime = voice.mime; }
+          try{ await apiRetry('respondAlert', body, 'POST');
+               close(); toast(t('emgSent'), 'ok'); go('calltree', { id:A.alert.alert_id }, true); }
+          catch(e){ toast(t('netErr'), 'bad'); go1.disabled = false; }
         };
       };
     };
@@ -6838,12 +7319,57 @@ ROUTES.calltree = async () => {
       $('#bAgain').outerHTML = askBtns;
       wireSafe(); wireHelp();
     };
-    if($('#bBoard')) $('#bBoard').onclick = () => go('alert-board');
+    if($('#bBoard')) $('#bBoard').onclick = () => go('alert-board', { id:A.alert.alert_id });
+    if(A.canDash && !A.canSeeBoard){      // ผู้บริหาร: ไม่มีกระดานดำเนินการ แต่มีแดชบอร์ดดูอย่างเดียว
+      $x('#alertBox').insertAdjacentHTML('beforeend',
+        `<button class="btn soft" id="bDash" type="button" style="margin-bottom:12px">📊 ${esc(t('dashOpen'))}</button>`);
+      $('#bDash').onclick = () => go('safety-dash', { id:A.alert.alert_id });
+    }
 
-  }else if(A?.canDeclare){
+    /* เหตุอื่นที่เปิดพร้อมกัน — กดสลับไปตอบทีละเหตุ */
+    if(A.others?.length){
+      $x('#alertBox').insertAdjacentHTML('beforeend', otherAlertsHtml(A.others, 'calltree'));
+      wireOtherAlerts();
+    }
+
+    /* พนักงานทั่วไป: เห็นภาพรวมเป็นตัวเลข + สถานะเพื่อนร่วมทีมแค่ ปลอดภัย / ยังไม่ตอบ / ทีมงานกำลังดูแล
+       ไม่เห็นว่าใครขอความช่วยเหลือ อยู่ที่ไหน หรือเขียนอะไร (ข้อมูลส่วนบุคคล + กันความตื่นตระหนก) */
+    if(!A.canSeeBoard){
+      $x('#alertBox').insertAdjacentHTML('beforeend', '<div id="sumBox"></div>');
+      try{
+        const sm = await apiRetry('getAlertSummary', { alert_id:A.alert.alert_id }, 'GET');   // เหตุเดียวกับที่กำลังดู
+        if(sm?.ok){
+          const team = sm.team || [];
+          const stl = s => s === 'safe' ? t('sumStSafe') : s === 'care' ? t('sumStCare') : t('sumStNone');
+          const stc = s => s === 'safe' ? 'var(--ok)' : s === 'care' ? 'var(--warn)' : 'var(--ink-3)';
+          $x('#sumBox').innerHTML = `
+            <div class="section-title">${esc(t('sumTitle'))}</div>
+            <div class="tiles" style="margin-bottom:12px">
+              <div class="tile" style="min-height:70px;background:var(--ok-bg);border-color:var(--ok-line)">
+                <div class="nm" style="font-size:24px;color:var(--ok)">${sm.safe}/${sm.total}</div>
+                <div class="en">${esc(t('sumSafe'))}</div></div>
+              <div class="tile" style="min-height:70px;background:var(--warn-bg);border-color:var(--warn-line)">
+                <div class="nm" style="font-size:24px;color:var(--warn)">${sm.wait}</div>
+                <div class="en">${esc(t('sumWait'))}</div></div>
+              ${sm.care ? `<div class="tile" style="min-height:70px"><div class="nm" style="font-size:24px">${sm.care}</div>
+                <div class="en">${esc(t('sumCare'))}</div></div>` : ''}
+            </div>
+            ${team.length ? `<div class="section-title">${esc(t('sumTeam'))}</div>
+              <div class="rows">${team.map(m => `<div class="row"><div class="body">
+                <div class="t">${esc(m.name)}</div></div>
+                <span style="font-size:var(--fs-meta);font-weight:700;color:${stc(m.status)}">● ${esc(stl(m.status))}</span>
+              </div>`).join('')}</div>` : ''}
+            <div style="height:12px"></div>`;
+        }
+      }catch(e){}
+    }
+
+  }else if(A?.canDeclare || A?.canDash){
     $x('#alertBox').innerHTML =
-      `<button class="btn ghost" id="dec" style="margin-bottom:14px">${esc(t('emgDeclare'))}</button>`;
-    $('#dec').onclick = declareSheet;
+      (A.canDeclare ? `<button class="btn ghost" id="dec" style="margin-bottom:14px">${esc(t('emgDeclare'))}</button>` : '') +
+      (A.canDash ? `<button class="btn soft" id="bDash0" type="button" style="margin-bottom:14px">📊 ${esc(t('dashTitle'))}</button>` : '');
+    if($('#dec')) $('#dec').onclick = declareSheet;
+    if($('#bDash0')) $('#bDash0').onclick = () => go('safety-dash');
   }
 
   let items = [];
@@ -6889,19 +7415,308 @@ ROUTES.calltree = async () => {
 };
 
 
+/* ── แดชบอร์ดความปลอดภัย (ผู้บริหาร + ทีมตอบสนอง) ─────────────────
+   ตอบคำถามเดียว: "ตอนนี้ใครปลอดภัย ใครยังไม่ตอบ ใครต้องการช่วย" — ดูอย่างเดียว ไม่มีปุ่มสั่งงาน
+   ผู้บริหารเห็นชื่อ/สถานะ/ตำแหน่งผู้ขอความช่วยเหลือ แต่ไม่เห็นรูป เสียง ข้อความ (อยู่ที่กระดานของทีมตอบสนอง)
+   รีเฟรชเองทุก 20 วินาทีตอนมีเหตุเปิดอยู่ */
+ROUTES['safety-dash'] = async (params = {}) => {
+  setTitle(t('dashTitle'));
+  clearInterval(S.dashTimer);
+  const seq = RENDER_SEQ;
+  $x('#main').innerHTML = `<div class="view"><div id="dash">${skeleton(4)}</div></div>`;
+
+  const pctOf = (n, d) => d ? Math.round(n / d * 100) : 0;
+  const clock = () => new Date().toLocaleTimeString(S.lang === 'en' ? 'en-GB' : 'th-TH',
+                        { hour:'2-digit', minute:'2-digit', second:'2-digit', timeZone:'Asia/Bangkok' });
+  const spark = tl => {
+    if(!tl?.length || tl.length < 2) return '';
+    const W = 300, H = 56, mx = Math.max(...tl.map(p => p.n), 1), my = Math.max(...tl.map(p => p.m), 1);
+    const pts = tl.map(p => `${(p.m / my * W).toFixed(1)},${(H - 4 - p.n / mx * (H - 10)).toFixed(1)}`).join(' ');
+    return `<svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="none" style="width:100%;height:56px;display:block"
+      role="img" aria-label="${esc(t('dashTrend'))}"><polyline fill="none" stroke="var(--ok)" stroke-width="2.5"
+      stroke-linejoin="round" stroke-linecap="round" points="${pts}"/></svg>`;
+  };
+  const bar = (o, big) => {
+    const T = Math.max(o.total, 1);
+    const seg = (n, c) => n ? `<i style="width:${n / T * 100}%;background:${c}"></i>` : '';
+    return `<div class="dbar${big ? ' big' : ''}" role="img" aria-label="${o.safe}/${o.total}">${
+      seg(o.safe, 'var(--ok)')}${seg(o.care || 0, 'var(--primary)')}${seg(o.help, 'var(--bad)')}${seg(o.wait, 'var(--warn)')}</div>`;
+  };
+
+  const draw = async () => {
+    let d = null;
+    try{ d = await apiRetry('getAlertDashboard', params.id ? { alert_id:params.id } : {}, 'GET'); }catch(e){}
+    if(seq !== RENDER_SEQ){ clearInterval(S.dashTimer); return; }
+    const box = $('#dash'); if(!box) return;
+    if(!d?.ok){ box.innerHTML = emptyState(IC.info, t('adminNo'), t('dashNoAccess')); clearInterval(S.dashTimer); return; }
+    if(!d.alert){ box.innerHTML = emptyState(IC.bellBig, t('dashNone'), t('dashNoneBody')); return; }
+
+    const a = d.alert, T = d.totals, live = d.active;
+    const elapsed = Math.max(0, Math.round(((live ? Date.now() : Date.parse(a.closed_at || a.at)) - Date.parse(a.at)) / 60000));
+    const careN = (T.helping || 0) + (T.helped || 0);
+    box.innerHTML = `
+      ${otherAlertsHtml(d.others, 'safety-dash')}
+      <div class="card" style="border-color:${live ? 'var(--bad)' : 'var(--line)'}">
+        <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">
+          <span class="pill ${live ? 'wait' : 'done'}">${live ? '● ' + esc(t('dashLive')) : esc(t('dashClosed'))}</span>
+          ${a.drill ? `<span class="pill wait">🧪 ${esc(t('emgDrillTag'))}</span>` : ''}
+          ${a.level && a.level !== 'emergency' ? lvPill(a.level) : ''}
+          <span style="font-size:var(--fs-meta);color:var(--ink-3)">${esc(t('dashElapsed'))} ${elapsed} ${esc(t('dashMin'))}</span></div>
+        <h3 style="margin:8px 0 0;font-size:18px">${esc(altTitle(a))}</h3>
+        ${bar({ total:T.total, safe:T.safe, care:careN, help:T.help, wait:T.wait }, true)}
+        <div style="font-size:var(--fs-meta);color:var(--ink-3);margin-top:6px">
+          ${pctOf(T.safe + (T.helped || 0), T.total)}% ${esc(t('dashSafe'))} · ${esc(t('dashOf'))} ${T.total}</div>
+      </div>
+      <div class="tiles" style="margin-top:12px">
+        <div class="tile" style="min-height:78px;background:var(--ok-bg);border-color:var(--ok-line)">
+          <div class="nm" style="font-size:26px;color:var(--ok)">${T.safe + (T.helped || 0)}</div><div class="en">${esc(t('dashSafe'))}</div></div>
+        <div class="tile" style="min-height:78px;background:var(--warn-bg);border-color:var(--warn-line)">
+          <div class="nm" style="font-size:26px;color:var(--warn)">${T.wait}</div><div class="en">${esc(t('dashWait'))}</div></div>
+        <div class="tile" style="min-height:78px;background:var(--bad-bg);border-color:var(--bad-line)">
+          <div class="nm" style="font-size:26px;color:var(--bad)">${T.help}</div><div class="en">${esc(t('dashHelp'))}</div></div>
+        <div class="tile" style="min-height:78px"><div class="nm" style="font-size:26px">${T.helping || 0}</div>
+          <div class="en">${esc(t('dashCare'))}</div></div>
+      </div>
+
+      ${d.timeline?.length > 1 ? `<div class="section-title">${esc(t('dashTrend'))}</div>
+        <div class="card" style="padding:10px 12px">${spark(d.timeline)}</div>` : ''}
+
+      ${d.helps?.length ? `<div class="section-title" style="color:var(--bad)">${esc(t('dashHelps'))} · ${d.helps.length}</div>
+        <div class="rows">${d.helps.map(h => `<div class="row emgrow ${h.status === 'help' ? 'help' : ''}">
+          <div class="body"><div class="t">${esc(h.name)}</div>
+            <div class="s">${esc([h.dept, h.helper ? '→ ' + h.helper : ''].filter(Boolean).join(' · '))}</div></div>
+          ${h.lat != null ? `<a class="mini go" target="_blank" rel="noopener"
+            href="https://www.google.com/maps?q=${encodeURIComponent(h.lat + ',' + h.lng)}">📍 ${esc(t('sosMap'))}</a>` : ''}
+        </div>`).join('')}</div>` : ''}
+
+      ${d.offices?.length ? `<div class="section-title">${esc(t('dashByOffice'))}</div>
+        <div class="rows">${d.offices.map(o => `<div class="row"><div class="body">
+          <div class="t">${esc(o.office)} <span style="font-weight:600;color:var(--ink-3)">${o.safe + (o.care || 0)}/${o.total}</span></div>
+          ${bar(o)}</div></div>`).join('')}</div>` : ''}
+
+      ${d.teams?.length ? `<div class="section-title">${esc(t('dashByTeam'))}</div>
+        <div class="rows">${d.teams.map(m => `<div class="row"><div class="body">
+          <div class="t">${esc(m.dept)} <span style="font-weight:600;color:var(--ink-3)">· ${esc(m.office)} · ${m.safe + (m.care || 0)}/${m.total}</span></div>
+          <div class="s">${esc(t('dashLead'))}: ${m.lead ? esc(m.lead) : esc(t('dashNoLead'))}${
+            m.wait ? ' · ' + m.wait + ' ' + esc(t('dashWait')) : ''}${m.help ? ' · ⚠ ' + m.help + ' ' + esc(t('dashHelp')) : ''}</div>
+          ${bar(m)}</div></div>`).join('')}</div>` : ''}
+
+      ${d.pending?.length ? `<div class="section-title" style="color:var(--warn)">${esc(t('dashPending'))} · ${d.pendingTotal ?? d.pending.length}</div>
+        <div class="rows">${d.pending.map(p => `<div class="row"><div class="body">
+          <div class="t">${esc(p.name)}</div><div class="s">${esc([p.dept, p.office].filter(Boolean).join(' · '))}${
+            p.no_line ? ` · <b style="color:var(--bad)">☎ ${esc(t('emgNoLine'))}</b>` : ''}</div></div>
+          ${p.phone ? `<a class="mini call" href="tel:${esc(p.phone)}" aria-label="${esc(t('ctCall'))}">📞</a>` : ''}</div>`).join('')}</div>
+        ${(d.pendingTotal || 0) > d.pending.length
+          ? `<p class="ab-body" style="margin:8px 0 0">${esc(t('dashPendingMore').replace('{n}', d.pendingTotal - d.pending.length))}</p>` : ''}` : ''}
+
+      <div class="note info" style="margin-top:16px">${IC.info}<div>${esc(t('dashViewOnly'))}</div></div>
+      <div style="display:flex;gap:10px;align-items:center;margin-top:10px;flex-wrap:wrap">
+        <span style="font-size:var(--fs-meta);color:var(--ink-3)">${esc(t('dashUpdated'))} ${esc(clock())} · ${esc(t('dashAuto'))}</span>
+        <button class="mini" id="dRef" type="button">${esc(t('dashRefresh'))}</button>
+        <button class="mini" id="dHist" type="button">📑 ${esc(t('repHistoryBtn'))}</button>
+        ${d.canBoard ? `<button class="mini go" id="dBoard" type="button">${esc(t('dashToBoard'))}</button>` : ''}
+      </div>`;
+    wireOtherAlerts();
+    if($('#dRef')) $('#dRef').onclick = draw;
+    if($('#dHist')) $('#dHist').onclick = () => go(live ? 'alert-history' : 'alert-report', live ? {} : { id:a.alert_id });
+    if($('#dBoard')) $('#dBoard').onclick = () => go('alert-board', { id:a.alert_id });
+    if(!live) clearInterval(S.dashTimer);
+  };
+
+  await draw();
+  S.dashTimer = setInterval(draw, 20000);
+};
+
+/* ── ประวัติและรายงานหลังเหตุ ─────────────────────────────────────
+   ไว้ตอบคำถามหลังเหตุ: ใครตอบเร็วแค่ไหน ใครไม่ตอบ ช่วยเหลือทันไหม และควรปรับอะไร
+   เห็นได้เฉพาะทีมตอบสนองและผู้บริหาร · รายชื่อคนที่ไม่ตอบเห็นเฉพาะทีมตอบสนอง */
+const fmtSecs = s => s == null ? '—' : (s < 90 ? s + ' ' + t('repSec') : Math.round(s / 60) + ' ' + t('repMinU'));
+const kindIc = k => ({ fire:'🔥', quake:'🏚️', flood:'🌊', security:'🛡️', medical:'🚑', weather:'⛈️' }[k] || '📣');
+
+ROUTES['alert-history'] = async () => {
+  setTitle(t('repTitle'));
+  $x('#main').innerHTML = `<div class="view"><div id="hist">${skeleton(4)}</div><div id="ccRep"></div></div>`;
+  let h = null;
+  try{ h = await apiRetry('getAlertHistory', {}, 'GET'); }catch(e){}
+  if(!h?.ok){ $x('#hist').innerHTML = emptyState(IC.info, t('adminNo'), t('dashNoAccess')); return; }
+  const items = h.items || [];
+  $x('#hist').innerHTML = items.length ? `<div class="rows">${items.map(a => `
+    <button class="row" data-id="${esc(a.alert_id)}">
+      <span class="av" style="font-size:20px">${a.drill ? '🧪' : kindIc(a.kind)}</span>
+      <div class="body"><div class="t">${esc(altTitle(a))}</div>
+        <div class="s">${esc(fmtDate(a.at))} · ${a.answered}/${a.total} ${esc(t('repAnswered'))} (${a.rate}%)${
+          a.helps ? ' · ⚠ ' + a.helps + ' ' + esc(t('repHelpN')) : ''}</div></div>
+      ${a.status === 'active' ? `<span class="pill wait">${esc(t('repOpenNow'))}</span>`
+        : a.drill ? `<span class="pill done">${esc(t('repDrillTag'))}</span>` : ''}
+      <span class="go">${IC.chev}</span></button>`).join('')}</div>`
+    : emptyState(IC.bellBig, t('repEmpty'), t('repEmptyBody'));
+  document.querySelectorAll('#hist .row[data-id]').forEach(b => b.onclick = () => go('alert-report', { id:b.dataset.id }));
+
+  /* สถานะ SMS สำรอง — เฉพาะทีมตอบสนอง */
+  try{
+    const s = await apiRetry('getSmsStatus', {}, 'GET');
+    if(s?.ok && $('#ccRep')){
+      $x('#ccRep').insertAdjacentHTML('beforebegin', `<div class="section-title">${esc(t('smsCard'))}</div>
+        <div class="card" style="font-size:14px;line-height:1.8">
+          <span class="pill ${s.enabled ? 'done' : 'wait'}">${esc(s.enabled ? t('smsOn') : t('smsOff'))}</span>
+          ${s.enabled ? `<br>${esc(t('smsUsed').replace('{u}', s.used).replace('{l}', s.limit))}${
+            s.contactPhone ? `<br>${esc(t('smsContact'))}: <b>${esc(s.contactPhone)}</b>` : ''}` : `<br><span style="color:var(--ink-3)">${esc(t('smsHowTo'))}</span>`}
+          <br><span style="color:var(--ink-3)">${esc(t('smsGap').replace('{n}', s.gapPeople).replace('{m}', s.gapNoPhone))}</span></div>`);
+    }
+  }catch(e){}
+
+  /* สรุปการทวนข้อมูลติดต่อฉุกเฉิน — เฉพาะทีมตอบสนอง (ไม่แสดงเบอร์/ชื่อญาติ) */
+  try{
+    const c = await apiRetry('getContactCheckReport', {}, 'GET');
+    if(c?.ok && $('#ccRep')){
+      $x('#ccRep').innerHTML = `<div class="section-title">${esc(t('ccReportTitle'))}</div>
+        <div class="tiles">
+          <div class="tile" style="min-height:70px;background:var(--ok-bg);border-color:var(--ok-line)">
+            <div class="nm" style="font-size:22px;color:var(--ok)">${c.upToDate}/${c.total}</div><div class="en">${esc(t('ccRpUp'))}</div></div>
+          <div class="tile" style="min-height:70px;background:var(--warn-bg);border-color:var(--warn-line)">
+            <div class="nm" style="font-size:22px;color:var(--warn)">${c.due}</div><div class="en">${esc(t('ccRpDue'))}</div></div>
+          <div class="tile" style="min-height:70px;background:var(--bad-bg);border-color:var(--bad-line)">
+            <div class="nm" style="font-size:22px;color:var(--bad)">${c.missing}</div><div class="en">${esc(t('ccRpMissing'))}</div></div>
+        </div>
+        <p class="ab-body" style="margin:8px 0 0">${esc(t('ccRpNote'))}</p>`;
+    }
+  }catch(e){}
+};
+
+ROUTES['alert-report'] = async (params = {}) => {
+  setTitle(t('repTitle'));
+  $x('#main').innerHTML = `<div class="view"><div id="rep">${skeleton(4)}</div></div>`;
+  let r = null;
+  try{ r = await apiRetry('getAlertReport', { alert_id:params.id }, 'GET'); }catch(e){}
+  if(!r?.ok){ $x('#rep').innerHTML = emptyState(IC.info, t('adminNo'), t('dashNoAccess')); return; }
+  const a = r.alert, H = r.help || {};
+  const insText = i => t({ lowRate:'insLowRate', noLine:'insNoLine', slow:'insSlow', weakTeam:'insWeakTeam', noLead:'insNoLead',
+                           helpNoStart:'insHelpNoStart', unresolved:'insUnresolved', allGood:'insAllGood' }[i.k])
+                         .replace('{v}', i.v ?? '').replace('{n}', i.n ?? '');
+  const bar = (n, d) => `<div class="dbar"><i style="width:${d ? Math.min(100, n / d * 100) : 0}%;background:var(--ok)"></i></div>`;
+  const when = iso => iso ? fmtDate(iso) : '—';
+
+  $x('#rep').innerHTML = `
+    <div class="card">
+      <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">
+        ${a.drill ? `<span class="pill wait">🧪 ${esc(t('emgDrillTag'))}</span>` : ''}${lvPill(a.level)}
+        <span class="pill ${a.status === 'active' ? 'wait' : 'done'}">${esc(a.status === 'active' ? t('repOpenNow') : t('dashClosed'))}</span></div>
+      <h3 style="margin:8px 0 2px;font-size:18px">${kindIc(a.kind)} ${esc(altTitle(a))}</h3>
+      <div style="font-size:var(--fs-meta);color:var(--ink-3)">${esc(when(a.at))} → ${esc(when(a.closed_at))} · ${esc(t('repDuration'))} ${r.durationMin} ${esc(t('repMinU'))}</div>
+    </div>
+    <div class="tiles" style="margin-top:12px">
+      <div class="tile" style="min-height:78px;background:var(--ok-bg);border-color:var(--ok-line)"><div class="nm" style="font-size:26px;color:var(--ok)">${r.rate}%</div>
+        <div class="en">${esc(t('repAnswered'))} ${r.answered}/${r.total}</div></div>
+      <div class="tile" style="min-height:78px"><div class="nm" style="font-size:22px">${esc(fmtSecs(r.firstSec))}</div><div class="en">${esc(t('repFirst'))}</div></div>
+      <div class="tile" style="min-height:78px"><div class="nm" style="font-size:22px">${esc(fmtSecs(r.medianSec))}</div><div class="en">${esc(t('repMedian'))}</div></div>
+      <div class="tile" style="min-height:78px"><div class="nm" style="font-size:22px">${r.within5}/${r.total}</div><div class="en">${esc(t('rep5'))}</div></div>
+      <div class="tile" style="min-height:78px"><div class="nm" style="font-size:22px">${r.within15}/${r.total}</div><div class="en">${esc(t('rep15'))}</div></div>
+    </div>
+
+    ${H.total ? `<div class="section-title" style="color:var(--bad)">${esc(t('repHelp'))} · ${H.total}</div>
+      <div class="card" style="font-size:14px;line-height:1.9">
+        ${esc(t('repHelpStart'))}: <b>${esc(fmtSecs(H.medianToStartSec))}</b><br>
+        ${esc(t('repHelpDone'))}: <b>${esc(fmtSecs(H.medianToDoneSec))}</b><br>
+        ${esc(t('repUnresolved'))}: <b>${H.unresolved}</b><br>
+        <span style="color:var(--ink-3)">📍 ${H.withLoc} · 🖼 ${H.withPhoto} · 🎙 ${H.withAudio}</span></div>` : ''}
+
+    ${r.insights?.length ? `<div class="section-title">${esc(t('repInsights'))}</div>
+      <div class="rows">${r.insights.map(i => `<div class="row"><div class="body">
+        <div class="t" style="font-weight:600;white-space:normal">${i.k === 'allGood' ? '' : '→ '}${esc(insText(i))}</div></div></div>`).join('')}</div>` : ''}
+
+    ${r.teams?.length ? `<div class="section-title">${esc(t('repTeams'))}</div>
+      <div class="rows">${r.teams.map(m => `<div class="row"><div class="body">
+        <div class="t">${esc(m.dept)} <span style="font-weight:600;color:var(--ink-3)">· ${esc(m.office)} · ${m.answered}/${m.total} (${m.rate}%)</span></div>
+        <div class="s">${esc(t('dashLead'))}: ${m.lead ? esc(m.lead) : esc(t('dashNoLead'))}</div>${bar(m.answered, m.total)}</div></div>`).join('')}</div>` : ''}
+
+    <div class="section-title" style="color:var(--warn)">${esc(t('repNever'))} · ${r.neverCount}${
+      r.noLineNever ? ' · ' + esc(t('repNoLine').replace('{n}', r.noLineNever)) : ''}</div>
+    ${r.never?.length ? `<div class="rows">${r.never.map(n => `<div class="row"><div class="body">
+        <div class="t">${esc(n.name)}</div><div class="s">${esc([n.dept, n.office].filter(Boolean).join(' · '))}${
+          n.no_line ? ` · <b style="color:var(--bad)">☎ ${esc(t('repNoLineTag'))}</b>` : ''}</div></div></div>`).join('')}</div>`
+      : (r.neverCount ? `<p class="ab-body" style="margin:6px 0 0">${esc(t('repNamesOnlyResp'))}</p>` : '')}
+
+    <div style="font-size:var(--fs-meta);color:var(--ink-3);margin:14px 2px 0">${esc(t('repReminders'))}: ${esc(when(r.remind1_at))} · ${esc(when(r.remind2_at))}</div>
+
+    <div class="noprint" style="display:flex;gap:10px;flex-wrap:wrap;margin-top:16px">
+      <button class="btn soft" id="rpPrint" type="button">🖨 ${esc(t('repPrint'))}</button>
+      <button class="btn soft" id="rpCopy" type="button">📋 ${esc(t('repCopy'))}</button>
+      <button class="btn ghost" id="rpBack" type="button">${esc(t('repBack'))}</button></div>`;
+
+  const summary = () => [
+    `${a.drill ? '[' + t('repDrillTag') + '] ' : ''}${altTitle(a)}`,
+    `${when(a.at)} → ${when(a.closed_at)} (${r.durationMin} ${t('repMinU')})`,
+    `${t('repAnswered')}: ${r.answered}/${r.total} (${r.rate}%) · ${t('repFirst')} ${fmtSecs(r.firstSec)} · ${t('repMedian')} ${fmtSecs(r.medianSec)}`,
+    `${t('rep5')}: ${r.within5}/${r.total} · ${t('rep15')}: ${r.within15}/${r.total}`,
+    H.total ? `${t('repHelp')}: ${H.total} · ${t('repHelpStart')} ${fmtSecs(H.medianToStartSec)} · ${t('repUnresolved')} ${H.unresolved}` : '',
+    `${t('repNever')}: ${r.neverCount}${r.noLineNever ? ' (' + t('repNoLine').replace('{n}', r.noLineNever) + ')' : ''}`,
+    ...(r.insights || []).map(i => '- ' + insText(i))
+  ].filter(Boolean).join('\n');
+  $('#rpPrint').onclick = () => window.print();
+  $('#rpCopy').onclick = async () => {
+    try{ await navigator.clipboard.writeText(summary()); toast(t('repCopied'), 'ok'); }
+    catch(e){ toast(summary().slice(0, 120), 'ok'); }
+  };
+  $('#rpBack').onclick = () => go('alert-history');
+};
+
+/* ── ทวนข้อมูลติดต่อฉุกเฉินรายปี (แบนเนอร์หน้าแรก) ─────────────────────
+   ขึ้นเฉพาะคนที่ยังไม่มีข้อมูล หรือยืนยันล่าสุดเกิน 1 ปี · กด "ไว้ทีหลัง" = ซ่อนจนปิดแอป
+   ผู้ติดต่อฉุกเฉินเป็นข้อมูลบุคคลที่สาม จึงเห็นได้เฉพาะตอนมีเหตุจริงและเฉพาะทีมตอบสนอง */
+async function contactBanner(){
+  if(S.viewStaff || S.driverMode) return;
+  try{ if(sessionStorage.getItem('kn_cc_later')) return; }catch(e){}
+  let c = null;
+  try{ c = await apiRetry('getContactCheck', {}, 'GET'); }catch(e){ return; }
+  if(!c?.ok || !c.due) return;
+  if((location.hash || '').replace('#', '').split('?')[0] !== 'home') return;     // ผู้ใช้ไปหน้าอื่นแล้ว
+  const host = $x('#main')?.querySelector('.view') || $x('#main'); if(!host || document.getElementById('ccBn')) return;
+  host.insertAdjacentHTML('afterbegin', `<div class="note warn" id="ccBn" style="margin:0 0 12px;display:flex;gap:10px;align-items:flex-start">
+    <span>🛡️</span><div style="flex:1"><b>${esc(c.missing ? t('ccBannerMissing') : t('ccBanner'))}</b><br>
+      <span style="font-size:var(--fs-sec)">${esc(t('ccBannerSub'))}</span>
+      <div style="display:flex;gap:8px;margin-top:8px;flex-wrap:wrap">
+        <button class="mini go" id="ccGo" type="button">${esc(t('ccGo'))}</button>
+        <button class="mini" id="ccLater" type="button">${esc(t('ccLater'))}</button></div></div></div>`);
+  $('#ccLater').onclick = () => { try{ sessionStorage.setItem('kn_cc_later', '1'); }catch(e){} document.getElementById('ccBn')?.remove(); };
+  $('#ccGo').onclick = () => contactSheet(c);
+}
+function contactSheet(c){
+  sheet(`<h3>${esc(t('ccTitle'))}</h3>
+    <div class="note info" style="margin-bottom:12px">${IC.info}<div>${esc(t('ccWhy'))}</div></div>
+    <div class="field"><label>${esc(t('ccName'))}<span class="req">*</span></label><input id="ccN" value="${esc(c.emg?.name || '')}"></div>
+    <div class="field"><label>${esc(t('ccRel'))}</label><input id="ccR" value="${esc(c.emg?.relation || '')}"></div>
+    <div class="field"><label>${esc(t('ccPhone'))}<span class="req">*</span></label>
+      <input id="ccP" inputmode="tel" value="${esc(c.emg?.phone || '')}" placeholder="0812345678"></div>
+    <div class="field"><label>${esc(t('ccMyPhone'))}</label><input id="ccM" inputmode="tel" value="${esc(c.phone || '')}"></div>
+    <button class="btn primary" id="ccOk" type="button">${esc(t('ccConfirm'))}</button>
+    <button class="btn ghost" id="ccX" type="button">${esc(t('cancel'))}</button>`);
+  $('#ccX').onclick = closeSheet;
+  $('#ccOk').onclick = async () => {
+    const emg_name = $('#ccN').value.trim(), emg_phone = $('#ccP').value.trim();
+    if(!emg_name || emg_phone.replace(/\D/g, '').length < 9){ toast(t('ccBad'), 'bad'); return; }
+    const b = $('#ccOk'); b.disabled = true;
+    try{
+      const r = await apiRetry('confirmContacts', { emg_name, emg_phone, emg_relation:$('#ccR').value.trim(), phone:$('#ccM').value.trim() }, 'POST');
+      if(!r?.ok) throw 0;
+      closeSheet(); document.getElementById('ccBn')?.remove(); toast(t('ccSaved'), 'ok');
+    }catch(e){ toast(t('netErr'), 'bad'); b.disabled = false; }
+  };
+}
+
 /* ── กระดานเหตุฉุกเฉิน ────────────────────────────────────────
    เรียงตามสิ่งที่ต้องทำต่อ ไม่ใช่ตามตัวอักษร:
    ยังไม่มีใครไปถึง → กำลังไปหา → ช่วยแล้ว → ยังไม่ตอบ → ปลอดภัย        */
-ROUTES['alert-board'] = async () => {
+ROUTES['alert-board'] = async (params = {}) => {
   setTitle(t('emgBoard'));
   $x('#main').innerHTML = `<div class="view"><div id="bd">${skeleton(3)}</div></div>`;
   let b = null;
-  try{ b = await apiRetry('getAlertBoard', {}, 'GET'); }catch(e){}
+  try{ b = await apiRetry('getAlertBoard', params.id ? { alert_id:params.id } : {}, 'GET'); }catch(e){}
   if(!b?.ok){ $x('#bd').innerHTML = emptyState(IC.info, t('adminNo'), t('adminNoBody')); return; }
   if(!b.active){ $x('#bd').innerHTML = emptyState(IC.bellBig, t('emgClosed'), ''); return; }
 
   const helping = b.helping || [], helped = b.helped || [];
   const answered = b.safe.length + b.help.length + helping.length + helped.length;
+  b.none.sort((x, y) => (y.no_line ? 1 : 0) - (x.no_line ? 1 : 0));   // ติดต่อทางไลน์ไม่ได้ขึ้นก่อน = คิวโทรตาม
 
   /* ปุ่มในแถวคือสิ่งที่ทำให้กระดานนี้ต่างจากรายชื่อเฉยๆ
      คนดูแลต้องกดได้ตรงนั้นว่า "ฉันรับเรื่องนี้" โดยไม่ต้องออกไปหน้าอื่น */
@@ -6912,9 +7727,21 @@ ROUTES['alert-board'] = async () => {
       <div class="body">
         <div class="t">${esc(r.name)}${r.nickname ? ' · ' + esc(r.nickname) : ''}</div>
         <div class="s">${esc([r.dept, r.location, r.note].filter(Boolean).join(' · ') || '—')}</div>
+        ${r.no_line && kind === 'none' ? `<div class="emgby" style="color:var(--bad);font-weight:700">☎ ${esc(t('emgNoLine'))}</div>` : ''}
+        ${r.via === 'phone' ? `<div class="emgby">${esc(r.by ? t('phBy').replace('{n}', r.by) : t('phByAny'))}</div>` : ''}
+        ${b.canHelp && kind === 'none' ? `<div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:6px">
+          <button class="mini ok" data-ph="safe" data-u="${esc(r.id)}" type="button">${esc(t('phSafe'))}</button>
+          <button class="mini" data-ph="help" data-u="${esc(r.id)}" type="button">${esc(t('phHelp'))}</button></div>` : ''}
         ${r.helper ? `<div class="emgby">${esc(kind === 'helped'
           ? t('emgByHelped')(r.helper, r.helped_at ? fmtDate(r.helped_at) : '')
           : t('emgByHelping')(r.helper))}</div>` : ''}
+        ${(r.lat != null || r.has_photo || r.has_audio) ? `<div class="emgmedia" style="display:flex;gap:8px;flex-wrap:wrap;margin-top:6px">
+          ${r.lat != null ? `<a class="mini go" target="_blank" rel="noopener"
+            href="https://www.google.com/maps?q=${encodeURIComponent(r.lat + ',' + r.lng)}">📍 ${esc(t('sosMap'))}${
+              r.acc ? ' (±' + esc(r.acc) + ' m)' : ''}</a>` : ''}
+          ${r.has_photo ? `<button class="mini" data-media="photo" data-u="${esc(r.id)}" data-f="${esc(r.photo_id || '')}">🖼 ${esc(t('sosViewPhoto'))}</button>` : ''}
+          ${r.has_audio ? `<button class="mini" data-media="audio" data-u="${esc(r.id)}" data-f="${esc(r.audio_id || '')}">🎙 ${esc(t('sosListen'))}</button>` : ''}
+        </div>` : ''}
         ${r.emg ? `<button class="emgc" data-emg="${esc(r.id)}">${esc(t('emgKin'))}</button>` : ''}
       </div>
       <div class="emgacts">
@@ -6935,8 +7762,14 @@ ROUTES['alert-board'] = async () => {
   $x('#bd').innerHTML = `
     <div class="card" style="border-color:var(--bad,#DC2626)">
       <div style="font-size:var(--fs-meta);font-weight:800;color:var(--bad,#DC2626)">${esc(fmtDate(b.alert.at))}</div>
-      <h3 style="margin:5px 0 0;font-size:17px">${esc(b.alert.title)}</h3>
+      ${b.alert.drill ? `<div class="pill wait" style="margin-top:6px">🧪 ${esc(t('emgDrillTag'))}</div>` : ''}
+      ${b.alert.level && b.alert.level !== 'emergency' ? `<div style="margin-top:6px">${lvPill(b.alert.level)}</div>` : ''}
+      <h3 style="margin:5px 0 0;font-size:17px">${esc(altTitle(b.alert))}</h3>
     </div>
+    ${b.scope === 'team' ? `<div class="note info" style="margin-top:10px">${IC.info}<div>${esc(t('emgTeamScope'))}</div></div>` : ''}
+    <div style="margin-top:12px">${otherAlertsHtml(b.others, 'alert-board')}</div>
+    ${b.none.length && b.canRemind !== false ? `<button class="btn soft" id="remindNow" style="margin-top:12px" type="button">
+      🔔 ${esc(t('emgRemind').replace('{n}', b.none.length))}</button>` : ''}
     <div class="tiles" style="margin-top:12px">
       <div class="tile" style="min-height:76px;background:var(--bad-bg);border-color:var(--bad-line)">
         <div class="nm" style="font-size:25px;color:var(--bad)">${b.help.length}</div>
@@ -6969,22 +7802,64 @@ ROUTES['alert-board'] = async () => {
       <a href="tel:${esc(p.emg.phone)}">${esc(t('ctCall'))} ${esc(p.emg.phone)}</a></div>`;
   });
 
+  wireOtherAlerts();
+
+  /* โทรคุยแล้ว → บันทึกแทนผู้ตอบ ปิดคิวโทรตาม (ถ้าเจ้าตัวตอบเองไปแล้ว เซิร์ฟเวอร์ไม่ทับ) */
+  document.querySelectorAll('#bd [data-ph]').forEach(x => x.onclick = async () => {
+    x.disabled = true;
+    try{
+      const r = await apiRetry('markByPhone', { alert_id:b.alert.alert_id, user_id:x.dataset.u, status:x.dataset.ph }, 'POST');
+      if(r?.error === 'ALREADY_ANSWERED'){ toast(t('phTaken'), 'ok'); go('alert-board', { id:b.alert.alert_id }, true); return; }
+      if(!r?.ok) throw 0;
+      toast(t('phDone'), 'ok'); go('alert-board', { id:b.alert.alert_id }, true);
+    }catch(e){ toast(t('netErr'), 'bad'); x.disabled = false; }
+  });
+
+  /* รูป/เสียงดึงตอนกดดูเท่านั้น ไม่โหลดมาพร้อมกระดาน (หนัก + เป็นข้อมูลละเอียดอ่อน) */
+  document.querySelectorAll('#bd [data-media]').forEach(x => x.onclick = async () => {
+    x.disabled = true;
+    try{
+      const r = await apiRetry('getHelpMedia',
+        { alert_id:b.alert.alert_id, user_id:x.dataset.u, kind:x.dataset.media, file_id:x.dataset.f || '' }, 'GET');
+      if(!r?.ok || !r.data) throw 0;
+      sheet(`<h3>${esc(x.dataset.media === 'photo' ? t('sosViewPhoto') : t('sosListen'))}</h3>
+        ${x.dataset.media === 'photo'
+          ? `<img src="${esc(r.data)}" alt="" style="width:100%;border-radius:12px">`
+          : `<audio controls autoplay src="${esc(r.data)}" style="width:100%"></audio>`}
+        <button class="btn ghost" id="mX" style="margin-top:12px">${esc(t('close'))}</button>`);
+      $('#mX').onclick = closeSheet;
+    }catch(e){ toast(t('sosMediaFail'), 'bad'); }
+    x.disabled = false;
+  });
+
   document.querySelectorAll('#bd [data-mk]').forEach(x => x.onclick = async () => {
     x.disabled = true;
     try{
       const r = await apiRetry('helpUpdate',
         { alert_id:b.alert.alert_id, user_id:x.dataset.u, state:x.dataset.mk }, 'POST');
       if(r?.ok === false) throw 0;
-      toast(t('emgMarked'), 'ok'); go('alert-board', {}, true);
+      toast(t('emgMarked'), 'ok'); go('alert-board', { id:b.alert.alert_id }, true);
     }catch(e){ toast(t('netErr'), 'bad'); x.disabled = false; }
   });
+
+  /* เตือนคนที่ยังไม่ตอบทันที (ระบบเตือนเองอัตโนมัติที่ 5 และ 15 นาทีอยู่แล้ว ปุ่มนี้ไว้กดเมื่อไม่อยากรอ) */
+  if($('#remindNow')) $('#remindNow').onclick = async () => {
+    if(!window.confirm(t('emgRemindAsk').replace('{n}', b.none.length))) return;
+    const x = $('#remindNow'); x.disabled = true;
+    try{
+      const r = await apiRetry('remindAlertNow', { alert_id:b.alert.alert_id }, 'POST');
+      if(!r?.ok) throw 0;
+      toast(t('emgRemindDone').replace('{n}', r.reminded ?? b.none.length), 'ok');
+    }catch(e){ toast(t('netErr'), 'bad'); }
+    x.disabled = false;
+  };
 
   if($('#cls')) $('#cls').onclick = async () => {
     if(b.help.length || helping.length){
       if(!window.confirm(t('emgCloseAsk'))) return;
     }
     try{ await apiRetry('closeAlert', { alert_id:b.alert.alert_id }, 'POST');
-         toast(t('emgClosed'), 'ok'); go('alert-board', {}, true); }
+         toast(t('emgClosed'), 'ok'); go('alert-board', {}, true); }   // ปิดแล้วกลับไปเหตุที่เหลือ (ถ้ามี)
     catch(e){ toast(t('netErr'), 'bad'); }
   };
 };
@@ -8248,6 +9123,13 @@ ROUTES.admin = async () => {
       ${S.isOfficer ? `<button class="btn ghost" id="toQ">${esc(t('isuQueue'))}</button>` : ''}
     </div>
 
+    <div class="admgrid" style="margin-top:9px">
+      <button class="btn ghost" id="toDash">📊 ${esc(t('dashTitle'))}</button>
+      <button class="btn ghost" id="toVs">👁 ${esc(t('vsBtn'))}</button>
+      <button class="btn ghost" id="toRep">📑 ${esc(t('repHistoryBtn'))}</button>
+    </div>
+    <div style="font-size:var(--fs-meta);color:var(--ink-3);margin:6px 2px 0">${esc(t('vsBtnSub'))} ${esc(t('vsNote'))}</div>
+
     <div class="section-title">${esc(t('adminToday'))}</div>
     <div id="sum">${skeleton(2)}</div>
 
@@ -8279,6 +9161,9 @@ ROUTES.admin = async () => {
   $('#toUn').onclick  = () => go('unidentified');
   $('#toPrc').onclick = () => go('admin-parcels');
   if($('#toQ'))     $('#toQ').onclick     = () => go('issue-queue');
+  if($('#toDash'))  $('#toDash').onclick  = () => go('safety-dash');
+  if($('#toRep'))   $('#toRep').onclick   = () => go('alert-history');
+  if($('#toVs'))    $('#toVs').onclick    = () => setViewStaff(true);
   if($('#toNews'))  $('#toNews').onclick  = () => go('admin-news');
   if($('#toRes'))   $('#toRes').onclick   = () => go('admin-res');
   if($('#toLbl'))   $('#toLbl').onclick   = () => go('labels');
@@ -8479,8 +9364,11 @@ ROUTES['admin-roles'] = async () => {
     const r = String(u.roles || 'staff');
     if(u.is_super)            return `<span class="pill new">${esc(t('roleSuper'))}</span>`;
     if(r.includes('admin'))   return `<span class="pill new">${esc(t('roleAdmin'))}</span>`;
-    if(r.includes('officer')) return `<span class="pill wait">${esc(t('roleOfficer'))}</span>`;
-    return `<span class="pill" style="background:var(--neutral);color:var(--ink-3)">${esc(t('roleStaff'))}</span>`;
+    const rl = r.split(',').map(s => s.trim());
+    const leadTag = (rl.includes('lead') ? `<span class="pill wait" style="margin-left:4px">${esc(t('roleLead'))}</span>` : '')
+                  + (rl.includes('exec') ? `<span class="pill new" style="margin-left:4px">${esc(t('roleExec'))}</span>` : '');
+    if(r.includes('officer')) return `<span class="pill wait">${esc(t('roleOfficer'))}</span>${leadTag}`;
+    return `<span class="pill" style="background:var(--neutral);color:var(--ink-3)">${esc(t('roleStaff'))}</span>${leadTag}`;
   };
   const paint = kw => {
     const k = String(kw || '').toLowerCase();
@@ -8512,21 +9400,36 @@ ROUTES['admin-roles'] = async () => {
         <div class="body"><div class="t">${esc(th)}</div><div class="s">${esc(sub)}</div></div>
         ${v === lvl ? '<span style="color:var(--primary);font-weight:800">✓</span>' : ''}
       </button>`;
-    sheet(`<h3>${esc(u.name_th)}</h3><p class="sub">${esc(u.email)}</p>
+    /* หัวหน้าทีม = ป้ายเสริม ติดได้กับทุกระดับ (ทีม = สำนักงานเดียวกัน + แผนกเดียวกัน) */
+    const isLead = cur.split(',').map(s => s.trim()).includes('lead');
+    const isExec = cur.split(',').map(s => s.trim()).includes('exec');   // ผู้บริหาร: ดูแดชบอร์ดอย่างเดียว
+    const tagBtn = (id, on, th, sub) => `<button class="row" id="${id}" style="border-radius:12px;border:1.5px solid ${
+        on ? 'var(--primary)' : 'var(--line)'};margin-bottom:8px;background:${on ? 'var(--bk-bg,#EEF3FF)' : '#fff'}">
+        <div class="body"><div class="t">${esc(th)}</div><div class="s">${esc(sub)}</div></div>
+        ${on ? '<span style="color:var(--primary);font-weight:800">✓</span>' : ''}</button>`;
+    sheet(`<h3>${esc(u.name_th)}</h3><p class="sub">${esc(u.email)}${
+        u.department ? ' · ' + esc(u.department) : ''}${u.office ? ' · ' + esc(u.office) : ''}</p>
       ${opt('staff',   t('roleStaff'),   t('roleStaffSub'))}
       ${opt('officer', t('roleOfficer'), t('roleOfficerSub'))}
       ${opt('admin',   t('roleAdmin'),   t('roleAdminSub'))}
+      <div class="section-title">${esc(t('roleLeadHead'))}</div>
+      ${tagBtn('rLead', isLead, t('roleLead'), t('roleLeadSub'))}
+      ${tagBtn('rExec', isExec, t('roleExec'), t('roleExecSub'))}
       <button class="btn ghost" id="cx" style="margin-top:6px">${esc(t('cancel'))}</button>`);
     $('#cx').onclick = closeSheet;
-    document.querySelectorAll('#sheetBody .row[data-r]').forEach(b => b.onclick = async () => {
-      const roles = b.dataset.r === 'admin'   ? 'staff,officer,admin'
-                  : b.dataset.r === 'officer' ? 'staff,officer' : 'staff';
+    const saveRoles = async roles => {
       closeSheet();
       try{
         await apiRetry('setUserRoles', { target_id:u.kenan_user_id, roles }, 'POST');
         u.roles = roles; toast(t('roleSaved'), 'ok'); paint($('#rq').value);
       }catch(e){ toast(t('netErr'), 'bad'); }
-    });
+    };
+    const withTags = (base, lead, exec) => base + (lead ? ',lead' : '') + (exec ? ',exec' : '');
+    const baseOf = l => l === 'admin' ? 'staff,officer,admin' : l === 'officer' ? 'staff,officer' : 'staff';
+    document.querySelectorAll('#sheetBody .row[data-r]').forEach(b => b.onclick = () =>
+      saveRoles(withTags(baseOf(b.dataset.r), isLead, isExec)));
+    $('#rLead').onclick = () => saveRoles(withTags(baseOf(lvl), !isLead, isExec));
+    $('#rExec').onclick = () => saveRoles(withTags(baseOf(lvl), isLead, !isExec));
   }
 };
 
@@ -8654,9 +9557,20 @@ const ISSUE_DEPTS = () => [
   { v:'Procurement',            l:t('dPUR'), s:t('dPURs') },
   { v:'OTHER',                  l:t('dOTH'), s:t('dOTHs') }
 ];
+/* ป้ายสถานะเรื่องแจ้ง — เซิร์ฟเวอร์ส่งป้ายภาษาไทยมาเสมอ ถ้าใช้ตรงๆ คนที่เปิด EN จะเห็นไทย
+   จึงแปลจากรหัสสถานะในแอปเอง ไม่รู้จักรหัสค่อยใช้ป้ายจากเซิร์ฟเวอร์ */
+const ISSUE_ST = {
+  th:{ reported:'รอรับเรื่อง', triaged:'รับเรื่องแล้ว', in_progress:'กำลังดำเนินการ',
+       sent_to_building:'ส่งต่อนิติบุคคลอาคาร (GA)', resolved:'ดำเนินการเสร็จแล้ว',
+       closed:'ปิดเรื่อง', forwarded:'ส่งต่อแผนกอื่น' },
+  en:{ reported:'Waiting to be picked up', triaged:'Received', in_progress:'In progress',
+       sent_to_building:'Passed to building management (GA)', resolved:'Done',
+       closed:'Closed', forwarded:'Passed to another team' }
+};
+const issueStLabel = (s, fallback) => (ISSUE_ST[S.lang] || ISSUE_ST.th)[s] || fallback || s || '';
 const issuePill = i => `<span class="pill ${
   i.status === 'closed' || i.status === 'resolved' ? 'done'
-  : i.status === 'sent_to_building' ? 'new' : 'wait'}">${esc(i.status_label)}</span>`;
+  : i.status === 'sent_to_building' ? 'new' : 'wait'}">${esc(issueStLabel(i.status, i.status_label))}</span>`;
 
 const IT_HELPDESK_URL = 'https://helpdesk.kenan-asia.org/';
 function itHelpdeskBox(){
@@ -8892,7 +9806,7 @@ ROUTES['issue-detail'] = async ({ id } = {}) => {
     <div class="section-title">${esc(t('isuTimeline'))}</div>
     <div class="rows">${d.timeline.map(e => `
       <div class="row"><div class="body">
-        <div class="t">${esc(e.label)}</div>
+        <div class="t">${esc(issueStLabel(e.to, e.label))}</div>
         <div class="s">${esc(fmtDate(e.at))}${e.actor ? ' · ' + esc(e.actor) : ''}${
           e.note ? '<br>' + esc(e.note) : ''}</div>
       </div></div>`).join('')}</div>
@@ -8935,11 +9849,7 @@ ROUTES['issue-detail'] = async ({ id } = {}) => {
     sheet(`<h3>${esc(t('isuUpdate'))}</h3>
       ${d.next.map(s => `<button class="row" data-s="${esc(s)}"
         style="border:1.5px solid var(--line);border-radius:12px;margin-bottom:8px">
-        <div class="body"><div class="t">${esc(({
-          triaged:'รับเรื่องแล้ว', in_progress:'กำลังดำเนินการ',
-          sent_to_building:'ส่งต่อนิติบุคคลอาคาร (GA)',
-          resolved:'ดำเนินการเสร็จแล้ว', closed:'ปิดเรื่อง'
-        })[s] || s)}</div></div></button>`).join('')}
+        <div class="body"><div class="t">${esc(issueStLabel(s))}</div></div></button>`).join('')}
       <div class="field" style="margin-top:6px"><label>${esc(t('isuNote'))}</label>
         <input id="nt" placeholder="—"></div>
       <button class="btn ghost" id="cx">${esc(t('cancel'))}</button>`);
@@ -9663,18 +10573,76 @@ function returnSheet(i){
    เพราะคนปลอดภัยไม่ต้องทำอะไรต่อ แต่คนที่เงียบต้องตามทุกคน */
 
 /* ── ประกาศเหตุฉุกเฉิน (admin) ──────────────────────────────── */
+/* แม่แบบเหตุ (ไทย + อังกฤษ) — ผู้ประกาศแก้ข้อความได้ก่อนส่ง
+   ข้อความไลน์ส่งสองภาษาในข้อความเดียว สำนักงานภาคใต้/เวียดนามจะได้อ่านออก
+   ระดับ: info = แจ้งเพื่อทราบ (ไม่ต้องตอบ) · watch = เฝ้าระวัง (ขอให้ยืนยัน เตือนครั้งเดียว) · emergency = ฉุกเฉิน (ต้องยืนยันทันที เตือน 5/15 นาที) */
+const ALERT_KINDS = [
+  { k:'fire', ic:'🔥', lv:'emergency',
+    th:{ t:'เหตุไฟไหม้ — อพยพออกจากอาคารทันที', b:'ใช้บันไดหนีไฟ ห้ามใช้ลิฟต์ ไปรวมพลที่จุดรวมพล แล้วกดยืนยันสถานะของคุณ' },
+    en:{ t:'Fire — evacuate the building now', b:'Use the stairs, not the lift. Go to the assembly point, then confirm your status.' } },
+  { k:'quake', ic:'🏚️', lv:'emergency',
+    th:{ t:'แผ่นดินไหว — หลบในที่ปลอดภัย', b:'หมอบ ป้องกันศีรษะ หลบใต้โต๊ะที่แข็งแรง อยู่ห่างกระจก เมื่อหยุดสั่นแล้วอพยพทางบันได แล้วยืนยันสถานะของคุณ' },
+    en:{ t:'Earthquake — take cover', b:'Drop, cover your head and shelter under a sturdy table, away from glass. When the shaking stops, leave by the stairs and confirm your status.' } },
+  { k:'flood', ic:'🌊', lv:'watch',
+    th:{ t:'เฝ้าระวังน้ำท่วม', b:'ติดตามประกาศของทีม งดเดินทางในพื้นที่เสี่ยง ยกของมีค่าขึ้นที่สูง และยืนยันสถานะของคุณ' },
+    en:{ t:'Flood watch', b:'Follow team updates, avoid travel in risk areas, move valuables up high, and confirm your status.' } },
+  { k:'security', ic:'🛡️', lv:'watch',
+    th:{ t:'แจ้งเหตุด้านความปลอดภัย — งดเดินทางในพื้นที่', b:'อยู่ในที่พักที่ปลอดภัย หลีกเลี่ยงบริเวณที่เกิดเหตุ ติดตามคำแนะนำจากทีม และยืนยันสถานะของคุณ' },
+    en:{ t:'Security alert — avoid travel in the area', b:'Stay somewhere safe, avoid the affected area, follow the team\'s guidance, and confirm your status.' } },
+  { k:'medical', ic:'🚑', lv:'emergency',
+    th:{ t:'เหตุฉุกเฉินทางการแพทย์ในอาคาร', b:'หากมีผู้ต้องการแพทย์ฉุกเฉินให้โทร 1669 แล้วแจ้งทีมตอบสนอง หลีกทางให้เจ้าหน้าที่ และยืนยันสถานะของคุณ' },
+    en:{ t:'Medical emergency in the building', b:'If someone needs urgent medical help call 1669 and tell the response team. Keep the way clear for responders, and confirm your status.' } },
+  { k:'weather', ic:'⛈️', lv:'info',
+    th:{ t:'แจ้งเพื่อทราบ: สภาพอากาศและการเดินทาง', b:'' }, en:{ t:'For your information: weather and travel', b:'' } },
+  { k:'other', ic:'📣', lv:'watch', th:{ t:'', b:'' }, en:{ t:'', b:'' } }
+];
+
 function declareSheet(){
+  const kindName = k => ({ fire:t('emgKfire'), quake:t('emgKquake'), flood:t('emgKflood'), security:t('emgKsecurity'),
+                           medical:t('emgKmedical'), weather:t('emgKweather'), other:t('emgKother') }[k]);
+  const lvName = l => ({ info:t('emgLvInfo'), watch:t('emgLvWatch'), emergency:t('emgLvEmergency') }[l]);
+  const st = { kind:'other', level:'watch' };
+  const chip = (on, id, label) => `<button type="button" class="chip${on ? ' on' : ''}" id="${id}"
+    style="padding:8px 12px;border-radius:999px;border:1.5px solid ${on ? 'var(--primary)' : 'var(--line)'};
+    background:${on ? 'var(--bk-bg,#EEF3FF)' : '#fff'};font-weight:${on ? 800 : 600};font-size:13.5px">${label}</button>`;
   sheet(`<h3>${esc(t('emgDeclare'))}</h3>
-    <div class="note warn" style="margin:10px 0 14px">⚠️<div>${esc(t('emgConfirmBody'))}</div></div>
+    <div class="field"><label>${esc(t('emgKind'))}</label>
+      <div id="aKinds" style="display:flex;flex-wrap:wrap;gap:8px"></div></div>
+    <div class="field"><label>${esc(t('emgLevel'))}</label>
+      <div id="aLevels" style="display:flex;flex-wrap:wrap;gap:8px"></div>
+      <div id="aLvSub" style="font-size:var(--fs-meta);color:var(--ink-3);margin-top:6px"></div></div>
     <div class="field"><label>${esc(t('emgTitle'))}<span class="req">*</span></label>
       <input id="aT" placeholder="${esc(t('emgTitlePh'))}"></div>
     <div class="field"><label>${esc(t('emgBody'))}</label>
       <textarea id="aB" rows="3" placeholder="${esc(t('emgBodyPh'))}"></textarea></div>
+    <details id="aEn" style="margin:0 0 14px"><summary style="font-weight:700;cursor:pointer">${esc(t('emgEnHead'))}</summary>
+      <div class="field" style="margin-top:8px"><label>${esc(t('emgTitleEn'))}</label><input id="aTE"></div>
+      <div class="field"><label>${esc(t('emgBodyEn'))}</label><textarea id="aBE" rows="3"></textarea></div></details>
     <div class="field"><label>${esc(t('emgScope'))}</label>
       <select id="aO"><option value="ALL">${esc(t('emgAll'))}</option>
         <option value="BKK">Bangkok</option><option value="DEEPSOUTH">Deep South</option></select></div>
+    <label style="display:flex;gap:10px;align-items:flex-start;margin:4px 0 12px;font-size:14px">
+      <input type="checkbox" id="aDrill" style="margin-top:3px"><span><b>🧪 ${esc(t('emgDrill'))}</b><br>
+      <span style="color:var(--ink-3);font-size:var(--fs-meta)">${esc(t('emgDrillWhy'))}</span></span></label>
+    <div class="note warn" style="margin:0 0 12px">⚠️<div>${esc(t('emgConfirmBody'))}</div></div>
     <button class="btn danger" id="aGo">${esc(t('emgConfirm'))}</button>
     <button class="btn ghost" id="aX">${esc(t('cancel'))}</button>`);
+
+  const paintChips = () => {
+    $x('#aKinds').innerHTML = ALERT_KINDS.map(x => chip(x.k === st.kind, 'k_' + x.k, `${x.ic} ${esc(kindName(x.k))}`)).join('');
+    $x('#aLevels').innerHTML = ['info', 'watch', 'emergency'].map(l => chip(l === st.level, 'l_' + l, esc(lvName(l)))).join('');
+    $x('#aLvSub').textContent = ({ info:t('emgLvInfoSub'), watch:t('emgLvWatchSub'), emergency:t('emgLvEmergencySub') })[st.level];
+    ALERT_KINDS.forEach(x => { const b = $('#k_' + x.k); if(b) b.onclick = () => pickKind(x.k); });
+    ['info', 'watch', 'emergency'].forEach(l => { const b = $('#l_' + l); if(b) b.onclick = () => { st.level = l; paintChips(); }; });
+  };
+  /* เลือกประเภท = เติมข้อความแม่แบบสองภาษา + ตั้งระดับตั้งต้น (แก้ต่อได้) */
+  const pickKind = k => {
+    const x = ALERT_KINDS.find(i => i.k === k); st.kind = k; st.level = x.lv;
+    $('#aT').value = x.th.t; $('#aB').value = x.th.b; $('#aTE').value = x.en.t; $('#aBE').value = x.en.b;
+    if(x.en.t) $('#aEn').open = true;
+    paintChips();
+  };
+  paintChips();
   $('#aX').onclick = closeSheet;
   $('#aGo').onclick = async () => {
     const title = $('#aT').value.trim();
@@ -9682,14 +10650,19 @@ function declareSheet(){
     const b = $('#aGo'); b.disabled = true; b.textContent = t('loading');
     try{
       const r = await apiRetry('createAlert',
-        { title, body:$('#aB').value.trim(), office:$('#aO').value }, 'POST');
+        { title, body:$('#aB').value.trim(), title_en:$('#aTE').value.trim(), body_en:$('#aBE').value.trim(),
+          kind:st.kind, level:st.level, office:$('#aO').value, drill: $('#aDrill').checked ? '1' : '' }, 'POST');
       closeSheet();
+      if(r?.error === 'ACTIVE_REAL'){ toast(t('emgRealActive'), 'bad'); return; }
+      if(r?.error === 'TOO_MANY'){ toast(t('emgTooMany'), 'bad'); return; }
       toast(r?.ok ? t('emgSentTo')(r.reached || 0) : t('netErr'), r?.ok ? 'ok' : 'bad');
-      go('alert-board');
+      if(r?.ok && r.sms?.sent) setTimeout(() => toast(t('smsSentToast').replace('{n}', r.sms.sent), 'ok'), 1800);
+      if(r?.ok && r.sms?.capped) setTimeout(() => toast(t('smsCapWarn').replace('{n}', r.sms.capped), 'bad'), 3800);
+      if(r?.ok && r.no_line && !r.sms?.sent) setTimeout(() => toast(t('emgNoLineWarn').replace('{n}', r.no_line), 'ok'), 1800);
+      if(r?.ok) go('alert-board', r.alert_id ? { id:r.alert_id } : {});
     }catch(e){ toast(t('netErr'), 'bad'); b.disabled = false; b.textContent = t('emgConfirm'); }
   };
 }
-
 
 
 /* ── จัดการคนขับ ─────────────────────────────────────────────────
@@ -10229,7 +11202,7 @@ ROUTES['admin-res'] = async () => {
    3) คนขับเป็นคนกดออก-กลับ เพราะทุกเที่ยวมีคนขับอยู่ด้วยเสมอ
       เที่ยวที่ไม่ได้จองจึงถูกบันทึกได้โดยไม่ต้องมีใครไปฟ้องใคร               */
 
-const isDriverNow = () => /(^|,)\s*driver\s*(,|$)/.test(String(S.me?.roles || ''));
+const isDriverNow = () => !S.viewStaff && /(^|,)\s*driver\s*(,|$)/.test(String(S.me?.roles || ''));
 const carStName   = k => (t('carSt') || {})[k] || k;
 const stopsOf     = tr => { try{ return Array.isArray(tr.stops) ? tr.stops : []; }catch(e){ return []; } };
 
@@ -11777,6 +12750,7 @@ function drvDayWord(iso){
  *  เปิดมาแล้วต้องรู้ทันทีว่า "งานต่อไปคืออะไร" โดยไม่ต้องอ่านอะไรเลย
  * ══════════════════════════════════════════════════════════════════ */
 ROUTES['driver-portal'] = async () => {
+  const seq0 = RENDER_SEQ;
   setTitle('งานของฉัน');
   const ok = await loadDriver(true);
   if(!ok){
@@ -11842,6 +12816,21 @@ ROUTES['driver-portal'] = async () => {
     wireDrvActions();
   });
   wireDrvActions();
+
+  /* เหตุฉุกเฉิน: คนขับอยู่นอกตารางพนักงานแต่ต้องถูกนับ — แถบแดงบนสุดพาไปกดตอบสถานะ
+     ดึงแยกหลังวาดหน้าเสร็จ ถ้าช้าหรือพังก็ไม่กระทบหน้างานปกติ */
+  (async () => {
+    try{
+      const A = await apiRetry('getActiveAlert', {}, 'GET');
+      if(!A?.active || seq0 !== RENDER_SEQ) return;
+      const v = $x('#main').querySelector('.view'); if(!v) return;
+      v.insertAdjacentHTML('afterbegin', `<button class="btn" id="drvAlert" type="button"
+        style="background:var(--bad);color:#fff;border-radius:14px;padding:16px;margin-bottom:12px;text-align:left;width:100%">
+        <b>${A.alert.drill ? '🧪 ซ้อม · ' : '🚨 '}${esc(altTitle(A.alert))}</b><br>
+        <small style="opacity:.92">${A.myStatus ? 'ตอบแล้ว · แตะเพื่อดูหรือเปลี่ยนคำตอบ' : 'แตะเพื่อยืนยันสถานะของคุณ'}</small></button>`);
+      $('#drvAlert').onclick = () => go('calltree');
+    }catch(e){}
+  })();
 
   function wireDrvActions(){
     document.querySelectorAll('[data-act]').forEach(b => b.onclick = () => odoSheet(b.dataset.act, b.dataset.r));
@@ -11928,8 +12917,23 @@ ROUTES['driver-pair'] = async () => {
       <input id="pc" inputmode="numeric" maxlength="6" placeholder="000000"
         style="font-size:26px;font-weight:800;letter-spacing:10px;text-align:center"></div>
     <button class="btn primary" id="pgo">${esc(t('dpPairGo'))}</button>
+    <div id="preqBox" style="margin-top:6px"><button class="btn soft" id="preq">${esc(t('dpReq'))}</button></div>
     <button class="btn ghost" id="pbk">${esc(t('back') || t('cancel'))}</button></div>`;
   setTimeout(() => $('#pc')?.focus(), 250);
+  /* ขอรหัส: กดครั้งเดียว ระบบรู้ LINE id กับชื่อที่แสดงอยู่แล้ว ไม่ต้องกรอกอะไร
+     ทีมงาน (Admin/GA/HR) ได้แจ้งเตือน ตรวจตัวตน แล้วส่งรหัสเข้า LINE นี้เอง */
+  $('#preq').onclick = async () => {
+    const b = $('#preq'); b.disabled = true;
+    try{
+      const r = await apiRetry('driverRequestCode',
+        { display_name: S.profile?.displayName || '' }, 'POST');
+      if(!r?.ok){
+        toast(r?.error === 'TOO_SOON' ? t('dpReqSoon') : t('netErr'), 'bad');
+        b.disabled = false; return;
+      }
+      $x('#preqBox').innerHTML = `<div class="note ok">${IC.info}<div>${esc(t('dpReqSent'))}</div></div>`;
+    }catch(e){ toast(t('netErr'),'bad'); b.disabled = false; }
+  };
   $('#pbk').onclick = () => { S.stack = []; go('gate'); };
   $('#pgo').onclick = async () => {
     const code = $('#pc').value.replace(/\D/g,'');
@@ -11949,6 +12953,80 @@ ROUTES['driver-pair'] = async () => {
       go('driver-portal', {}, true);
     }catch(e){ toast(t('netErr'),'bad'); b.disabled = false; }
   };
+};
+
+/* ── คำขอรหัสคนขับ (ฝั่งผู้ดูแล / GA / HR) ───────────────────────
+   รับเรื่อง → ตรวจตัวตน → เลือกแถวคนขับ → ส่งรหัสเข้า LINE ของผู้ขอ
+   คนแรกที่รับเรื่องล็อกไว้ คนอื่นเห็นว่าใครกำลังดูแล จะได้ไม่ออกรหัสซ้ำ */
+ROUTES['admin-drvreq'] = async () => {
+  setTitle(t('admDrvReq'));
+  $x('#main').innerHTML = `<div class="view">
+    <div class="note info">${IC.info}<div>${esc(t('admDrvReqWhy'))}</div></div>
+    <div id="rq" style="margin-top:14px">${skeleton(3)}</div></div>`;
+  let items = [], drivers = [];
+  try{
+    const [a, b] = await Promise.all([apiRetry('getDriverRequests', {}, 'GET'),
+                                      apiRetry('getDriversAdmin', {}, 'GET')]);
+    if(!a?.ok){ $x('#rq').innerHTML = emptyState(IC.info, t('adminNo'), t('adminNoBody')); return; }
+    items = a.items || []; drivers = (b?.items || []).filter(d => d.is_active && !d.paired);
+  }catch(e){ $x('#rq').innerHTML = emptyState(IC.info, t('netErr'), ''); return; }
+
+  const stLbl = s => ({ pending:t('drqStPending'), claimed:t('drqStClaimed'), done:t('drqStDone') }[s] || s);
+  const stCol = s => s === 'done' ? 'var(--ok)' : s === 'claimed' ? 'var(--warn)' : 'var(--bad)';
+  const when = iso => { try{ return new Date(iso).toLocaleString(S.lang === 'en' ? 'en-GB' : 'th-TH',
+    { day:'numeric', month:'short', hour:'2-digit', minute:'2-digit', timeZone:'Asia/Bangkok' }); }
+    catch(e){ return ''; } };
+
+  $x('#rq').innerHTML = items.length ? items.map(x => `
+    <button class="rcard" data-id="${esc(x.req_id)}">
+      <div class="rphoto" style="width:48px;height:48px;border-radius:50%">${IC.user}</div>
+      <div style="flex:1;min-width:0">
+        <div style="font-size:14.5px;font-weight:700">${esc(x.display_name || '-')}</div>
+        <div style="font-size:var(--fs-meta);color:var(--ink-3)">${esc(t('drqWho'))} · ${esc(when(x.at))}</div>
+        ${x.claimed_by ? `<div style="font-size:var(--fs-meta);color:var(--ink-3)">${esc(t('drqClaimed'))}: ${esc(x.claimed_by)}</div>` : ''}
+        <div style="font-size:var(--fs-meta);font-weight:700;margin-top:2px;color:${stCol(x.status)}">● ${esc(stLbl(x.status))}</div>
+      </div>
+      <span class="go">${IC.chev}</span>
+    </button>`).join('')
+    : emptyState(IC.user, t('drqEmpty'), t('drqEmptyBody'));
+
+  document.querySelectorAll('#rq .rcard').forEach(b => b.onclick = () => {
+    const x = items.find(i => i.req_id === b.dataset.id); if(x) reqSheet(x);
+  });
+
+  function reqSheet(x){
+    if(x.status === 'done'){ toast(t('drqIssued'), 'ok'); return; }
+    const claimed = x.status === 'claimed';
+    sheet(`<h3>${esc(x.display_name || '-')}</h3>
+      <p class="sub">${esc(t('drqWho'))} · ${esc(when(x.at))}</p>
+      ${claimed ? `
+        <div class="field"><label>${esc(t('drqPick'))}</label>
+          <select id="rqd"><option value="">—</option>${drivers.map(d =>
+            `<option value="${esc(d.driver_id)}">${esc(d.name)}${d.phone ? ' · ' + esc(d.phone) : ''}</option>`).join('')}
+          </select></div>
+        <label style="display:flex;gap:10px;align-items:flex-start;margin:6px 0 12px;font-size:14px">
+          <input type="checkbox" id="rqv" style="margin-top:3px"><span>${esc(t('drqVerify'))}</span></label>
+        <div class="note info">${IC.info}<div>${esc(t('drqWhy'))}</div></div>
+        <button class="btn primary" id="rqi">${esc(t('drqIssue'))}</button>`
+      : `<button class="btn primary" id="rqc">${esc(t('drqClaim'))}</button>`}
+      <button class="btn ghost" id="rqx">${esc(t('cancel'))}</button>`);
+    $('#rqx').onclick = closeSheet;
+    if($('#rqc')) $('#rqc').onclick = async () => {
+      $('#rqc').disabled = true;
+      try{ const r = await apiRetry('claimDriverRequest', { req_id:x.req_id }, 'POST');
+           if(!r?.ok) throw 0; closeSheet(); clearCache(); go('admin-drvreq', {}, true); }
+      catch(e){ toast(t('netErr'),'bad'); if($('#rqc')) $('#rqc').disabled = false; }
+    };
+    if($('#rqi')) $('#rqi').onclick = async () => {
+      const did = $('#rqd').value;
+      if(!did){ toast(t('drqNeedPick'),'bad'); return; }
+      if(!$('#rqv').checked){ toast(t('drqNeedVerify'),'bad'); return; }
+      $('#rqi').disabled = true;
+      try{ const r = await apiRetry('issueDriverRequest', { req_id:x.req_id, driver_id:did }, 'POST');
+           if(!r?.ok) throw 0; closeSheet(); clearCache(); toast(t('drqIssued'),'ok'); go('admin-drvreq', {}, true); }
+      catch(e){ toast(t('netErr'),'bad'); if($('#rqi')) $('#rqi').disabled = false; }
+    };
+  }
 };
 
 ROUTES['driver-me'] = async () => {
@@ -12623,6 +13701,7 @@ ROUTES.otp = async () => {
       S.isAdmin = !!auth?.isAdmin;
       S.isSuper = !!auth?.isSuper;
       S.isOfficer = !!(auth?.isAdmin || auth?.isOfficer);
+      S.isExec = hasExecRole(auth?.user);
       S.regStatus = auth?.registrationStatus || 'approved';
       S.regDraft = null;
       S.stack = [];
@@ -12925,6 +14004,7 @@ async function boot(){
     const a0 = MOCK.bootstrap || MOCK.getAuthState;
     const a = (S.lang === 'en') ? demoEn(a0) : a0;
     S.me = a.user; S.isAdmin = a.isAdmin; S.isOfficer = a.isOfficer; S.isSuper = !!a.isSuper;
+    S.isExec = hasExecRole(a.user) || /[?&]exec\b/.test(location.search);   // เดโม: ?demo&exec = มุมผู้บริหาร
     S.regStatus = a.registrationStatus; S.notifCount = a.notificationCount;
     S.today = a.today || null; S.bootNews = a.announcements || null;
     $x('#bellDot').textContent = S.notifCount; $x('#bellDot').hidden = false;
@@ -13001,6 +14081,7 @@ async function boot(){
   S.isAdmin   = !!auth?.isAdmin;
   S.isSuper   = !!auth?.isSuper;
   S.isOfficer = !!(auth?.isAdmin || auth?.isOfficer);
+  S.isExec    = hasExecRole(auth?.user);
   S.regStatus = auth?.registrationStatus || (S.me ? 'approved' : 'none');
   S.notifCount= auth?.notificationCount || 0;
   if(S.notifCount){ $x('#bellDot').textContent = S.notifCount; $x('#bellDot').hidden = false; }
@@ -13012,10 +14093,14 @@ async function boot(){
     // มาจากปุ่ม Rich Menu ลิงก์ในข้อความแจ้งเตือน หรือสแกน QR ที่ตัวอุปกรณ์
     S.stack = [{ name:'home', params:{} }];
     go(START_AT, START_TAG ? { tag:START_TAG }
-                           : (START_REC ? { rec:START_REC } : {}));
+                           : (START_REC ? { rec:START_REC }
+                           : (START_ALERT ? { id:START_ALERT } : {})));
   }
   else                                go('home');
 }
+/* หน้าแรกเสร็จแล้วค่อยเช็กว่าถึงรอบทวนข้อมูลติดต่อฉุกเฉินไหม — ไม่ให้การเช็กนี้หน่วงหน้าแรก (ทำแยก ถ้าช้าหรือพังก็เงียบ) */
+{ const homeRoute = ROUTES.home;
+  ROUTES.home = async (p) => { const r = await homeRoute(p); setTimeout(() => { contactBanner().catch(() => {}); }, 400); return r; }; }
 boot();
 </script>
 </body>

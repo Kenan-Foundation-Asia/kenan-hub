@@ -3,11 +3,11 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#0033CC">
+<meta name="theme-color" content="#0076A9">
 <title>Kenan ONE</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&family=Open+Sans:wght@400;600;700&family=Prompt:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Prompt:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
 /* ─────────────────────────────────────────────────────────────
    DESIGN TOKENS — ตรงกับ Kenan ONE Vision ใน Stitch
@@ -33,13 +33,14 @@
   --ink:#22282B;
   --ink-2:#4D4D4D;
   --ink-3:#566168;
-  --bg:#F4F7F9;
-  --surface:#FFFFFF;
-  --line:#DCE5EA;
+  --bg:#E3F0F2;               /* สักหลาดบอร์ดเซลาดอนอ่อน */
+  --surface:#FFFFFF;          /* กระดาษประกาศ */
+  --line:#C5D8DE;
+  --tape-amber:#F2B84B; --tape-coral:#E0675A; --tape-leaf:#4E9F7D; --tape-brand:#0076A9;
 
   /* สีสถานะแยกจากสีแบรนด์ชัดเจน เพราะมันสื่อความหมาย ไม่ใช่สื่อตัวตน */
   --ok:#0F7A5A;      --ok-bg:#E6F4EF;
-  --warn:#B26A00;    --warn-bg:#FDF3E4;
+  --warn:#855000;    --warn-bg:#FDF3E4;   /* เดิม #B26A00 = 3.86:1 บนพื้นครีม ไม่ผ่าน AA · ใหม่ ≈ 6:1 */
   --danger:#C0392B;  --danger-bg:#FBECEA;
   --navy:#083A52;    /* น้ำเงินเข้มของเมนูข้าง — โทนเดียวกับ Celadon */
   --bad:#C0392B;  --bad-bg:#FBECEA;  --bad-line:#F2CFCA;
@@ -56,8 +57,8 @@
      Montserrat หัวเรื่อง · Open Sans เนื้อความลาติน · Prompt ภาษาไทย
      เรียง Open Sans ก่อน Prompt เพื่อให้ลาตินได้ Open Sans
      ส่วนอักษรไทยที่ Open Sans ไม่มี เบราว์เซอร์จะหยิบ Prompt มาให้เอง */
-  --font:'Open Sans','Prompt',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
-  --font-head:'Montserrat','Prompt',-apple-system,'Segoe UI',sans-serif;
+  --font:'Prompt',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  --font-head:'Prompt',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
 
   /* ════ ขนาดตัวอักษรขั้นต่ำ ════
      ตั้งเป็นตัวแปรเพื่อให้ปรับทั้งระบบได้ที่เดียว และกันไม่ให้ใครใส่เลขเล็กกว่านี้
@@ -94,7 +95,7 @@ button{cursor:pointer;border:none;background:none}
   background:var(--surface);border-bottom:1px solid var(--line);
 }
 .topbar .icon-btn{
-  width:40px;height:40px;border-radius:var(--r-sm);
+  width:44px;height:44px;border-radius:var(--r-sm);
   display:grid;place-items:center;color:var(--ink-2);flex:0 0 auto;
 }
 .topbar .icon-btn:active{background:var(--neutral)}
@@ -148,7 +149,7 @@ main{flex:1 1 auto;padding:16px 16px calc(var(--nav-h) + var(--safe-b) + 24px)}
   display:flex;align-items:center;gap:8px;
   background:var(--primary);color:#fff;
   font-weight:700;font-size:14px;
-  box-shadow:0 6px 20px rgba(0,51,204,.36);
+  box-shadow:0 3px 0 rgba(8,58,82,.28);
 }
 .fab:active{transform:scale(.97)}
 .fab svg{width:22px;height:22px}
@@ -297,6 +298,15 @@ main{flex:1 1 auto;padding:16px 16px calc(var(--nav-h) + var(--safe-b) + 24px)}
   background-size:200% 100%;animation:sh 1.3s infinite;border-radius:var(--r-sm)}
 @keyframes sh{0%{background-position:200% 0}100%{background-position:-200% 0}}
 .sk-row{height:74px;margin-bottom:10px;border-radius:var(--r-lg)}
+.ld-note{margin:0 0 12px;font-size:var(--fs-sec);font-weight:600;color:var(--ink-2);display:flex;align-items:center;flex-wrap:wrap}
+@media (prefers-reduced-motion:reduce){ .sk{animation:none} }
+.admgrp{margin:16px 0 8px;font-size:var(--fs-sec);font-weight:700;color:var(--ink-2)}
+.admgrid{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.admgrid{align-items:stretch}
+.admgrid .btn{margin:0!important;height:100%;min-height:56px;padding:10px 12px;line-height:1.35;font-size:var(--fs-body)}
+details.svall{margin-top:18px}
+details.svall>summary{cursor:pointer;min-height:44px;display:flex;align-items:center;font-weight:700;color:var(--brand);font-size:var(--fs-body)}
+details.svall>summary:focus-visible{outline:2px solid var(--brand);outline-offset:2px;border-radius:8px}
 
 /* ── Empty state ───────────────────────────────────────────── */
 .empty{text-align:center;padding:44px 24px;color:var(--ink-3)}
@@ -590,14 +600,14 @@ main{flex:1 1 auto;padding:16px 16px calc(var(--nav-h) + var(--safe-b) + 24px)}
   .sticky-cta .btn{width:auto;min-width:210px;pointer-events:auto;box-shadow:var(--shadow)}
 
   /* บล็อกการจองบนจอกว้าง: อ่านเหมือนปฏิทินจริง ไม่ใช่แผ่นสีทึบเต็มช่อง */
-  .gev{color:var(--ink);background:#EEF3FF;border-left:3px solid var(--primary);
+  .gev{color:var(--ink);background:var(--brand-50);border:1px solid var(--brand-300);
     padding:6px 9px;border-radius:6px}
   .gev .t{font-size:var(--fs-meta)}
   .gev .w{font-size:var(--fs-meta);opacity:.72}
   .gev .p{font-size:var(--fs-meta);opacity:.7}
-  .gev.mine{background:var(--ok-bg);border-left-color:var(--ok)}
-  .gev.live{background:var(--warn-bg);border-left-color:var(--warn)}
-  .gev.unb{background:var(--bad-bg);border-left-color:var(--bad)}
+  .gev.mine{background:var(--ok-bg);border-color:var(--ok)}
+  .gev.live{background:var(--warn-bg);border-color:var(--warn)}
+  .gev.unb{background:var(--bad-bg);border-color:var(--bad)}
   .fab{bottom:26px;right:26px}
 
   /* ฟอร์มและรายการไม่ควรยืดเต็ม 1180px — บรรทัดยาวเกินไปอ่านไม่ไหว
@@ -651,7 +661,7 @@ main{flex:1 1 auto;padding:16px 16px calc(var(--nav-h) + var(--safe-b) + 24px)}
 /* สลับภาษาต้องอยู่ตรงที่เห็นทันที ไม่ใช่ซ่อนในหน้าโปรไฟล์
    ออฟฟิศมีทั้งเจ้าหน้าที่ต่างชาติ และคนไทยที่ไม่สะดวกภาษาอังกฤษ */
 .langtop{display:flex;gap:2px;background:var(--neutral);border-radius:9px;padding:3px;flex:0 0 auto}
-.langtop button{padding:5px 10px;border-radius:7px;font-size:var(--fs-meta);font-weight:800;color:var(--ink-3)}
+.langtop button{padding:5px 12px;min-height:44px;border-radius:7px;font-size:var(--fs-meta);font-weight:800;color:var(--ink-3)}
 .langtop button.on{background:#fff;color:var(--primary);box-shadow:0 1px 2px rgba(0,0,0,.08)}
 @media(min-width:900px){ .langtop{margin-left:auto} }
 
@@ -659,10 +669,19 @@ main{flex:1 1 auto;padding:16px 16px calc(var(--nav-h) + var(--safe-b) + 24px)}
 .sbrand .mark{width:36px;height:36px;flex:0 0 auto;
   background:none;border-radius:50%;padding:0;object-fit:contain;display:block}
 .sbrand .txt{font-size:16px;font-weight:800;letter-spacing:-.01em;line-height:1.15}
-.sbrand .sub{font-size:var(--fs-meta);font-weight:600;color:rgba(255,255,255,.5);letter-spacing:.04em;
-  text-transform:uppercase}
-.sgrp{font-size:var(--fs-meta);font-weight:800;letter-spacing:.09em;text-transform:uppercase;
-  color:rgba(255,255,255,.38);padding:16px 18px 7px}
+.sbrand .sub{font-size:var(--fs-meta);font-weight:600;color:rgba(255,255,255,.7)}
+.sgrp{font-size:var(--fs-meta);font-weight:800;
+  color:rgba(255,255,255,.66);padding:16px 18px 7px}
+/* กลุ่มผู้ดูแลพับเก็บได้ — พนักงานทั่วไปไม่เห็นเลย ผู้ดูแลเห็นหัวข้อเดียวจนกว่าจะกดเปิด */
+details.sadm{margin:0}
+details.sadm>summary{list-style:none;cursor:pointer;display:flex;align-items:center;justify-content:space-between;
+  font-size:var(--fs-meta);font-weight:800;color:rgba(255,255,255,.66);padding:16px 18px 7px}
+details.sadm>summary::-webkit-details-marker{display:none}
+details.sadm>summary::after{content:"";width:8px;height:8px;border-right:2px solid currentColor;border-bottom:2px solid currentColor;
+  transform:rotate(45deg);margin-top:-3px;transition:transform .18s ease}
+details.sadm[open]>summary::after{transform:rotate(-135deg);margin-top:3px}
+details.sadm>summary:focus-visible{outline:2px solid #fff;outline-offset:-2px;border-radius:9px}
+.slink .slk-n{display:block}
 #side nav{display:flex;flex-direction:column;padding:0 8px;gap:1px}
 .slink{display:flex;align-items:center;gap:11px;padding:9px 11px;border-radius:9px;
   color:rgba(255,255,255,.76);font-size:13.5px;font-weight:600;text-align:left;width:100%}
@@ -1580,17 +1599,20 @@ body.drvmode{ --fs-body:17px; --fs-sec:15px; --fs-meta:13px }
 /* ── การ์ด "ต้องทำตอนนี้" — บล็อกเดียวในหน้าที่ได้พื้นและแถบสี ── */
 .attn{ display:flex; flex-direction:column; gap:9px }
 .atc{ display:flex; flex-direction:column; align-items:flex-start; gap:9px; width:100%; text-align:left;
-  padding:15px 15px 15px 17px; border-radius:var(--r);
+  padding:15px; border-radius:var(--r);
   background:var(--surface); border:1px solid var(--line);
-  border-left:4px solid var(--brand); cursor:pointer;
+  cursor:pointer; --tone:var(--brand); --tone-line:var(--line);
   box-shadow:var(--shadow); transition:transform .12s ease, box-shadow .12s ease }
 .atc:hover{ transform:translateY(-1px); box-shadow:var(--shadow-lg) }
 .atc:active{ transform:none }
-.atc.warn{ border-left-color:var(--warn); background:var(--warn-bg) }
-.atc.bad { border-left-color:var(--danger); background:var(--danger-bg) }
-.atc.info{ border-left-color:var(--brand); background:var(--brand-50) }
+/* สถานะบอกด้วยกรอบเต็ม + พื้นอ่อน + จุดนำหน้าหัวข้อ (ไม่ใช้แถบสีด้านข้างอีก) */
+.atc.warn{ --tone:var(--warn);   --tone-line:var(--warn-line);  background:var(--warn-bg);   border-color:var(--warn-line) }
+.atc.bad { --tone:var(--danger); --tone-line:var(--danger);      background:var(--danger-bg); border-color:var(--danger) }
+.atc.info{ --tone:var(--brand);  --tone-line:var(--brand-300);   background:var(--brand-50);  border-color:var(--brand-300) }
 .atc-b{ flex:1; min-width:0 }
 .atc-b h4{ margin:0; font-size:var(--fs-cta); font-weight:700; color:var(--ink); line-height:1.42 }
+.atc-b h4::before{ content:""; display:inline-block; width:9px; height:9px; border-radius:50%;
+  background:var(--tone); margin-right:9px; vertical-align:middle; position:relative; top:-1px }
 .atc-b p{ margin:4px 0 0; font-size:var(--fs-sec); color:var(--ink-2); line-height:1.5 }
 .atc-b{ width:100% }
 .atc-cta{ align-self:flex-end; display:inline-flex; align-items:center; gap:3px;
@@ -1707,27 +1729,178 @@ select:focus-visible, textarea:focus-visible, [tabindex]:focus-visible{
 @media(max-width:420px){.svi-s{display:none}}
 
 /* ===== Theme "office" (opt-in: ?theme=office, off: ?theme=off) ===== */
-html.t-office{--bg:#FBFAF6;--line:#C9D3D9;--r-sm:3px;--r:4px;--r-lg:6px;--r-xl:8px;--shadow:none;--shadow-lg:0 2px 0 rgba(8,58,82,.25);--font:'Sarabun','Prompt',-apple-system,sans-serif;--font-head:'Noto Serif Thai','Prompt',serif}
-html.t-office body{background:var(--bg);font-family:var(--font)}
-html.t-office h1,html.t-office h2,html.t-office h3{font-family:var(--font-head);letter-spacing:0}
-html.t-office .card,html.t-office .atc,html.t-office .svl,html.t-office .qa-b,html.t-office .srchbar,html.t-office .rows,html.t-office .allsv,html.t-office .wk-d{box-shadow:none;border:1px solid var(--line);border-radius:var(--r)}
-html.t-office .hz-h{border-top:2px solid var(--navy);padding-top:10px;margin-bottom:12px}
-html.t-office .hz-h h3{font-size:18px;color:var(--navy)}
-html.t-office .hhead h2{font-size:24px;color:var(--navy)}
-html.t-office .hhead .hdate,html.t-office .hdate{text-transform:none;letter-spacing:0;font-size:15px;font-weight:600;color:var(--primary)}
-html.t-office .hhead-logo{border-radius:4px}
-html.t-office .svl{background:#fff;overflow:hidden}
-html.t-office .svi{border-radius:0;border:0;border-bottom:1px solid var(--line);background:#fff;padding-top:14px;padding-bottom:14px}
-html.t-office .svi:last-child{border-bottom:0}
-html.t-office .svi-i{background:none;color:var(--navy);border-radius:0;border:0;width:30px}
-html.t-office .svi-n{font-family:var(--font-head);font-size:17px;font-weight:700;color:var(--navy)}
-html.t-office .atc{border-left:5px solid var(--primary);background:#fff}
-html.t-office .atc.bad{border-left-color:var(--danger)}
-html.t-office .atc.warn{border-left-color:var(--warn)}
-html.t-office .qa-b{background:#fff;color:var(--navy);font-weight:700}
-html.t-office .nav{border-top:2px solid var(--navy);box-shadow:none}
-html.t-office .btn{border-radius:var(--r);box-shadow:none}
-html.t-office .bday{background:#fff;border:1px solid var(--line);border-left:5px solid var(--warn);border-radius:var(--r)}
+/* ═══════════════ โลกภาพ "ป้ายนิเทศ" ═══════════════
+   สักหลาดเซลาดอนอ่อนเป็นพื้น กระดาษประกาศสีขาว หัวการ์ดเป็นเทปสีตามหมวด
+   เงาเป็นขอบล่างแข็งบางๆ เหมือนกระดาษวางบนบอร์ด ไม่ใช่เงาฟุ้ง */
+:root{ --r-sm:6px; --r:8px; --r-lg:10px; --r-xl:14px; --navy:#0B4F6C;
+  --shadow:0 2px 0 rgba(11,79,108,.16); --shadow-lg:0 4px 0 rgba(11,79,108,.2);
+  --tape-ink:#14191C }
+.topbar{ background:var(--bg) }
+.hdate, .hhead .hdate{ text-transform:none; letter-spacing:0; font-size:15px; font-weight:500; color:var(--ink-2) }
+.hhead{ padding:2px 0 14px }
+.hhead h2{ font-size:26px; font-weight:600; letter-spacing:0 }
+.hz-h h3{ font-weight:600 }
+.sgrp{ display:flex; align-items:center; gap:9px }
+.sgrp[data-fam]::before{ content:""; width:12px; height:12px; border-radius:3px; background:var(--fc,#fff); flex:none }
+.sgrp[data-fam=brand]{ --fc:#7CC4E0 } .sgrp[data-fam=leaf]{ --fc:var(--tape-leaf) }
+.sgrp[data-fam=coral]{ --fc:var(--tape-coral) } .sgrp[data-fam=amber]{ --fc:var(--tape-amber) }
+
+.ssub{ margin:10px 12px 3px; padding-left:2px; font-size:var(--fs-sec); font-weight:600; color:#A7D9E6 }
+
+/* วันเกิดวันนี้ — บนสุดของหน้าแรก */
+.bdb{ display:flex; align-items:center; gap:12px; padding:12px 14px; border-radius:var(--r);
+  background:#FFF8E8; border:2px solid var(--tape-amber); box-shadow:var(--shadow) }
+.bdb-cake{ font-size:28px; flex:none }
+.bdb-x{ flex:1; min-width:0 } .bdb-x b{ display:block; font-weight:600 }
+.bdb-x span{ font-size:var(--fs-sec); color:var(--ink-2) }
+.bdb-go{ min-height:44px; padding:0 18px; border-radius:var(--r-sm); background:var(--brand); color:#fff; font-weight:600; flex:none }
+.bdb-go[disabled]{ background:var(--ok); opacity:1 }
+.bdb-go:focus-visible{ outline:3px solid var(--ink); outline-offset:2px }
+.home > .hz-bday{ grid-area:bday; margin-bottom:14px }
+.hz-h h3 .hz-n{ display:inline-grid; vertical-align:middle; margin-left:6px }
+
+/* รูปพัสดุในรายการ: ใหญ่พอให้เห็นว่าเป็นกล่องไหน ของใคร (เดิม 56px เล็กเกินไป) */
+.thumb.pthumb{ width:88px; height:72px; border-radius:var(--r-sm); object-fit:cover; flex:none; cursor:zoom-in }
+div.thumb.pthumb{ display:grid; place-items:center; cursor:default }
+
+/* แผ่นอวยพรวันเกิด */
+.wsk{ display:grid; grid-template-columns:repeat(3,1fr); gap:10px }
+.wsk-i{ display:grid; place-items:center; min-height:84px; border-radius:var(--r); background:var(--surface);
+  border:2px solid var(--line) }
+.wsk-i svg{ width:52px; height:52px }
+.wsk-i.on{ border-color:var(--brand); background:var(--brand-50) }
+.wsk-i:focus-visible, .wsemo button:focus-visible{ outline:3px solid var(--ink); outline-offset:2px }
+.wsemo{ display:flex; flex-wrap:wrap; gap:6px; margin-top:8px }
+.wsemo button{ width:44px; height:44px; border-radius:var(--r-sm); font-size:22px; background:var(--surface);
+  border:1px solid var(--line) }
+
+/* รายการข่าวข้างการ์ด (จอคอมเท่านั้น — มือถือดูตัวเลขที่หัวข้อ) */
+.nb-list{ display:none; list-style:none; margin:0; padding:0 }
+.nbl{ --tc:var(--tape-brand); display:flex; align-items:center; gap:9px; width:100%; min-height:44px; padding:6px 10px;
+  border-radius:6px; text-align:left }
+.nbl.tn-amber{ --tc:var(--tape-amber) } .nbl.tn-coral{ --tc:var(--tape-coral) } .nbl.tn-leaf{ --tc:var(--tape-leaf) }
+.nbl:hover{ background:var(--brand-50) } .nbl.on{ background:var(--brand-50) }
+.nbl:focus-visible{ outline:2px solid var(--brand); outline-offset:-2px }
+.nbl-dot{ width:10px; height:10px; border-radius:50%; background:var(--tc); flex:none }
+.nbl-t{ flex:1; min-width:0; font-size:var(--fs-sec); font-weight:500; white-space:nowrap; overflow:hidden; text-overflow:ellipsis }
+.nbl.on .nbl-t{ font-weight:600 }
+.nbl-act{ font-size:var(--fs-sec); font-weight:600; background:var(--tape-amber); color:var(--tape-ink); border-radius:4px; padding:0 6px; flex:none }
+.nbl-d{ font-size:var(--fs-sec); color:var(--ink-2); flex:none }
+@media(min-width:900px){
+  .nb-wrap{ display:grid; grid-template-columns:minmax(0,1fr) 340px; gap:18px; align-items:start }
+  .nb-list{ display:flex; flex-direction:column; gap:2px; background:var(--surface); border-radius:var(--r); box-shadow:var(--shadow); padding:6px }
+  .nb-list[hidden]{ display:none }
+}
+
+/* ข่าวบนบอร์ด */
+.hz-news .hz-h{ display:flex; align-items:center; gap:6px }
+.hz-news .hz-h h3{ margin-right:auto }
+.nb-pp, .nb-all{ min-height:44px; display:inline-flex; align-items:center; justify-content:center; gap:2px;
+  border-radius:var(--r-sm); font-weight:600; font-size:var(--fs-sec); color:var(--brand) }
+.nb-pp{ width:44px; color:var(--ink-2) } .nb-pp svg{ width:18px; height:18px }
+.nb-all{ padding:0 8px } .nb-all svg{ width:16px; height:16px }
+.nb-pp:focus-visible, .nb-all:focus-visible{ outline:2px solid var(--brand); outline-offset:1px }
+.nbc-track{ display:flex; gap:14px; overflow-x:auto; scroll-snap-type:x mandatory; scrollbar-width:none;
+  padding:2px 2px 8px; margin:0 -2px }
+.nbc-track::-webkit-scrollbar{ display:none }
+.nbc-track:focus-visible{ outline:2px solid var(--brand); outline-offset:2px; border-radius:var(--r) }
+.ntc{ flex:0 0 min(300px,80%); scroll-snap-align:start; text-align:left; background:var(--surface);
+  border-radius:var(--r); box-shadow:var(--shadow); display:flex; flex-direction:column; overflow:hidden;
+  --tc:var(--tape-brand); --tf:#fff; transition:transform .16s cubic-bezier(.22,1,.36,1) }
+.ntc.tn-amber{ --tc:var(--tape-amber); --tf:var(--tape-ink) }
+.ntc.tn-coral{ --tc:var(--tape-coral); --tf:var(--tape-ink) }
+.ntc.tn-leaf { --tc:var(--tape-leaf);  --tf:var(--tape-ink) }
+.ntc:hover{ transform:translateY(-2px) }
+.ntc:focus-visible{ outline:2px solid var(--brand); outline-offset:2px }
+.ntc-tape{ display:flex; align-items:center; justify-content:space-between; height:32px; padding:0 12px;
+  background:var(--tc); color:var(--tf); font-size:var(--fs-sec); font-weight:600 }
+.ntc-tape i{ width:11px; height:11px; border-radius:50%; background:#fff; box-shadow:0 1px 0 rgba(0,0,0,.28) }
+.ntc-t{ font-size:var(--fs-cta); font-weight:600; line-height:1.45; padding:12px 14px 2px; min-height:calc(2.9em + 14px);
+  display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden }
+.ntc-s{ font-size:var(--fs-sec); color:var(--ink-2); padding:0 14px }
+.ntc-more{ margin-top:auto; min-height:44px; padding:6px 14px 8px; display:flex; align-items:center; gap:2px;
+  font-size:var(--fs-sec); font-weight:600; color:var(--brand) }
+.ntc-more svg{ width:16px; height:16px }
+.nbc-dots{ display:flex; gap:7px; justify-content:center; padding-top:6px }
+.nbc-dots i{ width:8px; height:8px; border-radius:4px; background:var(--brand-300); transition:width .2s ease, background .2s }
+.nbc-dots i.on{ width:22px; background:var(--brand) }
+@media(min-width:900px){ .ntc{ flex-basis:340px } }
+@media(prefers-reduced-motion:reduce){ .ntc{ transition:none } .nbc-track{ scroll-behavior:auto } }
+
+/* ต้องทำตอนนี้ — แถวเดียวต่อเรื่อง กดได้ทั้งแถว */
+.home .atc{ flex-direction:row; align-items:center; gap:12px; padding:12px 14px }
+.home .atc-b{ flex:1; min-width:0; width:auto }
+.home .atc-cta{ align-self:center }
+.atc:focus-visible{ outline:2px solid var(--brand); outline-offset:2px }
+.atc .atc-new{ margin-left:8px; background:var(--tape-amber); color:var(--tape-ink); border-radius:4px;
+  font-size:var(--fs-sec); font-weight:600; padding:0 7px; vertical-align:middle }
+.atc.fresh{ box-shadow:0 0 0 2px var(--tape-amber) }
+/* หัวข้อกลุ่ม (ทำเนียบ, แอดมิน ฯลฯ): เดิม 13px สีเทา ต่ำกว่าเกณฑ์ 14px ของระบบ */
+.section-title{ font-size:var(--fs-sec); font-weight:600; color:var(--ink) }
+
+/* กล่องข้อความ/ป้ายสถานะ: ใช้โทนแบรนด์แทนน้ำเงินม่วงเดิม */
+.note.info{ background:var(--brand-50); border-color:var(--brand-300); color:var(--brand-700) }
+.pill.new{ background:var(--brand-50); color:var(--brand-700) }
+.seg2{ background:rgba(11,79,108,.1) }
+
+/* ตารางจอง (ห้อง/รถ): บล็อกการจองเป็นกระดาษอ่อนมีกรอบ ไม่ใช่แผ่นสีทึบ ทุกขนาดจอ
+   เดิมมือถือเป็นสีทึบ พอสีเหลืองอำพันเข้มขึ้นตามมาตรฐานความคมชัด จึงกลายเป็นก้อนน้ำตาลขนาดใหญ่ */
+.gev{ color:var(--ink); background:var(--brand-50); border:1px solid var(--brand-300); padding:5px 7px; border-radius:6px }
+.gev.mine{ background:var(--ok-bg); border-color:var(--ok) }
+.gev.live{ background:var(--warn-bg); border-color:var(--warn) }
+.gev.unb { background:var(--bad-bg); border-color:var(--bad) }
+.gridscroll > div{ min-width:100% }
+.gcol, .ghead .hcell{ flex:1 1 0; min-width:84px }
+.gev .w{ opacity:.85 }
+.gev .p{ font-size:12px; opacity:.85; overflow:hidden; text-overflow:ellipsis; white-space:nowrap }
+
+/* ยืม-คืนอุปกรณ์ */
+.eq-scan{ display:flex; align-items:center; gap:14px; width:100%; min-height:64px; padding:12px 16px; text-align:left;
+  background:var(--brand); color:#fff; border-radius:var(--r); box-shadow:var(--shadow); margin-bottom:12px }
+.eq-scan svg{ width:30px; height:30px; flex:none }
+.eq-scan b{ display:block; font-size:var(--fs-cta); font-weight:600 }
+.eq-scan small{ display:block; font-size:var(--fs-sec); font-weight:400; opacity:.95; line-height:1.4; margin-top:1px }
+.eq-scan:focus-visible{ outline:3px solid var(--ink); outline-offset:2px }
+@media(min-width:900px){
+  main > .view > .eq-scan{ max-width:780px }
+  .eqcols{ columns:auto; display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px; align-items:start }
+  .eqcols .section-title{ grid-column:1/-1; margin:8px 0 0 }
+  .eqcols .rcard{ margin:0 }
+}
+
+/* หน้าเบอร์ฉุกเฉิน */
+.contact-group > h3{ font-size:var(--fs-body); font-weight:600; color:var(--ink) }
+.contact-group.ext > h3{ color:var(--danger) }
+.sos-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:10px }
+.sos-tile{ display:flex; flex-direction:column; align-items:center; justify-content:flex-start; gap:2px; text-align:center;
+  min-height:124px; padding:16px 8px; border-radius:var(--r); background:var(--danger); color:#fff;
+  text-decoration:none; box-shadow:var(--shadow) }
+.sos-i svg{ width:22px; height:22px; display:block }
+.sos-n{ font-size:34px; font-weight:700; line-height:1.1; font-variant-numeric:tabular-nums }
+.sos-l{ font-size:var(--fs-sec); font-weight:500; line-height:1.35 }
+.sos-tile:focus-visible, .ct-row:focus-visible{ outline:3px solid var(--ink); outline-offset:2px }
+.ct-row{ text-decoration:none; color:inherit; min-height:68px }
+.ct-row .s{ font-size:var(--fs-cta); font-weight:600; color:var(--ink); margin-top:2px }
+.ct-row .callbtn{ width:46px; height:46px }
+@media(min-width:900px){ main > .view > .contact-group{ max-width:780px } .sos-tile{ min-height:140px } .sos-n{ font-size:40px } }
+
+/* ขั้นความเร่งด่วน: แดง / เหลืองอำพัน / กระดาษขาว */
+.atc-tier{ font-size:var(--fs-sec); font-weight:600; color:var(--ink-2); margin:10px 2px 0 }
+.atc-tier:first-child{ margin-top:0 }
+.atc-tier.t1{ color:var(--danger) } .atc-tier.t2{ color:var(--warn) }
+.atc.tier-1{ background:var(--danger-bg); border-color:var(--danger); --tone:var(--danger) }
+.atc.tier-2{ background:var(--warn-bg); border-color:var(--warn-line); --tone:var(--warn) }
+.atc.tier-3{ background:var(--surface); border-color:var(--line); --tone:var(--brand) }
+.atc.tier-3 .atc-cta{ color:var(--brand) }
+.atc.tier-1 .atc-cta{ color:var(--danger) } .atc.tier-2 .atc-cta{ color:var(--warn) }
+.home .attn{ gap:8px }
+.home > .hz-bday{ grid-column:1/-1 }
+.home .hz-news{ margin-bottom:18px }
+@media(min-width:1000px){
+  .home{ grid-template-columns:minmax(0,1.5fr) minmax(300px,1fr);
+    grid-template-areas:'head head' 'bday bday' 'news news' 'att week' 'quick help' }
+}
+
 </style>
 </head>
 <body>
@@ -2587,18 +2760,18 @@ const T = {
     dpNavJobs:'งาน', dpNavRep:'แจ้งเรื่อง', dpNavMe:'ฉัน',
 
     /* ── หน้าแรกแบบห้องนักบิน ── */
-    navServices:'บริการ',
+    navServices:'เมนู',
     hAttention:'ต้องทำตอนนี้',
     hClear:'ไม่มีอะไรค้างอยู่', hClearBody:'ถ้ามีเรื่องที่ต้องทำ จะขึ้นตรงนี้ก่อนใคร',
     hMore:n=>`และอีก ${n} เรื่อง`,
     hWeek:'สัปดาห์นี้', hWeekNone:'สัปดาห์นี้ยังไม่มีนัดหมายหรือการจอง',
     hDriving:'คุณเป็นคนขับ',
-    hQuick:'ทางลัด', hAllServices:'บริการทั้งหมด', hUpdates:'อัปเดต',
+    hQuick:'ทางลัด', hAllServices:'เมนูทั้งหมด', hUpdates:'อัปเดต',
     dayToday:'วันนี้', dayTomorrow:'พรุ่งนี้',
     open:'เปิด',
 
     /* ── หน้าบริการทั้งหมด ── */
-    svTitle:'บริการ',
+    svTitle:'เมนูทั้งหมด',
     svBook:'จองและยืม', svParcel:'พัสดุ', svReport:'แจ้งเรื่อง', svInfo:'ข้อมูลและติดต่อ',
     svRoomS:'จองห้องประชุมตามช่วงเวลา',
     svCarS:'จองรถพร้อมคนขับ ระบุจุดแวะและโครงการ',
@@ -3491,18 +3664,18 @@ const T = {
     dpNavJobs:'Jobs', dpNavRep:'Report', dpNavMe:'Me',
 
     /* ── Cockpit home ── */
-    navServices:'Services',
+    navServices:'Menu',
     hAttention:'Needs you now',
     hClear:'Nothing waiting on you', hClearBody:'Anything that needs doing will appear here first.',
     hMore:n=>`and ${n} more`,
     hWeek:'This week', hWeekNone:'No bookings or trips this week',
     hDriving:'you are driving',
-    hQuick:'Quick actions', hAllServices:'All services', hUpdates:'Updates',
+    hQuick:'Quick actions', hAllServices:'All menu', hUpdates:'Updates',
     dayToday:'Today', dayTomorrow:'Tomorrow',
     open:'Open',
 
     /* ── All services ── */
-    svTitle:'Services',
+    svTitle:'All menu',
     svBook:'Book and borrow', svParcel:'Parcels', svReport:'Report something', svInfo:'Directory and info',
     svRoomS:'Book a meeting room by time slot',
     svCarS:'Book a vehicle with a driver, stops and project',
@@ -3764,6 +3937,25 @@ const DEMO_DRIVER = DEMO && /[?&]demo=driver/.test(location.search);
  *  ทางที่เลือก: แปลตอนอ่านออกจาก MOCK ชั้นเดียว ซึ่งมีจุดเดียวคือใน api()
  * ══════════════════════════════════════════════════════════════════ */
 const DEMO_EN = {
+  /* ข้อความตัวอย่างที่เพิ่มรอบ redesign — จับคู่ทั้งก้อนก่อนการแทนทีละคำ ไม่ให้ชื่อสั้นๆ ไปแทนกลางคำ */
+  'เบอร์ติดต่อนิติบุคคลอาคารเปลี่ยนใหม่':'Building management phone number has changed',
+  'ตั้งแต่วันนี้ใช้เบอร์ใหม่ตามหน้าเบอร์ฉุกเฉิน กรุณาบันทึกไว้ในโทรศัพท์':'Use the new number listed on the emergency page from today. Please save it to your phone.',
+  'อบรม PDPA สำหรับพนักงานใหม่ ลงชื่อภายในวันพุธ':'PDPA training for new staff — sign up by Wednesday',
+  'ที่นั่งจำกัด 30 คน ลงชื่อผ่านลิงก์ด้านล่าง':'Limited to 30 seats. Sign up via the link below.',
+  'ลงชื่ออบรม':'Sign up',
+  'สรุปผลโครงการ WING ไตรมาสนี้พร้อมแล้ว':'WING quarterly results summary is ready',
+  'ดาวน์โหลดเอกสารสรุปได้ที่ระบบโครงการ':'Download the summary from the project system.',
+  'สำคัญ':'Important', 'อาคาร/สถานที่':'Building', 'อบรม':'Training', 'ต้องดำเนินการ':'Action needed',
+  'โครงการ':'Project', 'นโยบาย':'Policy', 'ทั้งองค์กร':'Everyone',
+  'เครื่องพิมพ์ชั้น 3 ไม่ดึงกระดาษ':'3rd-floor printer is not feeding paper',
+  'ขอเอกสารรับรองการทำงาน':'Request an employment certificate',
+  'รับเรื่องแล้ว':'Received', 'ดำเนินการเสร็จแล้ว':'Done', 'แจ้งเรื่อง':'Reported',
+  'ชั้น 3 ข้างห้อง Focus':'3rd floor, next to the Focus room',
+  'จะให้ช่างเข้าดูพรุ่งนี้เช้า':'A technician will check it tomorrow morning',
+  '🚨 ประกาศฉุกเฉิน: ซ้อมอพยพหนีไฟ':'🚨 Emergency: fire evacuation drill',
+  'วันนี้ 14:00 ทุกคนลงจุดรวมพลหน้าอาคารทันทีที่ได้ยินสัญญาณ\nถ้าติดภารกิจนอกออฟฟิศ ให้ตอบว่า "ปลอดภัย" ในหน้าเบอร์ฉุกเฉิน':'Today at 14:00 everyone goes to the assembly point in front of the building when the signal sounds.\nIf you are out of the office, reply "Safe" on the emergency page.',
+  'ลงทะเบียนเรียบร้อย ใช้งาน Kenan ONE ได้ทันที':'Registration complete. You can start using Kenan ONE now.',
+  'พิมพ์ชื่อ ชื่อเล่น หรือชื่ออังกฤษ':'Type a name, nickname or English name',
   'พิพัฒน์ สุริยสมบูรณ์':'Pipat Suriyasomboon',
   'พิพัฒน์ ส.':'Pipat S.',
   'พิ':'Pi',
@@ -4028,6 +4220,30 @@ function demoRelang(){
   clearCache();
 }
 
+/* รูปพัสดุตัวอย่างสำหรับโหมด ?demo — วาดเป็น SVG กล่องพัสดุพร้อมใบจ่าหน้า
+   ของจริงมาจากรูปที่เจ้าหน้าที่ถ่ายตอนบันทึกพัสดุเข้า */
+const DEMO_PARCELS = {
+  'img-1':['กล่อง Shopee','ถึง พิพัฒน์ ส.','TH01234567890','#C9A06B'],
+  'img-2':['เอกสารจาก HR','ถึง พิพัฒน์ ส.','ซองเอกสาร A4','#E2C48E'],
+  'img-3':['หนังสือ','ถึง พิพัฒน์ ส.','Kinokuniya','#B98A55'],
+  'img-4':['ไม่ทราบผู้รับ','TH99887766554','ชื่อบนกล่องเลือน','#C9A06B'],
+  'img-5':['ไม่ทราบผู้รับ','(ไม่มีเลขพัสดุ)','มีแต่ชื่อบริษัท','#D6B17C']
+};
+function demoParcelImg(id){
+  const p = DEMO_PARCELS[id] || DEMO_PARCELS['img-1'];
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300">
+    <rect width="400" height="300" fill="#E9E4DA"/>
+    <rect x="40" y="60" width="320" height="200" rx="6" fill="${p[3]}"/>
+    <rect x="40" y="60" width="320" height="38" fill="rgba(0,0,0,.12)"/>
+    <rect x="170" y="60" width="60" height="200" fill="rgba(255,255,255,.35)"/>
+    <rect x="70" y="120" width="170" height="104" rx="4" fill="#fff"/>
+    <text x="84" y="150" font-family="sans-serif" font-size="17" font-weight="700" fill="#222">${p[0]}</text>
+    <text x="84" y="178" font-family="sans-serif" font-size="15" fill="#444">${p[1]}</text>
+    <text x="84" y="204" font-family="monospace" font-size="14" fill="#666">${p[2]}</text>
+    <text x="200" y="285" text-anchor="middle" font-family="sans-serif" font-size="12" fill="#777">ภาพตัวอย่าง (demo)</text></svg>`;
+  return 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg);
+}
+
 const MOCK = {
   bootstrap:(function(){
     const d=new Date(), k=`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
@@ -4099,8 +4315,11 @@ const MOCK = {
           { type:'car', record_id:'CAR-2', title:'ตรวจสถานที่จัดอบรม', where:'Toyota Commuter',
             start_at:k+'T13:00:00+07:00', end_at:k+'T16:30:00+07:00', driver:'สมพงษ์ ขับดี' }] },
       announcements:[
-        { title:'อัปเดตนโยบายการเบิกค่าเดินทาง (Travel Expense Policy)', at:'2026-08-28T02:00:00Z' },
-        { title:'ซ้อมอพยพหนีไฟประจำปี 12 ก.ย.', at:'2026-08-25T06:30:00Z' }] };
+        { id:'N-4', title:'เบอร์ติดต่อนิติบุคคลอาคารเปลี่ยนใหม่', at:'2026-11-21T03:00:00Z', tags:['สำคัญ','อาคาร/สถานที่'] },
+        { id:'N-5', title:'อบรม PDPA สำหรับพนักงานใหม่ ลงชื่อภายในวันพุธ', at:'2026-11-20T04:00:00Z', tags:['อบรม','ต้องดำเนินการ'] },
+        { id:'N-6', title:'สรุปผลโครงการ WING ไตรมาสนี้พร้อมแล้ว', at:'2026-11-18T05:00:00Z', tags:['โครงการ'] },
+        { id:'N-1', title:'อัปเดตนโยบายการเบิกค่าเดินทาง (Travel Expense Policy)', at:'2026-08-28T02:00:00Z', tags:['สำคัญ','นโยบาย'] },
+        { id:'N-2', title:'ซ้อมอพยพหนีไฟประจำปี 12 ก.ย.', at:'2026-08-25T06:30:00Z', tags:['ทั้งองค์กร','อาคาร/สถานที่'] }] };
   })(),
   getAuthState:{ ok:true, isAdmin:true, isOfficer:true, registrationStatus:'approved', notificationCount:2,
     user:{ kenan_user_id:'K-4920', name_th:'พิพัฒน์ ส.', name_en:'Pipat S.', nickname:'พิ',
@@ -4113,14 +4332,14 @@ const MOCK = {
     { kenan_user_id:'K-3310', name_th:'ณัฐพล ม.',    nickname:'เบส',  email:'nattapon@kenan-asia.org' }]},
   getMyParcels:{ items:[
     { record_id:'PCL-260830-001', title:'กล่อง Shopee', tracking_no:'TH01234567890',
-      status:'notified', created_at:'2026-08-30T02:15:00Z' },
+      status:'notified', created_at:'2026-08-30T02:15:00Z', thumb_id:'img-1', photo_id:'img-1' },
     { record_id:'PCL-260829-004', title:'เอกสารจาก HR', status:'notified',
-      created_at:'2026-08-29T07:40:00Z' },
+      created_at:'2026-08-29T07:40:00Z', thumb_id:'img-2', photo_id:'img-2' },
     { record_id:'PCL-260826-002', title:'หนังสือ',      status:'claimed',
-      created_at:'2026-08-26T04:05:00Z' }]},
+      created_at:'2026-08-26T04:05:00Z', closed_at:'2026-08-27T03:10:00Z', thumb_id:'img-3', photo_id:'img-3' }]},
   getUnidentifiedParcels:{ items:[
-    { record_id:'PCL-260830-007', tracking_no:'TH99887766554', created_at:'2026-08-30T03:20:00Z' },
-    { record_id:'PCL-260830-008', tracking_no:'',              created_at:'2026-08-30T03:22:00Z' }]},
+    { record_id:'PCL-260830-007', tracking_no:'TH99887766554', created_at:'2026-08-30T03:20:00Z', thumb_id:'img-4', photo_id:'img-4' },
+    { record_id:'PCL-260830-008', tracking_no:'',              created_at:'2026-08-30T03:22:00Z', thumb_id:'img-5', photo_id:'img-5' }]},
   getDirectory:{ ok:true, items:[
     { kenan_user_id:'K-1000', name_th:'พิพัฒน์ สุริยสมบูรณ์', name_en:'', nickname:'', roles:'staff,admin', position:'Senior Program Manager', department:'Education Program', email:'staff00@kenan-asia.org', phone:'0812345000', show_phone:false },
     { kenan_user_id:'K-1007', name_th:'สมชาย กิตติวงศ์', name_en:'', nickname:'', position:'Program Officer', department:'Business and Economy', email:'staff01@kenan-asia.org', phone:'0812345001', show_phone:true, emp_code:'10102',
@@ -4170,11 +4389,16 @@ const MOCK = {
       paired:false, pair_code:'481027' },
     { driver_id:'DRV-C3', name:'วิรัตน์ ใจเย็น', phone:'0865554444', company:'บริษัทรถเช่า ABC',
       vehicles:'', note:'สำรอง', thumb:'', is_active:false, paired:false, pair_code:'' }] },
-  geoSuggest:{ ok:true, items:[
-    { name:'โรงแรมเอเชีย ราชเทวี ถนนพญาไท กรุงเทพมหานคร 10400', saved:true, uses:6 },
-    { name:'โรงแรมแมนดาริน สามย่าน ถนนพระราม 4 กรุงเทพมหานคร 10500', saved:true, uses:2 },
-    { name:'โรงแรมปทุมวัน ปริ๊นเซส ถนนพญาไท กรุงเทพมหานคร 10330' },
-    { name:'โรงแรมสยามเคมปินสกี้ ถนนพระราม 1 กรุงเทพมหานคร 10330' }] },
+  /* ค้นหาสถานที่ในโหมดเดโม: กรองตามคำที่พิมพ์ (เดิมคืนรายการเดิมทุกครั้ง พิมพ์อะไรก็ขึ้นโรงแรมเหล่านี้) */
+  geoSuggest: q => {
+    const s = String((q && q.q) || '').trim().toLowerCase();
+    const all = [
+      { name:'โรงแรมเอเชีย ราชเทวี ถนนพญาไท กรุงเทพมหานคร 10400', saved:true, uses:6 },
+      { name:'โรงแรมแมนดาริน สามย่าน ถนนพระราม 4 กรุงเทพมหานคร 10500', saved:true, uses:2 },
+      { name:'โรงแรมปทุมวัน ปริ๊นเซส ถนนพญาไท กรุงเทพมหานคร 10330' },
+      { name:'โรงแรมสยามเคมปินสกี้ ถนนพระราม 1 กรุงเทพมหานคร 10330' }];
+    return { ok:true, items: s ? all.filter(x => x.name.toLowerCase().includes(s)) : all };
+  },
   routeLegs:{ ok:true, failed:0, total_km:31.6, total_mins:74,
     legs:[{ km:8.2, mins:19 }, { km:15.2, mins:33 }, { km:8.2, mins:22 }] },
   getProjectsAdmin:{ ok:true, items:[
@@ -4450,7 +4674,10 @@ const MOCK = {
   })(),
   createCarBooking:{ ok:true, record_id:'CAR-9' }, cancelCarBooking:{ ok:true },
   driverAction:{ ok:true }, logUnbookedTrip:{ ok:true, record_id:'CAR-8' }, logNoCar:{ ok:true },
-  requestOtp:{ ok:true }, getPhoto:{ ok:false },
+  requestOtp:{ ok:true },
+  getPhoto: q => ({ ok:true, data: demoParcelImg(q && q.file_id) }),
+  getPhotos: q => { const o = {}; String((q && q.ids) || '').split(',').filter(Boolean)
+    .forEach(id => { o[id] = demoParcelImg(id); }); return { ok:true, photos:o }; },
   getContacts:{ items:[
     { group:'external', name_th:'เหตุฉุกเฉินแห่งชาติ', name_en:'National Emergency', phone:'191' },
     { group:'external', name_th:'การแพทย์ฉุกเฉิน',     name_en:'Emergency Medical',  phone:'1669' },
@@ -4458,7 +4685,39 @@ const MOCK = {
     { group:'internal', name_th:'ฝ่ายบุคคล (HR)',       name_en:'Human Resources',    phone:'020000000' },
     { group:'internal', name_th:'ฝ่ายไอที',             name_en:'IT Support',         phone:'020000001' },
     { group:'internal', name_th:'นิติบุคคลอาคาร',        name_en:'Building Management',phone:'020000002' }]},
+  sendBirthdayWish:{ ok:true },
+  /* เรื่องแจ้ง (GA/HR ฯลฯ) ตัวอย่างสำหรับ ?demo — เดิมไม่มี จึงเปิดรายการและรายละเอียดไม่ได้ */
+  getMyIssues:{ ok:true, items:[
+    { record_id:'ISU-9', detail:'เครื่องพิมพ์ชั้น 3 ไม่ดึงกระดาษ', dept:'General Administration',
+      category:'General Administration', status:'triaged', status_label:'รับเรื่องแล้ว', urgency:'normal',
+      created_at:'2026-11-20T03:10:00Z', is_open:true },
+    { record_id:'ISU-7', detail:'ขอเอกสารรับรองการทำงาน', dept:'HR', category:'HR',
+      status:'resolved', status_label:'ดำเนินการเสร็จแล้ว', urgency:'normal',
+      created_at:'2026-11-10T02:00:00Z', is_open:false }] },
+  getIssueQueue:{ ok:true, items:[
+    { record_id:'ISU-9', detail:'เครื่องพิมพ์ชั้น 3 ไม่ดึงกระดาษ', category:'General Administration',
+      status:'triaged', status_label:'รับเรื่องแล้ว', urgency:'normal', requester_name:'มณฑา ใจดี',
+      assignee_name:'พิพัฒน์ ส.', created_at:'2026-11-20T03:10:00Z', is_open:true }] },
+  getIssueDetail: q => ({ ok:true, canManage:true, next:['in_progress','resolved'],
+    issue:{ record_id:(q && q.record_id) || 'ISU-9', detail:'เครื่องพิมพ์ชั้น 3 ไม่ดึงกระดาษ',
+      category:'General Administration', dept:'General Administration', status:'triaged',
+      status_label:'รับเรื่องแล้ว', urgency:'normal', location:'ชั้น 3 ข้างห้อง Focus',
+      requester_name:'มณฑา ใจดี', assignee_id:'K-1000', assignee_name:'พิพัฒน์ ส.',
+      created_at:'2026-11-20T03:10:00Z', thumb_id:'', photo_id:'' },
+    timeline:[
+      { label:'แจ้งเรื่อง', at:'2026-11-20T03:10:00Z', actor:'มณฑา ใจดี', note:'' },
+      { label:'รับเรื่องแล้ว', at:'2026-11-20T04:00:00Z', actor:'พิพัฒน์ ส.', note:'จะให้ช่างเข้าดูพรุ่งนี้เช้า' }] }),
   getAnnouncements:{ items:[
+    { id:'N-4', title_th:'เบอร์ติดต่อนิติบุคคลอาคารเปลี่ยนใหม่',
+      body_th:'ตั้งแต่วันนี้ใช้เบอร์ใหม่ตามหน้าเบอร์ฉุกเฉิน กรุณาบันทึกไว้ในโทรศัพท์',
+      at:'2026-11-21T03:00:00Z', tags:['สำคัญ','อาคาร/สถานที่'], image_ids:[], expired:false, author:'มณฑา ใจดี' },
+    { id:'N-5', title_th:'อบรม PDPA สำหรับพนักงานใหม่ ลงชื่อภายในวันพุธ',
+      body_th:'ที่นั่งจำกัด 30 คน ลงชื่อผ่านลิงก์ด้านล่าง',
+      at:'2026-11-20T04:00:00Z', tags:['อบรม','ต้องดำเนินการ'], image_ids:[],
+      cta_label:'ลงชื่ออบรม', cta_url:'https://example.org/form', expired:false, author:'อารยา พงษ์ไพบูลย์' },
+    { id:'N-6', title_th:'สรุปผลโครงการ WING ไตรมาสนี้พร้อมแล้ว',
+      body_th:'ดาวน์โหลดเอกสารสรุปได้ที่ระบบโครงการ',
+      at:'2026-11-18T05:00:00Z', tags:['โครงการ'], image_ids:[], expired:false, author:'วราภรณ์ ทองดี' },
     { id:'N-1', title_th:'อัปเดตนโยบายการเบิกค่าเดินทาง (Travel Expense Policy)',
       body_th:'มีผลตั้งแต่ 1 ต.ค. 2569\nอัตราค่าเดินทางในเขตกรุงเทพปรับใหม่ กรุณาอ่านเอกสารแนบและกรอกแบบฟอร์มรับทราบ',
       at:'2026-08-28T02:00:00Z', tags:['สำคัญ','ต้องดำเนินการ','นโยบาย'], image_ids:[],
@@ -4483,8 +4742,11 @@ const MOCK = {
       record_id:'CAR-260829-003', go:'cars' },
     { event:'issue.update',   bucket:'update', at:'2026-08-29T09:00:00Z',
       record_id:'ISU-260828-001', go:'issues' },
-    { event:'alert',          bucket:'info',   at:'2026-08-28T08:00:00Z', record_id:'', go:'' },
-    { event:'welcome',        bucket:'info',   at:'2026-08-28T07:40:00Z', record_id:'', go:'' }]},
+    { event:'alert',          bucket:'info',   at:'2026-08-28T08:00:00Z', record_id:'', go:'',
+      title:'🚨 ประกาศฉุกเฉิน: ซ้อมอพยพหนีไฟ',
+      body:'วันนี้ 14:00 ทุกคนลงจุดรวมพลหน้าอาคารทันทีที่ได้ยินสัญญาณ\nถ้าติดภารกิจนอกออฟฟิศ ให้ตอบว่า "ปลอดภัย" ในหน้าเบอร์ฉุกเฉิน' },
+    { event:'welcome',        bucket:'info',   at:'2026-08-28T07:40:00Z', record_id:'', go:'',
+      body:'ลงทะเบียนเรียบร้อย ใช้งาน Kenan ONE ได้ทันที' }]},
   scanParcelPhoto:{ recipientName:'วราภรณ์', trackingNo:'TH99887766554' },
   logParcel:{ ok:true }, claimParcel:{ ok:true }, notMyParcel:{ ok:true },
   acceptConsent:{ ok:true }, submitRegistration:{ ok:true },
@@ -4776,6 +5038,9 @@ const $x = s => document.querySelector(s) || NULL_EL;
 const el = (h) => { const d = document.createElement('div'); d.innerHTML = h.trim(); return d.firstElementChild; };
 const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 
+/* ข้อความเตือนช่องที่ยังว่าง — บอกชื่อช่องตรงๆ
+   เดิมทุกฟอร์มใช้ "กรุณาใส่หัวข้อ" ข้อความเดียว แม้ช่องที่ขาดจะเป็นชื่อคนขับหรือวัตถุประสงค์ ทำให้งงว่าต้องใส่อะไร */
+const needMsg = (th, en) => S.lang === 'th' ? `กรุณาใส่${th}` : `Please enter ${en}`;
 let toastTimer;
 function toast(msg, kind = ''){
   const n = $('#toast');
@@ -4790,6 +5055,24 @@ function sheet(html, opt){
   $('#sheet').classList.add('on'); $('#scrim').classList.add('on');
 }
 function closeSheet(){ $('#sheet').classList.remove('on'); $('#scrim').classList.remove('on'); }
+/* ตัวเลือกที่เปิดทับแผ่นฟอร์ม (เลือก PM, เพิ่มสมาชิก, เลือกคนขับ ฯลฯ)
+   เดิมใช้แผ่นเดียวกัน เลือกเสร็จแผ่นปิดทั้งใบ ฟอร์มที่กรอกไว้หายหมด และโค้ดที่รอผลเลือกอยู่
+   (เช่น $('#pmBtn').textContent = …) หา element ไม่เจอจนพัง — ตรวจพบตอนไล่กดทุกปุ่ม
+   ตอนนี้เก็บเนื้อหาเดิมไว้ทั้งก้อน (รวมตัวดักคลิกและค่าที่กรอก) แล้วคืนให้เมื่อเลือกเสร็จ */
+function stashSheet(){
+  const sh = document.getElementById('sheet'), body = document.getElementById('sheetBody');
+  if(!sh.classList.contains('on') || !body.firstChild) return null;
+  const frag = document.createDocumentFragment();
+  while(body.firstChild) frag.appendChild(body.firstChild);
+  return { frag, wide: sh.classList.contains('wide') };
+}
+function popSheet(st){
+  if(!st){ closeSheet(); return; }
+  const sh = document.getElementById('sheet'), body = document.getElementById('sheetBody');
+  body.innerHTML = ''; body.appendChild(st.frag);
+  sh.classList.toggle('wide', st.wide);
+  sh.classList.add('on'); document.getElementById('scrim').classList.add('on');
+}
 $('#scrim').onclick = closeSheet;
 $('#pnScrim').onclick = closePanel;
 $('#pnClose').onclick = closePanel;
@@ -4889,60 +5172,75 @@ function paintNav(){
 
 /** เมนูข้างของจอคอม — ทุกโมดูลเข้าถึงได้ในคลิกเดียว
     บนมือถือต้องกลับหน้าแรกก่อนแล้วค่อยกดไทล์ ซึ่งบนจอคอมไม่มีเหตุผลให้ทำแบบนั้น */
-const SIDE_GROUPS = () => [
-  { g:t('sgWork'), items:[
+/* จัดเป็น 4 ครอบครัวตามสิ่งที่คนอยากทำ ไม่เกิน 4 รายการต่อกลุ่ม
+   แต่ละกลุ่มมีสีเทปประจำตัว (fam) ใช้ซ้ำกับหัวการ์ดบนหน้าแรก */
+const SIDE_GROUPS = () => {
+  const th = S.lang === 'th';
+  return [
+  { g: th ? 'งานของฉัน' : 'My work', fam:'brand', items:[
     { go:'home',        ic:IC.homeIc, label:t('navHome') },
-    { go:'services',    ic:IC.laptop, label:t('svTitle') },
     { go:'my-parcels',  ic:IC.box,    label:t('mParcel') },
     { go:'notifications', ic:IC.bellBig, label:t('navNotif'), badge:true },
-    { go:'issues',      ic:IC.tool,   label:t('mIssue') },
     { go:'activity',    ic:IC.clock,  label:t('mAct') }
   ]},
-  { g:t('sgBook'), items:[
+  { g:t('sgBook'), fam:'leaf', items:[
     { go:'rooms',     ic:IC.cal,    label:t('resvRoom') },
-    { go:'equipment', ic:IC.laptop, label:t('resvEq') },
+    { go:'zoom',      ic:IC.chat,   label:t('resvZoom') },
     { go:'cars',      ic:IC.car,    label:t('resvCar') },
-    { go:'zoom',      ic:IC.chat,   label:t('resvZoom') }
+    { go:'equipment', ic:IC.laptop, label:t('resvEq') }
   ]},
-  { g:t('sgInfo'), items:[
-    { go:'news',      ic:IC.news,  label:t('news') },
-    { go:'directory', ic:IC.user,  label:t('mDir') },
-    { go:'calltree',  ic:IC.sos,   label:t('mCall') }
+  { g: th ? 'แจ้งและขอความช่วยเหลือ' : 'Report & get help', fam:'coral', items:[
+    { go:'issues',      ic:IC.tool,  label:t('mIssue') },
+    { go:'calltree',    ic:IC.sos,   label:t('mCall') },
+    { go:'help',        ic:IC.info,  label:t('meHow') }
   ]},
-  /* ระบบอื่นและความช่วยเหลือ เคยอยู่ลึกสองถึงสามชั้น
-     ความช่วยเหลือที่หายาก คือความช่วยเหลือที่ไม่มีอยู่จริง */
-  { g:t('sgHelp'), items:[
+  { g: th ? 'ข่าวและผู้คน' : 'News & people', fam:'amber', items:[
+    { go:'news',          ic:IC.news, label:t('news') },
+    { go:'directory',     ic:IC.user, label:t('mDir') },
     { go:'other-systems', ic:IC.link, label:t('svOther') },
-    { go:'help',          ic:IC.info, label:t('meHow') },
     { go:'about',         ic:IC.chat, label:t('abTitle') }
   ]}
-];
+  ];
+};
 
 function paintSide(active){
   const groups = SIDE_GROUPS();
   if(S.isOfficer || S.isAdmin){
-    const admin = [{ go:'admin', ic:IC.user, label:t('adminTitle') }];
+    /* ผู้ดูแลแบ่งเป็น 3 ชุดตามที่ทำจริง: คนขับ · ทรัพยากร · จัดการข้อมูล */
+    const th = S.lang === 'th';
+    const admin = [{ go:'admin', ic:IC.homeIc, label:t('adminTitle') }];
+    const drv = [];
+    if(isDriverNow()) drv.push({ go:'driver', ic:IC.car, label:t('drvTitle') });
+    drv.push({ go:'admin-drvrep', ic:IC.tool, label:t('admDrvRep') });
+    admin.push({ sub: th ? 'คนขับ' : 'Drivers' }, ...drv);
     if(S.isAdmin){
-      admin.push({ go:'admin-res',  ic:IC.laptop, label:t('admRes') });
-      admin.push({ go:'labels',     ic:IC.box,    label:t('admLabels') });
-      admin.push({ go:'admin-people', ic:IC.user, label:t('admPeople') });
-      admin.push({ go:'admin-proj', ic:IC.info,   label:t('admProj') });
+      admin.push({ sub: th ? 'ทรัพยากร' : 'Resources' },
+        { go:'admin-res', ic:IC.laptop, label:t('admRes') },
+        { go:'labels',    ic:IC.box,    label:t('admLabels') });
+      admin.push({ sub: th ? 'จัดการข้อมูล' : 'Manage data' },
+        { go:'admin-people', ic:IC.user, label:t('admPeople') },
+        { go:'admin-proj',   ic:IC.info, label:t('admProj') },
+        { go:'admin-dsr',    ic:IC.info, label:t('admDsr') });
     }
-    admin.push({ go:'admin-drvrep', ic:IC.tool, label:t('admDrvRep') });
-    if(S.isAdmin) admin.push({ go:'admin-dsr', ic:IC.info, label:t('admDsr') });
-    if(isDriverNow()) admin.unshift({ go:'driver', ic:IC.car, label:t('drvTitle') });
-    groups.push({ g:t('sgAdmin'), items:admin });
+    groups.push({ g:t('sgAdmin'), items:admin, fold:true });
   }else if(isDriverNow()){
     groups.push({ g:t('sgAdmin'), items:[{ go:'driver', ic:IC.car, label:t('drvTitle') }] });
   }
 
-  $x('#sNav').innerHTML = groups.map(gr => `
-    <div class="sgrp">${esc(gr.g)}</div>
-    ${gr.items.map(i => `
+  const sRow = i => i.sub ? `<div class="ssub">${esc(i.sub)}</div>` : `
       <button class="slink ${i.go === active ? 'on' : ''}" data-sgo="${i.go}">
         ${i.ic}<span>${esc(i.label)}</span>
         ${i.badge && S.notifCount ? `<span class="sb">${S.notifCount}</span>` : ''}
-      </button>`).join('')}`).join('');
+      </button>`;
+  /* กลุ่มผู้ดูแลพับไว้ — เปิดเองเมื่อกำลังอยู่ในหน้าของกลุ่มนี้
+     จำสถานะที่ผู้ใช้เปิดเองไว้ใน sessionStorage ให้เปิดค้างระหว่างเปลี่ยนหน้า */
+  const admOpen = (() => { try{ return sessionStorage.getItem('kn_admopen') === '1'; }catch(e){ return false; } })();
+  $x('#sNav').innerHTML = groups.map(gr => gr.fold
+    ? `<details class="sadm" ${(admOpen || gr.items.some(i => i.go === active)) ? 'open' : ''}>
+         <summary>${esc(gr.g)}</summary>${gr.items.map(sRow).join('')}</details>`
+    : `<div class="sgrp" data-fam="${gr.fam || ''}">${esc(gr.g)}</div>${gr.items.map(sRow).join('')}`).join('');
+  document.querySelectorAll('#sNav details.sadm').forEach(d =>
+    d.addEventListener('toggle', () => { try{ sessionStorage.setItem('kn_admopen', d.open ? '1' : '0'); }catch(e){} }));
   document.querySelectorAll('#sNav .slink').forEach(b =>
     b.onclick = () => { S.stack = []; go(b.dataset.sgo); });
 
@@ -4999,8 +5297,9 @@ function chrome(name){
   $x('#langTop').hidden = false;
   // ปุ่มลอยโผล่เฉพาะหน้าที่เกี่ยวกับพัสดุและเมนูผู้ดูแลเท่านั้น
   // หน้าอื่น (โดยเฉพาะหน้าฉุกเฉิน) ห้ามมีอะไรมาบัง
+  /* หน้า admin มีปุ่ม "บันทึกพัสดุเข้า" ใหญ่อยู่บนสุดอยู่แล้ว ปุ่มลอยซ้ำจึงเหลือแต่ไปบังรายการ */
   $('#fab').hidden = !S.isOfficer ||
-                     !['my-parcels','unidentified','admin'].includes(name);
+                     !['my-parcels','unidentified'].includes(name);
   document.querySelectorAll('.nav button').forEach(b =>
     b.classList.toggle('on', b.dataset.go === name || (name === 'parcel-in' && b.dataset.go === 'my-parcels')));
 }
@@ -5097,8 +5396,16 @@ async function render(name, params){
   }
   chrome(name); try{ __helpFor(name); }catch(e){}
   const fn = ROUTES[name] || ROUTES.home;
-  $x('#main').innerHTML = `<div class="view">${skeleton(2)}</div>`;
-  try{ await fn(params); }
+  $x('#main').innerHTML = `<div class="view"><p class="ld-note" role="status">${esc(t('loading'))}</p>${skeleton(2)}</div>`;
+  /* โหลดนานเกิน 8 วินาที = ไม่ปล่อยให้นั่งมอง skeleton เฉยๆ ให้ปุ่มลองใหม่โผล่ขึ้นมา */
+  const slowTm = setTimeout(() => {
+    const n = document.querySelector('#main .ld-note');
+    if(n && seq === RENDER_SEQ){
+      n.innerHTML = `${esc(t('loading'))} <button class="btn ghost" id="ldRetry" style="display:inline-flex;margin-left:8px;min-height:44px">${esc(t('retry'))}</button>`;
+      const b = document.getElementById('ldRetry'); if(b) b.onclick = () => render(name, params);
+    }
+  }, 8000);
+  try{ await fn(params); clearTimeout(slowTm); }
   catch(e){
     if(seq !== RENDER_SEQ) return;   // ผู้ใช้เปลี่ยนหน้าไปแล้ว ไม่ต้องขึ้น error ของหน้าเก่า
     if(e.message === 'NO_CONFIG'){
@@ -5244,11 +5551,141 @@ function dayLabel(key){
     S.lang === 'th' ? 'th-TH' : 'en-GB', { weekday:'short', day:'numeric', month:'short' });
 }
 
+/* สติกเกอร์อวยพรวันเกิด — วาดเป็น SVG รูปทรงเรียบ สีชุดเดียวกับเทปบนบอร์ด */
+const WISH_STK = {
+  cake:'<svg viewBox="0 0 64 64" aria-hidden="true"><rect x="9" y="33" width="46" height="21" rx="4" fill="#F2B84B"/><path d="M9 39c6 6 9-4 14 0s9 6 14 0 9-4 18 0v-7a4 4 0 0 0-4-4H13a4 4 0 0 0-4 4z" fill="#fff" stroke="#E7D9B8" stroke-width="1.5"/><rect x="29" y="15" width="6" height="12" rx="2" fill="#E0675A"/><path d="M32 5c4 4 4 7 0 9-4-2-4-5 0-9z" fill="#F2B84B"/></svg>',
+  balloons:'<svg viewBox="0 0 64 64" aria-hidden="true"><path d="M24 40c-2 8-4 12-2 18M42 38c-1 8 1 12 4 18M33 44c0 6-1 9 1 14" fill="none" stroke="#6B7C85" stroke-width="2" stroke-linecap="round"/><ellipse cx="22" cy="24" rx="12" ry="15" fill="#E0675A"/><ellipse cx="42" cy="22" rx="11" ry="14" fill="#0076A9"/><ellipse cx="33" cy="30" rx="10" ry="13" fill="#F2B84B"/></svg>',
+  gift:'<svg viewBox="0 0 64 64" aria-hidden="true"><rect x="10" y="26" width="44" height="30" rx="3" fill="#4E9F7D"/><rect x="8" y="20" width="48" height="10" rx="3" fill="#3D8467"/><rect x="29" y="20" width="6" height="36" fill="#F2B84B"/><path d="M32 20c-8-1-14-6-10-11 4-4 10 2 10 11zM32 20c8-1 14-6 10-11-4-4-10 2-10 11z" fill="#F2B84B"/></svg>',
+  star:'<svg viewBox="0 0 64 64" aria-hidden="true"><path d="M32 6l7.4 15.6 17 2.2-12.4 11.9 3.1 16.9L32 44.4 16.9 52.6 20 35.7 7.6 23.8l17-2.2z" fill="#F2B84B" stroke="#E0A02F" stroke-width="2" stroke-linejoin="round"/></svg>',
+  heart:'<svg viewBox="0 0 64 64" aria-hidden="true"><path d="M32 56S8 41 8 24c0-8 6-14 13-14 5 0 9 3 11 7 2-4 6-7 11-7 7 0 13 6 13 14 0 17-24 32-24 32z" fill="#E0675A"/></svg>',
+  flower:'<svg viewBox="0 0 64 64" aria-hidden="true"><g fill="#A7D9E6"><circle cx="32" cy="14" r="10"/><circle cx="50" cy="28" r="10"/><circle cx="43" cy="49" r="10"/><circle cx="21" cy="49" r="10"/><circle cx="14" cy="28" r="10"/></g><circle cx="32" cy="32" r="9" fill="#F2B84B"/></svg>'
+};
+const WISH_NAME = { cake:['เค้ก','Cake'], balloons:['ลูกโป่ง','Balloons'], gift:['ของขวัญ','Gift'],
+  star:['ดาว','Star'], heart:['หัวใจ','Heart'], flower:['ดอกไม้','Flower'] };
+
+/* ── ข่าวสารบนบอร์ด: การ์ดเลื่อนวนไม่รู้จบ ─────────────────────────
+   สำเนาสามชุดต่อกัน เริ่มที่ชุดกลาง พอเลื่อนล้ำไปทางไหนก็กระโดดกลับไปชุดกลางทันที
+   (เนื้อหาเหมือนกันทุกพิกเซล จึงไม่เห็นรอยต่อ) · เลื่อนเองทุก 4.5 วินาที
+   หยุดเมื่อเมาส์อยู่บนการ์ด แตะ หรือโฟกัสด้วยคีย์บอร์ด · ปุ่มหยุด/เล่นสำหรับผู้ที่ต้องการ
+   ตั้งค่าลดการเคลื่อนไหวของระบบ = ไม่เลื่อนเอง แต่ปัดเองได้ */
+const NEWS_TONE = (a, i) => {
+  const tg = (a.tags || []).join(' ');
+  if(/สำคัญ|ฉุกเฉิน|urgent|important/i.test(tg)) return 'coral';
+  if(/ต้องดำเนินการ|action/i.test(tg)) return 'amber';
+  return ['brand', 'leaf'][i % 2];
+};
+function mountNewsLoop(list){
+  const box = $x('#newsBox'); if(!box) return;
+  const th = S.lang === 'th';
+  const single = list.length < 2;      // ข่าวเดียวไม่ต้องวน เลื่อนวนซ้ำการ์ดใบเดียวมีแต่ดูแปลก
+  const base = list.slice();
+  while(!single && base.length < 4) base.push(...list.slice(0, 4 - base.length));
+  const mk = (clone) => base.map((a, i) => {
+    const tone = NEWS_TONE(a, i % list.length);
+    const tag = (a.tags || [])[0] || (th ? 'ข่าว' : 'News');
+    return `<button class="ntc tn-${tone}" type="button" data-nid="${esc(a.id || '')}"${clone ? ' tabindex="-1" aria-hidden="true"' : ''}>
+      <span class="ntc-tape"><span>${esc(tag)}</span><i></i></span>
+      <span class="ntc-t">${esc(a.title || a.title_th || a.title_en || '')}</span>
+      <span class="ntc-s">${esc(fmtDate(a.at))}</span>
+      <span class="ntc-more">${esc(th ? 'อ่านต่อ' : 'Read more')} ${IC.chev}</span>
+    </button>`;
+  }).join('');
+  if(single){
+    const l0 = $x('#nbList'); if(l0) l0.hidden = true;
+    box.innerHTML = `<div class="nbc"><div class="nbc-track">${mk(false)}</div></div>`;
+    box.querySelector('.ntc').onclick = e => go('news', list[0].id ? { id:list[0].id } : {});
+    const pp0 = $x('#nbPP'); if(pp0) pp0.hidden = true;
+    return;
+  }
+  box.innerHTML = `<div class="nbc" role="region" aria-roledescription="carousel" aria-label="${esc(t('news'))}">
+    <div class="nbc-track" id="nbTrack" tabindex="0">${mk(true)}${mk(false)}${mk(true)}</div>
+    <div class="nbc-dots" aria-hidden="true">${list.map(() => '<i></i>').join('')}</div>
+  </div>`;
+  const track = $x('#nbTrack'), dots = [...box.querySelectorAll('.nbc-dots i')];
+  const cards = [...track.children], per = base.length;
+  let userPaused = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let hold = false, resume = 0;
+  /* รายการข่าวข้างการ์ด: กวาดตาดูได้ว่ามีกี่ข่าว ข่าวที่กำลังโชว์ไฮไลต์ตาม
+     กดชื่อข่าว = เลื่อนไปการ์ดนั้นและหยุดเลื่อนเองชั่วคราว */
+  const lst = $x('#nbList');
+  if(lst){
+    lst.innerHTML = list.map((a, i) => {
+      const tone = NEWS_TONE(a, i), act = /ต้องดำเนินการ|action/i.test((a.tags || []).join(' '));
+      return `<li><button type="button" class="nbl tn-${tone}" data-k="${i}">
+        <i class="nbl-dot"></i>
+        <span class="nbl-t">${esc(a.title || a.title_th || a.title_en || '')}</span>
+        ${act ? `<span class="nbl-act">${esc(th ? 'ต้องทำ' : 'To do')}</span>` : ''}
+        <span class="nbl-d">${esc(fmtDate(a.at))}</span>
+      </button></li>`;
+    }).join('');
+    lst.querySelectorAll('.nbl').forEach(b => b.onclick = () => {
+      const k = +b.dataset.k;
+      hold = true; clearTimeout(resume); resume = setTimeout(() => { hold = false; }, 8000);
+      track.scrollTo({ left: cards[per + k].offsetLeft - cards[0].offsetLeft, behavior:'smooth' });
+    });
+  }
+  const cnt = $x('#nbCount'); if(cnt) cnt.textContent = String(list.length);
+  const step = () => cards[1].offsetLeft - cards[0].offsetLeft;
+  const setW = () => cards[per].offsetLeft - cards[0].offsetLeft;
+  const jump = d => { track.style.scrollSnapType = 'none'; track.scrollLeft += d;
+    requestAnimationFrame(() => { track.style.scrollSnapType = ''; }); };
+  requestAnimationFrame(() => { track.style.scrollSnapType = 'none'; track.scrollLeft = setW();
+    requestAnimationFrame(() => { track.style.scrollSnapType = ''; paintDots(); }); });
+  function paintDots(){
+    const i = ((Math.round(track.scrollLeft / step()) % per) + per) % per % list.length;
+    dots.forEach((d, k) => d.classList.toggle('on', k === i));
+    if(lst) lst.querySelectorAll('.nbl').forEach((b, k) => b.classList.toggle('on', k === i));
+  }
+  track.addEventListener('scroll', () => {
+    const w = setW();
+    if(track.scrollLeft < w * 0.5) jump(w);
+    else if(track.scrollLeft > w * 1.5) jump(-w);
+    paintDots();
+  }, { passive:true });
+  track.addEventListener('click', e => {
+    const c = e.target.closest('.ntc'); if(!c) return;
+    go('news', c.dataset.nid ? { id:c.dataset.nid } : {});
+  });
+  const reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+  /* hold/resume ถูกประกาศก่อนรายการข่าวใช้งาน (ดูด้านบน) */
+  const pp = $x('#nbPP');
+  const ICO_PAUSE = '<rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/>';
+  const ICO_PLAY  = '<path d="M7 5l12 7-12 7z"/>';
+  const paintPP = () => {
+    pp.querySelector('svg').innerHTML = userPaused ? ICO_PLAY : ICO_PAUSE;
+    pp.setAttribute('aria-pressed', userPaused ? 'true' : 'false');
+    pp.setAttribute('aria-label', userPaused
+      ? (th ? 'เล่นข่าวเลื่อนอัตโนมัติ' : 'Resume auto-scroll')
+      : (th ? 'หยุดเลื่อนข่าวอัตโนมัติ' : 'Pause auto-scroll'));
+  };
+  paintPP();
+  pp.onclick = () => { userPaused = !userPaused; paintPP(); };
+  const hold1 = () => { hold = true; clearTimeout(resume); };
+  const free1 = () => { clearTimeout(resume); resume = setTimeout(() => { hold = false; }, 6000); };
+  track.addEventListener('pointerenter', hold1); track.addEventListener('pointerleave', free1);
+  track.addEventListener('focusin', hold1);      track.addEventListener('focusout', free1);
+  track.addEventListener('touchstart', hold1, { passive:true });
+  track.addEventListener('touchend', free1, { passive:true });
+  const timer = setInterval(() => {
+    if(!document.body.contains(track)){ clearInterval(timer); return; }
+    if(userPaused || hold || document.hidden) return;
+    track.scrollBy({ left:step(), behavior:'smooth' });
+  }, 3000);
+}
+
 ROUTES.home = async () => {
   const name = S.me?.name_th || S.me?.nickname || S.profile?.displayName || '';
   const d = S.today || {};
   const att = d.attention || [];
   const week = d.week || [];
+  /* เรื่องที่เพิ่งเข้ามาจะติดป้าย "ใหม่" จนกว่าจะเปิดดู (จำไว้ในเครื่องนี้)
+     ครั้งแรกที่เปิดแอป ถือว่าของที่เห็นอยู่ทั้งหมดเห็นแล้ว ไม่ให้ทุกใบสว่างพร้อมกัน */
+  let ATT_SEEN = null, TIER_PREV = 0;
+  try{
+    const raw = localStorage.getItem('kn_seen_att');
+    if(raw) ATT_SEEN = new Set(JSON.parse(raw));
+    else{ localStorage.setItem('kn_seen_att', JSON.stringify(att.map(a => (a.rec || '') + '|' + a.go + '|' + (a.title || '')))); }
+  }catch(e){}
 
   /* จัดตารางสัปดาห์เป็นกลุ่มตามวัน — ระบบส่งมาเรียงตามเวลาแล้ว */
   const byDay = [];
@@ -5271,6 +5708,35 @@ ROUTES.home = async () => {
       </div>
     </header>
 
+    <!-- ── วันเกิดวันนี้: ถ้ามี ขึ้นบนสุดเลย พร้อมปุ่มอวยพร ── -->
+    ${(d.birthdays || []).length ? `<section class="hz hz-bday" aria-label="${esc(t('dbBirthdays'))}">
+      <div class="bdb">
+        <span class="bdb-cake" aria-hidden="true">🎂</span>
+        <div class="bdb-x">
+          <b>${esc(t('dbBirthdays'))}</b>
+          <span>${(d.birthdays || []).map(x =>
+            esc((x.nickname ? `${x.name} (${x.nickname})` : x.name) +
+                (x.age ? ` · ${x.age} ${S.lang === 'th' ? 'ปี' : 'yrs'}` : ''))).join(' · ')}</span>
+        </div>
+        <button class="bdb-go" id="bdWish" type="button">${esc(S.lang === 'th' ? 'อวยพร' : 'Send wishes')}</button>
+      </div></section>` : ''}
+
+    <!-- ── โซน 0 · ข่าวสารบนบอร์ด — การ์ดเลื่อนวน อยู่บนสุดของทั้งคอมและมือถือ ── -->
+    <section class="hz hz-news" aria-label="${esc(t('hUpdates'))}">
+      <div class="hz-h">
+        <h3>${esc(t('news'))} <span class="hz-n" id="nbCount" aria-label="${esc(S.lang === 'th' ? 'จำนวนข่าว' : 'News count')}"></span></h3>
+        <button class="nb-pp" id="nbPP" type="button" aria-pressed="false"
+          aria-label="${esc(S.lang === 'th' ? 'หยุดเลื่อนข่าวอัตโนมัติ' : 'Pause auto-scroll')}">
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/></svg>
+        </button>
+        <button class="nb-all" id="allNews" type="button">${esc(S.lang === 'th' ? 'ดูทั้งหมด' : 'See all')} ${IC.chev}</button>
+      </div>
+      <div class="nb-wrap">
+        <div id="newsBox">${skeleton(1)}</div>
+        <ol class="nb-list" id="nbList" aria-label="${esc(S.lang === 'th' ? 'รายการข่าว' : 'News list')}"></ol>
+      </div>
+    </section>
+
     <!-- ── โซน 1 · ต้องทำตอนนี้ ─────────────────────────────────
          ถ้าไม่มีอะไรค้าง ต้องบอกให้ชัดว่าไม่มี ไม่ใช่ปล่อยว่าง
          เพราะ "ว่างเปล่า" กับ "โหลดไม่ขึ้น" หน้าตาเหมือนกัน           -->
@@ -5279,14 +5745,25 @@ ROUTES.home = async () => {
         <h3>${esc(t('hAttention'))}</h3>
         ${att.length ? `<span class="hz-n">${att.length}</span>` : ''}
       </div>
-      ${att.length ? `<div class="attn">${att.map(a => `
-        <article class="atc ${esc(a.tone || 'info')}" data-att="${esc(a.go)}" data-rec="${esc(a.rec || '')}">
+      ${att.length ? `<div class="attn">${att.slice().sort((x, y) => (y.urg || 0) - (x.urg || 0)).map(a => {
+        const key = (a.rec || '') + '|' + a.go + '|' + (a.title || '');
+        const fresh = ATT_SEEN && !ATT_SEEN.has(key);
+        /* สามขั้นตามคะแนนความเร่งด่วนที่ระบบส่งมา (urg) ไม่ใช่ตามสีที่ระบบแปะมา
+           ขั้น 1 สีแดง · ขั้น 2 สีเหลืองอำพัน · ขั้น 3 กระดาษขาว — ไม่ให้ห้าใบเป็นสีเดียวกันหมด */
+        const tier = (a.tone === 'bad' || (a.urg || 0) >= 100) ? 1 : (a.urg || 0) >= 90 ? 2 : 3;
+        const tierHead = tier !== TIER_PREV
+          ? `<div class="atc-tier t${tier}">${esc(S.lang === 'th'
+              ? ['', 'ด่วนที่สุด', 'ควรทำก่อน', 'รอได้'][tier]
+              : ['', 'Most urgent', 'Do next', 'Can wait'][tier])}</div>` : '';
+        TIER_PREV = tier;
+        return tierHead + `
+        <article class="atc ${esc(a.tone || 'info')} tier-${tier}${fresh ? ' fresh' : ''}" data-att="${esc(a.go)}" data-rec="${esc(a.rec || '')}" data-key="${esc(key)}" tabindex="0" role="button">
           <div class="atc-b">
-            <h4>${esc(a.title)}</h4>
+            <h4>${esc(a.title)}${fresh ? `<span class="atc-new">${esc(S.lang === 'th' ? 'ใหม่' : 'New')}</span>` : ''}</h4>
             ${a.sub ? `<p>${esc(a.sub)}</p>` : ''}
           </div>
           <span class="atc-cta">${esc(a.cta || t('open'))} ${IC.chev}</span>
-        </article>`).join('')}
+        </article>`; }).join('')}
         ${(d.attentionTotal || 0) > att.length
           ? `<div class="hz-more">${esc(t('hMore')((d.attentionTotal || 0) - att.length))}</div>` : ''}
       </div>` : `<div class="allclear">
@@ -5331,26 +5808,20 @@ ROUTES.home = async () => {
       </button>
     </section>
 
-    <!-- ── โซน 4 · อัปเดต ─────────────────────────────────────── -->
-    <section class="hz hz-news">
-      <div class="hz-h"><h3>${esc(t('hUpdates'))}</h3></div>
-      ${(d.birthdays || []).length ? `<div class="bday">
-        <span class="cake">🎂</span>
-        <div><b>${esc(t('dbBirthdays'))}</b><br>${(d.birthdays || []).map(x =>
-          esc((x.nickname ? `${x.name} (${x.nickname})` : x.name) +
-              (x.age ? ` · ${x.age} ${S.lang === 'th' ? 'ปี' : 'yrs'}` : ''))).join(' · ')}</div></div>` : ''}
-      <div id="newsBox">${skeleton(1)}</div>
-      <button class="allsv" id="allNews"><span>${esc(t('news'))}</span>${IC.chev}</button>
-    </section>
-
     ${devBox()}
   </div>`;
   wireDevBox();
 
   /* การ์ด "ต้องทำตอนนี้" กดที่ไหนก็ได้ทั้งใบ — ไม่ใช่ต้องเล็งปุ่มเล็กๆ */
-  document.querySelectorAll('[data-att]').forEach(b => b.onclick = () => {
-    const rec = b.dataset.rec;
-    go(b.dataset.att, rec ? { rec } : {});
+  document.querySelectorAll('[data-att]').forEach(b => {
+    const open = () => {
+      try{ const s = new Set(JSON.parse(localStorage.getItem('kn_seen_att') || '[]'));
+           s.add(b.dataset.key); localStorage.setItem('kn_seen_att', JSON.stringify([...s])); }catch(e){}
+      const rec = b.dataset.rec;
+      go(b.dataset.att, rec ? { rec } : {});
+    };
+    b.onclick = open;
+    b.onkeydown = e => { if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); open(); } };
   });
   document.querySelectorAll('[data-bgo]').forEach(b => b.onclick = () => go(b.dataset.bgo));
   document.querySelectorAll('[data-go]').forEach(b => {
@@ -5358,18 +5829,60 @@ ROUTES.home = async () => {
   });
   $('#allNews').onclick = () => go('news');
 
+  /* ปุ่มอวยพรวันเกิด — ส่งผ่าน action ใหม่ sendBirthdayWish (ต้องเพิ่มฝั่ง backend)
+     จำในเครื่องว่าอวยพรไปแล้วในวันนี้ ไม่ให้กดซ้ำจนรบกวนเจ้าของวันเกิด */
+  if($('#bdWish')){
+    const th = S.lang === 'th';
+    const wkey = 'kn_wished_' + dayKey(new Date());
+    const wished = () => { try{ return localStorage.getItem(wkey) === '1'; }catch(e){ return false; } };
+    const paintWish = () => { const b = $('#bdWish'); if(!b) return;
+      if(wished()){ b.disabled = true; b.textContent = th ? 'อวยพรแล้ว ✓' : 'Sent ✓'; } };
+    paintWish();
+    $('#bdWish').onclick = () => {
+      /* ไม่มีข้อความสำเร็จรูป — เลือกสติกเกอร์น่ารักๆ + ใส่อิโมจิ/ข้อความเองได้ */
+      let stk = 'cake';
+      sheet(`<h3>${esc(th ? 'อวยพรวันเกิด' : 'Birthday wishes')}</h3>
+        <p class="sub">${esc((d.birthdays || []).map(x => x.nickname || x.name).join(' · '))}</p>
+        <div class="wsk" id="wsStk" role="radiogroup" aria-label="${esc(th ? 'เลือกสติกเกอร์' : 'Pick a sticker')}">${
+          Object.keys(WISH_STK).map(k => `<button type="button" class="wsk-i${k === 'cake' ? ' on' : ''}" data-k="${k}"
+            role="radio" aria-checked="${k === 'cake'}" aria-label="${esc(WISH_NAME[k][th ? 0 : 1])}">${WISH_STK[k]}</button>`).join('')}</div>
+        <div class="field" style="margin-top:12px"><label>${esc(th ? 'อิโมจิหรือข้อความของคุณ (ไม่บังคับ)' : 'Emoji or your own note (optional)')}</label>
+          <textarea id="wsNote" rows="2" maxlength="140"></textarea>
+          <div class="wsemo" id="wsEmo">${['🎂','🎉','🎈','🎁','🥳','💐','🌟','❤️','🙏','😊'].map(e =>
+            `<button type="button" data-e="${e}" aria-label="${e}">${e}</button>`).join('')}</div></div>
+        <button class="btn primary" id="wsGo" type="button">${esc(th ? 'ส่งคำอวยพร' : 'Send')}</button>
+        <button class="btn ghost" id="wsX" type="button">${esc(t('cancel'))}</button>`);
+      document.querySelectorAll('#wsStk .wsk-i').forEach(c => c.onclick = () => {
+        stk = c.dataset.k;
+        document.querySelectorAll('#wsStk .wsk-i').forEach(x => {
+          x.classList.toggle('on', x === c); x.setAttribute('aria-checked', x === c ? 'true' : 'false'); });
+      });
+      document.querySelectorAll('#wsEmo button').forEach(e => e.onclick = () => {
+        const ta = $('#wsNote'); ta.value = (ta.value + e.dataset.e).slice(0, 140); ta.focus();
+      });
+      $('#wsX').onclick = closeSheet;
+      $('#wsGo').onclick = async () => {
+        const b = $('#wsGo'); b.disabled = true;
+        const msg = ($('#wsNote').value || '').trim();
+        try{
+          const r = await apiRetry('sendBirthdayWish', { to: JSON.stringify((d.birthdays || []).map(x => x.name)), message: msg, sticker: stk }, 'POST');
+          if(r?.ok === false) throw 0;
+          try{ localStorage.setItem(wkey, '1'); }catch(e){}
+          closeSheet(); paintWish(); toast(th ? 'ส่งคำอวยพรแล้ว' : 'Wishes sent', 'ok');
+        }catch(e){ b.disabled = false; toast(t('netErr'), 'bad'); }
+      };
+    };
+  }
+
   try{
     const r = S.bootNews ? { items:S.bootNews } : await apiRetry('getAnnouncements', {}, 'GET');
     S.bootNews = null;
-    const list = r?.items || [];
-    $x('#newsBox').innerHTML = list.length
-      ? `<div class="rows">${list.slice(0,3).map(a => `
-          <button class="row" data-news="1"><div class="body">
-            <div class="t">${esc(a.title || a.title_th || a.title_en)}</div>
-            <div class="s">${esc(fmtDate(a.at))}</div>
-          </div><span class="go">${IC.chev}</span></button>`).join('')}</div>`
-      : `<div class="quiet">${esc(S.lang === 'th' ? 'ยังไม่มีประกาศ' : 'No announcements')}</div>`;
-    document.querySelectorAll('[data-news]').forEach(b => b.onclick = () => go('news'));
+    const list = (r?.items || []).filter(a => !a.expired).slice(0, 8);
+    if(!list.length){
+      $x('#newsBox').innerHTML = `<div class="quiet">${esc(S.lang === 'th' ? 'ยังไม่มีประกาศ' : 'No announcements')}</div>`;
+    }else{
+      mountNewsLoop(list);
+    }
   }catch(e){ $x('#newsBox').innerHTML = ''; }
 };
 
@@ -5461,11 +5974,20 @@ ROUTES.services = async () => {
       ${IC.search}<span>${esc(t('schPh'))}</span>
     </button>
 
-    ${G.map(gr => `
+    ${isWide() ? `
+      <div class="hz-h" style="margin-top:20px"><h3>${esc(S.lang === 'th' ? 'ใช้บ่อย' : 'Quick start')}</h3></div>
+      <div class="svl">${quickActions().map(q => svRow({ go:q.go, ic:q.ic, label:q.label })).join('')}</div>
+      <details class="svall">
+        <summary>${esc(S.lang === 'th' ? 'บริการทั้งหมด' : 'All services')}</summary>
+        ${G.map(gr => `
+          <div class="hz-h" style="margin-top:16px"><h3>${esc(gr.g)}</h3></div>
+          <div class="svl">${gr.items.map(svRow).join('')}</div>`).join('')}
+      </details>`
+    : G.map(gr => `
       <div class="hz-h" style="margin-top:20px"><h3>${esc(gr.g)}</h3></div>
       <div class="svl">${gr.items.map(svRow).join('')}</div>`).join('')}
 
-    <div class="hz-h" style="margin-top:20px"><h3>${esc(t('svOther'))}</h3></div>
+    <div class="hz-h" style="margin-top:20px"><h3>${esc(t('svOther'))} · ${esc(S.lang === 'th' ? 'เปิดนอกแอปนี้' : 'opens outside this app')}</h3></div>
     <div id="svOther">${skeleton(2)}</div>
 
     <div style="height:18px"></div>
@@ -6342,17 +6864,27 @@ ROUTES.calltree = async () => {
   $x('#list').innerHTML = groups.map(g => {
     const rows = items.filter(i => (i.group || 'internal') === g.k);
     if(!rows.length) return '';
-    return `<div class="contact-group"><h3>${esc(g.label)}</h3><div class="rows">${rows.map(c => `
-      <div class="row">
-        <div class="body">
-          <div class="t">${esc(S.lang === 'th' ? (c.name_th || c.name_en) : (c.name_en || c.name_th))}</div>
-          <div class="s num">${esc(c.phone)}</div>
-        </div>
-        <a class="callbtn ${g.sos ? 'sos' : ''}" href="tel:${esc(c.phone)}" aria-label="${esc(t('ctCall'))}">${IC.phone}</a>
-      </div>`).join('')}</div></div>`;
+    const nm = c => S.lang === 'th' ? (c.name_th || c.name_en) : (c.name_en || c.name_th);
+    /* เบอร์ภายนอก (191 / 1669 / 199) = ปุ่มใหญ่ทั้งใบ แตะที่ไหนก็โทรออก ตัวเลขใหญ่อ่านได้ตอนมือสั่น
+       เบอร์ภายใน = ทั้งแถวเป็นลิงก์โทร เห็นเบอร์ชัดไม่ต้องเล็งปุ่มวงกลมเล็กๆ */
+    return `<div class="contact-group ${g.sos ? 'ext' : ''}"><h3>${esc(g.label)}</h3>${g.sos
+      ? `<div class="sos-grid">${rows.map(c => `
+          <a class="sos-tile" href="tel:${esc(c.phone)}" aria-label="${esc(t('ctCall'))} ${esc(nm(c))} ${esc(c.phone)}">
+            <span class="sos-i">${IC.phone}</span>
+            <span class="sos-n num">${esc(c.phone)}</span>
+            <span class="sos-l">${esc(nm(c))}</span>
+          </a>`).join('')}</div>`
+      : `<div class="rows">${rows.map(c => `
+          <a class="row ct-row" href="tel:${esc(c.phone)}" aria-label="${esc(t('ctCall'))} ${esc(nm(c))} ${esc(c.phone)}">
+            <div class="body">
+              <div class="t">${esc(nm(c))}</div>
+              <div class="s num">${esc(c.phone)}</div>
+            </div>
+            <span class="callbtn">${IC.phone}</span>
+          </a>`).join('')}</div>`}</div>`;
   }).join('') + (S.isAdmin
     ? `<div style="height:14px"></div>
-       <button class="btn ghost" id="ctMan">${esc(t('admContacts'))}</button>` : '');
+       <button class="btn ghost" id="ctMan">${esc(S.lang === 'th' ? 'จัดการรายชื่อเบอร์ติดต่อ' : 'Manage contact list')}</button>` : '');
   if($('#ctMan')) $('#ctMan').onclick = () => go('admin-contacts');
 };
 
@@ -6593,13 +7125,13 @@ ROUTES.notifications = async () => {
   ];
   const row = n => `
     <button class="nrow ${esc(n.bucket || 'update')}" ${n.go
-      ? `data-rec="${esc(n.record_id || '')}" data-go="${esc(n.go)}"` : ''}>
+      ? `data-rec="${esc(n.record_id || '')}" data-go="${esc(n.go)}"` : `data-i="${items.indexOf(n)}"`}>
       <span class="ndotm" aria-hidden="true"></span>
       <span class="nbody">
         <span class="nt">${esc(evLabel(n))}</span>
         <span class="ns">${esc(fmtDate(n.at))}</span>
       </span>
-      ${n.go ? `<span class="ncta">${esc(nfCta(n))} ${IC.chev}</span>` : ''}
+      ${n.go ? `<span class="ncta">${esc(nfCta(n))} ${IC.chev}</span>` : `<span class="ncta">${esc(S.lang === 'th' ? 'อ่าน' : 'Read')} ${IC.chev}</span>`}
     </button>`;
 
   $x('#list').innerHTML = B.map(b => {
@@ -6613,6 +7145,22 @@ ROUTES.notifications = async () => {
     </div>`;
   }).join('');
 
+  /* แท็บ "ข้อมูล" (เช่นประกาศฉุกเฉิน) กดอ่านรายละเอียดได้ — เดิมแถวพวกนี้กดไม่ติด
+     คนที่เห็นแจ้งเตือนแล้วอยากรู้ว่าเกิดอะไรขึ้นจึงไม่มีทางอ่านต่อ */
+  document.querySelectorAll('#list .nrow[data-i]').forEach(b => b.onclick = () => {
+    const n = items[Number(b.dataset.i)] || {};
+    const th = S.lang === 'th';
+    const isAlert = /^alert/.test(String(n.event));
+    sheet(`<h3>${esc(evLabel(n))}</h3>
+      <p class="sub">${esc(fmtDate(n.at))}</p>
+      ${n.body || n.detail
+        ? `<div class="note ${isAlert ? 'warn' : 'info'}" style="display:block;white-space:pre-wrap">${esc(n.body || n.detail)}</div>`
+        : `<div class="note info" style="display:block">${esc(th ? 'ข้อความนี้ไม่มีรายละเอียดเพิ่มเติม' : 'No further details for this message.')}</div>`}
+      ${isAlert ? `<button class="btn primary" id="nGoSos" style="margin-top:12px" type="button">${esc(th ? 'ไปหน้าเบอร์ฉุกเฉิน / ตอบกลับ' : 'Open emergency page / respond')}</button>` : ''}
+      <button class="btn ghost" id="nX" style="margin-top:9px" type="button">${esc(t('close'))}</button>`);
+    $('#nX').onclick = closeSheet;
+    if($('#nGoSos')) $('#nGoSos').onclick = () => { closeSheet(); go('calltree'); };
+  });
   document.querySelectorAll('#list .nrow[data-go]').forEach(b => b.onclick = () => {
     const dest = b.dataset.go || 'my-parcels';
     const rec  = b.dataset.rec || '';
@@ -6776,7 +7324,7 @@ function linkSheet(x, refresh){
   };
   $('#kS').onclick = async () => {
     const url = $('#kU').value.trim();
-    if(!$('#kT').value.trim()){ toast(t('admNeedTitle'), 'bad'); return; }
+    if(!$('#kT').value.trim()){ toast(needMsg('ชื่อลิงก์', 'a link name'), 'bad'); $('#kT').focus(); return; }
     if(!/^https:\/\/\S+$/i.test(url)){ toast(t('lkBadUrl'), 'bad'); return; }
     const b = $('#kS'); b.disabled = true;
     try{
@@ -7224,18 +7772,22 @@ ROUTES['my-parcels'] = async (params = {}) => {
   if($('#toUn')) $('#toUn').onclick = () => go('unidentified');
   const r = await apiRetry('getMyParcels', {}, 'GET');
   const items = r?.items || [];
-  const waiting = items.filter(i => i.status === 'arrived' || i.status === 'notified');
+  /* กด "ไม่ใช่ของฉัน" แล้วต้องหายจากรายการรอรับทันที ไม่ว่าเซิร์ฟเวอร์จะอัปเดตทันหรือไม่
+     จำไว้ในรอบการใช้งานนี้ (sessionStorage) เพื่อกรองออก */
+  const dismissed = (() => { try{ return new Set(JSON.parse(sessionStorage.getItem('kn_notmine') || '[]')); }catch(e){ return new Set(); } })();
+  const waiting = items.filter(i => (i.status === 'arrived' || i.status === 'notified') && !dismissed.has(i.record_id));
   const done    = items.filter(i => i.status === 'claimed' || i.status === 'closed');
-  if(!items.length){
+  if(!waiting.length && !done.length){
     $x('#list').innerHTML = emptyState(IC.box, t('pcEmpty'), t('pcEmptyBody'));
     return;
   }
   const rowHtml = (p, act) => `
     <button class="row" data-id="${esc(p.record_id)}" ${act ? 'data-act="1"' : ''}>
-      ${p.thumb_id ? `<img class="thumb" data-ph="${esc(p.thumb_id)}" alt="">` : `<div class="thumb">${IC.box}</div>`}
+      ${p.thumb_id ? `<img class="thumb pthumb" data-ph="${esc(p.thumb_id)}" alt="${esc(S.lang === 'th' ? 'รูปพัสดุ' : 'Parcel photo')}">` : `<div class="thumb pthumb">${IC.box}</div>`}
       <div class="body">
         <div class="t">${esc(p.title || p.tracking_no || (S.lang === 'th' ? 'พัสดุ' : 'Parcel'))}</div>
         <div class="s">${esc(t('pcArrived')(fmtDate(p.created_at)))}</div>
+        ${!act && p.closed_at ? `<div class="s">${esc(t('prcGotOn')(fmtDate(p.closed_at)))}</div>` : ''}
       </div>
       ${act ? `<span class="pill wait">${esc(t('pcWaiting'))}</span>` : `<span class="pill done">${esc(t('pcClaim'))}</span>`}
     </button>`;
@@ -7247,6 +7799,9 @@ ROUTES['my-parcels'] = async (params = {}) => {
   const byId = {}; items.forEach(p => byId[p.record_id] = p);
   document.querySelectorAll('#list .row[data-act]').forEach(b =>
     b.onclick = () => claimSheet(b.dataset.id, byId[b.dataset.id]));
+  /* ประวัติ: กดดูได้ — เห็นรูปพัสดุและเวลาที่รับ เผื่อรับสลับกันหรือกดรับผิด */
+  document.querySelectorAll('#list .row:not([data-act])').forEach(b =>
+    b.onclick = () => historySheet(byId[b.dataset.id]));
 
   // มาจากลิงก์ในข้อความแจ้งเตือน หรือกดจากหน้าการแจ้งเตือน → เปิดพัสดุชิ้นนั้นเลย
   const focus = params.rec;
@@ -7267,6 +7822,31 @@ ROUTES['my-parcels'] = async (params = {}) => {
     };
   });
 };
+
+function historySheet(p){
+  p = p || {};
+  const th = S.lang === 'th';
+  sheet(`<h3>${esc(p.title || p.tracking_no || (th ? 'พัสดุ' : 'Parcel'))}</h3>
+    <p class="sub">${esc(th ? 'พัสดุที่คุณกดรับแล้ว ตรวจรูปได้ว่าใช่ของคุณ' : 'A parcel you marked as collected. Check the photo to confirm it was yours.')}</p>
+    ${p.photo_id || p.thumb_id ? `<img class="sheet-photo" id="hsPhoto" alt="">
+      <p class="sheet-photo-hint">${esc(t('pcViewPhoto'))}</p>`
+      : `<div class="note warn">${IC.info}<div>${esc(th ? 'พัสดุชิ้นนี้ไม่มีรูปในระบบ' : 'No photo on file for this parcel')}</div></div>`}
+    <div class="rows" style="margin-top:12px">
+      <div class="row"><div class="body"><div class="s">${esc(t('prcLogged'))}</div>
+        <div class="t">${esc(fmtDate(p.created_at))}</div></div></div>
+      ${p.closed_at ? `<div class="row"><div class="body"><div class="s">${esc(t('prcClaimed'))}</div>
+        <div class="t">${esc(fmtDate(p.closed_at))}</div></div></div>` : ''}
+      ${p.tracking_no ? `<div class="row"><div class="body"><div class="s">${esc(t('prcTracking'))}</div>
+        <div class="t" style="font-family:ui-monospace,monospace">${esc(p.tracking_no)}</div></div></div>` : ''}
+    </div>
+    <div style="height:12px"></div>
+    <button class="btn ghost" id="hsX" type="button">${esc(t('close'))}</button>`);
+  if($('#hsPhoto')){
+    loadPhoto(p.photo_id || p.thumb_id, $('#hsPhoto'));
+    $('#hsPhoto').onclick = () => { closeSheet(); openPhoto(p.photo_id || p.thumb_id, p.title || ''); };
+  }
+  $('#hsX').onclick = closeSheet;
+}
 
 function claimSheet(id, parcel){
   const p = parcel || {};
@@ -7291,7 +7871,10 @@ function claimSheet(id, parcel){
   };
   $('#notMine').onclick = async () => {
     closeSheet();
-    try{ await apiRetry('notMyParcel', { record_id:id }, 'POST'); toast(t('pcNotMineDone'), 'ok'); go('my-parcels', {}, true); }
+    try{ await apiRetry('notMyParcel', { record_id:id }, 'POST');
+         try{ const s = new Set(JSON.parse(sessionStorage.getItem('kn_notmine') || '[]')); s.add(id);
+              sessionStorage.setItem('kn_notmine', JSON.stringify([...s])); }catch(e){}
+         toast(t('pcNotMineDone'), 'ok'); go('my-parcels', {}, true); }
     catch(e){ toast(t('netErr'), 'bad'); }
   };
 }
@@ -7439,7 +8022,7 @@ ROUTES.unidentified = async () => {
   if(!items.length){ $x('#list').innerHTML = emptyState(IC.box, t('unEmpty'), t('unEmptyBody')); return; }
   $x('#list').innerHTML = `<div class="rows">${items.map(p => `
     <button class="row" data-id="${esc(p.record_id)}">
-      ${p.thumb_id ? `<img class="thumb" data-ph="${esc(p.thumb_id)}" alt="">` : `<div class="thumb">${IC.box}</div>`}
+      ${p.thumb_id ? `<img class="thumb pthumb" data-ph="${esc(p.thumb_id)}" alt="${esc(S.lang === 'th' ? 'รูปพัสดุ' : 'Parcel photo')}">` : `<div class="thumb pthumb">${IC.box}</div>`}
       <div class="body">
         <div class="t">${esc(p.tracking_no || (S.lang === 'th' ? 'ไม่ทราบผู้รับ' : 'Unidentified'))}</div>
         <div class="s">${esc(t('pcArrived')(fmtDate(p.created_at)))}</div>
@@ -7659,35 +8242,36 @@ ROUTES.admin = async () => {
   $x('#main').innerHTML = `<div class="view">
     <button class="btn primary" id="toCam" style="padding:18px;font-size:16px">
       ${IC.cam}<span>${esc(t('inTitle'))}</span></button>
-    <div style="height:9px"></div>
-    <button class="btn ghost" id="toUn">${esc(t('unTitle'))}</button>
-    <div style="height:9px"></div>
-    <button class="btn ghost" id="toPrc">${esc(t('prcTitle'))}</button>
-    ${S.isOfficer ? `<div style="height:9px"></div>
-      <button class="btn ghost" id="toQ">${esc(t('isuQueue'))}</button>` : ''}
+    <div class="admgrid" style="margin-top:9px">
+      <button class="btn ghost" id="toUn">${esc(t('unTitle'))}</button>
+      <button class="btn ghost" id="toPrc">${esc(t('prcTitle'))}</button>
+      ${S.isOfficer ? `<button class="btn ghost" id="toQ">${esc(t('isuQueue'))}</button>` : ''}
+    </div>
 
     <div class="section-title">${esc(t('adminToday'))}</div>
     <div id="sum">${skeleton(2)}</div>
 
     ${S.isAdmin ? `
       <div class="section-title">${esc(t('admSettings'))}</div>
-      <button class="btn ghost" id="toNews">${esc(t('admPostNews'))}</button>
-      <div style="height:9px"></div>
-      <button class="btn ghost" id="toRes">${esc(t('admRes'))}</button>
-      <div style="height:9px"></div>
-      <button class="btn ghost" id="toProj">${esc(t('admProj'))}</button>
-      <div style="height:9px"></div>
-      <button class="btn ghost" id="toPeople">${esc(t('admPeople'))}</button>
-      <div style="height:9px"></div>
-      <button class="btn ghost" id="toDsr">${esc(t('admDsr'))}</button>
-      <div style="height:9px"></div>
-      <button class="btn ghost" id="toLinks">${esc(t('lkManage'))}</button>
-      <div style="height:9px"></div>
-      <button class="btn ghost" id="toMsgs">${esc(t('msgTitle'))}</button>
-      <div style="height:9px"></div>
-      <button class="btn ghost" id="toFb">${esc(t('fbRead'))}</button>
-      ${S.isSuper ? `<div style="height:9px"></div>
-        <button class="btn ghost" id="toDl">${esc(t('dlTitle'))}</button>` : ''}
+      <div class="admgrp">${esc(S.lang === 'th' ? 'เนื้อหาและข้อความ' : 'Content & messages')}</div>
+      <div class="admgrid">
+        <button class="btn ghost" id="toNews">${esc(t('admPostNews'))}</button>
+        <button class="btn ghost" id="toLinks">${esc(t('lkManage'))}</button>
+        <button class="btn ghost" id="toMsgs">${esc(t('msgTitle'))}</button>
+        <button class="btn ghost" id="toFb">${esc(t('fbRead'))}</button>
+      </div>
+      <div class="admgrp">${esc(S.lang === 'th' ? 'ทรัพยากร' : 'Resources')}</div>
+      <div class="admgrid">
+        <button class="btn ghost" id="toRes">${esc(t('admRes'))}</button>
+        <button class="btn ghost" id="toLbl">${esc(t('admLabels'))}</button>
+      </div>
+      <div class="admgrp">${esc(S.lang === 'th' ? 'จัดการข้อมูล' : 'Manage data')}</div>
+      <div class="admgrid">
+        <button class="btn ghost" id="toPeople">${esc(t('admPeople'))}</button>
+        <button class="btn ghost" id="toProj">${esc(t('admProj'))}</button>
+        <button class="btn ghost" id="toDsr">${esc(t('admDsr'))}</button>
+        ${S.isSuper ? `<button class="btn ghost" id="toDl">${esc(t('dlTitle'))}</button>` : ''}
+      </div>
       <div class="section-title">${esc(t('admBackup'))}</div>
       <div id="bk">${skeleton(1)}</div>` : ''}
   </div>`;
@@ -7697,6 +8281,7 @@ ROUTES.admin = async () => {
   if($('#toQ'))     $('#toQ').onclick     = () => go('issue-queue');
   if($('#toNews'))  $('#toNews').onclick  = () => go('admin-news');
   if($('#toRes'))   $('#toRes').onclick   = () => go('admin-res');
+  if($('#toLbl'))   $('#toLbl').onclick   = () => go('labels');
   if($('#toProj'))  $('#toProj').onclick  = () => go('admin-proj');
   if($('#toPeople')) $('#toPeople').onclick = () => go('admin-people');
   if($('#toDsr'))   $('#toDsr').onclick   = () => go('admin-dsr');
@@ -8073,6 +8658,18 @@ const issuePill = i => `<span class="pill ${
   i.status === 'closed' || i.status === 'resolved' ? 'done'
   : i.status === 'sent_to_building' ? 'new' : 'wait'}">${esc(i.status_label)}</span>`;
 
+const IT_HELPDESK_URL = 'https://helpdesk.kenan-asia.org/';
+function itHelpdeskBox(){
+  const th = S.lang === 'th';
+  return `<div id="itGo" class="note info" style="display:block;margin-top:13px" hidden>
+    <b>${esc(th ? 'เรื่อง IT แจ้งผ่านระบบ IT Helpdesk' : 'IT requests go through the IT Helpdesk')}</b>
+    <p style="margin:6px 0 12px">${esc(th
+      ? 'ล็อกอินด้วยบัญชีองค์กรแล้วแจ้งเรื่องได้เลย ติดตามสถานะที่นั่นได้ด้วย'
+      : 'Sign in with your work account to submit and track your request there.')}</p>
+    <button class="btn primary" id="itOpen" type="button">${esc(th ? 'เปิด IT Helpdesk' : 'Open IT Helpdesk')} ${IC.ext}</button>
+  </div>`;
+}
+
 ROUTES.issues = async (params = {}) => {
   setTitle(t('mIssue'));
   // ฟอร์มอยู่บนสุดเลย ไม่ต้องกดปุ่มเข้าอีกหน้า — เข้ามาก็แจ้งได้ทันที
@@ -8089,6 +8686,8 @@ ROUTES.issues = async (params = {}) => {
           <span class="ck" style="color:var(--primary);font-weight:800;${i===0?'':'visibility:hidden'}">✓</span>
         </button>`).join('')}</div>
 
+      ${itHelpdeskBox()}
+      <div id="isuForm" hidden>
       <div class="field" style="margin-top:13px"><label>${esc(t('isuDetail'))}<span class="req">*</span></label>
         <textarea id="dt" rows="3" placeholder="${esc(t('isuDetailPh'))}"></textarea></div>
       <div class="field"><label>${esc(t('isuWhere'))}</label>
@@ -8100,6 +8699,7 @@ ROUTES.issues = async (params = {}) => {
         <span style="color:var(--ink-3);font-size:12px">${esc(t('isuUrgentSub'))}</span></span>
       </label>
       <button class="btn primary" id="go">${esc(t('isuSend'))}</button>
+      </div>
     </div>
 
     ${S.isOfficer ? `<button class="btn soft" id="q">${esc(t('isuQueue'))}</button>
@@ -8109,14 +8709,22 @@ ROUTES.issues = async (params = {}) => {
 
   let cat = ISSUE_DEPTS()[0].v; const img = { v:null };
   wirePhoto('ip2', img);
+  /* เรื่อง IT ไปแจ้งที่ระบบ IT Helpdesk (ล็อกอินและติดตามเรื่องที่นั่น) ไม่ใช้ฟอร์มในแอปนี้ */
+  const syncIt = () => {
+    const isIt = cat === 'IT';
+    $x('#itGo').hidden = !isIt; $x('#isuForm').hidden = isIt;
+  };
+  syncIt();
+  $('#itOpen').onclick = () => openExternal(IT_HELPDESK_URL);
   document.querySelectorAll('#cats .row').forEach(b => b.onclick = () => {
     cat = b.dataset.v;
     document.querySelectorAll('#cats .row').forEach(x => {
       const on = x === b;
       x.style.borderColor = on ? 'var(--primary)' : 'var(--line)';
-      x.style.background  = on ? '#EEF3FF' : '#fff';
+      x.style.background  = on ? 'var(--brand-50)' : '#fff';
       x.querySelector('.ck').style.visibility = on ? 'visible' : 'hidden';
     });
+    syncIt();
   });
   if($('#q')) $('#q').onclick = () => go('issue-queue');
   $('#go').onclick = async () => {
@@ -8189,14 +8797,25 @@ ROUTES['issue-new'] = async ({ about } = {}) => {
   if(about){ $('#dt').value = t('isuAbout')(about) + '\n'; $('#dt').focus(); }
 
   let cat = ISSUE_DEPTS()[0].v, img = null;
+  /* เรื่อง IT → ไป IT Helpdesk (ซ่อนฟอร์มในแอปนี้) */
+  $('#cats').insertAdjacentHTML('afterend', itHelpdeskBox());
+  const syncIt2 = () => {
+    const isIt = cat === 'IT';
+    $x('#itGo').hidden = !isIt;
+    document.querySelectorAll('#main .view > .card:not(:first-child), #main .sticky-cta')
+      .forEach(e => { e.hidden = isIt; });
+  };
+  syncIt2();
+  $('#itOpen').onclick = () => openExternal(IT_HELPDESK_URL);
   document.querySelectorAll('#cats .row').forEach(b => b.onclick = () => {
     cat = b.dataset.v;
     document.querySelectorAll('#cats .row').forEach(x => {
       const on = x === b;
       x.style.borderColor = on ? 'var(--primary)' : 'var(--line)';
-      x.style.background  = on ? '#EEF3FF' : '#fff';
+      x.style.background  = on ? 'var(--brand-50)' : '#fff';
       x.querySelector('.ck').style.visibility = on ? 'visible' : 'hidden';
     });
+    syncIt2();
   });
   const fl = $('#fl');
   $('#sh').onclick = e => { if(e.target.tagName !== 'INPUT') fl.click(); };
@@ -8253,7 +8872,7 @@ ROUTES['issue-detail'] = async ({ id } = {}) => {
   $x('#main').innerHTML = `<div class="view"><div id="dv">${skeleton(3)}</div></div>`;
   let d = null;
   try{ d = await apiRetry('getIssueDetail', { record_id:id }, 'GET'); }catch(e){}
-  if(!d?.ok){ $x('#dv').innerHTML = emptyState(IC.info, t('netErr'), ''); return; }
+  if(!d?.ok || !d.issue){ $x('#dv').innerHTML = emptyState(IC.info, t('netErr'), ''); return; }
   const i = d.issue;
 
   $x('#dv').innerHTML = `
@@ -8674,6 +9293,7 @@ ROUTES['room-new'] = async ({ date, room:preRoom, hour, kind:k0 } = {}) => {
   const h2  = hour ? String(Math.min(Number(hour)+1,18)).padStart(2,'0') + ':00' : '10:00';
   let rooms = [];
   try{ const r = await apiRetry('getRoomDay', { date:day, kind }, 'GET'); rooms = r?.rooms || []; }catch(e){}
+  const projs = await getProjectList();
 
   $x('#main').innerHTML = `<div class="view">
     <div class="card">
@@ -8705,8 +9325,18 @@ ROUTES['room-new'] = async ({ date, room:preRoom, hour, kind:k0 } = {}) => {
       </div>
     </div>
     <div class="card">
-      <div class="field" style="margin:0"><label>${esc(t('rmSubject'))}<span class="req">*</span></label>
+      <div class="field"><label>${esc(t('rmSubject'))}<span class="req">*</span></label>
         <input id="ti" placeholder="${esc(t('rmSubjectPh'))}"></div>
+      ${projSelect('rpj', projs)}
+      <div class="field"><label>${esc(S.lang === 'th' ? 'จำนวนผู้เข้าร่วม' : 'Attendees')}</label>
+        <div class="cnt">
+          <button id="atM" type="button" aria-label="${esc(S.lang === 'th' ? 'ลด' : 'Fewer')}">−</button>
+          <div class="cntv" id="atV" aria-live="polite">2</div>
+          <div class="cntu">${esc(S.lang === 'th' ? 'คน' : 'people')}</div>
+          <button id="atP" type="button" aria-label="${esc(S.lang === 'th' ? 'เพิ่ม' : 'More')}">＋</button>
+        </div></div>
+      <div class="field" style="margin:0"><label>${esc(S.lang === 'th' ? 'รายละเอียดเพิ่มเติม (ถ้ามี)' : 'More details (optional)')}</label>
+        <textarea id="rnote" rows="2" placeholder="${esc(S.lang === 'th' ? 'เช่น ต้องการโปรเจกเตอร์ จัดโต๊ะแบบเรียนหนังสือ' : 'e.g. projector needed, classroom layout')}"></textarea></div>
     </div>
     <div class="note info">${IC.info}<div>${esc(t('rmIcsHint'))}</div></div>
     <div class="sticky-cta"><button class="btn primary" id="go">${esc(t('rmGo'))}</button></div>
@@ -8720,6 +9350,11 @@ ROUTES['room-new'] = async ({ date, room:preRoom, hour, kind:k0 } = {}) => {
     }
   };
   let room = preRoom || rooms[0]?.resource_id || '';
+  let attendees = 2;
+  const paintAt = () => { $x('#atV').textContent = attendees; $('#atM').disabled = attendees <= 1; };
+  $('#atP').onclick = () => { attendees = Math.min(attendees + 1, 99); paintAt(); };
+  $('#atM').onclick = () => { attendees = Math.max(attendees - 1, 1); paintAt(); };
+  paintAt();
   paintPhotos($('#rp'));
   document.querySelectorAll('#rp .row').forEach(b => b.onclick = () => {
     room = b.dataset.v;
@@ -8732,7 +9367,7 @@ ROUTES['room-new'] = async ({ date, room:preRoom, hour, kind:k0 } = {}) => {
   });
   $('#go').onclick = async () => {
     const title = $('#ti').value.trim();
-    if(!title){ toast(t('admNeedTitle'), 'bad'); return; }
+    if(!title){ toast(needMsg('หัวข้อการประชุม', 'the meeting subject'), 'bad'); $('#ti').focus(); return; }
     const d = $('#dd').value, a = $('#t1').value, z = $('#t2').value;
     const d2 = ($('#rmulti').checked && $('#dd2').value) ? $('#dd2').value : d;
     if(!d || !a || !z){ toast(t('rmBadTime'), 'bad'); return; }
@@ -8741,7 +9376,9 @@ ROUTES['room-new'] = async ({ date, room:preRoom, hour, kind:k0 } = {}) => {
     const b = $('#go'); b.disabled = true;
     try{
       const r = await apiRetry('createRoomBooking', {
-        resource_id:room, title, start_at:sIso, end_at:eIso
+        resource_id:room, title:withProj(title, $('#rpj')?.value), start_at:sIso, end_at:eIso,
+        project_code:$('#rpj')?.value || '', attendees:String(attendees),
+        note:($('#rnote')?.value || '').trim()
       }, 'POST');
       if(r?.error === 'CLASH'){
         toast(`${t('rmClash')} · ${r.clash?.who || ''}`, 'bad');
@@ -8759,8 +9396,10 @@ ROUTES.equipment = async (params = {}) => {
   setTitle(t('eqTitle'));
   const view = params.view === 'cal' ? 'cal' : 'list';
   $x('#main').innerHTML = `<div class="view">
-    <button class="btn soft" id="scan">▣ ${esc(t('eqScan'))}</button>
-    <div class="fhint" style="margin:8px 0 12px">${esc(t('eqScanHint'))}</div>
+    <button class="eq-scan" id="scan" type="button">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><path d="M14 14h3v3h-3zM20 14v.01M14 20h.01M17 20h4v-3"/></svg>
+      <span><b>${esc(t('eqScan'))}</b><small>${esc(t('eqScanHint'))}</small></span>
+    </button>
     <div class="seg2" id="esg">
       <button class="${view==='list'?'on':''}" data-v="list">${esc(t('eqList'))}</button>
       <button class="${view==='cal'?'on':''}" data-v="cal">${esc(t('eqCal'))}</button>
@@ -8890,13 +9529,35 @@ function itemSheet(i){
   });
 }
 
-function reserveSheet(i){
+/* โครงการที่นำของ/ห้องไปใช้ — ดึงรายการเดียวกับหน้าจองรถ
+   เก็บใน purpose/ชื่อเรื่องเป็น "[รหัสโครงการ]" ด้วย เพื่อให้ข้อมูลติดไปกับรายการแม้ backend ยังไม่มีช่องโครงการ */
+async function getProjectList(){
+  if(S.cache.projList) return S.cache.projList;
+  try{ const r = await apiRetry('getCarDay', { date:dayKey(new Date()) }, 'GET');
+       S.cache.projList = r?.projects || []; }catch(e){ S.cache.projList = []; }
+  return S.cache.projList;
+}
+const projSelect = (id, list) => list.length ? `<div class="field"><label>${esc(S.lang === 'th'
+    ? 'โครงการที่นำไปใช้ (ถ้ามี)' : 'Project it is used for (if any)')}</label>
+  <select id="${id}"><option value="">${esc(t('carProjectPh'))}</option>${list.map(p =>
+    `<option value="${esc(p.code)}">${esc(p.code)} · ${esc(p.name)}</option>`).join('')}</select></div>` : '';
+const withProj = (txt, code) => (code ? `[${code}] ` : '') + (txt || '');
+
+async function reserveSheet(i){
   const d0 = dayKey(new Date());
+  const projs = await getProjectList();
   sheet(`<h3>${esc(t('eqReserve'))}</h3><p class="sub">${esc(i.name_th)}</p>
-    <div class="field"><label>${esc(t('rmFrom'))}</label>
-      <input type="date" id="rd1" value="${d0}"></div>
-    <div class="field"><label>${esc(t('eqDue'))}</label>
-      <input type="date" id="rd2" value="${d0}"></div>
+    <div class="times">
+      <div class="tbox"><div class="k">${esc(t('rmFrom'))}</div>
+        <input type="date" id="rd1" value="${d0}" class="tin">
+        <input type="time" id="rt1" value="09:00" class="tin big"></div>
+      <div class="arrow">→</div>
+      <div class="tbox hl"><div class="k">${esc(t('eqDue'))}</div>
+        <input type="date" id="rd2" value="${d0}" class="tin">
+        <input type="time" id="rt2" value="17:00" class="tin big"></div>
+    </div>
+    <div style="height:12px"></div>
+    ${projSelect('rpj', projs)}
     <div class="field"><label>${esc(t('eqPurpose'))}</label>
       <input id="rp2" placeholder="${esc(t('eqPurposePh'))}"></div>
     <button class="btn primary" id="rgo2">${esc(t('eqReserve'))}</button>
@@ -8904,12 +9565,14 @@ function reserveSheet(i){
   $('#rx2').onclick = closeSheet;
   $('#rgo2').onclick = async () => {
     const a = $('#rd1').value, z = $('#rd2').value;
-    if(!a || !z || z < a){ toast(t('rmBadTime'),'bad'); return; }
+    const ta = $('#rt1').value || '09:00', tz = $('#rt2').value || '17:00';
+    if(!a || !z || `${z}T${tz}` <= `${a}T${ta}`){ toast(t('rmBadTime'),'bad'); return; }
     const b = $('#rgo2'); b.disabled = true;
     try{
       const r = await apiRetry('reserveItem', { resource_id:i.resource_id,
-        start_at:`${a}T08:00:00+07:00`, end_at:`${z}T18:00:00+07:00`,
-        purpose:$('#rp2').value.trim() }, 'POST');
+        start_at:`${a}T${ta}:00+07:00`, end_at:`${z}T${tz}:00+07:00`,
+        project_code:$('#rpj')?.value || '',
+        purpose:withProj($('#rp2').value.trim(), $('#rpj')?.value) }, 'POST');
       if(r?.error === 'CLASH'){ toast(`${t('eqClash')} · ${r.clash?.who||''}`,'bad'); b.disabled=false; return; }
       closeSheet(); toast(t('eqResvOk'),'ok'); (clearCache('eq'), go('equipment', {}, true));
     }catch(e){ toast(t('netErr'),'bad'); b.disabled = false; }
@@ -8943,11 +9606,13 @@ function wirePhoto(id, store, onPick){
   };
 }
 
-function borrowSheet(i){
+async function borrowSheet(i){
   const before = { v:null };
+  const projs = await getProjectList();
   sheet(`<h3>${esc(i.name_th)}</h3>
     <p class="sub">${esc(i.storage_location ? t('eqShelfAt')(i.storage_location) : (i.note || ''))}</p>
     ${photoField('bf', t('eqPhotoBefore'))}
+    ${projSelect('bpj', projs)}
     <div class="field"><label>${esc(t('eqPurpose'))}</label>
       <input id="bp" placeholder="${esc(t('eqPurposePh'))}"></div>
     <button class="btn primary" id="bgo">${esc(t('eqBorrow'))}</button>
@@ -8959,7 +9624,8 @@ function borrowSheet(i){
     const b = $('#bgo'); b.disabled = true;
     try{
       const r = await apiRetry('borrowItem', { resource_id:i.resource_id,
-        purpose:$('#bp').value.trim(), photo:before.v.full, thumb:before.v.thumb }, 'POST');
+        project_code:$('#bpj')?.value || '',
+        purpose:withProj($('#bp').value.trim(), $('#bpj')?.value), photo:before.v.full, thumb:before.v.thumb }, 'POST');
       closeSheet();
       toast(r?.error === 'BUSY' ? t('eqBusy') : t('eqBorrowed'), r?.error ? 'bad' : 'ok');
       (clearCache('eq'), go('equipment', {}, true));
@@ -9138,7 +9804,7 @@ ROUTES['admin-drv'] = async () => {
     $('#dcx').onclick = closeSheet;
     const save = extra => async () => {
       const name = $('#dn').value.trim();
-      if(!name){ toast(t('admNeedTitle'),'bad'); return; }
+      if(!name){ toast(needMsg('ชื่อคนขับ', 'the driver name'),'bad'); $('#dn').focus(); return; }
       const b = $('#dsv'); b.disabled = true;
       try{
         await apiRetry('saveDriver', Object.assign({
@@ -9531,7 +10197,7 @@ ROUTES['admin-res'] = async () => {
     $('#rx3').onclick = closeSheet;
     const save = extra => async () => {
       const name = $('#rn2').value.trim();
-      if(!name){ toast(t('admNeedTitle'),'bad'); return; }
+      if(!name){ toast(needMsg('ชื่อรายการ', 'the item name'),'bad'); $('#rn2').focus(); return; }
       const b = $('#rsv2'); b.disabled = true;
       try{
         await apiRetry('saveResource', Object.assign({
@@ -9639,18 +10305,8 @@ ROUTES.cars = async (params = {}) => {
   const me   = String(S.me?.kenan_user_id || '');
   let   veh0 = params.veh || r.vehicles[0]?.resource_id;
 
-  /* คนขับเห็นทางเข้างานของตัวเองก่อนอย่างอื่น ไม่ต้องไปหาในเมนู */
-  if(r.isDriver){
-    const mine = r.trips.filter(x => String(x.driver_id) === me &&
-                                     ['assigned','requested','in_use'].includes(x.status));
-    $x('#dbn').innerHTML = `<button class="row" id="dgo" style="border:1.5px solid var(--primary);
-        border-radius:14px;background:#EEF3FF;margin-bottom:12px;width:100%">
-        <div class="thumb" style="background:#fff;color:var(--primary)">${IC.car}</div>
-        <div class="body"><div class="t">${esc(t('drvOpen'))}</div>
-          <div class="s">${esc(mine.length ? t('drvJobs')(mine.length) : t('drvNone'))}</div></div>
-        <span class="go">${IC.chev}</span></button>`;
-    $('#dgo').onclick = () => go('driver');
-  }
+  /* แบนเนอร์ "เปิดหน้างานขับรถ / วันนี้ยังไม่มีงานขับรถ" เอาออกจากหน้าจองรถแล้ว
+     มันเป็นเรื่องของคนขับ ไม่ใช่ของคนจองรถ — คนขับเข้าได้ที่ "งานขับรถ" ในเมนูข้างและหน้าคนขับ */
 
   /* ── แถบเลือกวัน / เลือกคัน */
   $x('#ctl').innerHTML = mode === 'day'
@@ -9832,6 +10488,7 @@ function tripSheet(x, r, refresh){
     ที่คีนันมีโครงการ 20+ โครงการ dropdown ธรรมดาจะหาไม่เจอจริงๆ */
 function pickFromList({ title, items, label, sub, current, search }){
   return new Promise(resolve => {
+    const st = stashSheet();
     sheet(`<h3>${esc(title)}</h3>
       <input id="plq" placeholder="${esc(search || t('pkSearch'))}" autocomplete="off">
       <div id="pll"></div>
@@ -9848,13 +10505,14 @@ function pickFromList({ title, items, label, sub, current, search }){
           ${current && label(i) === current ? '<span style="color:var(--primary);font-weight:800">✓</span>' : ''}
         </button>`).join('') : `<div class="pk-empty">${esc(t('pkNone'))}</div>`;
       document.querySelectorAll('#pll .pk-row').forEach(b => b.onclick = () => {
-        closeSheet(); resolve(hits[Number(b.dataset.i)]);
+        const pick = hits[Number(b.dataset.i)];
+        popSheet(st); resolve(pick);
       });
     };
     paint('');
     const inp = $('#plq');
     inp.oninput = () => paint(inp.value);
-    $('#plx').onclick = () => { closeSheet(); resolve(null); };
+    $('#plx').onclick = () => { popSheet(st); resolve(null); };
     setTimeout(() => inp.focus(), 260);
   });
 }
@@ -9902,10 +10560,18 @@ async function pickPlace(initial){
       const typed = inp.value.trim();
       $x('#ppr').innerHTML = items.length ? items.map((r, i) => {
         const nm = labelFor(r, typed), addr = r.addr || r.name;
+        /* ผลที่ไม่มีคำที่พิมพ์อยู่เลย (และไม่ใช่ที่ที่เคยไป) = Maps เดามา
+           เดิมเอาคำที่พิมพ์มาตั้งเป็นชื่อตัวหนา ทำให้ที่ไม่เกี่ยวกันดูเหมือนตรงเป๊ะ
+           ตอนนี้โชว์ที่อยู่จริงเป็นชื่อ และบอกตรงๆ ว่าไม่ตรงกับที่พิมพ์ */
+        const guess = !r.place && !r.saved && typed.length >= 2 &&
+                      String(addr).toLowerCase().indexOf(typed.toLowerCase()) < 0;
         return `<button class="pk-row place" data-i="${i}">
           <span class="b">
-            <span class="t">${esc(nm || addr)}</span>
-            ${nm ? `<span class="s">${esc(addr)}</span>` : ''}
+            <span class="t">${esc(guess ? addr : (nm || addr))}</span>
+            ${!guess && nm ? `<span class="s">${esc(addr)}</span>` : ''}
+            ${guess ? `<span class="s" style="color:var(--warn);font-weight:600">${esc(S.lang === 'th'
+              ? `ไม่ตรงกับ “${typed}” — Maps เดาให้ ตรวจที่อยู่ก่อนเลือก`
+              : `Doesn’t match “${typed}” — a guess from Maps, check the address first`)}</span>` : ''}
             ${r.saved ? `<span class="s" style="color:var(--ok);font-weight:700">★ ${esc(t('carPlaceUsed'))}</span>` : ''}
           </span>
           <span class="pill new" style="flex:0 0 auto">${esc(t('carPick'))}</span>
@@ -9914,7 +10580,10 @@ async function pickPlace(initial){
       document.querySelectorAll('#ppr .pk-row').forEach(b => b.onclick = () => {
         const r = items[Number(b.dataset.i)];
         closeSheet();
-        const nm = labelFor(r, typed), addr = r.addr || r.name;
+        const addr = r.addr || r.name;
+        const guess = !r.place && !r.saved && typed.length >= 2 &&
+                      String(addr).toLowerCase().indexOf(typed.toLowerCase()) < 0;
+        const nm = guess ? '' : labelFor(r, typed);   // ผลที่ Maps เดา ไม่เอาคำที่พิมพ์ไปแปะเป็นชื่อ
         // เก็บทั้งชื่อที่คนจำได้ และที่อยู่ที่ Maps ใช้คำนวณเส้นทาง
         resolve({ name: joinPlace(nm, addr), place: nm || addr, addr });
       });
@@ -10437,7 +11106,7 @@ ROUTES['car-new'] = async ({ date, veh:preVeh, hour } = {}) => {
   $('#goBk').onclick = async () => {
     const purpose = $('#pp').value.trim();
     const [sIso, eIso] = win();
-    if(!purpose){ toast(t('admNeedTitle'),'bad'); return; }
+    if(!purpose){ toast(needMsg('วัตถุประสงค์ของการเดินทาง', 'the purpose of the trip'),'bad'); $('#pp').focus(); return; }
     if(!project){ toast(t('carNeedProject'),'bad'); return; }
     if(Date.parse(eIso) <= Date.parse(sIso)){ toast(t('rmBadTime'),'bad'); return; }
     const b = $('#goBk'); b.disabled = true;
@@ -11350,7 +12019,7 @@ ROUTES['driver-report'] = async () => {
   const ph = { v:null }; wirePhoto('rp3', ph);
   $('#rs2').onclick = async () => {
     const body = $('#rb').value.trim();
-    if(!body){ toast(t('admNeedTitle'),'bad'); return; }
+    if(!body){ toast(needMsg('รายละเอียด', 'the details'),'bad'); $('#rb').focus(); return; }
     const b = $('#rs2'); b.disabled = true;
     try{
       await apiRetry('driverReport', { kind:$('#rk2').value, body, photo:ph.v?.thumb || '' }, 'POST');
@@ -11779,7 +12448,7 @@ ROUTES['admin-dsr'] = async () => {
     $('#occx').onclick = closeSheet;
     $('#ocgo').onclick = async () => {
       const v = $('#oc').value.trim();
-      if(!v){ toast(t('admNeedTitle'),'bad'); return; }
+      if(!v){ toast(needMsg('ข้อความ', 'a message'),'bad'); $('#oc').focus(); return; }
       $('#ocgo').disabled = true;
       try{
         await apiRetry('dsrClose', { request_id:b.dataset.dsr, outcome:v }, 'POST');
@@ -12181,6 +12850,7 @@ async function ensureEmployees(){
 }
 function pickPerson(){
   return new Promise(resolve => {
+    const st = stashSheet();
     sheet(`<h3>${esc(t('inRecipient'))}</h3>
       <input id="pkSearch" placeholder="${esc(t('pkSearch'))}" autocomplete="off">
       <div id="pkList"></div>
@@ -12211,7 +12881,7 @@ function pickPerson(){
         : `<div class="pk-empty">${esc(t('pkNone'))}</div>`);
 
       listEl.querySelectorAll('.pk-row').forEach(b => b.onclick = () => {
-        closeSheet();
+        popSheet(st);
         resolve(b.dataset.u ? { unknown:true }
                             : S.employees.find(p => p.kenan_user_id === b.dataset.id));
       });
@@ -12219,7 +12889,7 @@ function pickPerson(){
 
     paint('');
     inp.oninput = () => paint(inp.value);
-    $('#pkCancel').onclick = () => { closeSheet(); resolve(null); };
+    $('#pkCancel').onclick = () => { popSheet(st); resolve(null); };
     setTimeout(() => inp.focus(), 260);
   });
 }
@@ -12246,7 +12916,7 @@ async function boot(){
   $x('#sbrandTx').textContent = APP_NAME;
   document.querySelectorAll('.brand .mark, .sbrand .mark').forEach(i => { i.src = LOGO_URI; });
 
-  try{ const tq = new URLSearchParams(location.search).get('theme'); if(tq === 'office') localStorage.setItem('kn_theme','office'); if(tq === 'off') localStorage.removeItem('kn_theme'); if(localStorage.getItem('kn_theme') === 'office'){ document.documentElement.classList.add('t-office'); const fl = document.createElement('link'); fl.rel = 'stylesheet'; fl.href = 'https://fonts.googleapis.com/css2?family=Noto+Serif+Thai:wght@600;700&family=Sarabun:wght@400;600;700&display=swap'; document.head.appendChild(fl); } }catch(e){}
+  try{ localStorage.removeItem('kn_theme'); }catch(e){}
     try{ const sv = localStorage.getItem('kn_lang'); if(sv === 'en' || sv === 'th') S.lang = sv; }catch(e){}
 
   if(DEMO){

@@ -2039,13 +2039,17 @@ const START_AT = (function(){
             'item','labels','driver-portal','driver-me','driver-report','driver-pair',
             'admin-drvrep','my-data','admin-dsr','services',
             'admin-people','admin-contacts','admin-devline','about-long',
-            'driver-jobs','admin-drvreq','safety-dash','alert-history','alert-report'].includes(g) ? g : null;
+            'driver-jobs','admin-drvreq','safety-dash','alert-history','alert-report','admin-news','news-draft'].includes(g) ? g : null;
   }catch(e){ return null; }
 })();
 /* ?rec=PCL-xxx → เปิดพัสดุชิ้นนั้นให้เลย (ลิงก์ที่ส่งไปในข้อความ LINE) */
 /* ?alert_id=ALT-xxx → เปิดตรงเหตุฉุกเฉินเรื่องนั้น (เปิดได้หลายเหตุพร้อมกัน ลิงก์ในไลน์ระบุเหตุให้) */
 const START_ALERT = (function(){
   try{ return new URLSearchParams(location.search).get('alert_id') || null; }catch(e){ return null; }
+})();
+/* ?id=N-xxxx → เปิดข่าวฉบับนั้นเลย (ลิงก์ในไลน์ที่ส่งตอนเผยแพร่) */
+const START_ID = (function(){
+  try{ return new URLSearchParams(location.search).get('id') || null; }catch(e){ return null; }
 })();
 const START_REC = (function(){
   try{ return new URLSearchParams(location.search).get('rec') || null; }catch(e){ return null; }
@@ -3020,9 +3024,22 @@ const T = {
     recGone:'ไม่พบพัสดุชิ้นนี้แล้ว อาจถูกกดรับไปแล้ว',
     admPostNews:'ลงประกาศ / ข่าวสาร',
     admRoles:'ตั้งสิทธิ์ผู้ใช้',
-    admImport:'ดึงประกาศจากอีเมล',
-    admImportHint:'HR ส่งประกาศทางอีเมลอยู่แล้ว — แค่ forward มาที่บัญชีระบบแล้วติด label "kc-news" จากนั้นกดปุ่มนี้ ระบบจะเก็บเข้า ' + APP_NAME + ' ให้เอง (ทำอัตโนมัติทุกเช้าด้วย)',
-    admImported:n=>`นำเข้าประกาศ ${n} รายการแล้ว`,
+    nwDraftTitle:'ฉบับร่างจากอีเมล HR (รออนุมัติ)', nwDraftFrom:'จาก', nwDraftFiles:'{n} ไฟล์แนบ',
+    nwDraftPage:'ตรวจฉบับร่าง', nwDraftGone:'ไม่พบฉบับร่างนี้ (อาจถูกเผยแพร่หรือลบไปแล้ว)',
+    nwDraftWhy:'ประกาศนี้มาจากอีเมล HR ยังไม่แสดงให้ใครเห็นจนกว่าคุณกดเผยแพร่ ตรวจเนื้อหาและไฟล์แนบก่อนว่าเหมาะกับทั้งองค์กร',
+    nwMtEn:'ข้อความภาษาอังกฤษแปลโดย Google Translate — ตรวจและแก้ได้ก่อนเผยแพร่',
+    nwMtTh:'ข้อความภาษาไทยแปลโดย Google Translate — ตรวจและแก้ได้ก่อนเผยแพร่',
+    nwGt:'แปลโดย Google Translate', nwBodyEn:'รายละเอียด (อังกฤษ)',
+    nwCover:'รูปปก (ขึ้นที่การ์ดข่าว)', nwNoCover:'ไม่ใช้รูปปก',
+    nwAttach:'ไฟล์แนบ', nwAttachFail:'อัปโหลดไม่สำเร็จ — ดูไฟล์ในอีเมลต้นฉบับ', nwFileFail:'เปิดไฟล์ไม่ได้ ลองใหม่อีกครั้ง',
+    nwPush:'แจ้งพนักงานเมื่อเผยแพร่ (ไม่บังคับ)',
+    nwPushLine:'ส่งไลน์ถึงทุกคน ({n} คน · โควตาเดือนนี้ใช้ไป {u}/{q})', nwPushLineNo:'ส่งไลน์ถึงทุกคน',
+    nwPushMail:'ส่งอีเมลถึงทุกคน ({n} คน)', nwPushMailNo:'ส่งอีเมลถึงทุกคน',
+    nwPushMailHint:'อีเมล All-Employee ของ HR ส่งถึงทุกคนอยู่แล้ว ปกติไม่ต้องส่งซ้ำ',
+    nwPushLineWarn:'โควตาไลน์ไม่พอ (ต้องใช้ {need} เหลือ {room}) ระบบจะไม่ส่งไลน์ให้ใครเลย ประกาศยังเผยแพร่ในแอป',
+    nwPushedTo:'ส่งไลน์ {l} คน · อีเมล {e} คน',
+    nwPublish:'เผยแพร่', nwPublished:'เผยแพร่แล้ว', nwDiscard:'ลบฉบับร่าง', nwDiscarded:'ลบฉบับร่างแล้ว',
+    nwDiscardAsk:'ลบฉบับร่างนี้? อีเมลฉบับนี้จะไม่ถูกนำเข้ามาอีก',
     admWriteOwn:'หรือพิมพ์เอง',
     admTitleTh:'หัวข้อ (ไทย)', admTitleEn:'หัวข้อ (อังกฤษ)', admBodyTh:'รายละเอียด',
     admTitlePh:'เช่น ซ้อมอพยพหนีไฟประจำปี',
@@ -4008,9 +4025,22 @@ const T = {
     recGone:'That parcel is no longer listed — it may already be picked up',
     admPostNews:'Post news',
     admRoles:'Manage roles',
-    admImport:'Import from email',
-    admImportHint:'HR already announces by email — just forward it to the system account with the "kc-news" label, then tap this. It also runs automatically every morning.',
-    admImported:n=>`Imported ${n} announcement(s)`,
+    nwDraftTitle:'Drafts from HR emails (awaiting approval)', nwDraftFrom:'From', nwDraftFiles:'{n} attachment(s)',
+    nwDraftPage:'Review draft', nwDraftGone:'This draft was not found (it may already be published or deleted).',
+    nwDraftWhy:'This came from an HR email. Nobody sees it until you publish. Check the text and attachments are fine for everyone.',
+    nwMtEn:'The English text was translated by Google Translate — check and edit it before publishing.',
+    nwMtTh:'The Thai text was translated by Google Translate — check and edit it before publishing.',
+    nwGt:'Translated by Google Translate', nwBodyEn:'Details (English)',
+    nwCover:'Cover image (shown on the news card)', nwNoCover:'No cover image',
+    nwAttach:'Attachments', nwAttachFail:'Upload failed — see the file in the original email', nwFileFail:'Could not open the file. Please try again.',
+    nwPush:'Notify staff when published (optional)',
+    nwPushLine:'Send a LINE message to everyone ({n} people · this month\'s quota used {u}/{q})', nwPushLineNo:'Send a LINE message to everyone',
+    nwPushMail:'Send an email to everyone ({n} people)', nwPushMailNo:'Send an email to everyone',
+    nwPushMailHint:'HR\'s All-Employee email already reached everyone, so you usually do not need to send it again.',
+    nwPushLineWarn:'Not enough LINE quota (need {need}, {room} left) — nobody will be messaged on LINE. The post is still published in the app.',
+    nwPushedTo:'LINE sent to {l} · email sent to {e}',
+    nwPublish:'Publish', nwPublished:'Published', nwDiscard:'Delete draft', nwDiscarded:'Draft deleted',
+    nwDiscardAsk:'Delete this draft? This email will not be imported again.',
     admWriteOwn:'Or write it here',
     admTitleTh:'Title (Thai)', admTitleEn:'Title (English)', admBodyTh:'Details',
     admTitlePh:'e.g. Annual fire drill',
@@ -4567,7 +4597,7 @@ const MOCK = {
     { resource_id:'ZM-8', kind:'zoom', name_th:'Zoom 8', capacity:1000, note:'zoom8@kenan-asia.org', is_active:true }] },
   saveResource:{ ok:true }, saveProject:{ ok:true }, saveDriver:{ ok:true },
   importStaff:{ ok:true, added:38, updated:2, skipped:['ทดสอบ ระบบ — อีเมลไม่ใช่ @kenan-asia.org'], total:41 },
-  addAnnouncement:{ ok:true, images:0 }, importNews:{ ok:true, added:2 },
+  addAnnouncement:{ ok:true, images:0 },
   decideAltTransport:{ ok:true },
   logNoCar:{ ok:true, record_id:'CAR-ALT-9', mode:'notify', pm_notified:true, pm_name:'ธนกร วัฒนา' },
   getDriversAdmin:{ ok:true, items:[
@@ -5191,6 +5221,29 @@ function __friendBar(){
     document.getElementById('friendGo').onclick = function(){ try{ liff.openWindow({ url:'https://line.me/R/ti/p/@974jmahd', external:false }); }catch(e){ location.href = 'https://line.me/R/ti/p/@974jmahd'; } d.remove(); };
   }catch(e){}
 }
+/* เดโมประกาศจากอีเมล HR: เปิดด้วย ?demo&drafts (ปกติไม่โชว์ จะได้ไม่รกหน้าข่าว) */
+{ const svg = (c, tx) => 'data:image/svg+xml;utf8,' + encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" width="640" height="400"><rect width="640" height="400" fill="${c}"/><text x="320" y="205" font-size="30" text-anchor="middle" fill="#345">${tx}</text></svg>`);
+  const FILES = [{ id:'F1', name:'นโยบายวันหยุด 2027.pdf', mime:'application/pdf', size:2400000, kind:'file', ok:true },
+                 { id:'F2', name:'ปฏิทินวันหยุด.png', mime:'image/png', size:310000, kind:'image', ok:true },
+                 { id:'F3', name:'แบบฟอร์มลา.docx', mime:'application/vnd.openxmlformats-officedocument.wordprocessingml.document', size:48000, kind:'file', ok:false }];
+  let drafts = [{ id:'N-DRAFT1', at:new Date(Date.now() - 3*3600000).toISOString(), from:'HR Team <hr@kenan-asia.org>',
+    title_th:'นโยบายวันหยุดประจำปี 2027', body_th:'เรียนพนักงานทุกท่าน\n\nHR ขอแจ้งปฏิทินวันหยุดประจำปี 2027 ตามไฟล์แนบ\nกรอกแบบฟอร์มลาได้ที่ https://forms.office.com/r/abc123\n\nขอบคุณครับ',
+    title_en:'Public holiday policy 2027', body_en:'Dear all,\n\nHR announces the 2027 holiday calendar (attached). Leave form: https://forms.office.com/r/abc123\n\nThank you.',
+    translated:'en', tags:['HR'], files:FILES }];
+  const on = () => /[?&]drafts\b/.test(location.search);
+  MOCK.getNewsDrafts = () => ({ ok:true, items: on() ? drafts.map(d => ({ ...d })) : [] });
+  MOCK.getNewsPushPreview = () => ({ ok:true, line:38, email:41, used:/[?&]lowquota\b/.test(location.search) ? 290 : 62, quota:300, reserve:20 });
+  MOCK.getNewsFileUrl = p => ({ ok:true, name:'sample', url: p?.file === 'F2' ? svg('#e8dcc5', 'ปฏิทินวันหยุด 2027') : 'https://example.org/sample.pdf' });
+  MOCK.publishNews = p => { const i = drafts.findIndex(d => d.id === p.id); if(i >= 0) drafts.splice(i, 1);
+    return { ok:true, push:{ line:p.push_line ? 38 : 0, email:p.push_email ? 41 : 0, lineBlocked:false } }; };
+  MOCK.discardNews = p => { drafts = drafts.filter(d => d.id !== p.id); return { ok:true }; };
+  const a0 = MOCK.getAnnouncements;
+  MOCK.getAnnouncements = () => { const r = JSON.parse(JSON.stringify(a0));
+    if(on()) r.items.unshift({ id:'N-HR1', at:new Date(Date.now() - 86400000).toISOString(), title_th:'ปฏิทินวันหยุด 2027', title_en:'2027 holiday calendar',
+      body_th:'ดูไฟล์แนบ หรือกรอกแบบฟอร์มที่ https://forms.office.com/r/abc123', body_en:'See the attachments, or fill in the form at https://forms.office.com/r/abc123',
+      tags:['HR'], image_ids:[], thumb:'', cta_label:'', cta_url:'', due_at:'', expired:false, author:'HR', source:'email', translated:'en', files:FILES.filter(f => f.ok) });
+    return r; }; }
+
 /* เดโมรายงานหลังเหตุ + ทวนข้อมูลติดต่อฉุกเฉิน */
 { const ago = m => new Date(Date.now() - m * 60000).toISOString();
   MOCK.getAlertHistory = () => ({ ok:true, items:[
@@ -5298,7 +5351,8 @@ const VS_BLOCK = new Set(['getContactsAdmin','saveContact','getDevLines','saveDe
   'getUnidentifiedParcels','getAdminSummary','recountPush','getUsersForAdmin','setUserRoles','getIssueQueue',
   'getDriversAdmin','getProjectsAdmin','getResourcesAdmin','getAlertBoard','getHelpMedia','getAlertDashboard',
   'createAlert','closeAlert','remindAlertNow','helpUpdate','getDriverRequests','claimDriverRequest','issueDriverRequest',
-  'getAlertHistory','getAlertReport','getContactCheckReport','getSmsStatus','markByPhone']);
+  'getAlertHistory','getAlertReport','getContactCheckReport','getSmsStatus','markByPhone',
+  'getNewsDrafts','publishNews','discardNews','getNewsPushPreview']);
 const VS_FLAGS = ['canDeclare','canSeeBoard','canDash','canClose','canHelp','canRemind','canManage','canBoard','isAdmin','isOfficer','isSuper'];
 function vsStrip(v, d = 0){
   if(d > 8 || v == null || typeof v !== 'object') return v;
@@ -6693,9 +6747,16 @@ ROUTES.news = async ({ id } = {}) => {
         ${a.due_at ? `<div class="nwdue2 ${a.expired ? 'off' : ''}">${
           esc(a.expired ? t('newsExpired') : t('newsDue')(fmtDate(a.due_at)))}</div>` : ''}
       </div>
-      <div class="nwbody">${esc(body(a))}</div>
+      <div class="nwbody">${linkify(body(a))}</div>
+      ${a.translated && a.translated === S.lang ? `<div style="font-size:var(--fs-meta);color:var(--ink-3);margin-top:8px">🌐 ${esc(t('nwGt'))}</div>` : ''}
       ${(a.image_ids || []).length ? `<div class="imggrid nwpics">${
         a.image_ids.map(id2 => `<div class="imgcell"><img data-ph="${esc(id2)}" alt=""></div>`).join('')}</div>` : ''}
+      ${(a.files || []).filter(f => f.kind === 'image').length ? `<div class="imggrid nwpics">${
+        a.files.filter(f => f.kind === 'image').slice(0, 4).map(f => `<div class="imgcell"><img data-nf="${esc(f.id)}" alt="${esc(f.name)}"></div>`).join('')}</div>` : ''}
+      ${(a.files || []).length ? `<div class="section-title" style="margin-top:16px">${esc(t('nwAttach'))}</div>
+        <div class="rows">${a.files.map(f => `<button class="row" type="button" data-of="${esc(f.id)}">
+          <div class="body"><div class="t">📎 ${esc(f.name)}</div><div class="s">${esc(fmtBytes(f.size))}</div></div>
+          <span class="go">${IC.chev}</span></button>`).join('')}</div>` : ''}
       ${a.cta_url && !a.expired ? `<a class="btn primary" href="${esc(a.cta_url)}" target="_blank"
         rel="noopener" style="margin-top:16px;text-decoration:none">${
         esc(a.cta_label || t('admNewsCta'))}</a>` : ''}`,
@@ -6703,6 +6764,11 @@ ROUTES.news = async ({ id } = {}) => {
          ตัวที่อยู่ในเนื้อหามีน้ำหนักถูกต้องกว่า และเป็นตัวที่คนอ่านจริง */
       t('news'));
     paintPhotos($('#pnBody')).then(() => wireZoom($('#pnBody')));
+    /* ไฟล์แนบจากอีเมลเก็บแบบส่วนตัว: ขอลิงก์ชั่วคราวตอนเปิดดูเท่านั้น */
+    document.querySelectorAll('#pnBody img[data-nf]').forEach(async im => {
+      try{ const r = await apiRetry('getNewsFileUrl', { id:a.id, file:im.dataset.nf }, 'GET'); if(r?.ok) im.src = r.url; }catch(e){}
+    });
+    document.querySelectorAll('#pnBody [data-of]').forEach(b => b.onclick = () => openNewsFile(a.id, b.dataset.of, true));
   };
 
   const allTags = [...new Set(items.flatMap(a => a.tags || []))];
@@ -9228,11 +9294,121 @@ ROUTES.admin = async () => {
   };
 };
 
+/* ── แจ้งพนักงานเมื่อเผยแพร่: เลือกส่งไลน์/อีเมล (ค่าตั้งต้น = ไม่ส่ง) ──────────────
+   ไลน์กินโควตาต่อเดือน จึงโชว์จำนวนคนและโควตาที่เหลือก่อนกดเสมอ
+   อีเมลของ HR (All-Employee) ส่งถึงทุกคนอยู่แล้ว ประกาศที่มาจากอีเมลจึงไม่ควรส่งซ้ำ */
+function newsPushHtml(pre, pv, fromEmail){
+  const line = pv ? t('nwPushLine').replace('{n}', pv.line).replace('{u}', pv.used).replace('{q}', pv.quota) : t('nwPushLineNo');
+  const mail = pv ? t('nwPushMail').replace('{n}', pv.email) : t('nwPushMailNo');
+  const short = pv && pv.line > (pv.quota - pv.reserve - pv.used);
+  return `<label style="display:flex;gap:10px;align-items:flex-start;margin-bottom:10px;font-size:14px">
+      <input type="checkbox" id="${pre}Line" style="margin-top:3px"><span>💬 ${esc(line)}${
+        short ? `<br><b style="color:var(--bad)">${esc(t('nwPushLineWarn').replace('{need}', pv.line).replace('{room}', Math.max(0, pv.quota - pv.reserve - pv.used)))}</b>` : ''}</span></label>
+    <label style="display:flex;gap:10px;align-items:flex-start;font-size:14px">
+      <input type="checkbox" id="${pre}Mail" style="margin-top:3px"><span>✉️ ${esc(mail)}${
+        fromEmail ? `<br><span style="color:var(--ink-3);font-size:var(--fs-meta)">${esc(t('nwPushMailHint'))}</span>` : ''}</span></label>`;
+}
+const fmtBytes = n => n >= 1048576 ? (n / 1048576).toFixed(1) + ' MB' : Math.max(1, Math.round(n / 1024)) + ' KB';
+/* ลิงก์ในเนื้อข่าวกดได้ — escape ก่อนเสมอ แล้วค่อยครอบเฉพาะ URL (กัน HTML แทรก) */
+const linkify = s => esc(s).replace(/(https?:\/\/[^\s<]*[^\s<.,;:!?)\]])/g,
+  '<a href="$1" target="_blank" rel="noopener" style="word-break:break-all">$1</a>');
+/* เปิด/ดาวน์โหลดไฟล์แนบ: ขอลิงก์ชั่วคราวจากเซิร์ฟเวอร์ (ต้องล็อกอินแอป) แล้วเปิด */
+async function openNewsFile(annId, fileId, download){
+  try{
+    const r = await apiRetry('getNewsFileUrl', { id:annId, file:fileId, download: download ? '1' : '' }, 'GET');
+    if(!r?.ok || !r.url) throw 0;
+    openExternal(r.url);
+  }catch(e){ toast(t('nwFileFail'), 'bad'); }
+}
+
+/* ── ตรวจฉบับร่างจากอีเมล แล้วเผยแพร่ ─────────────────────────────── */
+ROUTES['news-draft'] = async ({ id } = {}) => {
+  setTitle(t('nwDraftPage'));
+  $x('#main').innerHTML = `<div class="view"><div id="dr">${skeleton(3)}</div></div>`;
+  let d = null, pv = null;
+  try{
+    const [a, b] = await Promise.all([apiRetry('getNewsDrafts', {}, 'GET'), apiRetry('getNewsPushPreview', {}, 'GET')]);
+    d = (a?.items || []).find(x => x.id === id); pv = b?.ok ? b : null;
+  }catch(e){}
+  if(!d){ $x('#dr').innerHTML = emptyState(IC.info, t('adminNo'), t('nwDraftGone')); return; }
+
+  const imgs = d.files.filter(f => f.kind === 'image' && f.ok);
+  $x('#dr').innerHTML = `
+    <div class="note info">${IC.info}<div>${esc(t('nwDraftWhy'))}</div></div>
+    <div style="font-size:var(--fs-meta);color:var(--ink-3);margin:8px 2px 12px">${esc(t('nwDraftFrom'))} ${esc(d.from || '-')} · ${esc(fmtDate(d.at))}</div>
+    ${d.translated ? `<div class="note warn" style="margin-bottom:12px">🌐<div>${esc(d.translated === 'en' ? t('nwMtEn') : t('nwMtTh'))}</div></div>` : ''}
+    <div class="card">
+      <div class="field"><label>${esc(t('admTitleTh'))}<span class="req">*</span></label><input id="dT" value="${esc(d.title_th)}"></div>
+      <div class="field"><label>${esc(t('admBodyTh'))}</label><textarea id="dB" rows="9">${esc(d.body_th)}</textarea></div>
+      <div class="field"><label>${esc(t('admTitleEn'))}</label><input id="dTE" value="${esc(d.title_en)}"></div>
+      <div class="field"><label>${esc(t('nwBodyEn'))}</label><textarea id="dBE" rows="7">${esc(d.body_en)}</textarea></div>
+      <div class="field"><label>${esc(t('admNewsTags'))}</label><input id="dTag" value="${esc((d.tags || []).join(', '))}"></div>
+      <div class="field"><label>${esc(t('admNewsCta'))}</label>
+        <input id="dCL" placeholder="${esc(t('admNewsCtaLabelPh'))}" style="margin-bottom:7px"><input id="dCU" type="url" placeholder="https://…"></div>
+      <div class="field" style="margin-bottom:0"><label>${esc(t('admNewsDue'))}</label><input id="dDue" type="date"></div>
+    </div>
+    ${imgs.length ? `<div class="section-title">${esc(t('nwCover'))}</div>
+      <div class="imggrid" id="dCover"><button type="button" class="imgcell" data-cv="" style="display:flex;align-items:center;justify-content:center;border:2px solid var(--primary)">
+          <span style="font-size:12px;padding:6px;text-align:center">${esc(t('nwNoCover'))}</span></button>
+        ${imgs.map(f => `<button type="button" class="imgcell" data-cv="${esc(f.id)}" style="border:2px solid transparent;padding:0">
+          <img data-nf="${esc(f.id)}" alt="${esc(f.name)}" style="width:100%;height:100%;object-fit:cover"></button>`).join('')}</div>` : ''}
+    ${d.files.length ? `<div class="section-title">${esc(t('nwAttach'))} · ${d.files.length}</div>
+      <div class="rows">${d.files.map(f => `<button class="row" type="button" ${f.ok ? `data-of="${esc(f.id)}"` : 'disabled style="opacity:.55"'}>
+        <div class="body"><div class="t">📎 ${esc(f.name)}</div>
+          <div class="s">${esc(fmtBytes(f.size))}${f.ok ? '' : ' · ' + esc(t('nwAttachFail'))}</div></div>
+        ${f.ok ? `<span class="go">${IC.chev}</span>` : ''}</button>`).join('')}</div>` : ''}
+    <div class="section-title">${esc(t('nwPush'))}</div>
+    <div class="card" id="dPush">${newsPushHtml('d', pv, true)}</div>
+    <div style="height:12px"></div>
+    <button class="btn primary" id="dGo" type="button">${esc(t('nwPublish'))}</button>
+    <button class="btn ghost" id="dDel" type="button" style="color:var(--bad);margin-top:8px">${esc(t('nwDiscard'))}</button>`;
+
+  /* รูปในฉบับร่างโหลดผ่านลิงก์ชั่วคราว (ไฟล์เก็บแบบส่วนตัว) */
+  const urlOf = async fid => { const r = await apiRetry('getNewsFileUrl', { id:d.id, file:fid }, 'GET'); return r?.ok ? r.url : ''; };
+  document.querySelectorAll('#dr img[data-nf]').forEach(async im => { try{ const u = await urlOf(im.dataset.nf); if(u) im.src = u; }catch(e){} });
+  let cover = '';
+  document.querySelectorAll('#dr [data-cv]').forEach(b => b.onclick = () => {
+    cover = b.dataset.cv;
+    document.querySelectorAll('#dr [data-cv]').forEach(x => x.style.borderColor = x === b ? 'var(--primary)' : 'transparent');
+  });
+  document.querySelectorAll('#dr [data-of]').forEach(b => b.onclick = () => openNewsFile(d.id, b.dataset.of, false));
+
+  $('#dDel').onclick = async () => {
+    if(!window.confirm(t('nwDiscardAsk'))) return;
+    try{ const r = await apiRetry('discardNews', { id:d.id }, 'POST'); if(!r?.ok) throw 0;
+         toast(t('nwDiscarded'), 'ok'); S.stack = []; go('admin-news'); }
+    catch(e){ toast(t('netErr'), 'bad'); }
+  };
+  $('#dGo').onclick = async () => {
+    const title = $('#dT').value.trim(), titleEn = $('#dTE').value.trim();
+    if(!title && !titleEn){ toast(t('admNeedTitle'), 'bad'); return; }
+    const btn = $('#dGo'); btn.disabled = true; btn.textContent = t('loading');
+    try{
+      let card = '';
+      if(cover){                      // รูปปก: ย่อเป็นการ์ดขนาดเล็กในเบราว์เซอร์ก่อนเก็บ (เหมือนประกาศที่เขียนเอง)
+        try{ const u = await urlOf(cover); const blob = await (await fetch(u)).blob();
+             const im = await shrink2(new File([blob], 'cover.jpg', { type:blob.type || 'image/jpeg' })); card = im.card || ''; }catch(e){}
+      }
+      const r = await apiRetry('publishNews', {
+        id:d.id, title_th:title, body_th:$('#dB').value.trim(), title_en:titleEn, body_en:$('#dBE').value.trim(),
+        tags:$('#dTag').value.split(',').map(x => x.trim()).filter(Boolean).join(','),
+        cta_label:$('#dCL').value.trim(), cta_url:$('#dCU').value.trim(),
+        due_at:$('#dDue').value ? $('#dDue').value + 'T23:59:00+07:00' : '', card,
+        push_line: $('#dLine')?.checked ? '1' : '', push_email: $('#dMail')?.checked ? '1' : ''
+      }, 'POST');
+      if(!r?.ok) throw 0;
+      toast(t('nwPublished'), 'ok');
+      if(r.push?.lineBlocked) setTimeout(() => toast(t('nwPushLineWarn').replace('{need}', r.push.need).replace('{room}', r.push.room), 'bad'), 1500);
+      else if(r.push?.line || r.push?.email) setTimeout(() => toast(t('nwPushedTo').replace('{l}', r.push.line || 0).replace('{e}', r.push.email || 0), 'ok'), 1500);
+      S.stack = []; go('news');
+    }catch(e){ toast(t('netErr'), 'bad'); btn.disabled = false; btn.textContent = t('nwPublish'); }
+  };
+};
+
 ROUTES['admin-news'] = async () => {
   setTitle(t('admPostNews'));
   $x('#main').innerHTML = `<div class="view">
-    <div class="note info">${IC.info}<div>${esc(t('admImportHint'))}</div></div>
-    <button class="btn soft" id="imp" style="margin:12px 0 4px">${esc(t('admImport'))}</button>
+    <div id="drafts"></div>
 
     <div class="section-title">${esc(t('admNewsPaste'))}</div>
     <div class="card">
@@ -9268,8 +9444,24 @@ ROUTES['admin-news'] = async () => {
         <input id="nDue" type="date">
         <div style="font-size:var(--fs-meta);color:var(--ink-3);margin-top:4px">${esc(t('admNewsDueWhy'))}</div></div>
     </div>
+    <div class="section-title">${esc(t('nwPush'))}</div>
+    <div class="card" id="pushBox">${newsPushHtml('p', null)}</div>
     <div class="sticky-cta"><button class="btn primary" id="post">${esc(t('admPost'))}</button></div>
   </div>`;
+  /* แจ้งพนักงาน: ค่าตั้งต้นคือ "ไม่ส่ง" ทั้งไลน์และอีเมล — ติ๊กเองเมื่ออยากให้ถึงตัว (ไลน์กินโควตาต่อเดือน) */
+  apiRetry('getNewsPushPreview', {}, 'GET').then(pv => { if($('#pushBox')) $x('#pushBox').innerHTML = newsPushHtml('p', pv); }).catch(() => {});
+
+  /* ฉบับร่างที่ระบบรับมาจากอีเมล HR รออนุมัติ */
+  apiRetry('getNewsDrafts', {}, 'GET').then(r => {
+    const items = r?.items || []; if(!items.length || !$('#drafts')) return;
+    $x('#drafts').innerHTML = `<div class="section-title" style="color:var(--warn)">📨 ${esc(t('nwDraftTitle'))} · ${items.length}</div>
+      <div class="rows">${items.map(d => `<button class="row" data-dr="${esc(d.id)}">
+        <div class="body"><div class="t">${esc(d.title_th || d.title_en)}</div>
+          <div class="s">${esc(t('nwDraftFrom'))} ${esc(String(d.from || '').replace(/<.*>/, '').trim() || d.from || '-')} · ${esc(fmtDate(d.at))}${
+            d.files.length ? ' · ' + esc(t('nwDraftFiles').replace('{n}', d.files.length)) : ''}</div></div>
+        <span class="go">${IC.chev}</span></button>`).join('')}</div>`;
+    document.querySelectorAll('#drafts [data-dr]').forEach(b => b.onclick = () => go('news-draft', { id:b.dataset.dr }));
+  }).catch(() => {});
 
   /* วางข้อความจากอีเมลแล้วแยกหัวข้อ/เนื้อหาให้
      HR ประกาศทางอีเมลอยู่แล้ว การก๊อปมาวางเร็วกว่าพิมพ์ใหม่ทั้งฉบับ
@@ -9318,14 +9510,6 @@ ROUTES['admin-news'] = async () => {
   };
   paintImgs();
 
-  $('#imp').onclick = async () => {
-    const b = $('#imp'); b.disabled = true; b.textContent = t('loading');
-    try{
-      const r = await apiRetry('importNews', {}, 'POST');
-      toast(r?.ok ? t('admImported')(r.added || 0) : t('netErr'), r?.ok ? 'ok' : 'bad');
-    }catch(e){ toast(t('netErr'), 'bad'); }
-    b.disabled = false; b.textContent = t('admImport');
-  };
   $('#post').onclick = async () => {
     const title = $('#nTh').value.trim();
     if(!title){ toast(t('admNeedTitle'), 'bad'); return; }
@@ -9338,7 +9522,8 @@ ROUTES['admin-news'] = async () => {
         images: JSON.stringify(imgs.map(x => x.full)),
         card: imgs[0]?.card || '',
         cta_label:$('#nCtaL').value.trim(), cta_url:$('#nCtaU').value.trim(),
-        due_at:$('#nDue').value ? $('#nDue').value + 'T23:59:00+07:00' : ''
+        due_at:$('#nDue').value ? $('#nDue').value + 'T23:59:00+07:00' : '',
+        push_line: $('#pLine')?.checked ? '1' : '', push_email: $('#pMail')?.checked ? '1' : ''
       }, 'POST');
       toast(t('admPosted'), 'ok');
       S.stack = []; go('news');
@@ -14094,7 +14279,8 @@ async function boot(){
     S.stack = [{ name:'home', params:{} }];
     go(START_AT, START_TAG ? { tag:START_TAG }
                            : (START_REC ? { rec:START_REC }
-                           : (START_ALERT ? { id:START_ALERT } : {})));
+                           : (START_ALERT ? { id:START_ALERT }
+                           : (START_ID ? { id:START_ID } : {}))));
   }
   else                                go('home');
 }
